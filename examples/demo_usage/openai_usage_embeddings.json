@@ -1,0 +1,429 @@
+[
+ {
+  "object": "page",
+  "data": [
+   {
+    "object": "bucket",
+    "start_time": 1788220800,
+    "end_time": 1788307200,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 202152000,
+      "num_model_requests": 50538,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788307200,
+    "end_time": 1788393600,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 174188000,
+      "num_model_requests": 43547,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788393600,
+    "end_time": 1788480000,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 207644000,
+      "num_model_requests": 51911,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788480000,
+    "end_time": 1788566400,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 221508000,
+      "num_model_requests": 55377,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788566400,
+    "end_time": 1788652800,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 180840000,
+      "num_model_requests": 45210,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788652800,
+    "end_time": 1788739200,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 173576000,
+      "num_model_requests": 43394,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788739200,
+    "end_time": 1788825600,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 197188000,
+      "num_model_requests": 49297,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788825600,
+    "end_time": 1788912000,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 201508000,
+      "num_model_requests": 50377,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788912000,
+    "end_time": 1788998400,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 195084000,
+      "num_model_requests": 48771,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788998400,
+    "end_time": 1789084800,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 215872000,
+      "num_model_requests": 53968,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789084800,
+    "end_time": 1789171200,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 204792000,
+      "num_model_requests": 51198,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789171200,
+    "end_time": 1789257600,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 173640000,
+      "num_model_requests": 43410,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789257600,
+    "end_time": 1789344000,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 193144000,
+      "num_model_requests": 48286,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789344000,
+    "end_time": 1789430400,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 173536000,
+      "num_model_requests": 43384,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789430400,
+    "end_time": 1789516800,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 174832000,
+      "num_model_requests": 43708,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789516800,
+    "end_time": 1789603200,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 186704000,
+      "num_model_requests": 46676,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789603200,
+    "end_time": 1789689600,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 180572000,
+      "num_model_requests": 45143,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789689600,
+    "end_time": 1789776000,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 170244000,
+      "num_model_requests": 42561,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789776000,
+    "end_time": 1789862400,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 200928000,
+      "num_model_requests": 50232,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789862400,
+    "end_time": 1789948800,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 222468000,
+      "num_model_requests": 55617,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789948800,
+    "end_time": 1790035200,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 173732000,
+      "num_model_requests": 43433,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790035200,
+    "end_time": 1790121600,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 170012000,
+      "num_model_requests": 42503,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790121600,
+    "end_time": 1790208000,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 206844000,
+      "num_model_requests": 51711,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790208000,
+    "end_time": 1790294400,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 220936000,
+      "num_model_requests": 55234,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790294400,
+    "end_time": 1790380800,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 190556000,
+      "num_model_requests": 47639,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790380800,
+    "end_time": 1790467200,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 201692000,
+      "num_model_requests": 50423,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790467200,
+    "end_time": 1790553600,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 221796000,
+      "num_model_requests": 55449,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790553600,
+    "end_time": 1790640000,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 201952000,
+      "num_model_requests": 50488,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790640000,
+    "end_time": 1790726400,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 221156000,
+      "num_model_requests": 55289,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790726400,
+    "end_time": 1790812800,
+    "results": [
+     {
+      "object": "organization.usage.embeddings.result",
+      "input_tokens": 191332000,
+      "num_model_requests": 47833,
+      "model": "text-embedding-3-large",
+      "project_id": "proj_search"
+     }
+    ]
+   }
+  ],
+  "has_more": false,
+  "next_page": null
+ }
+]

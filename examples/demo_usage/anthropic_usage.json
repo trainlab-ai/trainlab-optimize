@@ -1,0 +1,548 @@
+[
+ {
+  "data": [
+   {
+    "starting_at": "2026-09-01T00:00:00Z",
+    "ending_at": "2026-09-02T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 47985000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7677600,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-02T00:00:00Z",
+    "ending_at": "2026-09-03T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 43860000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7017600,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-03T00:00:00Z",
+    "ending_at": "2026-09-04T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 56715000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 9074400,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-04T00:00:00Z",
+    "ending_at": "2026-09-05T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 46842500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7494800,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-05T00:00:00Z",
+    "ending_at": "2026-09-06T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 51222500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8195600,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-06T00:00:00Z",
+    "ending_at": "2026-09-07T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 45587500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7294000,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-07T00:00:00Z",
+    "ending_at": "2026-09-08T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 46995000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7519200,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-08T00:00:00Z",
+    "ending_at": "2026-09-09T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 55625000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8900000,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-09T00:00:00Z",
+    "ending_at": "2026-09-10T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 53855000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8616800,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-10T00:00:00Z",
+    "ending_at": "2026-09-11T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 51095000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8175200,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-11T00:00:00Z",
+    "ending_at": "2026-09-12T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 49342500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7894800,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-12T00:00:00Z",
+    "ending_at": "2026-09-13T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 53020000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8483200,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-13T00:00:00Z",
+    "ending_at": "2026-09-14T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 52527500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8404400,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-14T00:00:00Z",
+    "ending_at": "2026-09-15T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 54022500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8643600,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-15T00:00:00Z",
+    "ending_at": "2026-09-16T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 49237500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7878000,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-16T00:00:00Z",
+    "ending_at": "2026-09-17T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 48727500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7796400,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-17T00:00:00Z",
+    "ending_at": "2026-09-18T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 45977500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7356400,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-18T00:00:00Z",
+    "ending_at": "2026-09-19T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 48782500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7805200,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-19T00:00:00Z",
+    "ending_at": "2026-09-20T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 51762500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8282000,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-20T00:00:00Z",
+    "ending_at": "2026-09-21T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 54467500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8714800,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-21T00:00:00Z",
+    "ending_at": "2026-09-22T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 43510000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 6961600,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-22T00:00:00Z",
+    "ending_at": "2026-09-23T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 44767500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7162800,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-23T00:00:00Z",
+    "ending_at": "2026-09-24T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 44727500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7156400,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-24T00:00:00Z",
+    "ending_at": "2026-09-25T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 57395000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 9183200,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-25T00:00:00Z",
+    "ending_at": "2026-09-26T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 46470000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7435200,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-26T00:00:00Z",
+    "ending_at": "2026-09-27T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 44697500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 7151600,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-27T00:00:00Z",
+    "ending_at": "2026-09-28T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 52942500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8470800,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-28T00:00:00Z",
+    "ending_at": "2026-09-29T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 54185000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8669600,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-29T00:00:00Z",
+    "ending_at": "2026-09-30T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 54590000,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 8734400,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   },
+   {
+    "starting_at": "2026-09-30T00:00:00Z",
+    "ending_at": "2026-10-01T00:00:00Z",
+    "results": [
+     {
+      "uncached_input_tokens": 42932500,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+       "ephemeral_1h_input_tokens": 0,
+       "ephemeral_5m_input_tokens": 0
+      },
+      "output_tokens": 6869200,
+      "model": "claude-sonnet-4-5-20250929",
+      "workspace_id": "wrkspc_support",
+      "service_tier": "standard"
+     }
+    ]
+   }
+  ],
+  "has_more": false,
+  "next_page": null
+ }
+]

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trainlab-optimize"
+version = "0.1.0"
+description = "Find and prove LLM cost savings in your codebase. Scan code, import usage, get a cost report."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [{ name = "EtherTech Innovations / TrainLab.ai" }]
+keywords = ["llm", "cost", "finops", "openai", "anthropic", "observability"]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Quality Assurance",
+]
+# Base install has ZERO runtime dependencies (stdlib only) by design.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+trainlab = "trainlab_optimize.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+trainlab_optimize = ["catalog/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

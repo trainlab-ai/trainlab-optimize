@@ -1,0 +1,624 @@
+{
+ "schema_version": "1",
+ "tool_version": "0.1.0",
+ "generated_at": "2026-10-14 08:53 UTC",
+ "catalog": {
+  "source": "BerriAI/litellm model_prices_and_context_window.json",
+  "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
+  "source_license": "MIT",
+  "built_at": "2026-10-14T08:36:59Z",
+  "unit": "USD per token",
+  "model_count": 1618
+ },
+ "scan": {
+  "root": "/home/claude/trainlab-optimize/examples/demo_app",
+  "call_sites": [
+   {
+    "id": "c06983e9ba9d",
+    "path": "frontend/chat.ts",
+    "line": 7,
+    "kind": "chat",
+    "provider": "openai",
+    "sdk_call": "chat.completions.create",
+    "language": "javascript",
+    "function": null,
+    "model": "gpt-4o",
+    "model_expr": null,
+    "model_source": "literal",
+    "params": {},
+    "in_loop": false,
+    "is_async": false,
+    "retry_unbounded": false,
+    "has_retry": false,
+    "prompt_fingerprint": null,
+    "system_prompt_tokens": null,
+    "prompt_static_tokens": null,
+    "prompt_dynamic_prefix": false,
+    "prompt_preview": null,
+    "task_hints": [],
+    "uses_cache_control": false,
+    "is_test": false,
+    "confidence": "heuristic"
+   },
+   {
+    "id": "fbd81edc7e93",
+    "path": "services/invoice_extractor.py",
+    "line": 19,
+    "kind": "chat",
+    "provider": "openai",
+    "sdk_call": "client.chat.completions.create",
+    "language": "python",
+    "function": "extract_invoice",
+    "model": "gpt-4o",
+    "model_expr": "EXTRACTION_MODEL",
+    "model_source": "constant",
+    "params": {
+     "response_format": "<expr>",
+     "temperature": 0
+    },
+    "in_loop": false,
+    "is_async": false,
+    "retry_unbounded": true,
+    "has_retry": true,
+    "prompt_fingerprint": "e5ba8ecb456c",
+    "system_prompt_tokens": 61,
+    "prompt_static_tokens": 61,
+    "prompt_dynamic_prefix": false,
+    "prompt_preview": "Extract the following fields from the invoice text and return JSON: vendor_name, invoice_number, invoice_date (ISO 8601), due_date, currency, subtotal, tax, to\u2026",
+    "task_hints": [
+     "extraction",
+     "structured_output"
+    ],
+    "uses_cache_control": false,
+    "is_test": false,
+    "confidence": "high"
+   },
+   {
+    "id": "00277158872c",
+    "path": "services/invoice_extractor.py",
+    "line": 34,
+    "kind": "chat",
+    "provider": "openai",
+    "sdk_call": "client.chat.completions.create",
+    "language": "python",
+    "function": "process_batch",
+    "model": "gpt-4o",
+    "model_expr": "EXTRACTION_MODEL",
+    "model_source": "constant",
+    "params": {
+     "response_format": "<expr>"
+    },
+    "in_loop": true,
+    "is_async": false,
+    "retry_unbounded": false,
+    "has_retry": false,
+    "prompt_fingerprint": "e5ba8ecb456c",
+    "system_prompt_tokens": 61,
+    "prompt_static_tokens": 61,
+    "prompt_dynamic_prefix": false,
+    "prompt_preview": "Extract the following fields from the invoice text and return JSON: vendor_name, invoice_number, invoice_date (ISO 8601), due_date, currency, subtotal, tax, to\u2026",
+    "task_hints": [
+     "extraction",
+     "structured_output"
+    ],
+    "uses_cache_control": false,
+    "is_test": false,
+    "confidence": "high"
+   },
+   {
+    "id": "2df9eef14e93",
+    "path": "services/legacy_summary.py",
+    "line": 10,
+    "kind": "chat",
+    "provider": "openai",
+    "sdk_call": "client.chat.completions.create",
+    "language": "python",
+    "function": "summarize_notes",
+    "model": "gpt-4",
+    "model_expr": null,
+    "model_source": "literal",
+    "params": {
+     "max_tokens": 300
+    },
+    "in_loop": true,
+    "is_async": false,
+    "retry_unbounded": false,
+    "has_retry": false,
+    "prompt_fingerprint": "d16dcfe52abf",
+    "system_prompt_tokens": 12,
+    "prompt_static_tokens": 12,
+    "prompt_dynamic_prefix": false,
+    "prompt_preview": "Summarize the call notes in three bullet points.",
+    "task_hints": [
+     "summarization"
+    ],
+    "uses_cache_control": false,
+    "is_test": false,
+    "confidence": "high"
+   },
+   {
+    "id": "8307de61d68e",
+    "path": "services/support_rag.py",
+    "line": 33,
+    "kind": "chat",
+    "provider": "anthropic",
+    "sdk_call": "client.messages.create",
+    "language": "python",
+    "function": "answer",
+    "model": "claude-sonnet-4-5",
+    "model_expr": null,
+    "model_source": "literal",
+    "params": {
+     "max_tokens": 4096
+    },
+    "in_loop": false,
+    "is_async": false,
+    "retry_unbounded": false,
+    "has_retry": false,
+    "prompt_fingerprint": "12e2f40db041",
+    "system_prompt_tokens": 1902,
+    "prompt_static_tokens": 1902,
+    "prompt_dynamic_prefix": true,
+    "prompt_preview": "Relevant documents: {} You are the support assistant for Acme Retail. Follow these policies exactly. 1. For refund requests: verify the customer's identity usi\u2026",
+    "task_hints": [],
+    "uses_cache_control": false,
+    "is_test": false,
+    "confidence": "high"
+   },
+   {
+    "id": "0327c15c12c2",
+    "path": "services/ticket_classifier.py",
+    "line": 19,
+    "kind": "chat",
+    "provider": "litellm",
+    "sdk_call": "litellm.completion",
+    "language": "python",
+    "function": "classify_ticket",
+    "model": "gpt-4.1",
+    "model_expr": "ROUTER_MODEL",
+    "model_source": "env_default",
+    "params": {
+     "max_tokens": 5
+    },
+    "in_loop": false,
+    "is_async": false,
+    "retry_unbounded": false,
+    "has_retry": false,
+    "prompt_fingerprint": "8e205a45f442",
+    "system_prompt_tokens": null,
+    "prompt_static_tokens": 30,
+    "prompt_dynamic_prefix": false,
+    "prompt_preview": "Classify the support ticket into one of the following categories: {}. Reply with the category label only. Subject: {} Body: {}",
+    "task_hints": [
+     "classification"
+    ],
+    "uses_cache_control": false,
+    "is_test": false,
+    "confidence": "high"
+   },
+   {
+    "id": "e6a42232ea3d",
+    "path": "services/well_tuned.py",
+    "line": 10,
+    "kind": "chat",
+    "provider": "openai",
+    "sdk_call": "client.chat.completions.create",
+    "language": "python",
+    "function": "short_reply",
+    "model": "gpt-5-mini",
+    "model_expr": null,
+    "model_source": "literal",
+    "params": {
+     "max_completion_tokens": 200
+    },
+    "in_loop": false,
+    "is_async": false,
+    "retry_unbounded": false,
+    "has_retry": true,
+    "prompt_fingerprint": null,
+    "system_prompt_tokens": null,
+    "prompt_static_tokens": 0,
+    "prompt_dynamic_prefix": false,
+    "prompt_preview": "{}",
+    "task_hints": [],
+    "uses_cache_control": false,
+    "is_test": false,
+    "confidence": "high"
+   }
+  ],
+  "model_refs": [
+   {
+    "path": "config/models.yaml",
+    "line": 2,
+    "model": "claude-sonnet-4-5",
+    "provider": "anthropic"
+   },
+   {
+    "path": "config/models.yaml",
+    "line": 3,
+    "model": "text-embedding-3-large",
+    "provider": "openai"
+   }
+  ],
+  "files_scanned": 7,
+  "files_by_language": {
+   "config": 1,
+   "javascript": 1,
+   "python": 5
+  },
+  "parse_errors": [],
+  "duration_s": 0.04,
+  "excluded": []
+ },
+ "spend": {
+  "days": 30,
+  "start": "2026-09-01",
+  "end": "2026-09-30",
+  "monthly_total_usd": 23501.47,
+  "sources": [
+   "csv:billing_export.csv"
+  ],
+  "by_model": [
+   {
+    "model": "gpt-4o-2024-08-06",
+    "provider": "openai",
+    "monthly_cost_usd": 11958.68,
+    "monthly_requests": 1771657,
+    "monthly_input_tokens": 2657485500,
+    "monthly_output_tokens": 531497100,
+    "cached_share": 0.0,
+    "batch_share": 0.0
+   },
+   {
+    "model": "claude-sonnet-4-5-20250929",
+    "provider": "anthropic",
+    "monthly_cost_usd": 8066.88,
+    "monthly_requests": 597547,
+    "monthly_input_tokens": 1493867500,
+    "monthly_output_tokens": 239018800,
+    "cached_share": 0.0,
+    "batch_share": 0.0
+   },
+   {
+    "model": "gpt-4-0613",
+    "provider": "openai",
+    "monthly_cost_usd": 2308.25,
+    "monthly_requests": 59186,
+    "monthly_input_tokens": 47348800,
+    "monthly_output_tokens": 14796500,
+    "cached_share": 0.0,
+    "batch_share": 0.0
+   },
+   {
+    "model": "text-embedding-3-large",
+    "provider": "openai",
+    "monthly_cost_usd": 760.56,
+    "monthly_requests": 1462607,
+    "monthly_input_tokens": 5850428000,
+    "monthly_output_tokens": 0,
+    "cached_share": 0.0,
+    "batch_share": 0.0
+   },
+   {
+    "model": "gpt-4.1",
+    "provider": "openai",
+    "monthly_cost_usd": 302.23,
+    "monthly_requests": 1180588,
+    "monthly_input_tokens": 141670560,
+    "monthly_output_tokens": 2361176,
+    "cached_share": 0.0,
+    "batch_share": 0.0
+   },
+   {
+    "model": "gpt-5-mini",
+    "provider": "openai",
+    "monthly_cost_usd": 104.86,
+    "monthly_requests": 299595,
+    "monthly_input_tokens": 59919000,
+    "monthly_output_tokens": 44939250,
+    "cached_share": 0.0,
+    "batch_share": 0.0
+   }
+  ],
+  "by_project": {
+   "proj_invoices": 11958.68,
+   "wrkspc_support": 8066.88,
+   "proj_support": 2715.34,
+   "proj_search": 760.56
+  }
+ },
+ "attribution": [
+  {
+   "call_site_id": "c06983e9ba9d",
+   "model": "gpt-4o-2024-08-06",
+   "monthly_spend_usd": 3986.22825,
+   "monthly_requests": 590552.3333333333,
+   "method": "split_model"
+  },
+  {
+   "call_site_id": "fbd81edc7e93",
+   "model": "gpt-4o-2024-08-06",
+   "monthly_spend_usd": 3986.22825,
+   "monthly_requests": 590552.3333333333,
+   "method": "split_model"
+  },
+  {
+   "call_site_id": "00277158872c",
+   "model": "gpt-4o-2024-08-06",
+   "monthly_spend_usd": 3986.22825,
+   "monthly_requests": 590552.3333333333,
+   "method": "split_model"
+  },
+  {
+   "call_site_id": "0327c15c12c2",
+   "model": "gpt-4.1",
+   "monthly_spend_usd": 302.230528,
+   "monthly_requests": 1180588.0,
+   "method": "exact_model"
+  },
+  {
+   "call_site_id": "2df9eef14e93",
+   "model": "gpt-4-0613",
+   "monthly_spend_usd": 2308.2539999999995,
+   "monthly_requests": 59186.0,
+   "method": "exact_model"
+  },
+  {
+   "call_site_id": "e6a42232ea3d",
+   "model": "gpt-5-mini",
+   "monthly_spend_usd": 104.85825,
+   "monthly_requests": 299595.0,
+   "method": "exact_model"
+  },
+  {
+   "call_site_id": "8307de61d68e",
+   "model": "claude-sonnet-4-5-20250929",
+   "monthly_spend_usd": 8066.884500000002,
+   "monthly_requests": 597547.0,
+   "method": "exact_model"
+  }
+ ],
+ "coverage": {
+  "attributed_usd": 22740.912028000002,
+  "unattributed_usd": 760.5556399999999,
+  "unattributed_by_model": {
+   "text-embedding-3-large": 760.5556399999999
+  },
+  "attributed_share": 0.9676379513507752
+ },
+ "findings": [
+  {
+   "id": "F-001",
+   "rule": "R101",
+   "title": "Premium model `gpt-4o` on a simple task (extraction, structured_output)",
+   "severity": "high",
+   "strategy": "slm",
+   "call_site_ids": [
+    "fbd81edc7e93",
+    "00277158872c"
+   ],
+   "summary": "`gpt-4o` costs ~17x more per token than `gpt-4o-mini`. Signals: extraction, structured_output.",
+   "recommendation": "Test `gpt-4o-mini` (~17x cheaper per token) on a sample of real inputs with `trainlab experiment`. This is a narrow, repetitive task: a fine-tuned small model can usually match quality at a fraction of the cost.",
+   "evidence": {
+    "current_model": "gpt-4o",
+    "candidate_model": "gpt-4o-mini",
+    "price_ratio": 16.7,
+    "task_hints": [
+     "extraction",
+     "structured_output"
+    ],
+    "current_per_1m_in": 2.5,
+    "candidate_per_1m_in": 0.15
+   },
+   "tier": "estimated",
+   "monthly_spend_usd": 7972.4565,
+   "savings_low_usd": 3747.0545549999997,
+   "savings_high_usd": 7494.109109999999,
+   "trainlab_candidate": true
+  },
+  {
+   "id": "F-002",
+   "rule": "R103",
+   "title": "~1,902-token system prompt is not being cached",
+   "severity": "high",
+   "strategy": "cache",
+   "call_site_ids": [
+    "8307de61d68e"
+   ],
+   "summary": "The static prompt is re-billed at full price on every call: dynamic content (e.g. retrieved documents) is placed before the static instructions, so the prompt prefix changes on every request and cannot be cached; no `cache_control` breakpoint is set, so the provider never caches it.",
+   "recommendation": "Move static instructions to the start of the prompt and put per-request content after them. Add `cache_control: {\"type\": \"ephemeral\"}` on the static system block.",
+   "evidence": {
+    "system_prompt_tokens_est": 1902,
+    "dynamic_prefix": true,
+    "cache_control": false,
+    "cache_read_discount": 0.9
+   },
+   "tier": "estimated",
+   "monthly_spend_usd": 8066.884500000002,
+   "savings_low_usd": 1741.9634785422343,
+   "savings_high_usd": 3483.9269570844685,
+   "trainlab_candidate": false
+  },
+  {
+   "id": "F-003",
+   "rule": "R102",
+   "title": "`gpt-4` is near its deprecation date (2026-10-23)",
+   "severity": "high",
+   "strategy": "model",
+   "call_site_ids": [
+    "2df9eef14e93"
+   ],
+   "summary": "The provider has scheduled this model for retirement. Calls will fail after the shutdown date, and older models are usually priced above their successors.",
+   "recommendation": "Migrate to the provider's current model; run `trainlab experiment` to compare quality first.",
+   "evidence": {
+    "model": "gpt-4",
+    "deprecation_date": "2026-10-23",
+    "per_1m_in": 30.0,
+    "per_1m_out": 60.0
+   },
+   "tier": "estimated",
+   "monthly_spend_usd": 2308.2539999999995,
+   "savings_low_usd": null,
+   "savings_high_usd": null,
+   "trainlab_candidate": false
+  },
+  {
+   "id": "F-004",
+   "rule": "R104",
+   "title": "Sequential calls in a loop in `process_batch`",
+   "severity": "medium",
+   "strategy": "batch",
+   "call_site_ids": [
+    "00277158872c"
+   ],
+   "summary": "Requests are sent one at a time inside a loop. If results are not needed immediately, the provider Batch API processes them at a discount.",
+   "recommendation": "If this workload tolerates up to 24h latency, submit it through the Batch API (~50% cheaper). Otherwise, run requests concurrently to cut wall time.",
+   "evidence": {
+    "function": "process_batch",
+    "looks_offline": true,
+    "batch_discount": 0.5
+   },
+   "tier": "estimated",
+   "monthly_spend_usd": 3986.22825,
+   "savings_low_usd": 0.0,
+   "savings_high_usd": 1993.114125,
+   "trainlab_candidate": false
+  },
+  {
+   "id": "F-005",
+   "rule": "R104",
+   "title": "Sequential calls in a loop in `summarize_notes`",
+   "severity": "medium",
+   "strategy": "batch",
+   "call_site_ids": [
+    "2df9eef14e93"
+   ],
+   "summary": "Requests are sent one at a time inside a loop. If results are not needed immediately, the provider Batch API processes them at a discount.",
+   "recommendation": "If this workload tolerates up to 24h latency, submit it through the Batch API (~50% cheaper). Otherwise, run requests concurrently to cut wall time.",
+   "evidence": {
+    "function": "summarize_notes",
+    "looks_offline": true,
+    "batch_discount": 0.5
+   },
+   "tier": "estimated",
+   "monthly_spend_usd": 2308.2539999999995,
+   "savings_low_usd": 0.0,
+   "savings_high_usd": 1154.1269999999997,
+   "trainlab_candidate": false
+  },
+  {
+   "id": "F-006",
+   "rule": "R101",
+   "title": "Premium model `gpt-4.1` on a simple task (classification)",
+   "severity": "medium",
+   "strategy": "slm",
+   "call_site_ids": [
+    "0327c15c12c2"
+   ],
+   "summary": "`gpt-4.1` costs ~13x more per token than `gpt-4o-mini`. Signals: classification.",
+   "recommendation": "Test `gpt-4o-mini` (~13x cheaper per token) on a sample of real inputs with `trainlab experiment`. This is a narrow, repetitive task: a fine-tuned small model can usually match quality at a fraction of the cost.",
+   "evidence": {
+    "current_model": "gpt-4.1",
+    "candidate_model": "gpt-4o-mini",
+    "price_ratio": 13.3,
+    "task_hints": [
+     "classification"
+    ],
+    "current_per_1m_in": 2.0,
+    "candidate_per_1m_in": 0.15
+   },
+   "tier": "estimated",
+   "monthly_spend_usd": 302.230528,
+   "savings_low_usd": 139.7816192,
+   "savings_high_usd": 279.5632384,
+   "trainlab_candidate": true
+  },
+  {
+   "id": "F-007",
+   "rule": "R102",
+   "title": "`claude-sonnet-4-5` is near its deprecation date (2026-11-30)",
+   "severity": "medium",
+   "strategy": "model",
+   "call_site_ids": [
+    "8307de61d68e"
+   ],
+   "summary": "The provider has scheduled this model for retirement. Calls will fail after the shutdown date, and older models are usually priced above their successors.",
+   "recommendation": "Migrate to the provider's current model; run `trainlab experiment` to compare quality first.",
+   "evidence": {
+    "model": "claude-sonnet-4-5",
+    "deprecation_date": "2026-11-30",
+    "per_1m_in": 3.0,
+    "per_1m_out": 15.0
+   },
+   "tier": "estimated",
+   "monthly_spend_usd": 8066.884500000002,
+   "savings_low_usd": null,
+   "savings_high_usd": null,
+   "trainlab_candidate": false
+  },
+  {
+   "id": "F-008",
+   "rule": "R106",
+   "title": "Unbounded retries around an LLM call in `extract_invoice`",
+   "severity": "medium",
+   "strategy": "reliability",
+   "call_site_ids": [
+    "fbd81edc7e93"
+   ],
+   "summary": "The retry decorator has no stop condition. During a provider outage or a persistent error, this retries forever and every attempt is billed.",
+   "recommendation": "Add a stop condition, e.g. `@retry(stop=stop_after_attempt(3), wait=wait_exponential())`.",
+   "evidence": {
+    "function": "extract_invoice"
+   },
+   "tier": "static",
+   "monthly_spend_usd": null,
+   "savings_low_usd": null,
+   "savings_high_usd": null,
+   "trainlab_candidate": false
+  },
+  {
+   "id": "F-009",
+   "rule": "R105",
+   "title": "No output token limit",
+   "severity": "low",
+   "strategy": "config",
+   "call_site_ids": [
+    "fbd81edc7e93",
+    "00277158872c"
+   ],
+   "summary": "Without a cap, an unexpected long generation (or a reasoning model) is billed in full.",
+   "recommendation": "Set `max_completion_tokens` (or `max_tokens`) to a safe upper bound for this task.",
+   "evidence": {},
+   "tier": "static",
+   "monthly_spend_usd": null,
+   "savings_low_usd": null,
+   "savings_high_usd": null,
+   "trainlab_candidate": false
+  },
+  {
+   "id": "F-010",
+   "rule": "R902",
+   "title": "$761/month of spend has no matching call site",
+   "severity": "info",
+   "strategy": "coverage",
+   "call_site_ids": [],
+   "summary": "These models appear in billing but not in the scanned code. They may be called from another repository, a notebook, a different service, or a runtime-configured model.",
+   "recommendation": "Scan the other repositories that share this API key/project, or instrument at runtime.",
+   "evidence": {
+    "by_model": {
+     "text-embedding-3-large": 760.56
+    }
+   },
+   "tier": "estimated",
+   "monthly_spend_usd": null,
+   "savings_low_usd": null,
+   "savings_high_usd": null,
+   "trainlab_candidate": false
+  }
+ ],
+ "savings": {
+  "monthly_low_usd": 5628.799652742234,
+  "monthly_high_usd": 12411.726305484468,
+  "tier": "estimated"
+ }
+}

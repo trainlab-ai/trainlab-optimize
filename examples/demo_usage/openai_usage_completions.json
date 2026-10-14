@@ -1,0 +1,1419 @@
+[
+ {
+  "object": "page",
+  "data": [
+   {
+    "object": "bucket",
+    "start_time": 1788220800,
+    "end_time": 1788307200,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 85242000,
+      "output_tokens": 17048400,
+      "num_model_requests": 56828,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4297200,
+      "output_tokens": 71620,
+      "num_model_requests": 35810,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1672000,
+      "output_tokens": 522500,
+      "num_model_requests": 2090,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1743400,
+      "output_tokens": 1307550,
+      "num_model_requests": 8717,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788307200,
+    "end_time": 1788393600,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 78064500,
+      "output_tokens": 15612900,
+      "num_model_requests": 52043,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4810680,
+      "output_tokens": 80178,
+      "num_model_requests": 40089,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1377600,
+      "output_tokens": 430500,
+      "num_model_requests": 1722,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1960000,
+      "output_tokens": 1470000,
+      "num_model_requests": 9800,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788393600,
+    "end_time": 1788480000,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 87961500,
+      "output_tokens": 17592300,
+      "num_model_requests": 58641,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 5270640,
+      "output_tokens": 87844,
+      "num_model_requests": 43922,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1419200,
+      "output_tokens": 443500,
+      "num_model_requests": 1774,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1833800,
+      "output_tokens": 1375350,
+      "num_model_requests": 9169,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788480000,
+    "end_time": 1788566400,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 92080500,
+      "output_tokens": 18416100,
+      "num_model_requests": 61387,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4651200,
+      "output_tokens": 77520,
+      "num_model_requests": 38760,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1828000,
+      "output_tokens": 571250,
+      "num_model_requests": 2285,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1727800,
+      "output_tokens": 1295850,
+      "num_model_requests": 8639,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788566400,
+    "end_time": 1788652800,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 80394000,
+      "output_tokens": 16078800,
+      "num_model_requests": 53596,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4249560,
+      "output_tokens": 70826,
+      "num_model_requests": 35413,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1508000,
+      "output_tokens": 471250,
+      "num_model_requests": 1885,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2189600,
+      "output_tokens": 1642200,
+      "num_model_requests": 10948,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788652800,
+    "end_time": 1788739200,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 93750000,
+      "output_tokens": 18750000,
+      "num_model_requests": 62500,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4616160,
+      "output_tokens": 76936,
+      "num_model_requests": 38468,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1622400,
+      "output_tokens": 507000,
+      "num_model_requests": 2028,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1737600,
+      "output_tokens": 1303200,
+      "num_model_requests": 8688,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788739200,
+    "end_time": 1788825600,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 94870500,
+      "output_tokens": 18974100,
+      "num_model_requests": 63247,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4695720,
+      "output_tokens": 78262,
+      "num_model_requests": 39131,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1510400,
+      "output_tokens": 472000,
+      "num_model_requests": 1888,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2051200,
+      "output_tokens": 1538400,
+      "num_model_requests": 10256,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788825600,
+    "end_time": 1788912000,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 97947000,
+      "output_tokens": 19589400,
+      "num_model_requests": 65298,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 5086440,
+      "output_tokens": 84774,
+      "num_model_requests": 42387,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1476800,
+      "output_tokens": 461500,
+      "num_model_requests": 1846,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2044600,
+      "output_tokens": 1533450,
+      "num_model_requests": 10223,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788912000,
+    "end_time": 1788998400,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 96195000,
+      "output_tokens": 19239000,
+      "num_model_requests": 64130,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4494600,
+      "output_tokens": 74910,
+      "num_model_requests": 37455,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1830400,
+      "output_tokens": 572000,
+      "num_model_requests": 2288,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1770800,
+      "output_tokens": 1328100,
+      "num_model_requests": 8854,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1788998400,
+    "end_time": 1789084800,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 80602500,
+      "output_tokens": 16120500,
+      "num_model_requests": 53735,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4784040,
+      "output_tokens": 79734,
+      "num_model_requests": 39867,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1378400,
+      "output_tokens": 430750,
+      "num_model_requests": 1723,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2100800,
+      "output_tokens": 1575600,
+      "num_model_requests": 10504,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789084800,
+    "end_time": 1789171200,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 100137000,
+      "output_tokens": 20027400,
+      "num_model_requests": 66758,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4531680,
+      "output_tokens": 75528,
+      "num_model_requests": 37764,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1693600,
+      "output_tokens": 529250,
+      "num_model_requests": 2117,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2056600,
+      "output_tokens": 1542450,
+      "num_model_requests": 10283,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789171200,
+    "end_time": 1789257600,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 99178500,
+      "output_tokens": 19835700,
+      "num_model_requests": 66119,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 5440320,
+      "output_tokens": 90672,
+      "num_model_requests": 45336,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1587200,
+      "output_tokens": 496000,
+      "num_model_requests": 1984,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2098400,
+      "output_tokens": 1573800,
+      "num_model_requests": 10492,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789257600,
+    "end_time": 1789344000,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 93972000,
+      "output_tokens": 18794400,
+      "num_model_requests": 62648,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 5510040,
+      "output_tokens": 91834,
+      "num_model_requests": 45917,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1754400,
+      "output_tokens": 548250,
+      "num_model_requests": 2193,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1870600,
+      "output_tokens": 1402950,
+      "num_model_requests": 9353,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789344000,
+    "end_time": 1789430400,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 77109000,
+      "output_tokens": 15421800,
+      "num_model_requests": 51406,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4744800,
+      "output_tokens": 79080,
+      "num_model_requests": 39540,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1440000,
+      "output_tokens": 450000,
+      "num_model_requests": 1800,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1770200,
+      "output_tokens": 1327650,
+      "num_model_requests": 8851,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789430400,
+    "end_time": 1789516800,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 79992000,
+      "output_tokens": 15998400,
+      "num_model_requests": 53328,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4436520,
+      "output_tokens": 73942,
+      "num_model_requests": 36971,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1547200,
+      "output_tokens": 483500,
+      "num_model_requests": 1934,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2222800,
+      "output_tokens": 1667100,
+      "num_model_requests": 11114,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789516800,
+    "end_time": 1789603200,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 91333500,
+      "output_tokens": 18266700,
+      "num_model_requests": 60889,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 5352000,
+      "output_tokens": 89200,
+      "num_model_requests": 44600,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1752800,
+      "output_tokens": 547750,
+      "num_model_requests": 2191,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2218200,
+      "output_tokens": 1663650,
+      "num_model_requests": 11091,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789603200,
+    "end_time": 1789689600,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 86185500,
+      "output_tokens": 17237100,
+      "num_model_requests": 57457,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 5353200,
+      "output_tokens": 89220,
+      "num_model_requests": 44610,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1819200,
+      "output_tokens": 568500,
+      "num_model_requests": 2274,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1790400,
+      "output_tokens": 1342800,
+      "num_model_requests": 8952,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789689600,
+    "end_time": 1789776000,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 82800000,
+      "output_tokens": 16560000,
+      "num_model_requests": 55200,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4778280,
+      "output_tokens": 79638,
+      "num_model_requests": 39819,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1642400,
+      "output_tokens": 513250,
+      "num_model_requests": 2053,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1857600,
+      "output_tokens": 1393200,
+      "num_model_requests": 9288,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789776000,
+    "end_time": 1789862400,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 86469000,
+      "output_tokens": 17293800,
+      "num_model_requests": 57646,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4895520,
+      "output_tokens": 81592,
+      "num_model_requests": 40796,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1816800,
+      "output_tokens": 567750,
+      "num_model_requests": 2271,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2114200,
+      "output_tokens": 1585650,
+      "num_model_requests": 10571,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789862400,
+    "end_time": 1789948800,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 94756500,
+      "output_tokens": 18951300,
+      "num_model_requests": 63171,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4157640,
+      "output_tokens": 69294,
+      "num_model_requests": 34647,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1791200,
+      "output_tokens": 559750,
+      "num_model_requests": 2239,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2167800,
+      "output_tokens": 1625850,
+      "num_model_requests": 10839,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1789948800,
+    "end_time": 1790035200,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 87093000,
+      "output_tokens": 17418600,
+      "num_model_requests": 58062,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4654440,
+      "output_tokens": 77574,
+      "num_model_requests": 38787,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1409600,
+      "output_tokens": 440500,
+      "num_model_requests": 1762,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2080400,
+      "output_tokens": 1560300,
+      "num_model_requests": 10402,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790035200,
+    "end_time": 1790121600,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 82135500,
+      "output_tokens": 16427100,
+      "num_model_requests": 54757,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4313640,
+      "output_tokens": 71894,
+      "num_model_requests": 35947,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1523200,
+      "output_tokens": 476000,
+      "num_model_requests": 1904,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1731400,
+      "output_tokens": 1298550,
+      "num_model_requests": 8657,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790121600,
+    "end_time": 1790208000,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 79239000,
+      "output_tokens": 15847800,
+      "num_model_requests": 52826,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4603560,
+      "output_tokens": 76726,
+      "num_model_requests": 38363,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1372000,
+      "output_tokens": 428750,
+      "num_model_requests": 1715,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2224400,
+      "output_tokens": 1668300,
+      "num_model_requests": 11122,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790208000,
+    "end_time": 1790294400,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 83310000,
+      "output_tokens": 16662000,
+      "num_model_requests": 55540,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4580160,
+      "output_tokens": 76336,
+      "num_model_requests": 38168,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1534400,
+      "output_tokens": 479500,
+      "num_model_requests": 1918,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1773600,
+      "output_tokens": 1330200,
+      "num_model_requests": 8868,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790294400,
+    "end_time": 1790380800,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 89080500,
+      "output_tokens": 17816100,
+      "num_model_requests": 59387,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4776720,
+      "output_tokens": 79612,
+      "num_model_requests": 39806,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1400800,
+      "output_tokens": 437750,
+      "num_model_requests": 1751,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1761200,
+      "output_tokens": 1320900,
+      "num_model_requests": 8806,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790380800,
+    "end_time": 1790467200,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 98878500,
+      "output_tokens": 19775700,
+      "num_model_requests": 65919,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4312440,
+      "output_tokens": 71874,
+      "num_model_requests": 35937,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1370400,
+      "output_tokens": 428250,
+      "num_model_requests": 1713,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2270400,
+      "output_tokens": 1702800,
+      "num_model_requests": 11352,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790467200,
+    "end_time": 1790553600,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 91165500,
+      "output_tokens": 18233100,
+      "num_model_requests": 60777,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4118880,
+      "output_tokens": 68648,
+      "num_model_requests": 34324,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1612800,
+      "output_tokens": 504000,
+      "num_model_requests": 2016,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2287000,
+      "output_tokens": 1715250,
+      "num_model_requests": 11435,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790553600,
+    "end_time": 1790640000,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 83550000,
+      "output_tokens": 16710000,
+      "num_model_requests": 55700,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4608000,
+      "output_tokens": 76800,
+      "num_model_requests": 38400,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1440000,
+      "output_tokens": 450000,
+      "num_model_requests": 1800,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2163000,
+      "output_tokens": 1622250,
+      "num_model_requests": 10815,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790640000,
+    "end_time": 1790726400,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 85399500,
+      "output_tokens": 17079900,
+      "num_model_requests": 56933,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 4401120,
+      "output_tokens": 73352,
+      "num_model_requests": 36676,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1748800,
+      "output_tokens": 546500,
+      "num_model_requests": 2186,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2290800,
+      "output_tokens": 1718100,
+      "num_model_requests": 11454,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   },
+   {
+    "object": "bucket",
+    "start_time": 1790726400,
+    "end_time": 1790812800,
+    "results": [
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 98593500,
+      "output_tokens": 19718700,
+      "num_model_requests": 65729,
+      "input_cached_tokens": 0,
+      "model": "gpt-4o-2024-08-06",
+      "project_id": "proj_invoices",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 5145360,
+      "output_tokens": 85756,
+      "num_model_requests": 42878,
+      "input_cached_tokens": 0,
+      "model": "gpt-4.1",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 1468800,
+      "output_tokens": 459000,
+      "num_model_requests": 1836,
+      "input_cached_tokens": 0,
+      "model": "gpt-4-0613",
+      "project_id": "proj_support",
+      "batch": false
+     },
+     {
+      "object": "organization.usage.completions.result",
+      "input_tokens": 2010400,
+      "output_tokens": 1507800,
+      "num_model_requests": 10052,
+      "input_cached_tokens": 0,
+      "model": "gpt-5-mini",
+      "project_id": "proj_support",
+      "batch": false
+     }
+    ]
+   }
+  ],
+  "has_more": false,
+  "next_page": null
+ }
+]

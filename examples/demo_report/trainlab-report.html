@@ -1,0 +1,203 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM cost report: demo_app</title><style>
+:root{--paper:#F7F9FB;--sheet:#FFFFFF;--ink:#13233A;--muted:#5B6B7F;--rule:#D7DEE6;--soft:#EEF2F6;
+--save:#0F7B6C;--save-soft:#DDF1EC;--high:#B42318;--med:#B45309;--low:#5B6B7F;--info:#3C6E91;}
+@media (prefers-color-scheme:dark){:root{--paper:#0E1621;--sheet:#132030;--ink:#E6EDF5;--muted:#9AA9BA;
+--rule:#2A3A4E;--soft:#1A2A3C;--save:#4CC2AE;--save-soft:#163A36;--high:#F97066;--med:#F5A524;--low:#9AA9BA;--info:#7FB2D6;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+font-variant-numeric:tabular-nums}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 24px 64px}
+h1,h2,h3{font-family:Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif;font-weight:600;letter-spacing:-.01em}
+h1{font-size:34px;line-height:1.15;margin:0 0 6px}
+h2{font-size:22px;margin:48px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+h3{font-size:17px;margin:0}
+p{margin:0 0 10px;max-width:72ch}
+.sub{color:var(--muted);margin-bottom:28px}
+code{font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--soft);padding:1px 5px;border-radius:4px}
+.bill{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:24px 24px 18px}
+.bill-row{display:grid;grid-template-columns:150px 1fr 120px;gap:14px;align-items:center;margin:10px 0}
+.bill-row .label{color:var(--muted);font-size:14px}
+.bill-row .amt{text-align:right;font-size:20px;font-weight:600}
+.bar{display:flex;height:30px;border-radius:5px;overflow:hidden;background:var(--soft)}
+.bar span{display:block;height:100%}
+.bar .cut{background:repeating-linear-gradient(135deg,var(--save) 0 2px,var(--save-soft) 2px 8px)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:14px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:18px}
+.fact{border-top:2px solid var(--ink);padding-top:8px}
+.fact b{display:block;font-size:22px}
+.fact span{color:var(--muted);font-size:13px}
+.save b{color:var(--save)}
+.note{font-size:13px;color:var(--muted)}
+.finding{display:grid;grid-template-columns:4px 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.finding .sev{border-radius:2px}
+.sev-high{background:var(--high)}.sev-medium{background:var(--med)}.sev-low{background:var(--low)}.sev-info{background:var(--info)}
+.fhead{display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+.fsave{white-space:nowrap;color:var(--save);font-weight:600}
+.meta{font-size:13px;color:var(--muted);margin:4px 0 8px}
+.tag{display:inline-block;font-size:12px;border:1px solid var(--rule);border-radius:999px;padding:0 8px;margin-right:6px;color:var(--muted)}
+.tag.tl{border-color:var(--save);color:var(--save)}
+.rec{border-left:2px solid var(--save);padding-left:10px;margin-top:6px}
+details{margin-top:8px;font-size:13px;color:var(--muted)}
+summary{cursor:pointer}
+a{color:var(--info)}
+summary:focus-visible,a:focus-visible{outline:2px solid var(--info);outline-offset:2px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--muted);font-weight:500}
+td.r,th.r{text-align:right}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;font-size:13px}
+.tiers div{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:12px}
+.tiers b{display:block;font-size:14px;margin-bottom:2px}
+.tiers .on{border-color:var(--ink)}
+.empty{background:var(--sheet);border:1px dashed var(--rule);border-radius:8px;padding:16px}
+footer{margin-top:56px;font-size:12px;color:var(--muted)}
+@media (max-width:640px){.bill-row{grid-template-columns:1fr;gap:4px}.bill-row .amt{text-align:left}
+.fhead{flex-direction:column}}
+</style></head><body><main class="wrap">
+<h1>LLM cost report for demo_app</h1>
+<p class="sub">Found 7 LLM call sites in 7 files. Usage period: 2026-09-01 to 2026-09-30. Generated 2026-10-14 08:53 UTC.</p>
+
+<div class="bill" role="img" aria-label="Monthly LLM spend $23,501; potential saving up to $12,412">
+  <div class="bill-row"><div class="label">Your bill today</div><div class="bar"><span style="width:34.33%;background:#24476B" title="services/support_rag.py: $8,067"></span><span style="width:33.92%;background:#3C6E91" title="services/invoice_extractor.py: $7,972"></span><span style="width:16.96%;background:#5C8FB0" title="frontend/chat.ts: $3,986"></span><span style="width:9.82%;background:#86AFC8" title="services/legacy_summary.py: $2,308"></span><span style="width:3.24%;background:#B4CEDD" title="Not found in this repo: $761"></span><span style="width:1.73%;background:#7A8796" title="Other: $407"></span></div>
+    <div class="amt">$23,501<span class="note">/mo</span></div></div>
+  <div class="bill-row"><div class="label">If the findings hold</div><div class="bar"><span style="width:47.19%;background:var(--ink)"></span><span class="cut" style="width:52.81%" title="Potential saving"></span></div>
+    <div class="amt">$11,090<span class="note">/mo</span></div></div>
+  <div class="legend"><span><i style="background:#24476B"></i>services/support_rag.py: $8,067</span><span><i style="background:#3C6E91"></i>services/invoice_extractor.py: $7,972</span><span><i style="background:#5C8FB0"></i>frontend/chat.ts: $3,986</span><span><i style="background:#86AFC8"></i>services/legacy_summary.py: $2,308</span><span><i style="background:#B4CEDD"></i>Not found in this repo: $761</span><span><i style="background:#7A8796"></i>Other: $407</span><span><i style="background:repeating-linear-gradient(135deg,var(--save) 0 2px,var(--save-soft) 2px 6px)"></i>Potential saving</span></div>
+  <div class="facts">
+    <div class="fact"><b>$23,501</b><span>Measured monthly run-rate (30 days of data)</span></div>
+    <div class="fact save"><b>$5,629 – $12,412</b><span>Potential monthly saving, estimated, not yet tested</span></div>
+    <div class="fact"><b>97%</b><span>Of spend traced to a line of code in this repo</span></div>
+  </div>
+</div>
+<h2>What to change (9)</h2><p class="note">Sorted by severity, then by potential saving. Savings on the same line of code overlap, so the headline total counts only the largest one per call site.</p>
+<div class="finding" id="F-001">
+  <div class="sev sev-high" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3>Premium model <code>gpt-4o</code> on a simple task (extraction, structured_output)</h3><span class="fsave">save $3,747–$7,494/mo</span></div>
+    <div class="meta">F-001 &nbsp; <code>services/invoice_extractor.py:19</code> in <code>extract_invoice()</code>, <code>services/invoice_extractor.py:34</code> in <code>process_batch()</code></div>
+    <div><span class="tag">high</span><span class="tag">slm</span><span class="tag">estimated</span><span class="tag tl">fine-tuned model candidate</span></div>
+    <p style="margin-top:8px"><code>gpt-4o</code> costs ~17x more per token than <code>gpt-4o-mini</code>. Signals: extraction, structured_output.</p>
+    <p class="rec">Test <code>gpt-4o-mini</code> (~17x cheaper per token) on a sample of real inputs with <code>trainlab experiment</code>. This is a narrow, repetitive task: a fine-tuned small model can usually match quality at a fraction of the cost.</p>
+    <details><summary>Evidence</summary><table><tr><th>current model</th><td>gpt-4o</td></tr><tr><th>candidate model</th><td>gpt-4o-mini</td></tr><tr><th>price ratio</th><td>16.7</td></tr><tr><th>task hints</th><td>[&#x27;extraction&#x27;, &#x27;structured_output&#x27;]</td></tr><tr><th>current per 1m in</th><td>2.5</td></tr><tr><th>candidate per 1m in</th><td>0.15</td></tr></table></details>
+  </div>
+</div>
+<div class="finding" id="F-002">
+  <div class="sev sev-high" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3>~1,902-token system prompt is not being cached</h3><span class="fsave">save $1,742–$3,484/mo</span></div>
+    <div class="meta">F-002 &nbsp; <code>services/support_rag.py:33</code> in <code>answer()</code></div>
+    <div><span class="tag">high</span><span class="tag">cache</span><span class="tag">estimated</span></div>
+    <p style="margin-top:8px">The static prompt is re-billed at full price on every call: dynamic content (e.g. retrieved documents) is placed before the static instructions, so the prompt prefix changes on every request and cannot be cached; no <code>cache_control</code> breakpoint is set, so the provider never caches it.</p>
+    <p class="rec">Move static instructions to the start of the prompt and put per-request content after them. Add <code>cache_control: {&quot;type&quot;: &quot;ephemeral&quot;}</code> on the static system block.</p>
+    <details><summary>Evidence</summary><table><tr><th>system prompt tokens est</th><td>1902</td></tr><tr><th>dynamic prefix</th><td>True</td></tr><tr><th>cache control</th><td>False</td></tr><tr><th>cache read discount</th><td>0.9</td></tr></table></details>
+  </div>
+</div>
+<div class="finding" id="F-003">
+  <div class="sev sev-high" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3><code>gpt-4</code> is near its deprecation date (2026-10-23)</h3><span class="note">$2,308/mo affected</span></div>
+    <div class="meta">F-003 &nbsp; <code>services/legacy_summary.py:10</code> in <code>summarize_notes()</code></div>
+    <div><span class="tag">high</span><span class="tag">model</span><span class="tag">estimated</span></div>
+    <p style="margin-top:8px">The provider has scheduled this model for retirement. Calls will fail after the shutdown date, and older models are usually priced above their successors.</p>
+    <p class="rec">Migrate to the provider&#x27;s current model; run <code>trainlab experiment</code> to compare quality first.</p>
+    <details><summary>Evidence</summary><table><tr><th>model</th><td>gpt-4</td></tr><tr><th>deprecation date</th><td>2026-10-23</td></tr><tr><th>per 1m in</th><td>30.0</td></tr><tr><th>per 1m out</th><td>60.0</td></tr></table></details>
+  </div>
+</div>
+<div class="finding" id="F-004">
+  <div class="sev sev-medium" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3>Sequential calls in a loop in <code>process_batch</code></h3><span class="fsave">save up to $1,993/mo</span></div>
+    <div class="meta">F-004 &nbsp; <code>services/invoice_extractor.py:34</code> in <code>process_batch()</code></div>
+    <div><span class="tag">medium</span><span class="tag">batch</span><span class="tag">estimated</span></div>
+    <p style="margin-top:8px">Requests are sent one at a time inside a loop. If results are not needed immediately, the provider Batch API processes them at a discount.</p>
+    <p class="rec">If this workload tolerates up to 24h latency, submit it through the Batch API (~50% cheaper). Otherwise, run requests concurrently to cut wall time.</p>
+    <details><summary>Evidence</summary><table><tr><th>function</th><td>process_batch</td></tr><tr><th>looks offline</th><td>True</td></tr><tr><th>batch discount</th><td>0.5</td></tr></table></details>
+  </div>
+</div>
+<div class="finding" id="F-005">
+  <div class="sev sev-medium" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3>Sequential calls in a loop in <code>summarize_notes</code></h3><span class="fsave">save up to $1,154/mo</span></div>
+    <div class="meta">F-005 &nbsp; <code>services/legacy_summary.py:10</code> in <code>summarize_notes()</code></div>
+    <div><span class="tag">medium</span><span class="tag">batch</span><span class="tag">estimated</span></div>
+    <p style="margin-top:8px">Requests are sent one at a time inside a loop. If results are not needed immediately, the provider Batch API processes them at a discount.</p>
+    <p class="rec">If this workload tolerates up to 24h latency, submit it through the Batch API (~50% cheaper). Otherwise, run requests concurrently to cut wall time.</p>
+    <details><summary>Evidence</summary><table><tr><th>function</th><td>summarize_notes</td></tr><tr><th>looks offline</th><td>True</td></tr><tr><th>batch discount</th><td>0.5</td></tr></table></details>
+  </div>
+</div>
+<div class="finding" id="F-006">
+  <div class="sev sev-medium" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3>Premium model <code>gpt-4.1</code> on a simple task (classification)</h3><span class="fsave">save $140–$280/mo</span></div>
+    <div class="meta">F-006 &nbsp; <code>services/ticket_classifier.py:19</code> in <code>classify_ticket()</code></div>
+    <div><span class="tag">medium</span><span class="tag">slm</span><span class="tag">estimated</span><span class="tag tl">fine-tuned model candidate</span></div>
+    <p style="margin-top:8px"><code>gpt-4.1</code> costs ~13x more per token than <code>gpt-4o-mini</code>. Signals: classification.</p>
+    <p class="rec">Test <code>gpt-4o-mini</code> (~13x cheaper per token) on a sample of real inputs with <code>trainlab experiment</code>. This is a narrow, repetitive task: a fine-tuned small model can usually match quality at a fraction of the cost.</p>
+    <details><summary>Evidence</summary><table><tr><th>current model</th><td>gpt-4.1</td></tr><tr><th>candidate model</th><td>gpt-4o-mini</td></tr><tr><th>price ratio</th><td>13.3</td></tr><tr><th>task hints</th><td>[&#x27;classification&#x27;]</td></tr><tr><th>current per 1m in</th><td>2.0</td></tr><tr><th>candidate per 1m in</th><td>0.15</td></tr></table></details>
+  </div>
+</div>
+<div class="finding" id="F-007">
+  <div class="sev sev-medium" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3><code>claude-sonnet-4-5</code> is near its deprecation date (2026-11-30)</h3><span class="note">$8,067/mo affected</span></div>
+    <div class="meta">F-007 &nbsp; <code>services/support_rag.py:33</code> in <code>answer()</code></div>
+    <div><span class="tag">medium</span><span class="tag">model</span><span class="tag">estimated</span></div>
+    <p style="margin-top:8px">The provider has scheduled this model for retirement. Calls will fail after the shutdown date, and older models are usually priced above their successors.</p>
+    <p class="rec">Migrate to the provider&#x27;s current model; run <code>trainlab experiment</code> to compare quality first.</p>
+    <details><summary>Evidence</summary><table><tr><th>model</th><td>claude-sonnet-4-5</td></tr><tr><th>deprecation date</th><td>2026-11-30</td></tr><tr><th>per 1m in</th><td>3.0</td></tr><tr><th>per 1m out</th><td>15.0</td></tr></table></details>
+  </div>
+</div>
+<div class="finding" id="F-008">
+  <div class="sev sev-medium" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3>Unbounded retries around an LLM call in <code>extract_invoice</code></h3></div>
+    <div class="meta">F-008 &nbsp; <code>services/invoice_extractor.py:19</code> in <code>extract_invoice()</code></div>
+    <div><span class="tag">medium</span><span class="tag">reliability</span><span class="tag">from code only</span></div>
+    <p style="margin-top:8px">The retry decorator has no stop condition. During a provider outage or a persistent error, this retries forever and every attempt is billed.</p>
+    <p class="rec">Add a stop condition, e.g. <code>@retry(stop=stop_after_attempt(3), wait=wait_exponential())</code>.</p>
+    <details><summary>Evidence</summary><table><tr><th>function</th><td>extract_invoice</td></tr></table></details>
+  </div>
+</div>
+<div class="finding" id="F-009">
+  <div class="sev sev-low" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3>No output token limit</h3></div>
+    <div class="meta">F-009 &nbsp; <code>services/invoice_extractor.py:19</code> in <code>extract_invoice()</code>, <code>services/invoice_extractor.py:34</code> in <code>process_batch()</code></div>
+    <div><span class="tag">low</span><span class="tag">config</span><span class="tag">from code only</span></div>
+    <p style="margin-top:8px">Without a cap, an unexpected long generation (or a reasoning model) is billed in full.</p>
+    <p class="rec">Set <code>max_completion_tokens</code> (or <code>max_tokens</code>) to a safe upper bound for this task.</p>
+    
+  </div>
+</div><h2>Candidates for a fine-tuned model</h2>
+<p>2 workload(s) are narrow and repetitive (extraction or classification), currently costing $8,275/month.
+A small model fine-tuned on your own examples typically handles these at a fraction of frontier-model cost,
+with predictable fixed pricing. First validate a cheaper off-the-shelf model with <code>trainlab experiment</code>;
+if quality falls short, a custom model is the next step.</p>
+<ul><li><a href="#F-001">F-001</a>: Premium model <code>gpt-4o</code> on a simple task (extraction, structured_output)</li><li><a href="#F-006">F-006</a>: Premium model <code>gpt-4.1</code> on a simple task (classification)</li></ul><h2>Spend by model</h2>
+<table><thead><tr><th>Model</th><th>Provider</th><th class=r>Per month</th><th class=r>Share</th>
+<th class=r>Requests</th><th class=r>Tokens in / out</th><th class=r>Cached input</th></tr></thead>
+<tbody><tr><td><code>gpt-4o-2024-08-06</code></td><td>openai</td><td class=r>$11,959</td><td class=r>51%</td><td class=r>1.8M</td><td class=r>2.7B / 531.5M</td><td class=r>0%</td></tr><tr><td><code>claude-sonnet-4-5-20250929</code></td><td>anthropic</td><td class=r>$8,067</td><td class=r>34%</td><td class=r>597.5k</td><td class=r>1.5B / 239.0M</td><td class=r>0%</td></tr><tr><td><code>gpt-4-0613</code></td><td>openai</td><td class=r>$2,308</td><td class=r>10%</td><td class=r>59.2k</td><td class=r>47.3M / 14.8M</td><td class=r>0%</td></tr><tr><td><code>text-embedding-3-large</code></td><td>openai</td><td class=r>$761</td><td class=r>3%</td><td class=r>1.5M</td><td class=r>5.9B / 0</td><td class=r>0%</td></tr><tr><td><code>gpt-4.1</code></td><td>openai</td><td class=r>$302</td><td class=r>1%</td><td class=r>1.2M</td><td class=r>141.7M / 2.4M</td><td class=r>0%</td></tr><tr><td><code>gpt-5-mini</code></td><td>openai</td><td class=r>$105</td><td class=r>0%</td><td class=r>299.6k</td><td class=r>59.9M / 44.9M</td><td class=r>0%</td></tr></tbody></table><h2>Spend by project</h2><table><thead><tr><th>Project / workspace</th><th class=r>Per month</th></tr></thead><tbody><tr><td><code>proj_invoices</code></td><td class=r>$11,959</td></tr><tr><td><code>proj_support</code></td><td class=r>$2,715</td></tr><tr><td><code>proj_search</code></td><td class=r>$761</td></tr><tr><td><code>wrkspc_support</code></td><td class=r>$8,067</td></tr></tbody></table><h2>Every LLM call site</h2>
+<table><thead><tr><th>Location</th><th>Type</th><th>Model</th><th class=r>Spend / month</th><th>Findings</th></tr></thead>
+<tbody><tr><td><code>services/support_rag.py:33</code><br><span class=note>answer()</span></td><td>chat</td><td><code>claude-sonnet-4-5</code></td><td class=r>$8,067</td><td><a href="#F-002">F-002</a> <a href="#F-007">F-007</a></td></tr><tr><td><code>frontend/chat.ts:7</code></td><td>chat</td><td><code>gpt-4o</code></td><td class=r>$3,986 (shared)</td><td></td></tr><tr><td><code>services/invoice_extractor.py:19</code><br><span class=note>extract_invoice()</span></td><td>chat</td><td><code>gpt-4o</code></td><td class=r>$3,986 (shared)</td><td><a href="#F-001">F-001</a> <a href="#F-008">F-008</a> <a href="#F-009">F-009</a></td></tr><tr><td><code>services/invoice_extractor.py:34</code><br><span class=note>process_batch()</span></td><td>chat</td><td><code>gpt-4o</code></td><td class=r>$3,986 (shared)</td><td><a href="#F-001">F-001</a> <a href="#F-004">F-004</a> <a href="#F-009">F-009</a></td></tr><tr><td><code>services/legacy_summary.py:10</code><br><span class=note>summarize_notes()</span></td><td>chat</td><td><code>gpt-4</code></td><td class=r>$2,308</td><td><a href="#F-003">F-003</a> <a href="#F-005">F-005</a></td></tr><tr><td><code>services/ticket_classifier.py:19</code><br><span class=note>classify_ticket()</span></td><td>chat</td><td><code>gpt-4.1</code></td><td class=r>$302</td><td><a href="#F-006">F-006</a></td></tr><tr><td><code>services/well_tuned.py:10</code><br><span class=note>short_reply()</span></td><td>chat</td><td><code>gpt-5-mini</code></td><td class=r>$105</td><td></td></tr></tbody></table><h2>Model names in configuration</h2><p class=note>Model names found outside call sites, e.g. in config files. They may be selected at runtime.</p><table><tbody><tr><td><code>config/models.yaml:2</code></td><td><code>claude-sonnet-4-5</code></td></tr><tr><td><code>config/models.yaml:3</code></td><td><code>text-embedding-3-large</code></td></tr></tbody></table><h2>How to read this report</h2><div class="tiers">
+<div class=""><b>From code</b>Pattern found in source. No cost attached.</div>
+<div class="on"><b>Estimated</b>Measured spend × price difference. Quality not yet tested.</div>
+<div><b>Validated</b>Tested on your real inputs with <code>trainlab experiment</code>.</div>
+<div><b>Realized</b>Confirmed in production billing after the change.</div></div>
+<p class="note" style="margin-top:12px">Spend is linked to code by model name: when several call sites use the same model,
+its spend is split evenly between them (marked "shared"). For exact per-line attribution, add <code>trainlab.instrument()</code>.</p><h2>Gaps in this analysis</h2>
+<div class="finding" id="F-010">
+  <div class="sev sev-info" aria-hidden="true"></div>
+  <div>
+    <div class="fhead"><h3>$761/month of spend has no matching call site</h3></div>
+    <div class="meta">F-010 &nbsp; </div>
+    <div><span class="tag">info</span><span class="tag">coverage</span><span class="tag">estimated</span></div>
+    <p style="margin-top:8px">These models appear in billing but not in the scanned code. They may be called from another repository, a notebook, a different service, or a runtime-configured model.</p>
+    <p class="rec">Scan the other repositories that share this API key/project, or instrument at runtime.</p>
+    <details><summary>Evidence</summary><table><tr><th>by model</th><td>{&#x27;text-embedding-3-large&#x27;: 760.56}</td></tr></table></details>
+  </div>
+</div><footer>Generated locally by trainlab-optimize 0.1.0. No code or usage data left this machine.
+Prices: BerriAI/litellm model_prices_and_context_window.json (MIT), built 2026-10-14T08:36:59Z.
+Usage sources: csv:billing_export.csv.</footer></main></body></html>
