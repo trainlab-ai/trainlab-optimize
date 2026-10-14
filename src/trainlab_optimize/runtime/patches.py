@@ -14,7 +14,7 @@ import math
 import sys
 
 from ..scanner.providers import maker_of, provider_from_model_prefix, provider_from_url
-from .core import get, num, wrap_call
+from .core import _active, carry, get, num, origin_context, wrap_call
 
 _applied: list[tuple[object, str, object]] = []      # (owner, attribute, original)
 patched: set[str] = set()
@@ -47,9 +47,10 @@ class _StreamProxy:
         return self
 
     def __next__(self):
-        if self._it is None:
-            self.__dict__["_it"] = iter(self._inner)
+        token = _active.set(self._ev)        # a lazily sent request belongs to this call
         try:
+            if self._it is None:
+                self.__dict__["_it"] = iter(self._inner)
             item = next(self._it)
         except StopIteration:
             self._close(complete=True)
@@ -57,6 +58,8 @@ class _StreamProxy:
         except BaseException as exc:
             self._close(exc)
             raise
+        finally:
+            _active.reset(token)
         try:
             self._on_item(item, self._ev)
         except Exception:  # noqa: BLE001
@@ -65,7 +68,11 @@ class _StreamProxy:
 
     def __enter__(self):
         if hasattr(self._inner, "__enter__"):
-            self._inner.__enter__()
+            token = _active.set(self._ev)
+            try:
+                self._inner.__enter__()
+            finally:
+                _active.reset(token)
         return self
 
     def __exit__(self, *exc):
@@ -96,9 +103,10 @@ class _AsyncStreamProxy(_StreamProxy):
         return self
 
     async def __anext__(self):
-        if self._it is None:
-            self.__dict__["_it"] = self._inner.__aiter__()
+        token = _active.set(self._ev)
         try:
+            if self._it is None:
+                self.__dict__["_it"] = self._inner.__aiter__()
             item = await self._it.__anext__()
         except StopAsyncIteration:
             self._close(complete=True)
@@ -106,6 +114,8 @@ class _AsyncStreamProxy(_StreamProxy):
         except BaseException as exc:
             self._close(exc)
             raise
+        finally:
+            _active.reset(token)
         try:
             self._on_item(item, self._ev)
         except Exception:  # noqa: BLE001
@@ -114,7 +124,11 @@ class _AsyncStreamProxy(_StreamProxy):
 
     async def __aenter__(self):
         if hasattr(self._inner, "__aenter__"):
-            await self._inner.__aenter__()
+            token = _active.set(self._ev)
+            try:
+                await self._inner.__aenter__()
+            finally:
+                _active.reset(token)
         return self
 
     async def __aexit__(self, *exc):
@@ -173,17 +187,25 @@ def _add_chars(ev, text) -> None:
 
 # ------------------------------------------------------------------ raw-response wrappers
 def _raw_kind(result) -> str | None:
-    """`.with_raw_response` returns a LegacyAPIResponse whose parse() is cached (safe to call);
-    `.with_streaming_response` returns an APIResponse whose body is unread (never touch it)."""
+    """Raw-response wrappers (`.with_raw_response`, `.with_streaming_response`, and their
+    variants across SDK versions). If the body has been read, parse() is cached and safe to
+    call ("legacy"); if not, it must not be touched ("unread") - the HTTP layer reads the usage
+    as the app consumes the body."""
     n = type(result).__name__
-    return "legacy" if n == "LegacyAPIResponse" else "unread" if n in ("APIResponse", "AsyncAPIResponse") else None
+    if "APIResponse" not in n or not hasattr(result, "parse"):
+        return None
+    hr = getattr(result, "http_response", None)
+    if hr is not None and getattr(hr, "_content", None) is not None:
+        return "legacy"
+    return "unread"
 
 
 def _raw_aware(extract, is_stream):
     def ex(result, ev):
         kind = _raw_kind(result)
         if kind == "unread":
-            return                                     # recorded without token counts
+            ev._defer = True                  # the HTTP layer records it once the app has read the body
+            return
         if kind == "legacy":
             if ev.stream:
                 return
@@ -198,6 +220,9 @@ def _raw_aware(extract, is_stream):
 
 
 # ------------------------------------------------------------------ OpenAI SDK
+_provider_cache: dict[str, str] = {}
+
+
 def _openai_provider(resource) -> str:
     client = getattr(resource, "_client", None)
     if client is None:
@@ -205,12 +230,22 @@ def _openai_provider(resource) -> str:
     if "Azure" in type(client).__name__:
         return "azure"
     base = str(getattr(client, "base_url", "") or "")
-    return provider_from_url(base) or ("openai" if not base or "api.openai.com" in base else "openai_compatible")
+    p = _provider_cache.get(base)
+    if p is None:
+        p = provider_from_url(base) or ("openai" if not base or "api.openai.com" in base else "openai_compatible")
+        if len(_provider_cache) < 1000:
+            _provider_cache[base] = p
+    return p
 
 
 def _openai_chat_usage(u, ev) -> None:
     if u is None:
         return
+    d = u if isinstance(u, dict) else getattr(u, "__dict__", None)
+    if isinstance(d, dict) and not isinstance(u, dict):
+        # pydantic models: read fields from __dict__ (missing attributes are slow to probe)
+        u = {k: (v.__dict__ if hasattr(v, "__dict__") and not isinstance(v, (int, str)) else v)
+             for k, v in d.items()}
     ev.input_tokens = num(get(u, "prompt_tokens")) if get(u, "prompt_tokens") is not None else num(get(u, "input_tokens"))
     ev.output_tokens = num(get(u, "completion_tokens")) if get(u, "completion_tokens") is not None \
         else num(get(u, "output_tokens"))
@@ -275,6 +310,21 @@ def _openai_specs():
                 specs.append((owner, name, dict(describe=describe("chat"), extract=extract, is_stream=is_stream,
                                                 wrap_stream=stream_wrapper(responses_item),
                                                 sdk_name=f"openai.responses.{name}")))
+    try:
+        from openai.resources import completions as legacy
+
+        def text_item(item, ev):
+            ev.model = get(item, "model") or ev.model
+            if get(item, "usage") is not None:
+                _openai_chat_usage(get(item, "usage"), ev)
+            for ch in get(item, "choices", default=[]) or []:
+                _add_chars(ev, get(ch, "text"))
+        for owner in (legacy.Completions, legacy.AsyncCompletions):
+            specs.append((owner, "create", dict(describe=describe("chat"), extract=extract, is_stream=is_stream,
+                                                wrap_stream=stream_wrapper(text_item),
+                                                sdk_name="openai.completions.create")))
+    except Exception:  # noqa: BLE001
+        pass
     for owner in (embeddings.Embeddings, embeddings.AsyncEmbeddings):
         specs.append((owner, "create", dict(describe=describe("embedding"), extract=extract,
                                             sdk_name="openai.embeddings.create")))
@@ -377,7 +427,11 @@ class _ManagerProxy:
         self._finish(exc)
 
     def __enter__(self):
-        self.__dict__["_stream"] = self._inner.__enter__()
+        token = _active.set(self._ev)        # messages.stream() sends its request here
+        try:
+            self.__dict__["_stream"] = self._inner.__enter__()
+        finally:
+            _active.reset(token)
         return self._stream
 
     def __exit__(self, *exc):
@@ -387,7 +441,11 @@ class _ManagerProxy:
             self._record(exc[1] if exc and exc[1] else None)
 
     async def __aenter__(self):
-        self.__dict__["_stream"] = await self._inner.__aenter__()
+        token = _active.set(self._ev)
+        try:
+            self.__dict__["_stream"] = await self._inner.__aenter__()
+        finally:
+            _active.reset(token)
         return self._stream
 
     async def __aexit__(self, *exc):
@@ -553,10 +611,78 @@ def _genai_specs():
     return specs
 
 
+# ------------------------------------------------------------------ work handed to threads / tasks
+def _threadpool_specs():
+    from concurrent.futures import thread as cft
+
+    def factory(recorder_ref, orig):
+        def submit(self, fn, /, *args, **kwargs):
+            try:
+                fn = carry(recorder_ref, fn, always=True)
+            except Exception:  # noqa: BLE001
+                pass
+            return orig(self, fn, *args, **kwargs)
+        submit.__trainlab_original__ = orig
+        return submit
+    return [(cft.ThreadPoolExecutor, "submit", {"factory": factory})]
+
+
+def _thread_specs():
+    import threading
+
+    def factory(recorder_ref, orig):
+        def start(self):
+            try:
+                if not self.__dict__.get("_trainlab_carried"):
+                    run = carry(recorder_ref, self.run)
+                    if run is not self.run:
+                        self.run = run
+                    self.__dict__["_trainlab_carried"] = True
+            except Exception:  # noqa: BLE001
+                pass
+            return orig(self)
+        start.__trainlab_original__ = orig
+        return start
+    return [(threading.Thread, "start", {"factory": factory})]
+
+
+def _asyncio_specs():
+    if sys.version_info < (3, 11):
+        return []                                  # create_task(context=) arrived in 3.11
+    from asyncio import base_events
+
+    def factory(recorder_ref, orig):
+        def create_task(self, coro, *args, **kwargs):
+            try:
+                ctx = origin_context(recorder_ref, kwargs.get("context"))
+                if ctx is not None:
+                    kwargs["context"] = ctx
+            except Exception:  # noqa: BLE001
+                pass
+            return orig(self, coro, *args, **kwargs)
+        create_task.__trainlab_original__ = orig
+        return create_task
+    return [(base_events.BaseEventLoop, "create_task", {"factory": factory})]
+
+
+def _http(kind):
+    def specs():
+        from . import http
+        return http.httpx_specs(kind) if kind.startswith("httpx") else getattr(http, f"{kind}_specs")()
+    return specs
+
+
 SDKS = {"openai": _openai_specs, "anthropic": _anthropic_specs, "litellm": _litellm_specs,
-        "bedrock": _bedrock_specs, "google-genai": _genai_specs}
+        "bedrock": _bedrock_specs, "google-genai": _genai_specs,
+        "http-httpx": _http("httpx"), "http-httpx2": _http("httpx2"), "http-requests": _http("requests"),
+        "http-aiohttp": _http("aiohttp"),
+        "ctx-threadpool": _threadpool_specs, "ctx-thread": _thread_specs, "ctx-asyncio": _asyncio_specs}
+SDK_NAMES = ["openai", "anthropic", "litellm", "bedrock", "google-genai"]
 _SDK_MODULE = {"openai": "openai", "anthropic": "anthropic", "litellm": "litellm", "bedrock": "botocore.client",
-               "google-genai": "google.genai"}
+               "google-genai": "google.genai", "http-httpx": "httpx", "http-httpx2": "httpx2",
+               "http-requests": "requests", "http-aiohttp": "aiohttp",
+               "ctx-threadpool": "concurrent.futures.thread", "ctx-thread": "threading",
+               "ctx-asyncio": "asyncio.base_events"}
 
 
 def _patch_sdk(recorder_ref, name: str) -> int:
@@ -571,9 +697,12 @@ def _patch_sdk(recorder_ref, name: str) -> int:
         orig = getattr(owner, attr, None)
         if orig is None or getattr(orig, "__trainlab_original__", None) is not None:
             continue
-        wrapped = wrap_call(recorder_ref, orig, spec["describe"], spec["extract"],
-                            is_stream=spec.get("is_stream"), wrap_stream=spec.get("wrap_stream"),
-                            sdk_name=spec["sdk_name"])
+        if "factory" in spec:
+            wrapped = spec["factory"](recorder_ref, orig)
+        else:
+            wrapped = wrap_call(recorder_ref, orig, spec["describe"], spec["extract"],
+                                is_stream=spec.get("is_stream"), wrap_stream=spec.get("wrap_stream"),
+                                sdk_name=spec["sdk_name"])
         setattr(owner, attr, wrapped)
         _applied.append((owner, attr, orig))
         n += 1
@@ -641,7 +770,8 @@ def apply(recorder_ref, only: list[str] | None = None) -> list[str]:
     global _hook
     done, pending = [], {}
     for name in SDKS:
-        if only and name not in only:
+        family = "http" if name.startswith("http-") else "context" if name.startswith("ctx-") else name
+        if only is not None and family not in only:
             continue
         mod = _SDK_MODULE[name]
         if mod in sys.modules:

@@ -1,0 +1,2159 @@
+{
+ "results": [
+  {
+   "project": "openai-sdk",
+   "kind": "sdk",
+   "api": "openai",
+   "server_calls": 7,
+   "server_calls_without_trainlab": 7,
+   "recorded": 7,
+   "failed_recorded": [],
+   "input_truth": 6567,
+   "input_rec": 6567,
+   "output_truth": 488,
+   "output_rec": 488,
+   "estimated": 0,
+   "located": 7,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create",
+    "openai.completions.create",
+    "openai.embeddings.create",
+    "openai.responses.create"
+   ],
+   "models": [
+    "gpt-3.5-turbo-instruct",
+    "gpt-4o",
+    "gpt-4o-mini",
+    "gpt-5-mini",
+    "text-embedding-3-small"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 18.3,
+   "status": "PASS"
+  },
+  {
+   "project": "anthropic-sdk",
+   "kind": "sdk",
+   "api": "anthropic",
+   "server_calls": 4,
+   "server_calls_without_trainlab": 4,
+   "recorded": 4,
+   "failed_recorded": [],
+   "input_truth": 2373,
+   "input_rec": 2373,
+   "output_truth": 464,
+   "output_rec": 464,
+   "estimated": 0,
+   "located": 4,
+   "elsewhere": [],
+   "providers": [
+    "anthropic"
+   ],
+   "sdks": [
+    "anthropic.messages.create",
+    "anthropic.messages.stream"
+   ],
+   "models": [
+    "claude-haiku-4-5",
+    "claude-opus-4-1",
+    "claude-sonnet-4-5"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 26.4,
+   "status": "PASS"
+  },
+  {
+   "project": "google-genai-sdk",
+   "kind": "sdk",
+   "api": "gemini",
+   "server_calls": 4,
+   "server_calls_without_trainlab": 4,
+   "recorded": 4,
+   "failed_recorded": [],
+   "input_truth": 4548,
+   "input_rec": 4548,
+   "output_truth": 218,
+   "output_rec": 218,
+   "estimated": 0,
+   "located": 4,
+   "elsewhere": [],
+   "providers": [
+    "gemini"
+   ],
+   "sdks": [
+    "google.genai.models.generate_content",
+    "google.genai.models.generate_content_stream"
+   ],
+   "models": [
+    "gemini-2.5-flash",
+    "gemini-2.5-pro"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 15.4,
+   "status": "PASS"
+  },
+  {
+   "project": "boto3-bedrock",
+   "kind": "sdk",
+   "api": "bedrock",
+   "server_calls": 4,
+   "server_calls_without_trainlab": 4,
+   "recorded": 4,
+   "failed_recorded": [],
+   "input_truth": 3495,
+   "input_rec": 3495,
+   "output_truth": 448,
+   "output_rec": 448,
+   "estimated": 0,
+   "located": 4,
+   "elsewhere": [],
+   "providers": [
+    "bedrock"
+   ],
+   "sdks": [
+    "botocore.bedrock-runtime"
+   ],
+   "models": [
+    "amazon.nova-lite-v1:0",
+    "anthropic.claude-3-5-haiku-20241022-v1:0",
+    "anthropic.claude-3-5-sonnet-20241022-v2:0"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 7.9,
+   "status": "PASS"
+  },
+  {
+   "project": "litellm",
+   "kind": "sdk",
+   "api": "openai+anthropic",
+   "server_calls": 5,
+   "server_calls_without_trainlab": 5,
+   "recorded": 5,
+   "failed_recorded": [],
+   "input_truth": 2736,
+   "input_rec": 2736,
+   "output_truth": 372,
+   "output_rec": 372,
+   "estimated": 0,
+   "located": 5,
+   "elsewhere": [],
+   "providers": [
+    "anthropic",
+    "openai"
+   ],
+   "sdks": [
+    "litellm.acompletion",
+    "litellm.completion",
+    "litellm.embedding"
+   ],
+   "models": [
+    "claude-haiku-4-5",
+    "gpt-4o",
+    "gpt-4o-mini",
+    "openai/gpt-4o-mini",
+    "text-embedding-3-small"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 77.1,
+   "status": "PASS"
+  },
+  {
+   "project": "mistralai-sdk",
+   "kind": "sdk",
+   "api": "mistral",
+   "server_calls": 3,
+   "server_calls_without_trainlab": 3,
+   "recorded": 3,
+   "failed_recorded": [],
+   "input_truth": 3296,
+   "input_rec": 3296,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 3,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx2"
+   ],
+   "models": [
+    "mistral-embed",
+    "mistral-large-latest",
+    "mistral-small-latest"
+   ],
+   "exit": 1,
+   "exit_without_trainlab": 1,
+   "secs": 11.2,
+   "status": "PASS"
+  },
+  {
+   "project": "cohere-sdk",
+   "kind": "sdk",
+   "api": "cohere",
+   "server_calls": 4,
+   "server_calls_without_trainlab": 4,
+   "recorded": 4,
+   "failed_recorded": [],
+   "input_truth": 4563,
+   "input_rec": 4563,
+   "output_truth": 160,
+   "output_rec": 160,
+   "estimated": 0,
+   "located": 4,
+   "elsewhere": [],
+   "providers": [
+    "cohere"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "command-r",
+    "command-r-plus",
+    "embed-english-v3.0"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 13.5,
+   "status": "PASS"
+  },
+  {
+   "project": "groq-sdk",
+   "kind": "sdk",
+   "api": "groq",
+   "server_calls": 3,
+   "server_calls_without_trainlab": 3,
+   "recorded": 3,
+   "failed_recorded": [],
+   "input_truth": 3303,
+   "input_rec": 3303,
+   "output_truth": 179,
+   "output_rec": 179,
+   "estimated": 0,
+   "located": 3,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "llama-3.1-8b-instant",
+    "llama-3.3-70b-versatile"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 10.0,
+   "status": "PASS"
+  },
+  {
+   "project": "together-sdk",
+   "kind": "sdk",
+   "api": "together",
+   "server_calls": 3,
+   "server_calls_without_trainlab": 3,
+   "recorded": 3,
+   "failed_recorded": [],
+   "input_truth": 3302,
+   "input_rec": 3302,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 3,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "BAAI/bge-base-en-v1.5",
+    "Qwen/Qwen2.5-72B-Instruct-Turbo",
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 15.0,
+   "status": "PASS"
+  },
+  {
+   "project": "ollama-sdk",
+   "kind": "sdk",
+   "api": "ollama",
+   "server_calls": 5,
+   "server_calls_without_trainlab": 5,
+   "recorded": 5,
+   "failed_recorded": [],
+   "input_truth": 5063,
+   "input_rec": 5063,
+   "output_truth": 208,
+   "output_rec": 208,
+   "estimated": 0,
+   "located": 5,
+   "elsewhere": [],
+   "providers": [
+    "ollama"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "llama3.2",
+    "nomic-embed-text",
+    "qwen2.5"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 8.5,
+   "status": "PASS"
+  },
+  {
+   "project": "huggingface-hub",
+   "kind": "sdk",
+   "api": "hf",
+   "server_calls": 3,
+   "server_calls_without_trainlab": 3,
+   "recorded": 3,
+   "failed_recorded": [],
+   "input_truth": 3308,
+   "input_rec": 3308,
+   "output_truth": 179,
+   "output_rec": 179,
+   "estimated": 0,
+   "located": 3,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx2"
+   ],
+   "models": [
+    "dummy",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "tgi"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 9.0,
+   "status": "PASS"
+  },
+  {
+   "project": "dashscope-sdk",
+   "kind": "sdk",
+   "api": "dashscope",
+   "server_calls": 4,
+   "server_calls_without_trainlab": 4,
+   "recorded": 4,
+   "failed_recorded": [],
+   "input_truth": 4583,
+   "input_rec": 4583,
+   "output_truth": 179,
+   "output_rec": 179,
+   "estimated": 0,
+   "located": 4,
+   "elsewhere": [],
+   "providers": [
+    "dashscope"
+   ],
+   "sdks": [
+    "http:requests"
+   ],
+   "models": [
+    "qwen-max",
+    "qwen-plus",
+    "qwen-turbo",
+    "text-embedding-v3"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 9.6,
+   "status": "PASS"
+  },
+  {
+   "project": "zhipuai-sdk",
+   "kind": "sdk",
+   "api": "zhipu",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2152,
+   "input_rec": 2152,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "glm-4-flash",
+    "glm-4-plus"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 9.3,
+   "status": "PASS"
+  },
+  {
+   "project": "azure-ai-inference",
+   "kind": "sdk",
+   "api": "azure-inference",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2132,
+   "input_rec": 2132,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:requests"
+   ],
+   "models": [
+    "Phi-4"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 6.5,
+   "status": "PASS"
+  },
+  {
+   "project": "google-generativeai",
+   "kind": "sdk",
+   "api": "gemini-legacy",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2170,
+   "input_rec": 2170,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "gemini"
+   ],
+   "sdks": [
+    "http:requests"
+   ],
+   "models": [
+    "gemini-1.5-flash"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 14.5,
+   "status": "PASS"
+  },
+  {
+   "project": "openai-azure",
+   "kind": "sdk",
+   "api": "azure",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2127,
+   "input_rec": 2127,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "azure"
+   ],
+   "sdks": [
+    "openai.chat.completions.create",
+    "openai.embeddings.create"
+   ],
+   "models": [
+    "embed-prod",
+    "gpt-4o-prod"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 14.0,
+   "status": "PASS"
+  },
+  {
+   "project": "fireworks-sdk",
+   "kind": "sdk",
+   "api": "fireworks",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2148,
+   "input_rec": 2148,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx",
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "accounts/fireworks/models/llama-v3p1-70b-instruct",
+    "accounts/fireworks/models/llama-v3p1-8b-instruct"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 20.2,
+   "status": "PASS"
+  },
+  {
+   "project": "voyageai-sdk",
+   "kind": "sdk",
+   "api": "voyage",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 752,
+   "input_rec": 752,
+   "output_truth": 0,
+   "output_rec": 0,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:requests"
+   ],
+   "models": [
+    "voyage-3"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 16.8,
+   "status": "PASS"
+  },
+  {
+   "project": "raw-requests",
+   "kind": "raw-http",
+   "api": "openai+anthropic",
+   "server_calls": 3,
+   "server_calls_without_trainlab": 3,
+   "recorded": 3,
+   "failed_recorded": [],
+   "input_truth": 2413,
+   "input_rec": 2413,
+   "output_truth": 318,
+   "output_rec": 318,
+   "estimated": 0,
+   "located": 3,
+   "elsewhere": [],
+   "providers": [
+    "anthropic",
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:requests"
+   ],
+   "models": [
+    "claude-haiku-4-5",
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 3.9,
+   "status": "PASS"
+  },
+  {
+   "project": "raw-httpx",
+   "kind": "raw-http",
+   "api": "openai",
+   "server_calls": 3,
+   "server_calls_without_trainlab": 3,
+   "recorded": 3,
+   "failed_recorded": [],
+   "input_truth": 3285,
+   "input_rec": 3285,
+   "output_truth": 145,
+   "output_rec": 145,
+   "estimated": 0,
+   "located": 3,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "gpt-4o",
+    "gpt-4o-mini",
+    "text-embedding-3-small"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 4.7,
+   "status": "PASS"
+  },
+  {
+   "project": "raw-aiohttp",
+   "kind": "raw-http",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 731,
+   "input_rec": 731,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:aiohttp"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 4.8,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-openai",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 6,
+   "server_calls_without_trainlab": 6,
+   "recorded": 6,
+   "failed_recorded": [],
+   "input_truth": 4629,
+   "input_rec": 4629,
+   "output_truth": 408,
+   "output_rec": 408,
+   "estimated": 1,
+   "located": 6,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create",
+    "openai.embeddings.create"
+   ],
+   "models": [
+    "gpt-4o-mini",
+    "text-embedding-3-small"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 24.1,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-anthropic",
+   "kind": "framework",
+   "api": "anthropic",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 958,
+   "input_rec": 958,
+   "output_truth": 371,
+   "output_rec": 371,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "anthropic"
+   ],
+   "sdks": [
+    "anthropic.messages.create"
+   ],
+   "models": [
+    "claude-sonnet-4-5"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 27.4,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-google-genai",
+   "kind": "framework",
+   "api": "gemini",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2168,
+   "input_rec": 2168,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "gemini"
+   ],
+   "sdks": [
+    "google.genai.models.generate_content",
+    "google.genai.models.generate_content_stream"
+   ],
+   "models": [
+    "gemini-2.5-flash"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 26.7,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-aws",
+   "kind": "framework",
+   "api": "bedrock",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2144,
+   "input_rec": 2144,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "bedrock"
+   ],
+   "sdks": [
+    "botocore.bedrock-runtime"
+   ],
+   "models": [
+    "anthropic.claude-3-5-haiku-20241022-v1:0"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 24.2,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-mistralai",
+   "kind": "framework",
+   "api": "mistral",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2154,
+   "input_rec": 2154,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "mistral-large-latest"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 19.5,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-cohere",
+   "kind": "framework",
+   "api": "cohere",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 734,
+   "input_rec": 734,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "cohere"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "command-r-plus"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 22.9,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-groq",
+   "kind": "framework",
+   "api": "groq",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2198,
+   "input_rec": 2198,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "llama-3.3-70b-versatile"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 20.1,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-ollama",
+   "kind": "framework",
+   "api": "ollama",
+   "server_calls": 3,
+   "server_calls_without_trainlab": 3,
+   "recorded": 3,
+   "failed_recorded": [],
+   "input_truth": 3360,
+   "input_rec": 3360,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 3,
+   "elsewhere": [],
+   "providers": [
+    "ollama"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "llama3.2",
+    "nomic-embed-text"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 19.6,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-community",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 816,
+   "input_rec": 816,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "ollama"
+   ],
+   "sdks": [
+    "http:requests"
+   ],
+   "models": [
+    "llama3.2"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 11.4,
+   "status": "PASS"
+  },
+  {
+   "project": "langgraph",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 732,
+   "input_rec": 732,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 32.4,
+   "status": "PASS"
+  },
+  {
+   "project": "llama-index-openai",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 4,
+   "server_calls_without_trainlab": 4,
+   "recorded": 4,
+   "failed_recorded": [],
+   "input_truth": 3171,
+   "input_rec": 3171,
+   "output_truth": 145,
+   "output_rec": 145,
+   "estimated": 1,
+   "located": 4,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create",
+    "openai.embeddings.create"
+   ],
+   "models": [
+    "gpt-4o-mini",
+    "text-embedding-3-small"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 55.3,
+   "status": "PASS"
+  },
+  {
+   "project": "llama-index-anthropic",
+   "kind": "framework",
+   "api": "anthropic",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 989,
+   "input_rec": 989,
+   "output_truth": 371,
+   "output_rec": 371,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "anthropic"
+   ],
+   "sdks": [
+    "anthropic.beta.messages.create",
+    "anthropic.messages.create"
+   ],
+   "models": [
+    "claude-sonnet-4-5"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 39.2,
+   "status": "PASS"
+  },
+  {
+   "project": "llama-index-ollama",
+   "kind": "framework",
+   "api": "ollama",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 1277,
+   "input_rec": 1277,
+   "output_truth": 39,
+   "output_rec": 39,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "ollama"
+   ],
+   "sdks": [
+    "http:httpx"
+   ],
+   "models": [
+    "llama3.2"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 36.6,
+   "status": "PASS"
+  },
+  {
+   "project": "llama-index-gemini",
+   "kind": "framework",
+   "api": "gemini",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 738,
+   "input_rec": 738,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "gemini"
+   ],
+   "sdks": [
+    "google.genai.models.generate_content"
+   ],
+   "models": [
+    "gemini-2.5-flash"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 46.1,
+   "status": "PASS"
+  },
+  {
+   "project": "llama-index-bedrock",
+   "kind": "framework",
+   "api": "bedrock",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 743,
+   "input_rec": 743,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "bedrock"
+   ],
+   "sdks": [
+    "botocore.bedrock-runtime"
+   ],
+   "models": [
+    "anthropic.claude-3-5-haiku-20241022-v1:0"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 38.9,
+   "status": "PASS"
+  },
+  {
+   "project": "llama-index-mistral",
+   "kind": "framework",
+   "api": "mistral",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 755,
+   "input_rec": 755,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "http:httpx2"
+   ],
+   "models": [
+    "mistral-large-latest"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 41.0,
+   "status": "PASS"
+  },
+  {
+   "project": "dspy",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2456,
+   "input_rec": 2456,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai"
+   ],
+   "sdks": [
+    "litellm.completion"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 89.7,
+   "status": "PASS"
+  },
+  {
+   "project": "instructor",
+   "kind": "framework",
+   "api": "openai+anthropic",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2392,
+   "input_rec": 2392,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "anthropic",
+    "openai_compatible"
+   ],
+   "sdks": [
+    "anthropic.messages.create",
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "claude-haiku-4-5",
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 49.2,
+   "status": "PASS"
+  },
+  {
+   "project": "pydantic-ai",
+   "kind": "framework",
+   "api": "openai+anthropic+gemini",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [
+    "ValueError"
+   ],
+   "input_truth": 2147,
+   "input_rec": 2147,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "anthropic",
+    "openai_compatible"
+   ],
+   "sdks": [
+    "anthropic.beta.messages.create",
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "claude-sonnet-4-5",
+    "gpt-4o"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 45.5,
+   "status": "PASS"
+  },
+  {
+   "project": "openai-agents",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 741,
+   "input_rec": 741,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.responses.create"
+   ],
+   "models": [
+    "gpt-4.1-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 37.2,
+   "status": "PASS"
+  },
+  {
+   "project": "smolagents",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2142,
+   "input_rec": 2142,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai",
+    "openai_compatible"
+   ],
+   "sdks": [
+    "litellm.completion",
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 79.1,
+   "status": "PASS"
+  },
+  {
+   "project": "haystack",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 733,
+   "input_rec": 733,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 28.4,
+   "status": "PASS"
+  },
+  {
+   "project": "haystack-anthropic",
+   "kind": "framework",
+   "api": "anthropic",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 751,
+   "input_rec": 751,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "anthropic"
+   ],
+   "sdks": [
+    "anthropic.messages.create"
+   ],
+   "models": [
+    "claude-sonnet-4-5"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 37.4,
+   "status": "PASS"
+  },
+  {
+   "project": "crewai",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 795,
+   "input_rec": 795,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 68.4,
+   "status": "PASS"
+  },
+  {
+   "project": "autogen",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 772,
+   "input_rec": 772,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 20.0,
+   "status": "PASS"
+  },
+  {
+   "project": "semantic-kernel",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 733,
+   "input_rec": 733,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 45.7,
+   "status": "PASS"
+  },
+  {
+   "project": "agno",
+   "kind": "framework",
+   "api": "openai+anthropic",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2140,
+   "input_rec": 2140,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "anthropic",
+    "openai_compatible"
+   ],
+   "sdks": [
+    "anthropic.messages.create",
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "claude-sonnet-4-5",
+    "gpt-4o"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 41.6,
+   "status": "PASS"
+  },
+  {
+   "project": "strands-agents",
+   "kind": "framework",
+   "api": "bedrock",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 737,
+   "input_rec": 737,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "bedrock"
+   ],
+   "sdks": [
+    "botocore.bedrock-runtime"
+   ],
+   "models": [
+    "us.anthropic.claude-sonnet-4-20250514-v1:0"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 18.1,
+   "status": "PASS"
+  },
+  {
+   "project": "google-adk",
+   "kind": "framework",
+   "api": "gemini",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 764,
+   "input_rec": 764,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "gemini"
+   ],
+   "sdks": [
+    "google.genai.models.generate_content"
+   ],
+   "models": [
+    "gemini-2.5-flash"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 30.3,
+   "status": "PASS"
+  },
+  {
+   "project": "mirascope",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 734,
+   "input_rec": 734,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.responses.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 28.2,
+   "status": "PASS"
+  },
+  {
+   "project": "magentic",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 746,
+   "input_rec": 746,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 17.3,
+   "status": "PASS"
+  },
+  {
+   "project": "llm-simonw",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 743,
+   "input_rec": 743,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 19.3,
+   "status": "PASS"
+  },
+  {
+   "project": "guidance",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 767,
+   "input_rec": 767,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 21.3,
+   "status": "PASS"
+  },
+  {
+   "project": "outlines",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 729,
+   "input_rec": 729,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 17.3,
+   "status": "PASS"
+  },
+  {
+   "project": "mem0",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 11014,
+   "input_rec": 11014,
+   "output_truth": 34,
+   "output_rec": 34,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create",
+    "openai.embeddings.create"
+   ],
+   "models": [
+    "gpt-4o-mini",
+    "text-embedding-3-small"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 32.1,
+   "status": "PASS"
+  },
+  {
+   "project": "camel-ai",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 739,
+   "input_rec": 739,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 38.9,
+   "status": "PASS"
+  },
+  {
+   "project": "griptape",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 739,
+   "input_rec": 739,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 26.8,
+   "status": "PASS"
+  },
+  {
+   "project": "langroid",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 760,
+   "input_rec": 760,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 66.1,
+   "status": "PASS"
+  },
+  {
+   "project": "ragas",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 739,
+   "input_rec": 739,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 64.5,
+   "status": "PASS"
+  },
+  {
+   "project": "deepeval",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 740,
+   "input_rec": 740,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 31.4,
+   "status": "PASS"
+  },
+  {
+   "project": "vanna",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 737,
+   "input_rec": 737,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 32.5,
+   "status": "PASS"
+  },
+  {
+   "project": "txtai",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 734,
+   "input_rec": 734,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai"
+   ],
+   "sdks": [
+    "litellm.completion"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 112.1,
+   "status": "PASS"
+  },
+  {
+   "project": "atomic-agents",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 935,
+   "input_rec": 935,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 34.8,
+   "status": "PASS"
+  },
+  {
+   "project": "controlflow-like:burr",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 729,
+   "input_rec": 729,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 14.8,
+   "status": "PASS"
+  },
+  {
+   "project": "langchain-litellm",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 729,
+   "input_rec": 729,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai"
+   ],
+   "sdks": [
+    "litellm.completion"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 55.9,
+   "status": "PASS"
+  },
+  {
+   "project": "pandasai",
+   "kind": "framework",
+   "api": "openai",
+   "server_calls": 5,
+   "server_calls_without_trainlab": 5,
+   "recorded": 5,
+   "failed_recorded": [],
+   "input_truth": 8335,
+   "input_rec": 8335,
+   "output_truth": 247,
+   "output_rec": 247,
+   "estimated": 0,
+   "located": 5,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4.1-mini"
+   ],
+   "exit": 1,
+   "exit_without_trainlab": 1,
+   "secs": 38.5,
+   "status": "PASS"
+  },
+  {
+   "project": "openinference-otel",
+   "kind": "otel",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 729,
+   "input_rec": 729,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 16.9,
+   "status": "PASS"
+  },
+  {
+   "project": "openllmetry-otel",
+   "kind": "otel",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 729,
+   "input_rec": 729,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 24.5,
+   "status": "PASS"
+  },
+  {
+   "project": "langfuse-openai",
+   "kind": "wrapper",
+   "api": "openai",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 729,
+   "input_rec": 729,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "gpt-4o-mini"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 20.0,
+   "status": "PASS"
+  },
+  {
+   "project": "helicone-style-proxy",
+   "kind": "sdk",
+   "api": "openrouter",
+   "server_calls": 2,
+   "server_calls_without_trainlab": 2,
+   "recorded": 2,
+   "failed_recorded": [],
+   "input_truth": 2136,
+   "input_rec": 2136,
+   "output_truth": 121,
+   "output_rec": 121,
+   "estimated": 0,
+   "located": 2,
+   "elsewhere": [],
+   "providers": [
+    "openai_compatible"
+   ],
+   "sdks": [
+    "openai.chat.completions.create"
+   ],
+   "models": [
+    "anthropic/claude-3.5-sonnet",
+    "qwen/qwen-2.5-72b-instruct"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 14.7,
+   "status": "PASS"
+  },
+  {
+   "project": "google-genai-vertex",
+   "kind": "sdk",
+   "api": "vertex",
+   "server_calls": 1,
+   "server_calls_without_trainlab": 1,
+   "recorded": 1,
+   "failed_recorded": [],
+   "input_truth": 727,
+   "input_rec": 727,
+   "output_truth": 87,
+   "output_rec": 87,
+   "estimated": 0,
+   "located": 1,
+   "elsewhere": [],
+   "providers": [
+    "vertex"
+   ],
+   "sdks": [
+    "google.genai.models.generate_content"
+   ],
+   "models": [
+    "gemini-2.5-flash"
+   ],
+   "exit": 0,
+   "exit_without_trainlab": 0,
+   "secs": 7.1,
+   "status": "PASS"
+  }
+ ]
+}

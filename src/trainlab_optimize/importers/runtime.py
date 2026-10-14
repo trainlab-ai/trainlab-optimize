@@ -45,6 +45,8 @@ def read_events(path: str | Path) -> list[UsageRecord]:
                     continue
                 if not isinstance(e, dict) or not e.get("provider"):
                     continue
+                if e.get("ok") is False and not (e.get("input_tokens") or e.get("output_tokens")):
+                    continue                       # failed before anything was billed (4xx/5xx, client-side error)
                 model = e.get("model") or "unknown"
                 w = float(e.get("weight") or 1.0)
                 tags = e.get("tags") or {}

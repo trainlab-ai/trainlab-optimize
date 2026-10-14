@@ -596,6 +596,8 @@ def test_events_importer_weights_and_tags(tmp_path):
         {"v": 1, "provider": "openai", "model": "gpt-4o", "op": "chat", "sdk": "s", "ts": "2026-10-01T11:00:00Z",
          "input_tokens": 50, "output_tokens": 5, "path": "app/a.py", "line": 5, "tags": {"feature": "x"},
          "weight": 4.0, "ok": True},
+        {"v": 1, "provider": "openai", "model": "gpt-4o", "op": "chat", "sdk": "s", "ts": "2026-10-01T12:00:00Z",
+         "path": "app/a.py", "line": 5, "tags": {"feature": "x"}, "ok": False, "error": "RateLimitError"},
     ]
     (d / "events-20261001-1.jsonl").write_text("\n".join(json.dumps(x) for x in lines) + "\n{broken")
     recs, kind = read_any(d)
@@ -662,9 +664,9 @@ def test_openai_with_raw_and_streaming_response(events):
     assert raw.parse().choices[0].message.content == "hi"
     with c.chat.completions.with_streaming_response.create(model="m", messages=[]) as resp:
         assert json.loads(resp.read())["usage"]["prompt_tokens"] == 120   # body untouched by trainlab
-    a, b = events
+    a, b = events                                   # one event each, never a second from the HTTP layer
     assert a["input_tokens"] == 120 and a["ok"] is True
-    assert "input_tokens" not in b and b["ok"] is True
+    assert b["input_tokens"] == 120 and b["output_tokens"] == 30 and b["sdk"] == "openai.chat.completions.create"
 
 
 def test_gemini_async_stream(events):
@@ -710,3 +712,158 @@ def test_bedrock_converse_stream(events):
     assert texts == ["hi"] and orig is not None
     (e,) = events
     assert (e["model"], e["input_tokens"], e["output_tokens"], e["stream"]) == ("amazon.nova-lite-v1:0", 33, 4, True)
+
+
+# ------------------------------------------------------------------ HTTP layer (any client, any SDK)
+def _fake_server(handler_fn):
+    """A real local HTTP server (the HTTP layer patches the client transports themselves)."""
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    class H(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
+        def log_message(self, *a):
+            pass
+
+        def do_POST(self):
+            body = json.loads(self.rfile.read(int(self.headers.get("content-length") or 0)) or b"{}")
+            code, ctype, payload = handler_fn(self.path, body)
+            data = payload if isinstance(payload, bytes) else json.dumps(payload).encode()
+            self.send_response(code)
+            self.send_header("content-type", ctype)
+            self.send_header("content-length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    return srv, f"http://127.0.0.1:{srv.server_address[1]}"
+
+
+def _formats(path, body):
+    if path == "/v1/chat/completions":
+        if body.get("stream"):
+            chunks = [{"choices": [{"index": 0, "delta": {"content": "hey"}}], "model": body["model"]},
+                      {"choices": [], "model": body["model"], "usage": {"prompt_tokens": 9, "completion_tokens": 2}}]
+            return 200, "text/event-stream", "".join(f"data: {json.dumps(c)}\n\n" for c in chunks).encode() + b"data: [DONE]\n\n"
+        return 200, "application/json", {"model": body["model"], "choices": [{"message": {"content": "x"}}],
+                                         "usage": {"prompt_tokens": 11, "completion_tokens": 3}}
+    if path == "/v2/chat":
+        return 200, "application/json", {"message": {"content": [{"text": "x"}]}, "finish_reason": "COMPLETE",
+                                         "usage": {"billed_units": {"input_tokens": 21, "output_tokens": 4}}}
+    if path == "/api/chat":
+        lines = [{"model": body["model"], "message": {"content": "x"}, "done": False},
+                 {"model": body["model"], "message": {"content": ""}, "done": True, "prompt_eval_count": 31,
+                  "eval_count": 5}]
+        return 200, "application/x-ndjson", "\n".join(json.dumps(x) for x in lines).encode() + b"\n"
+    if path.endswith("/text-generation/generation"):
+        return 200, "application/json", {"output": {"text": "x"}, "usage": {"input_tokens": 41, "output_tokens": 6}}
+    if path == "/app/api/chat":                         # an app's own endpoint, not an LLM
+        return 200, "application/json", {"reply": "hello", "user": 1}
+    if path == "/v1/messages":
+        return 429, "application/json", {"type": "error", "error": {"type": "rate_limit_error"}}
+    return 404, "application/json", {}
+
+
+@pytest.fixture()
+def server():
+    srv, base = _fake_server(_formats)
+    yield base
+    srv.shutdown()
+
+
+def test_http_layer_records_any_client_and_format(events, server):
+    import requests
+    httpx.post(f"{server}/v1/chat/completions", json={"model": "mistral-large", "messages": []})  # @h1
+    requests.post(f"{server}/v2/chat", json={"model": "command-r", "messages": []})
+    for _ in requests.post(f"{server}/api/chat", json={"model": "llama3.2"}, stream=True).iter_lines():
+        pass
+    httpx.post(f"{server}/api/v1/services/aigc/text-generation/generation", json={"model": "qwen-max"})
+    with httpx.stream("POST", f"{server}/v1/chat/completions", json={"model": "m", "stream": True}) as r:
+        for _ in r.iter_lines():
+            pass
+    got = [(e["sdk"], e["model"], e["input_tokens"], e["output_tokens"]) for e in events]
+    assert got == [("http:httpx", "mistral-large", 11, 3), ("http:requests", "command-r", 21, 4),
+                   ("http:requests", "llama3.2", 31, 5), ("http:httpx", "qwen-max", 41, 6),
+                   ("http:httpx", "m", 9, 2)]
+    assert events[0]["line"] == _lineno("h1") and events[0]["path"] == HERE
+    assert events[2]["stream"] is True and events[4]["stream"] is True
+
+
+def test_http_layer_ignores_non_llm_and_records_errors(events, server):
+    import requests
+    requests.post(f"{server}/app/api/chat", json={"msg": "hi"})       # app route, plain JSON: not an LLM call
+    httpx.post(f"{server}/v1/messages", json={"model": "claude"})      # 429
+    assert len(events) == 1 and events[0]["ok"] is False and events[0]["error"] == "HTTP 429"
+
+
+def test_http_layer_aiohttp(events, server):
+    aiohttp = pytest.importorskip("aiohttp")
+
+    async def run():
+        async with aiohttp.ClientSession() as s:
+            async with s.post(f"{server}/v1/chat/completions", json={"model": "gpt-4o", "messages": []}) as r:
+                await r.json()
+            async with s.post(f"{server}/api/chat", json={"model": "llama3.2"}) as r:
+                async for _ in r.content:
+                    pass
+
+    asyncio.run(run())
+    assert [(e["model"], e["input_tokens"]) for e in events] == [("gpt-4o", 11), ("llama3.2", 31)]
+
+
+def test_sdk_call_is_not_recorded_twice_by_http_layer(events, server):
+    import openai
+    c = openai.OpenAI(base_url=f"{server}/v1", api_key="k", max_retries=0)
+    c.chat.completions.create(model="m", messages=[])
+    for _ in c.chat.completions.create(model="m", messages=[], stream=True):
+        pass
+    assert [e["sdk"] for e in events] == ["openai.chat.completions.create"] * 2
+    assert events[1]["input_tokens"] == 9          # usage only on the stream's last chunk
+
+
+def test_threads_and_tasks_keep_app_line_and_tags(events):
+    """Found in the framework run: LangChain batch(), CrewAI, Strands run LLM calls on pool
+    threads, Google ADK in its own asyncio tasks - stacks with no app frame at all. The line
+    that handed the work over must be used, with its tags."""
+    import concurrent.futures as cf
+    import functools
+    import threading
+
+    import openai
+    c = _openai()
+    create = functools.partial(c.chat.completions.create, model="m", messages=[])   # library code only
+    with trainlab.tag(feature="pool"):
+        with cf.ThreadPoolExecutor(2) as ex:
+            list(ex.map(lambda f: f(), [create]))  # @pool
+            ex.submit(create).result()  # @submit
+        t = threading.Thread(target=create)
+        t.start()  # @thread
+        t.join()
+    assert [e["line"] for e in events] == [_lineno("pool"), _lineno("submit"), _lineno("thread")]
+    assert all(e["tags"] == {"feature": "pool"} and e["path"] == HERE for e in events)
+
+    ac = openai.AsyncOpenAI(api_key="k", max_retries=0,
+                            http_client=httpx.AsyncClient(transport=httpx.MockTransport(_openai_handler)))
+
+    async def main():
+        with trainlab.tag(feature="task"):
+            await asyncio.gather(ac.chat.completions.create(model="m", messages=[]))  # @task
+    asyncio.run(main())
+    assert (events[3]["line"], events[3]["tags"]) == (_lineno("task"), {"feature": "task"})
+
+
+def test_sampled_out_sdk_call_is_not_recorded_by_http_layer(server):
+    import openai
+    got = []
+    trainlab.instrument(path=False, sinks=[_ListSink(got)], sample_rate=0.000001)
+    try:
+        c = openai.OpenAI(base_url=f"{server}/v1", api_key="k", max_retries=0)
+        for _ in range(30):
+            c.chat.completions.create(model="m", messages=[])
+            for _ in c.chat.completions.create(model="m", messages=[], stream=True):
+                pass
+    finally:
+        trainlab.uninstrument()
+    assert got == []

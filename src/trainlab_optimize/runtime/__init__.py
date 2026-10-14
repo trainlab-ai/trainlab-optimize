@@ -31,7 +31,7 @@ def _ref():
 def instrument(path: str | os.PathLike | None = None, *, service: str | None = None,
                project_root: str | os.PathLike | None = None, tags: dict | None = None, otel: bool = False,
                sinks: list | None = None, sample_rate: float = 1.0, include_packages: tuple[str, ...] | list = (),
-               sdks: list[str] | None = None) -> Recorder | None:
+               sdks: list[str] | None = None, http: bool = True, follow_threads: bool = True) -> Recorder | None:
     """Start recording. Safe to call more than once (later calls replace the settings).
 
     path              where JSONL traces go (default <project_root>/.trainlab/traces); False = no file
@@ -43,6 +43,10 @@ def instrument(path: str | os.PathLike | None = None, *, service: str | None = N
     sample_rate       record this fraction of calls; reports scale them back up
     include_packages  your own packages if the app runs from site-packages
     sdks              limit to these: openai, anthropic, litellm, bedrock, google-genai
+    http              also record LLM calls made through httpx/requests/aiohttp by any other SDK
+                      or by hand (Mistral, Cohere, Groq, Ollama, DashScope, raw HTTP, ...)
+    follow_threads    attribute calls run on worker threads / asyncio tasks to the app line that
+                      started them (costs ~5-12 us per task or thread-pool submit; False to skip)
     """
     global _recorder
     if os.environ.get("TRAINLAB_INSTRUMENT", "").strip().lower() in ("0", "false", "off", "no"):
@@ -65,7 +69,11 @@ def instrument(path: str | os.PathLike | None = None, *, service: str | None = N
         _recorder.flush()
     _recorder = rec
     from . import patches
-    rec.patched = patches.apply(_ref, sdks)
+    only = None
+    if sdks is not None or not http or not follow_threads:
+        only = list(sdks if sdks is not None else patches.SDK_NAMES) + (["context"] if follow_threads else []) \
+            + (["http"] if http else [])
+    rec.patched = patches.apply(_ref, only)
     return rec
 
 

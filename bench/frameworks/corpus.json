@@ -1,0 +1,540 @@
+{
+ "openai-sdk": {
+  "pkgs": [
+   "openai"
+  ],
+  "api": "openai",
+  "kind": "sdk"
+ },
+ "anthropic-sdk": {
+  "pkgs": [
+   "anthropic"
+  ],
+  "api": "anthropic",
+  "kind": "sdk"
+ },
+ "google-genai-sdk": {
+  "pkgs": [
+   "google-genai"
+  ],
+  "api": "gemini",
+  "kind": "sdk"
+ },
+ "boto3-bedrock": {
+  "pkgs": [
+   "boto3"
+  ],
+  "api": "bedrock",
+  "kind": "sdk"
+ },
+ "litellm": {
+  "pkgs": [
+   "litellm"
+  ],
+  "api": "openai+anthropic",
+  "kind": "sdk"
+ },
+ "mistralai-sdk": {
+  "pkgs": [
+   "mistralai"
+  ],
+  "api": "mistral",
+  "kind": "sdk"
+ },
+ "cohere-sdk": {
+  "pkgs": [
+   "cohere"
+  ],
+  "api": "cohere",
+  "kind": "sdk"
+ },
+ "groq-sdk": {
+  "pkgs": [
+   "groq"
+  ],
+  "api": "groq",
+  "kind": "sdk"
+ },
+ "together-sdk": {
+  "pkgs": [
+   "together"
+  ],
+  "api": "together",
+  "kind": "sdk"
+ },
+ "ollama-sdk": {
+  "pkgs": [
+   "ollama"
+  ],
+  "api": "ollama",
+  "kind": "sdk"
+ },
+ "huggingface-hub": {
+  "pkgs": [
+   "huggingface_hub"
+  ],
+  "api": "hf",
+  "kind": "sdk"
+ },
+ "dashscope-sdk": {
+  "pkgs": [
+   "dashscope"
+  ],
+  "api": "dashscope",
+  "kind": "sdk"
+ },
+ "zhipuai-sdk": {
+  "pkgs": [
+   "zhipuai",
+   "sniffio"
+  ],
+  "api": "zhipu",
+  "kind": "sdk"
+ },
+ "azure-ai-inference": {
+  "pkgs": [
+   "azure-ai-inference"
+  ],
+  "api": "azure-inference",
+  "kind": "sdk"
+ },
+ "google-generativeai": {
+  "pkgs": [
+   "google-generativeai"
+  ],
+  "api": "gemini-legacy",
+  "kind": "sdk"
+ },
+ "openai-azure": {
+  "pkgs": [
+   "openai"
+  ],
+  "api": "azure",
+  "kind": "sdk"
+ },
+ "fireworks-sdk": {
+  "pkgs": [
+   "fireworks-ai",
+   "openai"
+  ],
+  "api": "fireworks",
+  "kind": "sdk"
+ },
+ "voyageai-sdk": {
+  "pkgs": [
+   "voyageai"
+  ],
+  "api": "voyage",
+  "kind": "sdk"
+ },
+ "raw-requests": {
+  "pkgs": [
+   "requests"
+  ],
+  "api": "openai+anthropic",
+  "kind": "raw-http"
+ },
+ "raw-httpx": {
+  "pkgs": [
+   "httpx"
+  ],
+  "api": "openai",
+  "kind": "raw-http"
+ },
+ "raw-aiohttp": {
+  "pkgs": [
+   "aiohttp"
+  ],
+  "api": "openai",
+  "kind": "raw-http"
+ },
+ "langchain-openai": {
+  "pkgs": [
+   "langchain-openai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "langchain-anthropic": {
+  "pkgs": [
+   "langchain-anthropic"
+  ],
+  "api": "anthropic",
+  "kind": "framework"
+ },
+ "langchain-google-genai": {
+  "pkgs": [
+   "langchain-google-genai"
+  ],
+  "api": "gemini",
+  "kind": "framework"
+ },
+ "langchain-aws": {
+  "pkgs": [
+   "langchain-aws"
+  ],
+  "api": "bedrock",
+  "kind": "framework"
+ },
+ "langchain-mistralai": {
+  "pkgs": [
+   "langchain-mistralai"
+  ],
+  "api": "mistral",
+  "kind": "framework"
+ },
+ "langchain-cohere": {
+  "pkgs": [
+   "langchain-cohere"
+  ],
+  "api": "cohere",
+  "kind": "framework"
+ },
+ "langchain-groq": {
+  "pkgs": [
+   "langchain-groq"
+  ],
+  "api": "groq",
+  "kind": "framework"
+ },
+ "langchain-ollama": {
+  "pkgs": [
+   "langchain-ollama"
+  ],
+  "api": "ollama",
+  "kind": "framework"
+ },
+ "langchain-community": {
+  "pkgs": [
+   "langchain-community",
+   "langchain-openai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "langgraph": {
+  "pkgs": [
+   "langgraph",
+   "langchain-openai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "llama-index-openai": {
+  "pkgs": [
+   "llama-index-core",
+   "llama-index-llms-openai",
+   "llama-index-embeddings-openai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "llama-index-anthropic": {
+  "pkgs": [
+   "llama-index-core",
+   "llama-index-llms-anthropic",
+   "anthropic<0.60"
+  ],
+  "api": "anthropic",
+  "kind": "framework"
+ },
+ "llama-index-ollama": {
+  "pkgs": [
+   "llama-index-core",
+   "llama-index-llms-ollama"
+  ],
+  "api": "ollama",
+  "kind": "framework"
+ },
+ "llama-index-gemini": {
+  "pkgs": [
+   "llama-index-core",
+   "llama-index-llms-google-genai"
+  ],
+  "api": "gemini",
+  "kind": "framework"
+ },
+ "llama-index-bedrock": {
+  "pkgs": [
+   "llama-index-core",
+   "llama-index-llms-bedrock-converse"
+  ],
+  "api": "bedrock",
+  "kind": "framework"
+ },
+ "llama-index-mistral": {
+  "pkgs": [
+   "llama-index-core",
+   "llama-index-llms-mistralai"
+  ],
+  "api": "mistral",
+  "kind": "framework"
+ },
+ "dspy": {
+  "pkgs": [
+   "dspy"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "instructor": {
+  "pkgs": [
+   "instructor",
+   "openai",
+   "anthropic"
+  ],
+  "api": "openai+anthropic",
+  "kind": "framework"
+ },
+ "pydantic-ai": {
+  "pkgs": [
+   "pydantic-ai-slim[openai,anthropic,google,bedrock]"
+  ],
+  "api": "openai+anthropic+gemini",
+  "kind": "framework"
+ },
+ "openai-agents": {
+  "pkgs": [
+   "openai-agents"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "smolagents": {
+  "pkgs": [
+   "smolagents[openai,litellm]"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "haystack": {
+  "pkgs": [
+   "haystack-ai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "haystack-anthropic": {
+  "pkgs": [
+   "haystack-ai",
+   "anthropic-haystack"
+  ],
+  "api": "anthropic",
+  "kind": "framework"
+ },
+ "crewai": {
+  "pkgs": [
+   "crewai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "autogen": {
+  "pkgs": [
+   "autogen-agentchat",
+   "autogen-ext[openai]"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "semantic-kernel": {
+  "pkgs": [
+   "semantic-kernel",
+   "httpx"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "agno": {
+  "pkgs": [
+   "agno",
+   "openai",
+   "anthropic"
+  ],
+  "api": "openai+anthropic",
+  "kind": "framework"
+ },
+ "strands-agents": {
+  "pkgs": [
+   "strands-agents"
+  ],
+  "api": "bedrock",
+  "kind": "framework"
+ },
+ "google-adk": {
+  "pkgs": [
+   "google-adk"
+  ],
+  "api": "gemini",
+  "kind": "framework"
+ },
+ "mirascope": {
+  "pkgs": [
+   "mirascope[openai]"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "magentic": {
+  "pkgs": [
+   "magentic"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "llm-simonw": {
+  "pkgs": [
+   "llm"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "guidance": {
+  "pkgs": [
+   "guidance",
+   "openai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "outlines": {
+  "pkgs": [
+   "outlines",
+   "openai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "mem0": {
+  "pkgs": [
+   "mem0ai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "camel-ai": {
+  "pkgs": [
+   "camel-ai",
+   "mcp<1.20"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "griptape": {
+  "pkgs": [
+   "griptape"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "langroid": {
+  "pkgs": [
+   "langroid"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "ragas": {
+  "pkgs": [
+   "ragas",
+   "langchain-openai",
+   "langchain-community<0.3.20"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "deepeval": {
+  "pkgs": [
+   "deepeval"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "vanna": {
+  "pkgs": [
+   "vanna[openai]<2"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "txtai": {
+  "pkgs": [
+   "txtai[pipeline-llm]",
+   "litellm"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "atomic-agents": {
+  "pkgs": [
+   "atomic-agents",
+   "openai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "controlflow-like:burr": {
+  "pkgs": [
+   "burr",
+   "openai"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "langchain-litellm": {
+  "pkgs": [
+   "langchain-litellm"
+  ],
+  "api": "openai",
+  "kind": "framework"
+ },
+ "pandasai": {
+  "pkgs": [
+   "pandasai",
+   "pandasai-openai"
+  ],
+  "api": "openai",
+  "kind": "framework",
+  "python": "3.11"
+ },
+ "openinference-otel": {
+  "pkgs": [
+   "openai",
+   "opentelemetry-sdk",
+   "openinference-instrumentation-openai"
+  ],
+  "api": "openai",
+  "kind": "otel"
+ },
+ "openllmetry-otel": {
+  "pkgs": [
+   "openai",
+   "opentelemetry-sdk",
+   "opentelemetry-instrumentation-openai"
+  ],
+  "api": "openai",
+  "kind": "otel"
+ },
+ "langfuse-openai": {
+  "pkgs": [
+   "langfuse",
+   "openai"
+  ],
+  "api": "openai",
+  "kind": "wrapper"
+ },
+ "helicone-style-proxy": {
+  "pkgs": [
+   "openai"
+  ],
+  "api": "openrouter",
+  "kind": "sdk"
+ },
+ "google-genai-vertex": {
+  "pkgs": [
+   "google-genai"
+  ],
+  "api": "vertex",
+  "kind": "sdk"
+ }
+}

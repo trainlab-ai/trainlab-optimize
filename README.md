@@ -128,6 +128,29 @@ keys, headers or error messages. Nothing is sent anywhere.
 | LiteLLM | completion, acompletion, embedding, aembedding | from the model prefix (`dashscope/qwen-max` → dashscope) |
 | AWS Bedrock (boto3) | converse, converse_stream, invoke_model(_with_response_stream) | bedrock; other AWS calls pass through untouched |
 | Google Gen AI | generate_content, generate_content_stream, embed_content | gemini or vertex |
+| **Anything else over HTTP** (httpx, requests, aiohttp) | chat, completions, embeddings in the OpenAI, Anthropic, Gemini, Cohere, Ollama and DashScope wire formats | from the host: mistral, cohere, groq, together, fireworks, ollama, huggingface, dashscope, zhipu, azure, voyage, ... |
+
+The HTTP layer covers SDKs without a dedicated hook (Mistral, Cohere, Groq, Together, Ollama,
+Hugging Face, DashScope, Zhipu, Azure AI Inference, Voyage, ...), framework integrations that
+call APIs directly, and code that posts to an LLM API by hand. It only records a POST to a
+known LLM API path whose response is LLM-shaped, so an app's own `/api/chat` route is not
+counted. When a dedicated SDK hook is already recording a call, the HTTP layer adds nothing
+but missing token counts (e.g. for `with_raw_response`).
+
+**Tested against 72 projects** (`bench/frameworks/`, [results](bench/frameworks/RESULTS.md)):
+the provider SDKs above plus LangChain (OpenAI, Anthropic, Google, AWS, Mistral, Cohere, Groq,
+Ollama, community, LiteLLM), LangGraph, LlamaIndex (OpenAI, Anthropic, Ollama, Gemini, Bedrock,
+Mistral), DSPy, Instructor, pydantic-ai, OpenAI Agents SDK, smolagents, Haystack, CrewAI,
+AutoGen, Semantic Kernel, Agno, Strands, Google ADK, Mirascope, Magentic, `llm`, Guidance,
+Outlines, Mem0, CAMEL, Griptape, Langroid, Ragas, DeepEval, Vanna, txtai, Atomic Agents, Burr,
+PandasAI, and apps already traced with OpenInference, OpenLLMetry or Langfuse. Each runs with
+trainlab off and on against a server that logs every token it serves: calls, tokens and the
+app line match in all of them, and none behaves differently with trainlab on.
+
+**Calls run on other threads or asyncio tasks** (LangChain `batch()`, CrewAI, Strands, Google
+ADK, thread pools, `asyncio.gather`) are attributed to the app line that started the work,
+with its tags. This costs about 5 µs per asyncio task and 12 µs per thread-pool submit;
+`instrument(follow_threads=False)` turns it off.
 
 A call made through LiteLLM (which itself calls the OpenAI SDK) is recorded once. Streams are
 recorded when the app finishes or closes them. OpenAI streams carry no usage unless the app
@@ -145,7 +168,8 @@ Overhead is about 0.1 ms per call. Each call is written to the trace file as it 
 code change; `trainlab.uninstrument()` restores every SDK.
 
 **Options:** `instrument(path=..., service=..., tags={"env": "prod"}, sample_rate=0.1,
-include_packages=("myapp",), otel=True, sinks=[...], sdks=["openai"])`. With
+include_packages=("myapp",), otel=True, sinks=[...], sdks=["openai"], http=True,
+follow_threads=True)`. With
 `sample_rate`, recorded calls carry a weight and the report scales them back up. Sampling
 is unbiased but noisy at low volume: 10% of 2,000 calls lands within about ±10% of the true
 token total; use it only for high-volume services.
@@ -376,6 +400,7 @@ every test status, recall. After any change to trainlab:
 python bench/run.py --lock --fresh && python bench/report.py && python bench/freeze.py check
 ```
 
+Run it on an idle machine: T02 is a scan-speed test and fails under heavy load.
 `freeze.py check` exits 1 on a regression (a test that passed now fails, a call site that
 was found is gone, recall dropped) and lists new call sites for review. When a change is
 intended, `python bench/freeze.py save` makes the new results the baseline.
@@ -397,9 +422,11 @@ intended, `python bench/freeze.py save` makes the new results the baseline.
 - OpenRouter's activity API covers the last 30 days. BYOK inference (billed on your own
   provider keys through OpenRouter) is counted as spend; if you also import that provider's
   own billing, the same calls appear in both.
-- `instrument()` is Python only for now. Calls made with raw HTTP (`requests`/`httpx`
-  straight to an API) or SDKs not in the table are not recorded; scan and billing still
-  cover them.
+- `instrument()` is Python only for now. It sees LLM calls made through the SDK hooks and
+  through httpx, httpx2, requests and aiohttp. Not seen: gRPC transports (the deprecated
+  `google-generativeai` and `vertexai` SDKs default to gRPC; `google-genai` uses HTTP),
+  `urllib.request`/`pycurl`, realtime/WebSocket APIs, and LLM APIs at paths outside the
+  standard ones. Scan and billing still cover those calls.
 - Prices are list prices. Negotiated discounts aren't known unless the billing export
   carries the billed cost, which then takes precedence.
 

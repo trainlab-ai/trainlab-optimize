@@ -37,41 +37,47 @@ class JsonlSink:
             os.register_at_fork(after_in_child=self._after_fork)
 
     def _after_fork(self) -> None:
+        # The child shares the parent's descriptor; open its own file (named by its pid) instead.
         self._lock = threading.Lock()
-        self._fh, self._key = None, None
+        self._close_fd()                       # the child's copy of the parent's descriptor
+        self._key = None
 
     def path(self) -> Path:
         day = datetime.now(timezone.utc).strftime("%Y%m%d")
         return self.dir / f"events-{day}-{os.getpid()}.jsonl"
 
+    def _day(self) -> str:
+        now = time.time()
+        if now - getattr(self, "_day_at", 0.0) > 1.0:
+            self._day_s, self._day_at = datetime.now(timezone.utc).strftime("%Y%m%d"), now
+        return self._day_s
+
     def write(self, ev) -> None:
-        line = json.dumps(ev.to_json(), separators=(",", ":"), ensure_ascii=False) + "\n"
-        key = (datetime.now(timezone.utc).strftime("%Y%m%d"), os.getpid())
+        line = (json.dumps(ev.to_json(), separators=(",", ":")) + "\n").encode()
+        key = (self._day(), os.getpid())
         with self._lock:
             if self._fh is None or key != self._key:
-                if self._fh is not None:
-                    try:
-                        self._fh.close()
-                    except OSError:
-                        pass
-                self._fh = open(self.dir / f"events-{key[0]}-{key[1]}.jsonl", "a", encoding="utf-8")
+                self._close_fd()
+                # O_APPEND + one os.write per call: a single syscall, no user-space buffer to lose
+                self._fh = os.open(self.dir / f"events-{key[0]}-{key[1]}.jsonl",
+                                   os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
                 self._key = key
-            self._fh.write(line)
-            self._fh.flush()
+            os.write(self._fh, line)
 
     def flush(self) -> None:
-        with self._lock:
-            if self._fh is not None:
-                self._fh.flush()
+        pass                                   # every line is already handed to the OS
+
+    def _close_fd(self) -> None:
+        if self._fh is not None:
+            try:
+                os.close(self._fh)
+            except OSError:
+                pass
+            self._fh = None
 
     def close(self) -> None:
         with self._lock:
-            if self._fh is not None:
-                try:
-                    self._fh.close()
-                except OSError:
-                    pass
-                self._fh = None
+            self._close_fd()
 
 
 class CallbackSink:
