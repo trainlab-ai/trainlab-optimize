@@ -215,3 +215,109 @@ def test_deeply_nested_expression_does_not_crash(tmp_path):
     (tmp_path / "deep.py").write_text(f"import openai\nx = {expr}\n")
     r = scan(tmp_path)
     assert r.call_sites == []
+
+
+def test_splat_payload_in_langchain_core_file():
+    src = '''
+from langchain_core.language_models import BaseChatModel
+class ChatX(BaseChatModel):
+    def _generate(self, payload):
+        return self.client.chat.completions.create(**payload)
+'''
+    s = sites_of(src)
+    assert [(x.kind, x.sdk_call) for x in s] == [("chat", "self.client.chat.completions.create")]
+
+
+def test_litellm_alias_and_partial():
+    src = '''
+from functools import partial
+from litellm import completion as litellm_completion
+def setup(cfg):
+    fn = partial(litellm_completion, model="claude-sonnet-4-5", temperature=0)
+    return litellm_completion(model=cfg.model, messages=[])
+'''
+    s = sites_of(src)
+    assert [(x.kind, x.provider, x.model) for x in s] == [
+        ("chat", "litellm", "claude-sonnet-4-5"), ("chat", "litellm", None)]
+
+
+def test_raw_http_endpoints_and_server_routes():
+    src = '''
+import aiohttp
+from fastapi import APIRouter
+router = APIRouter()
+
+@router.post("/chat/completions")
+async def proxy(payload, url):
+    request_url = f"{url}/chat/completions"
+    async with aiohttp.ClientSession() as s:
+        return await s.post(request_url, json=payload)
+
+ANTHROPIC = "https://api.anthropic.com/v1/messages"
+OWN = "/api/chat/completions"
+DOC = """Call the /v1/chat/completions endpoint like this."""
+'''
+    s = sites_of(src)
+    assert [(x.line, x.kind, x.provider, x.sdk_call) for x in s] == [
+        (8, "chat", "openai_compatible", "HTTP /chat/completions"),
+        (12, "chat", "anthropic", "HTTP /v1/messages")]
+    assert s[0].function == "proxy"
+
+
+def test_go_java_csharp_sdks():
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    go = '''import "github.com/openai/openai-go"
+resp, err := client.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
+    Model: "gpt-4o-mini",
+})'''
+    s = scan_heuristic("svc/llm.go", go, "go")
+    assert [(x.kind, x.provider, x.model, x.language) for x in s] == [("chat", "openai", "gpt-4o-mini", "go")]
+    java = '''import com.openai.client.OpenAIClient;
+ChatCompletionCreateParams p = ChatCompletionCreateParams.builder().model(ChatModel.GPT_4O).build();
+ChatCompletion c = client.chat().completions().create(p);'''
+    s = scan_heuristic("src/main/java/A.java", java, "jvm")
+    assert [(x.kind, x.provider, x.model) for x in s] == [("chat", "openai", "gpt-4o")]
+    cs = '''using OpenAI.Chat;
+ChatClient client = new(model: "gpt-4o", apiKey: key);
+ChatCompletion completion = await client.CompleteChatAsync(messages);'''
+    s = scan_heuristic("Svc/Chat.cs", cs, "csharp")
+    assert [(x.kind, x.provider, x.model) for x in s] == [("chat", "openai", "gpt-4o")]
+
+
+def test_go_http_endpoint_and_route_exclusion():
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    go = '''httpReq, err := http.NewRequest(http.MethodPost, m.baseURL+"/chat/completions", body)
+r.POST("/v1/chat/completions", handler)
+// POST /v1/messages
+const anthropicURL = "https://api.anthropic.com/v1/messages"'''
+    s = scan_heuristic("internal/llm.go", go, "go")
+    assert [(x.line, x.provider, x.sdk_call) for x in s] == [
+        (1, "openai_compatible", "HTTP /chat/completions"), (4, "anthropic", "HTTP /v1/messages")]
+
+
+def test_ts_fetch_to_own_backend_ignored():
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    ts = '''const r = await fetch(`${WEBUI_BASE_URL}/api/chat/completions`, {method: "POST"})
+const o = await fetch("https://api.openai.com/v1/chat/completions", {method: "POST"})'''
+    s = scan_heuristic("src/lib/apis.ts", ts, "javascript")
+    assert [(x.line, x.provider) for x in s] == [(2, "openai")]
+
+
+def test_csharp_azure_inference_and_server_path_check():
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    cs = '''using Azure.AI.Inference;
+var reply = await this.chatCompletionsClient.CompleteAsync(settings, cancellationToken: ct);
+if (context.Request.Path == "/v1/chat/completions") { await next(context); }'''
+    s = scan_heuristic("src/Agent.cs", cs, "csharp")
+    assert [(x.line, x.provider, x.sdk_call) for x in s] == [(2, "azure", "CompleteAsync")]
+
+
+def test_helper_with_model_kwarg_is_not_a_config():
+    src = '''
+from mylib import RestrictModel
+def fmt(m):
+    return to_openai_responses_message_dict(m, model="o3-mini")
+allowed = RestrictModel(model="gpt-4")
+llm = get_llm(model="gpt-4o")
+'''
+    assert [(x.line, x.model) for x in sites_of(src)] == [(5, "gpt-4"), (6, "gpt-4o")]

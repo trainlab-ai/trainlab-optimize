@@ -84,6 +84,8 @@ LLM_IMPORT_ROOTS = {"openai", "anthropic", "litellm", "boto3", "aioboto3", "aiob
 WRAPPER_MODEL_KWARGS = ("model", "model_name", "name", "llm", "llm_model", "summary_llm",
                         "agent_llm", "embedding", "embedding_model", "fast_llm", "smart_llm",
                         "strategic_llm", "judge_model")
+LLM_IMPORT_PREFIXES = ("langchain", "llama_index", "openai_", "anthropic_", "litellm_")
+
 MODEL_KWARGS = ("model", "modelId", "model_id", "model_name", "deployment_name", "azure_deployment")
 PARAM_KWARGS = ("max_tokens", "max_completion_tokens", "max_output_tokens", "temperature",
                 "stream", "response_format", "text_format", "tools", "tool_choice", "n",
@@ -110,7 +112,7 @@ HINT_PATTERNS = [
 EXAMPLE_PATH_RE = re.compile(
     r"(^|/)(examples?|samples?|demos?|docs?|cookbooks?|notebooks?|benchmarks?|evals?|tutorials?|"
     r"playground|sandbox|scratch|quickstarts?)(/|$)", re.I)
-TEST_PATH_RE = re.compile(r"(^|/)(tests?|testing)(/|$)|(^|/)test_[^/]*\.py$|_test\.py$|(^|/)conftest\.py$")
+TEST_PATH_RE = re.compile(r"(^|/)(tests?|testing|e2e|__tests__|__mocks__|fixtures?|mocks?)(/|$)|(^|/)test_[^/]*\.py$|_test\.py$|(^|/)conftest\.py$")
 
 
 # --------------------------------------------------------------------------- helpers
@@ -226,12 +228,31 @@ class PythonFileScanner:
         # ancestors; resolve those candidates afterwards, once every fact in the file is known.
         candidates = self._traverse(tree)
         # Without an LLM SDK import only wrapper configs (Settings(llm="gpt-4o")) are recorded.
-        self.has_llm_import = bool(self.facts.imports & LLM_IMPORT_ROOTS)
+        self.has_llm_import = bool(self.facts.imports & LLM_IMPORT_ROOTS) or any(
+            m.startswith(LLM_IMPORT_PREFIXES) for m in self.facts.imports)
         for call, ancestors in candidates:
             self._stack = list(ancestors)
             self._func_nodes = [n for n in ancestors if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
             self._func_params = [_params_of(fn) for fn in self._func_nodes]
             self._check_call(call)
+        seen_http = {s.line for s in self.sites}
+        for const, (kind, provider, path), ancestors in self._http_candidates:
+            if const.lineno in seen_http:
+                continue
+            seen_http.add(const.lineno)
+            self._stack = list(ancestors)
+            self._func_nodes = [n for n in ancestors if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+            self._func_params = [_params_of(fn) for fn in self._func_nodes]
+            func = self._enclosing_function()
+            loop_kind = self._loop_kind()
+            self.sites.append(CallSite(
+                id=hashlib.sha1(f"{self.rel_path}:{const.lineno}:{kind}".encode()).hexdigest()[:12],
+                path=self.rel_path, line=const.lineno, kind=kind, provider=provider,
+                sdk_call=f"HTTP {path}", function=func.name if func else None,
+                model_expr="set in request payload", model_source="unresolved",
+                in_loop=loop_kind is not None, loop_kind=loop_kind,
+                scope="example" if EXAMPLE_PATH_RE.search(self.rel_path) else "app",
+                is_test=self.is_test, confidence="heuristic"))
         used = {s.line for s in self.sites}
         self.model_refs = [(ln, v) for ln, v in self._ref_candidates if ln not in used]
         return self.sites
@@ -242,6 +263,7 @@ class PythonFileScanner:
         self._ref_candidates: list[tuple[int, str]] = []
         self._seen_refs: set = set()
         candidates: list[tuple[ast.Call, tuple]] = []
+        self._http_candidates: list[tuple[ast.Constant, tuple, tuple]] = []
         stack: list[ast.AST] = []
         todo: list[tuple[ast.AST, bool]] = [(tree, False)]
         iter_children = ast.iter_child_nodes
@@ -251,14 +273,29 @@ class PythonFileScanner:
                 stack.pop()
                 continue
             self._fact(node)
-            if isinstance(node, ast.Call) and _is_candidate(node):
+            if isinstance(node, ast.Call) and (_is_candidate(node) or self._is_alias_candidate(node)):
                 candidates.append((node, tuple(stack)))
+            elif isinstance(node, ast.Constant) and isinstance(node.value, str) and \
+                    ("completions" in node.value or "messages" in node.value or "responses" in node.value
+                     or "embeddings" in node.value or "enerateContent" in node.value):
+                ep = http_endpoint(node.value)
+                if ep and not _in_decorator(stack):
+                    self._http_candidates.append((node, ep, tuple(stack)))
             stack.append(node)
             todo.append((node, True))
             children = list(iter_children(node))
             for c in reversed(children):
                 todo.append((c, False))
         return candidates
+
+    def _is_alias_candidate(self, node: ast.Call) -> bool:
+        func = node.func
+        if isinstance(func, ast.Name):
+            if func.id == "partial" or self.facts.from_imports.get(func.id, "").startswith("litellm."):
+                return True
+        elif isinstance(func, ast.Attribute) and func.attr == "partial":
+            return True
+        return False
 
     def _fact(self, node: ast.AST) -> None:
         f = self.facts
@@ -344,6 +381,20 @@ class PythonFileScanner:
         kind = provider = None
         last = chain.split(".")[-1]
 
+        # from litellm import completion as litellm_completion; partial(litellm_completion, model=...)
+        lite = self._litellm_func(chain)
+        if lite:
+            self._record(node, chain, LITELLM_FUNCS[lite], "litellm",
+                         confidence="high" if self.has_llm_import else "heuristic")
+            return
+        if last == "partial" and node.args:
+            target = dotted(node.args[0]) or ""
+            lite = self._litellm_func(target) or (
+                target.split(".")[-1] if target.startswith("litellm.") and target.split(".")[-1] in LITELLM_FUNCS else None)
+            if lite:
+                self._record(node, f"partial({target})", LITELLM_FUNCS[lite], "litellm")
+                return
+
         # litellm.completion(...) is unambiguous even when litellm comes through a project wrapper
         if chain.startswith("litellm.") and last in LITELLM_FUNCS and not self.has_llm_import:
             self._record(node, chain, LITELLM_FUNCS[last], "litellm", confidence="heuristic")
@@ -351,12 +402,15 @@ class PythonFileScanner:
 
         if not self.has_llm_import:
             has_model = any(k.arg == "model" for k in node.keywords)
+            has_splat = any(k.arg is None for k in node.keywords)
             root = receiver_root(chain)
             client = self.facts.clients.get(root)
             # Client injected or built by a helper: client.chat.completions.create(model=..., messages=...)
             for suffix, k, needs in INJECTED_SUFFIXES:
-                if chain.endswith(suffix) and has_model and (
-                        not needs or any(kw.arg in needs for kw in node.keywords)):
+                specific = suffix.startswith((".chat.completions", ".responses"))
+                if chain.endswith(suffix) and (
+                        (has_model and (not needs or any(kw.arg in needs for kw in node.keywords)))
+                        or (specific and has_splat)):
                     self._record(node, chain, k, client[0] if client else "unknown", confidence="heuristic")
                     return
             if client and chain.endswith((".messages.create", ".messages.stream")) and has_model \
@@ -412,7 +466,22 @@ class PythonFileScanner:
 
         self._record(node, chain, kind, provider)
 
+    def _litellm_func(self, chain: str) -> str | None:
+        """Name of the litellm function an imported alias points to (litellm_completion -> completion)."""
+        origin = self.facts.from_imports.get(chain, "")
+        if origin.startswith("litellm.") and origin.count(".") == 1:
+            fn = origin.split(".", 1)[1]
+            if fn in LITELLM_FUNCS and chain != fn:
+                return fn
+        return None
+
     def _wrapper_model_kwarg(self, node: ast.Call) -> str | None:
+        func = node.func
+        name = func.attr if isinstance(func, ast.Attribute) else func.id if isinstance(func, ast.Name) else ""
+        # Only constructors/factories of models, clients and settings: RestrictModel(model=...),
+        # Settings(llm=...), get_llm(model=...). Not helpers like format_messages(model="o3-mini").
+        if not (name[:1].isupper() or _WRAPPER_NAME_RE.search(name)):
+            return None
         for kw in node.keywords:
             if kw.arg in WRAPPER_MODEL_KWARGS and isinstance(kw.value, ast.Constant) \
                     and isinstance(kw.value.value, str) and MODEL_NAME_RE.match(kw.value.value.strip()):
@@ -768,6 +837,56 @@ class PythonFileScanner:
                 self._locals_cache[key] = local
             yield local
 
+
+_HTTP_PATH_RE = re.compile(
+    r"(/v\d+(?:beta\d*|alpha)?)?(/chat/completions|/messages|/responses|/embeddings|"
+    r":generatecontent|:streamgeneratecontent)(?=$|[?#\"'/])")
+_PROVIDER_HOSTS = (("api.anthropic.com", "anthropic"), ("api.openai.com", "openai"),
+                   ("openai.azure.com", "azure"), ("generativelanguage.googleapis.com", "gemini"),
+                   ("aiplatform.googleapis.com", "gemini"), ("bedrock-runtime", "bedrock"),
+                   ("api.groq.com", "openai_compatible"), ("api.together.xyz", "openai_compatible"),
+                   ("api.mistral.ai", "mistral"), ("api.deepseek.com", "deepseek"),
+                   ("openrouter.ai", "openai_compatible"), ("api.x.ai", "openai_compatible"))
+
+
+def http_endpoint(value: str) -> tuple[str, str, str] | None:
+    """Recognise a provider REST endpoint in a URL/path string: (kind, provider, path) or None.
+
+    Server routes that merely *serve* an OpenAI-compatible API ("/api/chat/completions") are
+    excluded, as are prose strings (docstrings) that mention an endpoint.
+    """
+    v = value.strip()
+    if not v or len(v) > 200 or "\n" in v or " " in v:
+        return None
+    low = v.lower()
+    host = next((p for h, p in _PROVIDER_HOSTS if h in low), None)
+    m = _HTTP_PATH_RE.search(low)
+    if not m:
+        return None
+    version, path = m.group(1), m.group(2)
+    before = low[:m.start()]
+    if before.endswith("/api") and not host:
+        return None                     # own server route, e.g. /api/chat/completions
+    if path in ("/messages", "/responses") and not (version or host):
+        return None                     # too generic without /v1 or a provider host
+    if path == "/embeddings" and not (version or host or low.endswith("/embeddings") and len(low) < 40):
+        return None
+    kind = "embedding" if path == "/embeddings" else "chat"
+    provider = host or ("anthropic" if path == "/messages" else
+                        "gemini" if "generatecontent" in path else "openai_compatible")
+    return kind, provider, (version or "") + path
+
+
+def _in_decorator(stack: list) -> bool:
+    for i, anc in enumerate(stack[:-1]):
+        if isinstance(anc, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            nxt = stack[i + 1]
+            if any(nxt is d for d in anc.decorator_list):
+                return True
+    return False
+
+
+_WRAPPER_NAME_RE = re.compile(r"llm|model|chat|client|agent|config|setting|completion|embed", re.I)
 
 _CANDIDATE_NAMES: set[str] = set()
 

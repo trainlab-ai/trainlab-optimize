@@ -24,9 +24,15 @@ BASELINE = re.compile(
     r"\.chat\.completions\.(?:create|parse)\s*\(|\.responses\.(?:create|parse)\s*\(|"
     r"\.messages\.(?:create|stream)\s*\(|\.embeddings\.create\s*\(|\blitellm\.a?completion\s*\(|"
     r"\.converse\s*\(|\.invoke_model\s*\(|\.models\.generate_content\s*\(|"
-    r"\b(?:generateText|streamText|generateObject|streamObject)\s*\(")
-EXTS = {".py", ".js", ".jsx", ".ts", ".tsx", ".mjs"}
-JS_TEST = re.compile(r"\.(test|spec)\.[jt]sx?$")
+    r"\b(?:generateText|streamText|generateObject|streamObject)\s*\(|"
+    # Go / Java / C# SDKs
+    r"\.Chat\.Completions\.New|\.Messages\.New\(|CreateChatCompletion|\.Responses\.New\(|"
+    r"\.chat\(\)\s*\.completions\(\)\s*\.create|\.messages\(\)\s*\.create|CompleteChat(?:Async)?\(|"
+    r"GetChatCompletions|"
+    # raw HTTP endpoint strings
+    r"[\"'`][^\"'`\s]*(?:/chat/completions|api\.anthropic\.com/v1/messages|/v1/messages)[\"'`?]")
+EXTS = {".py", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".go", ".java", ".kt", ".cs"}
+JS_TEST = re.compile(r"\.(test|spec)\.[jt]sx?$|_test\.go$|(^|/)src/test/|Tests?\.cs$")
 
 root = Path(sys.argv[1])
 out = {}

@@ -10,7 +10,7 @@ from pathlib import Path
 
 from ..pricing import PriceCatalog
 from ..schema import CallSite
-from .generic import CONFIG_EXTS, JS_EXTS, scan_js, scan_model_refs
+from .generic import CONFIG_EXTS, lang_of, scan_heuristic, scan_model_refs
 from .python_ast import PythonFileScanner
 
 EXCLUDE_DIRS = {".git", "node_modules", "venv", ".venv", "env", ".env", "site-packages", "dist",
@@ -19,15 +19,31 @@ EXCLUDE_DIRS = {".git", "node_modules", "venv", ".venv", "env", ".env", "site-pa
 MAX_FILE_BYTES = 1_000_000
 
 # Cheap text pre-filters: a file without any of these tokens cannot contain a call site or a
-# model reference, so it is never parsed. Keep in sync with python_ast/generic signatures.
-PY_TRIGGER = re.compile(
-    r"openai|anthropic|litellm|bedrock|genai|gemini|completions|embeddings|\.messages\.|"
-    r"responses\.|converse|invoke_model|generate_content|langchain|llama_index|pydantic_ai|"
-    r"init_chat_model|gpt-|chatgpt|claude|text-embedding|\bo[1-9]\b|o[1-9]-|mistral|deepseek|llama-?\d")
-JS_TRIGGER = re.compile(
-    r"completions|messages\.|responses\.|embeddings|generateText|streamText|generateObject|"
-    r"streamObject|embedMany|\bembed\(|generateContent|Command\(|gpt-|claude|gemini|"
-    r"text-embedding|model\s*:", re.I)
+# model reference, so it is never parsed. Plain substring checks on lowercased text are much
+# faster than a large case-insensitive regex. Keep in sync with the scanner signatures.
+PY_TOKENS = ("openai", "anthropic", "litellm", "bedrock", "genai", "gemini", "completions",
+             "embeddings", ".messages.", "responses.", "converse", "invoke_model", "generate_content",
+             "langchain", "llama_index", "pydantic_ai", "init_chat_model", "gpt-", "chatgpt", "claude",
+             "text-embedding", "o1", "o3", "o4", "mistral", "deepseek", "llama-", "llama3", "llama4",
+             "v1/messages", "generatecontent", "googleapis.com")
+OTHER_TOKENS = ("completions", "messages", "responses", "embeddings", "generatetext", "streamtext",
+                "generateobject", "streamobject", "embedmany", "embed(", "generatecontent", "command(",
+                "gpt-", "claude", "gemini", "text-embedding", "model:", "model :", "chatmodel",
+                "completechat", "chatcompletion", "converse", "invokemodel", "langchain4j",
+                "springframework.ai", "api.openai", "api.anthropic")
+
+
+class _Trigger:
+    def __init__(self, tokens):
+        self.tokens = tokens
+
+    def search(self, text: str) -> bool:
+        low = text.lower()
+        return any(t in low for t in self.tokens)
+
+
+PY_TRIGGER = _Trigger(PY_TOKENS)
+OTHER_TRIGGER = _Trigger(OTHER_TOKENS)
 
 
 @dataclass
@@ -160,8 +176,8 @@ def scan(root: str | Path, include_tests: bool = False, catalog: PriceCatalog | 
         if exclude and _excluded(rel, exclude):
             continue
         ext = path.suffix.lower()
-        lang = ("python" if ext == ".py" else "javascript" if ext in JS_EXTS else
-                "config" if ext in CONFIG_EXTS or path.name.startswith(".env") else None)
+        lang = ("python" if ext == ".py" else lang_of(ext) or
+                ("config" if ext in CONFIG_EXTS or path.name.startswith(".env") else None))
         if not lang:
             continue
         try:
@@ -180,10 +196,10 @@ def scan(root: str | Path, include_tests: bool = False, catalog: PriceCatalog | 
                 result.parse_errors.append(rel)
             result.call_sites.extend(sites)
             refs.extend((rel, ln, m) for ln, m in mrefs)
-        elif lang == "javascript":
-            if not JS_TRIGGER.search(text):
+        elif lang in ("javascript", "go", "jvm", "csharp"):
+            if not OTHER_TRIGGER.search(text):
                 continue
-            result.call_sites.extend(scan_js(rel, text))
+            result.call_sites.extend(scan_heuristic(rel, text, lang))
             refs.extend((rel, ln, m) for ln, m in scan_model_refs(rel, text))
         else:
             found = scan_model_refs(rel, text)

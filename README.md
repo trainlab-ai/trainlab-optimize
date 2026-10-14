@@ -68,22 +68,49 @@ model, it gets all of that model's spend; if several do, it is split evenly and 
 
 ## Supported
 
-| | Python (AST, high confidence) | JS / TS (heuristic) |
+| | Python (AST, high confidence) | JS/TS, Go, Java/Kotlin, C# (heuristic) |
 |---|---|---|
-| OpenAI / Azure OpenAI | chat, responses, embeddings, batches | chat, responses, embeddings |
-| Anthropic | messages, batches | messages |
-| AWS Bedrock | invoke_model, converse | — |
-| Google Gemini (google-genai) | generate_content, embed_content | generateContent |
-| LiteLLM | completion, embedding | — |
-| LangChain / LlamaIndex | model configuration objects | — |
+| OpenAI / Azure OpenAI | chat, responses, embeddings, batches | JS SDK; openai-go, go-openai; openai-java; OpenAI .NET, Azure.AI.OpenAI, Azure.AI.Inference |
+| Anthropic | messages, batches | JS SDK; anthropic-sdk-go; anthropic-java |
+| AWS Bedrock | invoke_model, converse (boto3, aioboto3) | JS `ConverseCommand`; Go bedrockruntime |
+| Google Gemini | generate_content, embed_content | JS `generateContent`; Go genai |
+| LiteLLM | completion, embedding (incl. aliases, `functools.partial`) | — |
+| LangChain / LlamaIndex / wrappers | model configuration objects | LangChain4j builders, Spring AI ChatClient, langchaingo |
 | Vercel AI SDK | — | generateText, streamText, generateObject |
-| OpenAI-compatible (Groq, Together, vLLM…) | via `base_url` | — |
+| Raw HTTP to provider APIs | `/chat/completions`, `/v1/messages`, `/v1/responses`, `/embeddings`, `:generateContent` | same |
+| Injected or factory-built clients | `client.chat.completions.create(...)` without an SDK import | — |
+
+Server routes that *serve* an OpenAI-compatible API (`@app.post("/v1/chat/completions")`,
+`/api/chat/completions`) are not counted as calls.
 
 Usage import: OpenAI Usage API, Anthropic Usage & Cost API, generic CSV (Azure and
 Bedrock cost exports work through CSV in v0.1).
 
 Scope a scan to product code: `trainlab scan . --exclude examples --exclude docs`.
 Tests are skipped unless `--include-tests` is given.
+
+## Benchmark
+
+`scripts/eval_repos.py` scans real repositories and compares detected call sites with a
+plain-text search for SDK call patterns. Results on 21 open-source AI projects
+(October 2026, shallow clones, 2 CPU cores):
+
+| Repo | Files | Scan time | Call sites |
+|---|---|---|---|
+| lobe-chat | 17,763 | 16.7s | 99 |
+| dify | 12,958 | 9.7s | 15 |
+| onyx | 7,587 | 5.5s | 24 |
+| LibreChat | 6,157 | 7.8s | 9 |
+| llama_index | 4,524 | 6.6s | 150 |
+| ragflow (Go) | 4,481 | 3.0s | 11 |
+| langchain | 2,762 | 5.3s | 52 |
+| crewAI | 2,258 | 5.9s | 47 |
+| pipecat | 1,691 | 2.3s | 70 |
+| …12 more | | | |
+
+Every SDK call found by the text search was also found by the scanner; the remaining
+text matches were docstrings, server route definitions, type names, generated clients for
+the app's own API, and test mocks. Peak memory stayed under 60 MB.
 
 ## Commands
 
