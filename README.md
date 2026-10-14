@@ -277,6 +277,18 @@ python bench/run.py               # clone, scan, test; one result file per repo,
 python bench/report.py            # results.csv, summary.json, triage of recall misses
 ```
 
+**Frozen baseline.** `bench/repos.lock.json` pins the 100 repos to the commits tested on
+14 Oct 2026, and `bench/golden.json` holds the expected result for each: every call site,
+every test status, recall. After any change to trainlab:
+
+```bash
+python bench/run.py --lock --fresh && python bench/report.py && python bench/freeze.py check
+```
+
+`freeze.py check` exits 1 on a regression (a test that passed now fails, a call site that
+was found is gone, recall dropped) and lists new call sites for review. When a change is
+intended, `python bench/freeze.py save` makes the new results the baseline.
+
 ## Known limits
 
 - Pattern-based languages (everything except Python) find calls and literal model names

@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "2.0s, 680 files/s"
+   "detail": "2.2s, 621 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 1385,
- "scan_secs": 2.04,
+ "scan_secs": 2.23,
  "sites": 18,
  "call_sites": 18,
  "model_configs": 0,
@@ -83,6 +83,26 @@
   "rust"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "clients/tabby-agent/src/http/tabbyApiClient.ts||370|chat|openai_compatible|",
+  "clients/tabby-openapi/compatible/index.d.ts||15|chat|openai_compatible|",
+  "clients/tabby-openapi/lib/tabby.d.ts||10|chat|openai_compatible|",
+  "clients/tabby-openapi/scripts/codegen.js||21|chat|openai_compatible|",
+  "clients/tabby-openapi/scripts/codegen.js||22|chat|openai_compatible|",
+  "crates/http-api-bindings/src/embedding/azure.rs||63|embedding|azure|",
+  "crates/http-api-bindings/src/embedding/llama.rs||78|embedding|openai_compatible|",
+  "crates/http-api-bindings/src/embedding/mistral.rs||48|embedding|mistral|",
+  "crates/http-api-bindings/src/embedding/openai.rs||26|embedding|openai|",
+  "crates/tabby-inference/src/chat.rs||117|chat|openai|",
+  "crates/tabby-inference/src/chat.rs||125|chat|openai|",
+  "crates/tabby-inference/src/chat.rs||136|chat|openai|",
+  "crates/tabby-inference/src/chat.rs||144|chat|openai|",
+  "crates/tabby/src/routes/chat.rs||21|chat|openai_compatible|",
+  "crates/tabby/src/serve.rs||316|chat|openai_compatible|",
+  "crates/tabby/src/serve.rs||324|chat|openai_compatible|",
+  "crates/tabby/src/serve.rs||331|chat|openai_compatible|",
+  "crates/tabby/src/serve.rs||338|chat|openai_compatible|"
+ ],
  "baseline": 12,
  "baseline_found": 12,
  "missed": [],
@@ -105,7 +125,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpk3sws117/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp5zn0ahns/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -118,5 +138,6 @@
  "monthly_spend": 13.26,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 8.0
+ "wall_secs": 8.4,
+ "sha": "21b29048d7bcf6b94f9f482f2d0fd05efadfd19f"
 }

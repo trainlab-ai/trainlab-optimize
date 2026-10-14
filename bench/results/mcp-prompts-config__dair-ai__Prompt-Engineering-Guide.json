@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.2s, 1044 files/s"
+   "detail": "0.2s, 1015 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 193,
- "scan_secs": 0.18,
+ "scan_secs": 0.19,
  "sites": 16,
  "call_sites": 14,
  "model_configs": 2,
@@ -83,6 +83,24 @@
   "python"
  ],
  "resolved_model_pct": 88,
+ "site_keys": [
+  "components/TabsComponent.tsx||21|chat|openai|${tab.model}",
+  "notebooks/pe-chatgpt-intro.ipynb|3|3|chat|openai|gpt-3.5-turbo",
+  "notebooks/pe-chatgpt-intro.ipynb|6|10|chat|openai|gpt-3.5-turbo",
+  "notebooks/pe-chatgpt-langchain.ipynb|5|2|model_config|openai|",
+  "notebooks/pe-code-llama.ipynb|12|32|chat|together|togethercomputer/CodeLlama-34b-Instruct",
+  "notebooks/pe-code-llama.ipynb|3|2|chat|together|codellama/CodeLlama-70b-Instruct-hf",
+  "notebooks/pe-function-calling.ipynb|2|2|chat|openai|gpt-3.5-turbo-1106",
+  "notebooks/pe-lecture.ipynb|4|24|chat|openai|",
+  "notebooks/pe-litellm-intro.ipynb|5|1|chat|litellm|gpt-3.5-turbo",
+  "notebooks/pe-litellm-intro.ipynb|6|1|chat|litellm|claude-2",
+  "notebooks/pe-litellm-intro.ipynb|7|2|chat|litellm|replicate/llama-2-70b-chat:2c1608e18606fad2812020dc541930f2d0495ce32eee50074220b87300bc16e1",
+  "notebooks/pe-litellm-intro.ipynb|8|1|chat|litellm|command-nightly",
+  "notebooks/pe-litellm-intro.ipynb|9|1|chat|litellm|azure/chatgpt-test",
+  "notebooks/pe-mixtral-introduction.ipynb|11|4|chat|mistral|mistral-small",
+  "notebooks/pe-mixtral-introduction.ipynb|3|5|chat|mistral|mistral-small",
+  "notebooks/pe-pal.ipynb|3|1|model_config|openai|text-davinci-003"
+ ],
  "baseline": 7,
  "baseline_found": 7,
  "missed": [],
@@ -113,7 +131,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpcjl0noag/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpz3mz_dh0/usage_tokens_only.csv",
    "model": "gpt-3.5-turbo",
    "expected": 24.2325
   }
@@ -129,5 +147,6 @@
  "monthly_spend": 760.12,
  "savings_high": 27.98,
  "attributed_share": 0.977583200918689,
- "wall_secs": 0.8
+ "wall_secs": 0.7,
+ "sha": "57673726396dd94acb23bdb1e67f27c78ee85a8e"
 }

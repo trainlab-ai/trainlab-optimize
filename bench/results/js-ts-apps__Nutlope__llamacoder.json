@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.2s, 1219 files/s"
+   "detail": "0.3s, 816 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 220,
- "scan_secs": 0.18,
+ "scan_secs": 0.27,
  "sites": 9,
  "call_sites": 9,
  "model_configs": 0,
@@ -80,6 +80,17 @@
   "javascript"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "app/api/create-chat/route.ts||38|chat|openai|",
+  "app/api/generate-chat-title/route.ts||103|chat|openai|",
+  "app/api/get-next-completion-stream-promise/route.ts||204|chat|openai|",
+  "lib/generation.ts||123|chat|openai|",
+  "lib/generation.ts||222|chat|openai|",
+  "scripts/benchmark/judge.ts||139|chat|openai|",
+  "scripts/benchmark/title-models.ts||13|chat|together|",
+  "scripts/check-candidates.ts||10|chat|together|",
+  "scripts/check-models.ts||21|chat|together|"
+ ],
  "baseline": 7,
  "baseline_found": 7,
  "missed": [],
@@ -102,7 +113,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpdxcn3f6r/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp9ymusn6j/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -115,5 +126,6 @@
  "monthly_spend": 75.55,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 0.7
+ "wall_secs": 0.9,
+ "sha": "75a3a78e1fa080657b696b95e6d7e393dfa999a5"
 }

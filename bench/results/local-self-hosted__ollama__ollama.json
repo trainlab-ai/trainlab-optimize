@@ -6,11 +6,11 @@
  "tests": {
   "T01": {
    "status": "pass",
-   "detail": "1054 files, 12 sites"
+   "detail": "1055 files, 12 sites"
   },
   "T02": {
    "status": "pass",
-   "detail": "1.9s, 568 files/s"
+   "detail": "2.0s, 531 files/s"
   },
   "T03": {
    "status": "pass",
@@ -66,8 +66,8 @@
    "examples": []
   }
  },
- "files": 1054,
- "scan_secs": 1.86,
+ "files": 1055,
+ "scan_secs": 1.99,
  "sites": 12,
  "call_sites": 12,
  "model_configs": 0,
@@ -81,6 +81,20 @@
   "go"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "cmd/bench/bench.go||909|chat|openai_compatible|",
+  "internal/proxy/claude_desktop.go||337|chat|anthropic|",
+  "internal/proxy/claude_desktop.go||344|chat|anthropic|",
+  "internal/proxy/claude_desktop.go||637|chat|anthropic|",
+  "internal/proxy/codex_desktop.go||538|chat|openai_compatible|",
+  "internal/proxy/codex_desktop_autoreview.go||152|chat|openai_compatible|",
+  "llm/llama_server.go||2054|chat|openai_compatible|",
+  "llm/llama_server.go||2512|embedding|openai_compatible|",
+  "mlxrunner/client.go||345|embedding|openai_compatible|",
+  "server/cloud_proxy.go||333|chat|ollama|",
+  "server/cloud_proxy.go||340|chat|anthropic|",
+  "server/responses_compact.go||176|chat|openai_compatible|"
+ ],
  "baseline": 7,
  "baseline_found": 5,
  "missed": [
@@ -119,7 +133,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpkr01b3ql/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp_06xfzyp/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -131,5 +145,6 @@
  "monthly_spend": 58.93,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 5.8
+ "wall_secs": 5.4,
+ "sha": "cf410b09f026cb8c3ca96798268e848dd9ca3157"
 }

@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.1s, 1842 files/s"
+   "detail": "0.1s, 2417 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 164,
- "scan_secs": 0.09,
+ "scan_secs": 0.07,
  "sites": 9,
  "call_sites": 9,
  "model_configs": 0,
@@ -79,6 +79,17 @@
   "javascript"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "app/(chat)/actions.ts||28|chat|vercel_ai|",
+  "app/(chat)/api/chat/route.ts||269|chat|vercel_ai|",
+  "artifacts/code/server.ts||18|chat|vercel_ai|",
+  "artifacts/code/server.ts||40|chat|vercel_ai|",
+  "artifacts/sheet/server.ts||11|chat|vercel_ai|",
+  "artifacts/sheet/server.ts||33|chat|vercel_ai|",
+  "artifacts/text/server.ts||11|chat|vercel_ai|",
+  "artifacts/text/server.ts||35|chat|vercel_ai|",
+  "lib/ai/tools/request-suggestions.ts||42|chat|vercel_ai|"
+ ],
  "baseline": 9,
  "baseline_found": 9,
  "missed": [],
@@ -106,7 +117,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpjbq3gpwn/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpb65lbu3w/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -118,5 +129,6 @@
  "monthly_spend": 115.69,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 0.4
+ "wall_secs": 0.4,
+ "sha": "c2f8235e1f3ea903ad8b7f61447c4f74164b5c58"
 }

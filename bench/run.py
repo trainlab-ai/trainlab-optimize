@@ -24,6 +24,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+# Frozen runs price with the catalog bundled in this commit, never a newer `prices update` cache
+import os  # noqa: E402
+os.environ["TRAINLAB_PRICES"] = str(HERE / "_bundled_prices_only.json")
 
 from mock_usage import FORMATS, generate  # noqa: E402
 
@@ -59,12 +62,24 @@ EXTS = {".py", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".go", ".java", ".kt", ".cs
 
 
 # ---------------------------------------------------------------- helpers
-def clone(full: str, dest: Path, timeout: int = 900) -> tuple[bool, str]:
-    cmd = ["git", "clone", "--quiet", "--depth", "1", "--single-branch", "--filter=blob:limit=2m",
-           f"https://github.com/{full}.git", str(dest)]
+BLOB_LIMIT = "--filter=blob:limit=25m"      # notebooks can be large; the scanner skips files over its own limits
+
+
+def clone(full: str, dest: Path, timeout: int = 900, sha: str | None = None) -> tuple[bool, str]:
+    """Shallow clone of HEAD, or of one pinned commit (frozen runs)."""
+    url = f"https://github.com/{full}.git"
+    if sha:
+        cmds = [["git", "init", "-q", str(dest)],
+                ["git", "-C", str(dest), "fetch", "-q", "--depth", "1", BLOB_LIMIT, url, sha],
+                ["git", "-C", str(dest), "checkout", "-q", "FETCH_HEAD"]]
+    else:
+        cmds = [["git", "clone", "--quiet", "--depth", "1", "--single-branch", BLOB_LIMIT, url, str(dest)]]
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
-        return p.returncode == 0, (p.stderr or "")[-300:]
+        for cmd in cmds:
+            p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+            if p.returncode != 0:
+                return False, (p.stderr or "")[-300:]
+        return True, ""
     except subprocess.TimeoutExpired:
         return False, "clone timed out"
 
@@ -158,6 +173,7 @@ def run_repo(full: str, cat: str, llm: bool, repo: Path, fmt: str, work: Path) -
              languages=sorted({s.language for s in sites}),
              resolved_model_pct=round(100 * sum(1 for s in sites if s.model) / len(sites)) if sites else None)
     tests["T01"] = t("pass", f"{res.files_scanned} files, {len(sites)} sites")
+    r["site_keys"] = sorted(f"{s.path}|{s.cell or ''}|{s.line}|{s.kind}|{s.provider}|{s.model or ''}" for s in sites)
 
     rate = res.files_scanned / max(secs, 1e-6)
     tests["T02"] = t("pass" if secs <= 60 or rate >= 150 else "fail", f"{secs:.1f}s, {rate:.0f} files/s")
@@ -296,6 +312,8 @@ def main() -> None:
     ap.add_argument("--only", help="run one category")
     ap.add_argument("--fresh", action="store_true", help="ignore existing results")
     ap.add_argument("--rerun-failed", action="store_true", help="re-run repos with a failed test")
+    ap.add_argument("--lock", action="store_true",
+                    help="frozen run: exactly the repos and commits in bench/repos.lock.json")
     args = ap.parse_args()
     work = Path(args.work or tempfile.mkdtemp(prefix="tl-bench-"))
     work.mkdir(parents=True, exist_ok=True)
@@ -306,6 +324,25 @@ def main() -> None:
     jobs: "queue.Queue" = queue.Queue(maxsize=2)
     unavailable: list[dict] = []
     fmt_counter = [0]
+
+    def producer_locked():
+        lock = json.loads((HERE / "repos.lock.json").read_text())
+        for item in lock["repos"]:
+            cat, full, sha = item["category"], item["repo"], item["sha"]
+            if args.only and cat != args.only:
+                continue
+            outp = RESULTS / f"{cat}__{slug(full)}.json"
+            if outp.exists() and not args.fresh:
+                continue
+            dest = work / slug(full)
+            shutil.rmtree(dest, ignore_errors=True)
+            ok, err = clone(full, dest, sha=sha)
+            if not ok:
+                unavailable.append({"repo": full, "category": cat, "sha": sha, "error": err.strip()})
+                shutil.rmtree(dest, ignore_errors=True)
+                continue
+            jobs.put((cat, plan["categories"][cat]["llm"], full, dest, outp, sha))
+        jobs.put(None)
 
     def producer():
         for cat, spec in plan["categories"].items():
@@ -330,17 +367,17 @@ def main() -> None:
                     shutil.rmtree(dest, ignore_errors=True)
                     continue
                 done += 1
-                jobs.put((cat, spec["llm"], full, dest, outp))
+                jobs.put((cat, spec["llm"], full, dest, outp, None))
         jobs.put(None)
 
-    th = threading.Thread(target=producer, daemon=True)
+    th = threading.Thread(target=producer_locked if args.lock else producer, daemon=True)
     th.start()
     n = 0
     while True:
         job = jobs.get()
         if job is None:
             break
-        cat, llm, full, dest, outp = job
+        cat, llm, full, dest, outp, sha = job
         fmt = FORMATS[(sum(map(ord, full))) % len(FORMATS)]
         n += 1
         t0 = time.time()
@@ -353,6 +390,7 @@ def main() -> None:
         finally:
             shutil.rmtree(dest, ignore_errors=True)
         result["wall_secs"] = round(time.time() - t0, 1)
+        result["sha"] = sha
         outp.write_text(json.dumps(result, indent=1, default=str))
         st = {k: v["status"] for k, v in result["tests"].items()}
         fails = [k for k, v in st.items() if v in ("fail", "review")]

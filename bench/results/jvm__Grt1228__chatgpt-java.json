@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.1s, 1128 files/s"
+   "detail": "0.1s, 1316 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 158,
- "scan_secs": 0.14,
+ "scan_secs": 0.12,
  "sites": 4,
  "call_sites": 4,
  "model_configs": 0,
@@ -79,6 +79,12 @@
   "jvm"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "src/main/java/com/unfbx/chatgpt/OpenAiApi.java||146|embedding|openai_compatible|",
+  "src/main/java/com/unfbx/chatgpt/OpenAiApi.java||303|chat|openai_compatible|",
+  "src/main/java/com/unfbx/chatgpt/OpenAiApi.java||312|chat|openai_compatible|",
+  "src/main/java/com/unfbx/chatgpt/OpenAiStreamClient.java||232|chat|openai_compatible|"
+ ],
  "baseline": 8,
  "baseline_found": 3,
  "missed": [
@@ -132,7 +138,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpj7hu0v2r/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpy388jfkm/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -144,5 +150,6 @@
  "monthly_spend": 51.29,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 0.4
+ "wall_secs": 0.4,
+ "sha": "ae761b89450812fab4cd7bba6626f9874705ca40"
 }

@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "1.7s, 593 files/s"
+   "detail": "1.7s, 581 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 1016,
- "scan_secs": 1.71,
+ "scan_secs": 1.75,
  "sites": 9,
  "call_sites": 8,
  "model_configs": 1,
@@ -83,6 +83,17 @@
   "python"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "cmd/extproc/mainlib/main.go||329|chat|openai_compatible|",
+  "cmd/extproc/mainlib/main.go||333|embedding|openai_compatible|",
+  "cmd/extproc/mainlib/main.go||335|chat|openai_compatible|",
+  "cmd/extproc/mainlib/main.go||339|chat|openai_compatible|",
+  "cmd/extproc/mainlib/main.go||355|chat|anthropic|",
+  "cmd/extproc/mainlib/main.go||360|chat|anthropic|",
+  "examples/mcp/agent.py||62|model_config|unknown|",
+  "internal/translator/openai_azureopenai.go||63|chat|azure|",
+  "internal/translator/translator.go||36|chat|anthropic|"
+ ],
  "baseline": 3,
  "baseline_found": 3,
  "missed": [],
@@ -105,7 +116,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmphcf9jmdt/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpz2kekqyx/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -117,5 +128,6 @@
  "monthly_spend": 18.14,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 5.0
+ "wall_secs": 4.7,
+ "sha": "5a9c6ef6354eeb77354f19b1a93a623d5ff50008"
 }

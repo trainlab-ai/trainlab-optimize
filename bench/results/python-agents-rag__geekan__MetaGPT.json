@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.9s, 1149 files/s"
+   "detail": "0.7s, 1389 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 1015,
- "scan_secs": 0.88,
+ "scan_secs": 0.73,
  "sites": 18,
  "call_sites": 15,
  "model_configs": 3,
@@ -85,6 +85,26 @@
   "python"
  ],
  "resolved_model_pct": 6,
+ "site_keys": [
+  "metagpt/ext/stanford_town/utils/utils.py||58|embedding|openai|text-embedding-ada-002",
+  "metagpt/provider/anthropic_api.py||53|chat|anthropic|",
+  "metagpt/provider/anthropic_api.py||61|chat|anthropic|",
+  "metagpt/provider/ark_api.py||75|chat|volcengine|",
+  "metagpt/provider/ark_api.py||97|chat|volcengine|",
+  "metagpt/provider/bedrock_api.py||116|chat|bedrock|",
+  "metagpt/provider/bedrock_api.py||130|chat|bedrock|",
+  "metagpt/provider/ollama_api.py||150|embedding|openai_compatible|",
+  "metagpt/provider/openai_api.py||158|chat|openai|",
+  "metagpt/provider/openai_api.py||185|chat|openai|",
+  "metagpt/provider/openai_api.py||93|chat|openai|",
+  "metagpt/provider/openrouter_reasoning.py||23|chat|openai_compatible|",
+  "metagpt/provider/zhipuai/zhipu_model_api.py||18|chat|zhipu|",
+  "metagpt/provider/zhipuai_api.py||58|chat|zhipu|",
+  "metagpt/rag/factories/embedding.py||62|model_config|openai|",
+  "metagpt/rag/factories/embedding.py||96|model_config|ollama|",
+  "metagpt/tools/openai_text_to_embedding.py||63|embedding|openai|",
+  "metagpt/utils/embedding.py||18|model_config|openai|"
+ ],
  "baseline": 13,
  "baseline_found": 12,
  "missed": [
@@ -118,7 +138,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpw199thqi/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpxhz6os40/usage_tokens_only.csv",
    "model": "text-embedding-ada-002",
    "expected": 3.0465
   }
@@ -132,5 +152,6 @@
  "monthly_spend": 9.16,
  "savings_high": 1.15,
  "attributed_share": 0.15646960509079952,
- "wall_secs": 2.9
+ "wall_secs": 3.2,
+ "sha": "11cdf466d042aece04fc6cfd13b28e1a70341b1f"
 }

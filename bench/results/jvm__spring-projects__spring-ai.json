@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "4.0s, 615 files/s"
+   "detail": "5.3s, 464 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 2472,
- "scan_secs": 4.02,
+ "scan_secs": 5.33,
  "sites": 26,
  "call_sites": 15,
  "model_configs": 11,
@@ -87,6 +87,34 @@
   "jvm"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "auto-configurations/models/spring-ai-autoconfigure-model-anthropic/src/main/java/org/springframework/ai/model/anthropic/autoconfigure/AnthropicChatAutoConfiguration.java||86|model_config|anthropic|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-bedrock-ai/src/main/java/org/springframework/ai/model/bedrock/converse/autoconfigure/BedrockConverseProxyChatAutoConfiguration.java||71|model_config|bedrock|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-deepseek/src/main/java/org/springframework/ai/model/deepseek/autoconfigure/DeepSeekChatAutoConfiguration.java||71|model_config|deepseek|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-deepseek/src/main/java/org/springframework/ai/model/deepseek/autoconfigure/DeepSeekChatProperties.java||42|chat|deepseek|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-google-genai/src/main/java/org/springframework/ai/model/google/genai/autoconfigure/chat/GoogleGenAiChatAutoConfiguration.java||133|model_config|gemini|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-mistral-ai/src/main/java/org/springframework/ai/model/mistralai/autoconfigure/MistralAiChatAutoConfiguration.java||75|model_config|mistral|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-mistral-ai/src/main/java/org/springframework/ai/model/mistralai/autoconfigure/MistralAiEmbeddingAutoConfiguration.java||72|model_config|mistral|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-ollama/src/main/java/org/springframework/ai/model/ollama/autoconfigure/OllamaChatAutoConfiguration.java||68|model_config|ollama|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-ollama/src/main/java/org/springframework/ai/model/ollama/autoconfigure/OllamaEmbeddingAutoConfiguration.java||61|model_config|ollama|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-openai/src/main/java/org/springframework/ai/model/openai/autoconfigure/OpenAiChatAutoConfiguration.java||83|model_config|openai|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-openai/src/main/java/org/springframework/ai/model/openai/autoconfigure/OpenAiEmbeddingAutoConfiguration.java||72|model_config|openai|",
+  "auto-configurations/models/spring-ai-autoconfigure-model-openai/src/main/java/org/springframework/ai/model/openai/autoconfigure/OpenAiResponsesChatAutoConfiguration.java||88|model_config|openai|",
+  "models/spring-ai-bedrock-converse/src/main/java/org/springframework/ai/bedrock/converse/BedrockProxyChatModel.java||235|chat|bedrock|",
+  "models/spring-ai-bedrock-converse/src/main/java/org/springframework/ai/bedrock/converse/api/ConverseChatResponseStream.java||333|chat|bedrock|",
+  "models/spring-ai-bedrock/src/main/java/org/springframework/ai/bedrock/api/AbstractBedrockApi.java||246|chat|bedrock|",
+  "models/spring-ai-bedrock/src/main/java/org/springframework/ai/bedrock/api/AbstractBedrockApi.java||324|chat|bedrock|",
+  "models/spring-ai-deepseek/src/main/java/org/springframework/ai/deepseek/api/common/DeepSeekConstants.java||28|chat|deepseek|",
+  "models/spring-ai-mistral-ai/src/main/java/org/springframework/ai/mistralai/api/MistralAiApi.java||166|embedding|mistral|",
+  "models/spring-ai-mistral-ai/src/main/java/org/springframework/ai/mistralai/api/MistralAiApi.java||186|chat|mistral|",
+  "models/spring-ai-mistral-ai/src/main/java/org/springframework/ai/mistralai/api/MistralAiApi.java||207|chat|mistral|",
+  "models/spring-ai-openai/src/main/java/org/springframework/ai/openai/responses/OpenAiResponsesChatModel.java||136|chat|openai|",
+  "spring-ai-rag/src/main/java/org/springframework/ai/rag/preretrieval/query/expansion/MultiQueryExpander.java||104|chat|unknown|",
+  "spring-ai-rag/src/main/java/org/springframework/ai/rag/preretrieval/query/transformation/CompressionQueryTransformer.java||82|chat|unknown|",
+  "spring-ai-rag/src/main/java/org/springframework/ai/rag/preretrieval/query/transformation/RewriteQueryTransformer.java||82|chat|unknown|",
+  "spring-ai-rag/src/main/java/org/springframework/ai/rag/preretrieval/query/transformation/TranslationQueryTransformer.java||91|chat|unknown|",
+  "vector-stores/spring-ai-gemfire-store/src/main/java/org/springframework/ai/vectorstore/gemfire/GemFireVectorStore.java||73|embedding|openai_compatible|"
+ ],
  "baseline": 18,
  "baseline_found": 17,
  "missed": [
@@ -120,7 +148,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpe0rpltfa/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpu_v1k7h1/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -132,5 +160,6 @@
  "monthly_spend": 183.18,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 10.8
+ "wall_secs": 12.7,
+ "sha": "aab7d9bc0a979b5e07f28588268767a33018f781"
 }

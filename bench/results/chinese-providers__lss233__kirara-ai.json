@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.4s, 804 files/s"
+   "detail": "0.2s, 1264 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 305,
- "scan_secs": 0.38,
+ "scan_secs": 0.24,
  "sites": 4,
  "call_sites": 4,
  "model_configs": 0,
@@ -80,6 +80,12 @@
   "python"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "kirara_ai/plugins/llm_preset_adapters/gemini_adapter.py||173|chat|gemini|",
+  "kirara_ai/plugins/llm_preset_adapters/openai_adapter.py||114|chat|openai_compatible|",
+  "kirara_ai/plugins/llm_preset_adapters/openai_adapter.py||225|embedding|openai_compatible|",
+  "kirara_ai/plugins/llm_preset_adapters/voyage_adapter.py||90|embedding|openai_compatible|"
+ ],
  "baseline": 1,
  "baseline_found": 1,
  "missed": [],
@@ -107,7 +113,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp845k_hwi/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpx4jh4_4y/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -119,5 +125,6 @@
  "monthly_spend": 78.24,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 1.1
+ "wall_secs": 0.8,
+ "sha": "8295a5deda0b289a3f70d946064b6c9a3e1b0753"
 }

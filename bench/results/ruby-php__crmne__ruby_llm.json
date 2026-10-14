@@ -6,11 +6,11 @@
  "tests": {
   "T01": {
    "status": "pass",
-   "detail": "1851 files, 53 sites"
+   "detail": "1868 files, 53 sites"
   },
   "T02": {
    "status": "pass",
-   "detail": "3.9s, 472 files/s"
+   "detail": "4.3s, 435 files/s"
   },
   "T03": {
    "status": "pass",
@@ -66,8 +66,8 @@
    "examples": []
   }
  },
- "files": 1851,
- "scan_secs": 3.92,
+ "files": 1868,
+ "scan_secs": 4.29,
  "sites": 53,
  "call_sites": 53,
  "model_configs": 0,
@@ -85,6 +85,61 @@
   "ruby"
  ],
  "resolved_model_pct": 30,
+ "site_keys": [
+  "benchmarks/memory.rb||28|chat|openai|gpt-4.1-mini",
+  "benchmarks/requests.rb||42|chat|unknown|",
+  "benchmarks/requests.rb||74|chat|openai|gpt-4.1-mini",
+  "benchmarks/requests.rb||84|chat|openai|text-embedding-3-small",
+  "benchmarks/requests.rb||91|chat|unknown|",
+  "benchmarks/streaming.rb||32|chat|unknown|",
+  "benchmarks/vertex_ai.rb||44|chat|gemini|gemini-2.5-flash",
+  "lib/ruby_llm/protocols/chat_completions/batches.rb||13|chat|openai_compatible|",
+  "lib/ruby_llm/protocols/chat_completions/embedding_batches.rb||16|embedding|openai_compatible|",
+  "lib/ruby_llm/protocols/gemini/chat.rb||30|chat|gemini|",
+  "lib/ruby_llm/protocols/gemini/speech.rb||11|chat|gemini|",
+  "lib/ruby_llm/protocols/gemini/streaming.rb||11|chat|gemini|",
+  "lib/ruby_llm/protocols/gemini/transcription.rb||27|chat|gemini|",
+  "lib/ruby_llm/protocols/openrouter/batches.rb||125|embedding|openai_compatible|",
+  "lib/ruby_llm/protocols/openrouter/batches.rb||138|embedding|openai_compatible|",
+  "lib/ruby_llm/protocols/openrouter/batches.rb||140|chat|openai_compatible|",
+  "lib/ruby_llm/protocols/openrouter/batches.rb||47|embedding|openai_compatible|",
+  "lib/ruby_llm/protocols/openrouter/batches.rb||50|chat|openai_compatible|",
+  "lib/ruby_llm/protocols/openrouter/batches.rb||51|chat|openai_compatible|",
+  "lib/ruby_llm/protocols/openrouter/batches.rb||60|embedding|openai_compatible|",
+  "lib/ruby_llm/protocols/openrouter/batches.rb||65|embedding|openai_compatible|",
+  "lib/ruby_llm/protocols/responses/batches.rb||13|chat|openai_compatible|",
+  "lib/ruby_llm/providers/azure.rb||96|chat|azure|",
+  "lib/ruby_llm/providers/azure/chat_completions.rb||47|chat|openai_compatible|",
+  "lib/ruby_llm/providers/azure/chat_completions.rb||58|embedding|openai_compatible|",
+  "lib/ruby_llm/providers/bedrock/mantle/anthropic.rb||15|chat|anthropic|",
+  "lib/ruby_llm/providers/bedrock/mantle/anthropic.rb||19|chat|anthropic|",
+  "lib/ruby_llm/providers/bedrock/mantle/chat_completions.rb||13|chat|bedrock|",
+  "lib/ruby_llm/providers/mistral/chat_completions/batches.rb||68|embedding|openai_compatible|",
+  "lib/ruby_llm/providers/openai.rb||141|chat|openai|",
+  "lib/ruby_llm/providers/openai.rb||143|embedding|openai|",
+  "lib/ruby_llm/providers/perplexity/embeddings.rb||11|embedding|openai_compatible|",
+  "lib/ruby_llm/providers/vertexai/chat_completions.rb||10|chat|openai_compatible|",
+  "lib/ruby_llm/providers/vertexai/chat_completions/batches.rb||17|chat|openai_compatible|",
+  "lib/ruby_llm/providers/vertexai/gemini.rb||23|chat|gemini|",
+  "lib/ruby_llm/providers/vertexai/gemini.rb||27|chat|gemini|",
+  "lib/ruby_llm/providers/vertexai/gemini.rb||58|chat|gemini|",
+  "lib/ruby_llm/providers/vertexai/gemini.rb||64|chat|gemini|",
+  "media/tour/video/hyperframes/tools/snippets.rb||101|chat|openai|gpt-5.6",
+  "media/tour/video/hyperframes/tools/snippets.rb||131|chat|openai|gpt-5.6",
+  "media/tour/video/hyperframes/tools/snippets.rb||139|chat|openai|gpt-5.6",
+  "media/tour/video/hyperframes/tools/snippets.rb||225|chat|openai|gpt-5.6",
+  "media/tour/video/hyperframes/tools/snippets.rb||22|chat|openai|gpt-5.6",
+  "media/tour/video/hyperframes/tools/snippets.rb||312|chat|gemini|",
+  "media/tour/video/hyperframes/tools/snippets.rb||32|chat|openai|gpt-5.6",
+  "media/tour/video/hyperframes/tools/snippets.rb||343|chat|anthropic|claude-opus-5-5",
+  "media/tour/video/hyperframes/tools/snippets.rb||344|chat|gemini|gemini-3.8-flash",
+  "media/tour/video/hyperframes/tools/snippets.rb||345|chat|anthropic|claude-sonnet-5",
+  "media/tour/video/hyperframes/tools/snippets.rb||422|chat|unknown|rerank-v3.5",
+  "media/tour/video/hyperframes/tools/snippets.rb||456|chat|unknown|",
+  "media/tour/video/hyperframes/tools/snippets.rb||69|chat|unknown|",
+  "media/tour/video/hyperframes/tools/snippets.rb||80|chat|openai|gpt-5.6",
+  "media/tour/video/hyperframes/tools/snippets.rb||84|chat|openai|gpt-5.6"
+ ],
  "baseline": 18,
  "baseline_found": 16,
  "missed": [
@@ -126,7 +181,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpfbctmxhj/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp3a5xp4_7/usage_tokens_only.csv",
    "model": "gpt-5.6",
    "expected": 241.86
   }
@@ -139,5 +194,6 @@
  "monthly_spend": 2225.63,
  "savings_high": null,
  "attributed_share": 0.9918101745687692,
- "wall_secs": 9.5
+ "wall_secs": 9.4,
+ "sha": "91f5d95c19e48ad97818a6eba5ff9bcea2984348"
 }

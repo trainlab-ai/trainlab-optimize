@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.8s, 693 files/s"
+   "detail": "0.8s, 764 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 574,
- "scan_secs": 0.83,
+ "scan_secs": 0.75,
  "sites": 21,
  "call_sites": 21,
  "model_configs": 0,
@@ -80,6 +80,29 @@
   "javascript"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "src/app/admin/page.tsx||16|embedding|openai_compatible|",
+  "src/app/api/admin/embeddings/route.ts||3|embedding|openai_compatible|",
+  "src/app/api/admin/related-prompts/route.ts||5|embedding|openai_compatible|",
+  "src/app/api/book/demo/route.ts||318|chat|openai|",
+  "src/app/api/prompt-builder/chat/route.ts||209|chat|openai|",
+  "src/app/api/prompt-builder/generate-example/route.ts||228|chat|openai|",
+  "src/app/api/prompts/[id]/route.ts||6|embedding|openai_compatible|",
+  "src/app/api/prompts/route.ts||7|embedding|openai_compatible|",
+  "src/app/api/search/ai/route.ts||2|embedding|openai_compatible|",
+  "src/app/prompts/page.tsx||15|embedding|openai_compatible|",
+  "src/components/admin/ai-search-settings.tsx||36|embedding|openai_compatible|",
+  "src/components/admin/prompts-management.tsx||250|embedding|openai_compatible|",
+  "src/lib/ai/embeddings.ts||36|chat|openai|",
+  "src/lib/ai/embeddings.ts||73|embedding|openai|",
+  "src/lib/ai/generation.ts||43|chat|openai|",
+  "src/lib/ai/generation.ts||66|chat|openai|",
+  "src/lib/ai/improve-prompt.ts||169|chat|openai|",
+  "src/lib/ai/improve-prompt.ts||4|embedding|openai_compatible|",
+  "src/lib/ai/prompt-builder-tools.ts||2|embedding|openai_compatible|",
+  "src/lib/ai/quality-check.ts||111|chat|openai|",
+  "src/lib/slug.ts||56|chat|openai|"
+ ],
  "baseline": 10,
  "baseline_found": 10,
  "missed": [],
@@ -107,7 +130,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp9y4wrro2/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp213vx7au/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -119,5 +142,6 @@
  "monthly_spend": 64.06,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 3.6
+ "wall_secs": 2.6,
+ "sha": "bbd0529530d99fa76ab2f51809b6184ea4b625b8"
 }

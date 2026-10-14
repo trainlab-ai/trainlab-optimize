@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "2.6s, 702 files/s"
+   "detail": "2.7s, 691 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 1842,
- "scan_secs": 2.63,
+ "scan_secs": 2.67,
  "sites": 53,
  "call_sites": 53,
  "model_configs": 0,
@@ -84,6 +84,61 @@
   "rust"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "docs/src/components/Home/APIStructure/index.tsx||17|chat|openai_compatible|",
+  "extensions/llamacpp-extension/src/index.ts||2505|chat|openai_compatible|",
+  "extensions/llamacpp-extension/src/index.ts||2956|embedding|openai_compatible|",
+  "extensions/mlx-extension/src/index.ts||412|chat|openai_compatible|",
+  "src-tauri/plugins/tauri-plugin-llamacpp/src/engine/mod.rs||127|chat|openai_compatible|",
+  "src-tauri/plugins/tauri-plugin-llamacpp/src/engine/mod.rs||128|embedding|openai_compatible|",
+  "src-tauri/plugins/tauri-plugin-llamacpp/src/engine/mod.rs||129|embedding|openai_compatible|",
+  "src-tauri/plugins/tauri-plugin-llamacpp/src/engine/mod.rs||305|chat|openai_compatible|",
+  "src-tauri/src/core/agent/genai_bridge.rs||1003|chat|openai_compatible|",
+  "src-tauri/src/core/agent/genai_bridge.rs||1007|chat|openai_compatible|",
+  "src-tauri/src/core/agent/genai_bridge.rs||1014|chat|openai_compatible|",
+  "src-tauri/src/core/agent/genai_bridge.rs||1451|chat|openai_compatible|",
+  "src-tauri/src/core/agent/genai_bridge.rs||75|chat|openai_compatible|",
+  "src-tauri/src/core/agent/genai_bridge.rs||880|chat|unknown|",
+  "src-tauri/src/core/agent/loop.rs||5562|chat|openai_compatible|",
+  "src-tauri/src/core/agent/loop.rs||5662|chat|openai_compatible|",
+  "src-tauri/src/core/agent/loop.rs||5740|chat|openai_compatible|",
+  "src-tauri/src/core/agent/loop.rs||5769|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||1455|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2345|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2386|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2399|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2443|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2502|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2566|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2650|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2710|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2834|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2871|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2897|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||2923|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||3010|chat|openai_compatible|",
+  "src-tauri/src/core/agent/upstream.rs||654|chat|openai_compatible|",
+  "src-tauri/src/core/cli/auth/account.rs||917|chat|anthropic|",
+  "src-tauri/src/core/server/converters.rs||2012|chat|gemini|",
+  "src-tauri/src/core/server/converters.rs||2016|chat|gemini|",
+  "src-tauri/src/core/server/converters.rs||675|chat|gemini|",
+  "src-tauri/src/core/server/converters.rs||677|chat|gemini|",
+  "src-tauri/src/core/server/proxy.rs||1068|chat|anthropic|",
+  "src-tauri/src/core/server/proxy.rs||1468|chat|openai_compatible|",
+  "src-tauri/src/core/server/proxy.rs||1470|embedding|openai_compatible|",
+  "src-tauri/src/core/server/proxy.rs||1498|chat|openai_compatible|",
+  "src-tauri/src/core/server/proxy.rs||1509|chat|openai_compatible|",
+  "src-tauri/src/core/server/proxy.rs||1607|chat|openai_compatible|",
+  "src-tauri/src/core/server/proxy.rs||2109|chat|openai_compatible|",
+  "src-tauri/src/core/server/tests.rs||14|chat|anthropic|",
+  "src-tauri/src/core/server/tests.rs||8|chat|anthropic|",
+  "web-app/src/lib/context-manager.ts||238|chat|vercel_ai|",
+  "web-app/src/lib/coworkSubagent.ts||686|chat|vercel_ai|",
+  "web-app/src/lib/custom-chat-transport.ts||1602|chat|vercel_ai|",
+  "web-app/src/lib/mcp-orchestrator/mcp-router-llm.ts||64|chat|vercel_ai|",
+  "web-app/src/lib/thread-title-summarizer.ts||103|chat|vercel_ai|",
+  "web-app/src/services/providers/tauri.ts||63|chat|openai_compatible|"
+ ],
  "baseline": 44,
  "baseline_found": 42,
  "missed": [
@@ -122,7 +177,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpzpta_zdl/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpd0dwqklj/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -134,5 +189,6 @@
  "monthly_spend": 129.44,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 8.9
+ "wall_secs": 8.5,
+ "sha": "2ff2c4f4f982740dd1cc3adbc33d292fe44b2339"
 }

@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.1s, 1314 files/s"
+   "detail": "0.1s, 1331 files/s"
   },
   "T03": {
    "status": "pass",
@@ -80,6 +80,11 @@
   "jvm"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "jlama-cli/src/main/java/com/github/tjake/jlama/cli/commands/ApiServiceCommand.java||80|chat|openai_compatible|",
+  "jlama-cli/src/main/java/com/github/tjake/jlama/cli/commands/ClusterCoordinatorCommand.java||150|chat|openai_compatible|",
+  "jlama-cli/src/main/webapp/ui/api.js||4|chat|openai_compatible|"
+ ],
  "baseline": 4,
  "baseline_found": 3,
  "missed": [
@@ -108,7 +113,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmppt1gkgpw/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpx53wgxcs/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -120,5 +125,6 @@
  "monthly_spend": 22.9,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 0.6
+ "wall_secs": 0.7,
+ "sha": "7b8ba424dd7203ba261e41e53fe555bb1ecd6b68"
 }

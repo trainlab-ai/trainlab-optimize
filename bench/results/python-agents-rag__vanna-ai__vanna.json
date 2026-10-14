@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.7s, 475 files/s"
+   "detail": "0.5s, 706 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 338,
- "scan_secs": 0.71,
+ "scan_secs": 0.48,
  "sites": 44,
  "call_sites": 37,
  "model_configs": 7,
@@ -90,6 +90,52 @@
   "python"
  ],
  "resolved_model_pct": 43,
+ "site_keys": [
+  "notebooks/quickstart.ipynb|6|2|model_config|anthropic|claude-sonnet-4-5",
+  "src/evals/benchmarks/llm_comparison.py||67|model_config|anthropic|claude-sonnet-4",
+  "src/evals/benchmarks/llm_comparison.py||70|model_config|anthropic|claude-sonnet-4-20250514",
+  "src/evals/benchmarks/llm_comparison.py||82|model_config|anthropic|claude-opus-4",
+  "src/evals/benchmarks/llm_comparison.py||85|model_config|anthropic|claude-opus-4-20250514",
+  "src/vanna/integrations/anthropic/llm.py||105|chat|anthropic|",
+  "src/vanna/integrations/anthropic/llm.py||69|chat|anthropic|",
+  "src/vanna/integrations/azureopenai/llm.py||125|chat|azure|",
+  "src/vanna/integrations/azureopenai/llm.py||164|chat|azure|",
+  "src/vanna/integrations/google/gemini.py||138|chat|gemini|gemini-2.5-pro",
+  "src/vanna/integrations/google/gemini.py||82|chat|gemini|gemini-2.5-pro",
+  "src/vanna/integrations/ollama/llm.py||110|chat|ollama|",
+  "src/vanna/integrations/ollama/llm.py||71|chat|ollama|",
+  "src/vanna/integrations/openai/llm.py||111|chat|openai|",
+  "src/vanna/integrations/openai/llm.py||73|chat|openai|",
+  "src/vanna/integrations/openai/responses.py||31|chat|openai|",
+  "src/vanna/integrations/openai/responses.py||46|chat|openai|",
+  "src/vanna/legacy/ZhipuAI/ZhipuAI_Chat.py||19|chat|zhipu|",
+  "src/vanna/legacy/ZhipuAI/ZhipuAI_Chat.py||224|chat|zhipu|glm-4",
+  "src/vanna/legacy/ZhipuAI/ZhipuAI_embeddings.py||23|embedding|zhipu|embedding-2",
+  "src/vanna/legacy/ZhipuAI/ZhipuAI_embeddings.py||69|embedding|zhipu|",
+  "src/vanna/legacy/anthropic/anthropic_chat.py||72|chat|anthropic|",
+  "src/vanna/legacy/bedrock/bedrock_converse.py||81|chat|bedrock|",
+  "src/vanna/legacy/cohere/cohere_chat.py||77|chat|cohere|command-a-03-2025",
+  "src/vanna/legacy/cohere/cohere_embeddings.py||51|embedding|cohere|embed-multilingual-v3.0",
+  "src/vanna/legacy/deepseek/deepseek_chat.py||54|chat|deepseek|",
+  "src/vanna/legacy/google/gemini_chat.py||31|model_config|gemini|gemini-1.5-pro",
+  "src/vanna/legacy/google/gemini_chat.py||54|model_config|vertex|gemini-1.5-pro",
+  "src/vanna/legacy/mistral/mistral.py||46|chat|mistral|",
+  "src/vanna/legacy/openai/openai_chat.py||111|chat|openai|gpt-3.5-turbo",
+  "src/vanna/legacy/openai/openai_chat.py||69|chat|openai|gpt-3.5-turbo",
+  "src/vanna/legacy/openai/openai_chat.py||78|chat|openai|",
+  "src/vanna/legacy/openai/openai_chat.py||88|chat|openai|",
+  "src/vanna/legacy/openai/openai_chat.py||98|chat|openai|",
+  "src/vanna/legacy/openai/openai_embeddings.py||36|embedding|openai|",
+  "src/vanna/legacy/openai/openai_embeddings.py||41|embedding|openai|text-embedding-ada-002",
+  "src/vanna/legacy/qianwen/QianwenAI_chat.py||106|chat|openai_compatible|",
+  "src/vanna/legacy/qianwen/QianwenAI_chat.py||119|chat|openai_compatible|qwen-plus",
+  "src/vanna/legacy/qianwen/QianwenAI_chat.py||77|chat|openai_compatible|qwen-plus",
+  "src/vanna/legacy/qianwen/QianwenAI_chat.py||86|chat|openai_compatible|",
+  "src/vanna/legacy/qianwen/QianwenAI_chat.py||96|chat|openai_compatible|",
+  "src/vanna/legacy/qianwen/QianwenAI_embeddings.py||36|embedding|openai|",
+  "src/vanna/legacy/qianwen/QianwenAI_embeddings.py||41|embedding|openai|bge-large-zh",
+  "src/vanna/legacy/vllm/vllm.py||74|chat|openai_compatible|"
+ ],
  "baseline": 33,
  "baseline_found": 33,
  "missed": [],
@@ -125,7 +171,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpuvuymyzl/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpv7fbki97/usage_tokens_only.csv",
    "model": "gemini-2.5-pro",
    "expected": 98.0812
   }
@@ -141,5 +187,6 @@
  "monthly_spend": 2508.65,
  "savings_high": null,
  "attributed_share": 0.9897887882190856,
- "wall_secs": 2.5
+ "wall_secs": 1.8,
+ "sha": "365d0617c1a4567ffee1b19b40c27feb4206bfcf"
 }

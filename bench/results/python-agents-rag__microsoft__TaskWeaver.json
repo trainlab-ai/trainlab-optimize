@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.3s, 766 files/s"
+   "detail": "0.2s, 1489 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 266,
- "scan_secs": 0.35,
+ "scan_secs": 0.18,
  "sites": 17,
  "call_sites": 9,
  "model_configs": 8,
@@ -85,6 +85,25 @@
   "python"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "auto_eval/evaluator.py||46|model_config|azure|",
+  "auto_eval/evaluator.py||55|model_config|openai|",
+  "auto_eval/evaluator.py||63|model_config|gemini|",
+  "project/plugins/paper_summary.py||25|model_config|azure|",
+  "project/plugins/paper_summary.py||35|model_config|openai|",
+  "project/plugins/sql_pull_data.py||20|model_config|azure|",
+  "project/plugins/sql_pull_data.py||29|model_config|openai|",
+  "taskweaver/llm/anthropic.py||80|chat|anthropic|",
+  "taskweaver/llm/anthropic.py||85|chat|anthropic|",
+  "taskweaver/llm/google_genai.py||67|model_config|gemini|",
+  "taskweaver/llm/groq.py||62|chat|openai_compatible|",
+  "taskweaver/llm/openai.py||222|chat|openai|",
+  "taskweaver/llm/openai.py||297|embedding|openai|",
+  "taskweaver/llm/qwen.py||60|chat|dashscope|",
+  "taskweaver/llm/qwen.py||84|embedding|dashscope|",
+  "taskweaver/llm/zhipuai.py||149|embedding|zhipu|",
+  "taskweaver/llm/zhipuai.py||96|chat|zhipu|"
+ ],
  "baseline": 8,
  "baseline_found": 8,
  "missed": [],
@@ -107,7 +126,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmphdc6jb58/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpln9742nk/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -122,5 +141,6 @@
  "monthly_spend": 16.4,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 1.1
+ "wall_secs": 0.7,
+ "sha": "d44ddef23f90059fb17999d3095db4240e98f955"
 }

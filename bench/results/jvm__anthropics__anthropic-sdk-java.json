@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "5.4s, 911 files/s"
+   "detail": "4.6s, 1071 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 4883,
- "scan_secs": 5.36,
+ "scan_secs": 4.56,
  "sites": 25,
  "call_sites": 25,
  "model_configs": 0,
@@ -79,6 +79,33 @@
   "jvm"
  ],
  "resolved_model_pct": 92,
+ "site_keys": [
+  "anthropic-java-example/src/main/java/com/anthropic/example/BedrockMessagesApiKeyExample.java||51|chat|anthropic|global.anthropic.claude-opus-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/BetaMessagesToolsExample.java||105|chat|anthropic|",
+  "anthropic-java-example/src/main/java/com/anthropic/example/BetaMessagesToolsExample.java||88|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/BetaMessagesToolsRawExample.java||72|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/BetaMessagesToolsRawExample.java||89|chat|anthropic|",
+  "anthropic-java-example/src/main/java/com/anthropic/example/BetaStructuredOutputsExample.java||67|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/BetaStructuredOutputsStreamingExample.java||70|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/FoundryMessagesApiKeyExample.java||54|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/FoundryMessagesBearerTokenExample.java||67|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/GoogleCloudMessagesExample.java||52|chat|anthropic|claude-sonnet-4-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/MessagesConversationAsyncExample.java||26|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/MessagesConversationExample.java||24|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/MessagesExample.java||21|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/MessagesImageExample.java||34|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/MessagesMcpExample.java||42|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/MessagesStreamingCancellationAsyncExample.java||25|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/MessagesStreamingCancellationExample.java||25|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/MessagesStreamingExample.java||25|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/StructuredOutputsExample.java||83|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/StructuredOutputsOutputConfigExample.java||83|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/StructuredOutputsRawExample.java||104|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/StructuredOutputsStreamingExample.java||82|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/ThinkingExample.java||32|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/ThinkingStreamingExample.java||33|chat|anthropic|claude-sonnet-5-5",
+  "anthropic-java-example/src/main/java/com/anthropic/example/VertexMessagesExample.java||67|chat|anthropic|claude-sonnet-5-5"
+ ],
  "baseline": 25,
  "baseline_found": 25,
  "missed": [],
@@ -105,7 +132,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmphzor7tcd/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp1sddvkm1/usage_tokens_only.csv",
    "model": "claude-sonnet-5-5",
    "expected": 120.93
   }
@@ -118,5 +145,6 @@
  "monthly_spend": 2572.74,
  "savings_high": null,
  "attributed_share": 0.9928795493087104,
- "wall_secs": 23.0
+ "wall_secs": 19.0,
+ "sha": "59079f010f7036c15e8839f8a032e96b2f35d074"
 }

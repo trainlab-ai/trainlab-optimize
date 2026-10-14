@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.3s, 1416 files/s"
+   "detail": "0.4s, 1010 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 372,
- "scan_secs": 0.26,
+ "scan_secs": 0.37,
  "sites": 40,
  "call_sites": 40,
  "model_configs": 0,
@@ -82,6 +82,48 @@
   "rust"
  ],
  "resolved_model_pct": 58,
+ "site_keys": [
+  "async-openai/src/chat.rs||112|chat|openai_compatible|",
+  "async-openai/src/chat.rs||133|chat|openai_compatible|",
+  "async-openai/src/chat.rs||146|chat|openai_compatible|",
+  "async-openai/src/chat.rs||160|chat|openai_compatible|",
+  "async-openai/src/chat.rs||90|chat|openai_compatible|",
+  "examples/azure-openai-service/src/main.rs||28|chat|azure|text-davinci-003",
+  "examples/azure-openai-service/src/main.rs||69|embedding|azure|text-embedding-ada-002",
+  "examples/chat-store/src/main.rs||39|chat|openai|",
+  "examples/chat-stream/src/main.rs||21|chat|openai|gpt-3.5-turbo",
+  "examples/embeddings/src/main.rs||21|embedding|openai|text-embedding-ada-002",
+  "examples/middleware/src/main.rs||101|chat|openai_compatible|",
+  "examples/middleware/src/main.rs||41|chat|openai|gpt-4o-mini",
+  "examples/ollama-chat/src/main.rs||54|chat|ollama|",
+  "examples/responses-function-call/src/main.rs||160|chat|openai|gpt-4.1",
+  "examples/responses-function-call/src/main.rs||220|chat|openai|gpt-4.1",
+  "examples/responses-function-call/src/main.rs||349|chat|openai|gpt-4.1",
+  "examples/responses-function-call/src/main.rs||97|chat|openai|gpt-4.1",
+  "examples/responses-images-and-vision/src/main.rs||41|chat|openai|",
+  "examples/responses-images-and-vision/src/main.rs||76|chat|openai|gpt-4.1-mini",
+  "examples/responses-multi-turn-reasoning/src/main.rs||131|chat|openai|gpt-5",
+  "examples/responses-multi-turn-reasoning/src/main.rs||79|chat|openai|gpt-5",
+  "examples/responses-retrieve-stream/src/main.rs||22|chat|openai|gpt-4.1",
+  "examples/responses-stream/src/main.rs||19|chat|openai|gpt-4.1",
+  "examples/responses-structured-outputs/src/main.rs||127|chat|openai|",
+  "examples/responses-structured-outputs/src/main.rs||212|chat|openai|",
+  "examples/responses-structured-outputs/src/main.rs||277|chat|openai|",
+  "examples/responses-structured-outputs/src/main.rs||342|chat|openai|",
+  "examples/responses-structured-outputs/src/main.rs||70|chat|openai|",
+  "examples/responses-web-search/src/main.rs||38|chat|openai|gpt-5-mini",
+  "examples/responses/src/main.rs||42|chat|openai|",
+  "examples/structured-outputs-schemars/src/main.rs||50|chat|openai|gpt-4o-mini",
+  "examples/structured-outputs/src/main.rs||59|chat|openai|gpt-4o-2024-08-06",
+  "examples/tool-call-stream/src/main.rs||152|chat|openai|gpt-5-mini",
+  "examples/tool-call-stream/src/main.rs||45|chat|openai|",
+  "examples/tool-call/src/main.rs||114|chat|openai|gpt-5-mini",
+  "examples/tower-wasm/src/main.rs||133|chat|openai|gpt-5-mini",
+  "examples/vision-chat/src/main.rs||39|chat|openai|",
+  "examples/wasm-responses-stream/src/main.rs||69|chat|openai|gpt-5-mini",
+  "examples/wasm-responses/src/main.rs||38|chat|openai|gpt-5-mini",
+  "examples/webhooks/src/main.rs||163|chat|openai|gpt-4o-mini"
+ ],
  "baseline": 11,
  "baseline_found": 8,
  "missed": [
@@ -128,7 +170,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpm6blt_cn/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpug_3dl92/usage_tokens_only.csv",
    "model": "gpt-4.1",
    "expected": 108.93
   }
@@ -142,5 +184,6 @@
  "monthly_spend": 514.2,
  "savings_high": 11.95,
  "attributed_share": 0.918449169417632,
- "wall_secs": 1.4
+ "wall_secs": 1.5,
+ "sha": "c2deb8880566c3db35979654ea9dd45dc3deffd9"
 }

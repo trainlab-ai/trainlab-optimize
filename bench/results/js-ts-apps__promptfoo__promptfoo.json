@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "8.7s, 477 files/s"
+   "detail": "8.7s, 476 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 4149,
- "scan_secs": 8.71,
+ "scan_secs": 8.72,
  "sites": 48,
  "call_sites": 40,
  "model_configs": 8,
@@ -92,6 +92,56 @@
   "ruby"
  ],
  "resolved_model_pct": 29,
+ "site_keys": [
+  "examples/config-stateful-session-management/server.js||51|chat|openai|gpt-4o-2024-08-06",
+  "examples/config-websockets/streaming/server/server.js||122|chat|openai|",
+  "examples/config-websockets/streaming/server/server.js||71|chat|openai|",
+  "examples/eval-errors-vs-failures/customProvider.js||30|chat|openai|",
+  "examples/eval-rag-full/ingest.py||131|model_config|openai|text-embedding-3-large",
+  "examples/eval-rag-full/retrieve.py||20|model_config|openai|text-embedding-3-large",
+  "examples/eval-rag-full/retrieve.py||79|model_config|openai|gpt-4.1-mini",
+  "examples/integration-langchain/langchain_example.py||21|model_config|openai|gpt-4.1-mini",
+  "examples/integration-langgraph/agent.py||18|model_config|openai|gpt-4o",
+  "examples/integration-pydantic-ai/agent.py||49|model_config|unknown|openai-responses:gpt-5.4-nano",
+  "examples/integration-vercel/ai-sdk/aiSdkProvider.mjs||161|chat|vercel_ai|",
+  "examples/openai-agents/agent_provider.py||707|model_config|unknown|",
+  "examples/provider-custom/basic/customProvider.cjs||32|chat|openai|",
+  "examples/provider-custom/basic/customProvider.js||32|chat|openai|",
+  "examples/provider-custom/basic/vercelAiSdkExample.js||48|chat|anthropic|claude-haiku-4-5-20251001",
+  "examples/provider-custom/embeddings/customProvider.js||23|embedding|openai|",
+  "examples/provider-custom/mjs/customProvider.mjs||36|chat|openai|",
+  "examples/provider-custom/typescript/customProvider.ts||38|chat|openai|",
+  "examples/provider-golang/core/openai.go||38|chat|openai|",
+  "examples/provider-http/tls/mock-server.js||78|chat|openai_compatible|",
+  "examples/provider-python/provider.py||11|chat|openai|gpt-4.1-mini",
+  "examples/provider-python/provider.py||48|chat|openai|gpt-4o",
+  "examples/provider-ruby/provider.rb||19|chat|openai|",
+  "examples/redteam-api-top-10/app/chat_handler.py||186|chat|anthropic|claude-haiku-4-5-20251001",
+  "examples/redteam-indirect-web-pwn/provider.js||63|chat|openai|gpt-4.1",
+  "examples/redteam-langchain/langchain_provider.py||11|model_config|openai|gpt-5-nano",
+  "examples/redteam-mcp-agent/src/react-agent.js||93|chat|openai|",
+  "examples/redteam-medical-agent/src/llm.js||49|chat|openai|gpt-4.1-mini",
+  "src/commands/exampleAliases.ts||30|embedding|openai_compatible|",
+  "src/providers/ai21.ts||151|chat|ai21|",
+  "src/providers/anthropic/messages.ts||409|chat|anthropic|",
+  "src/providers/anthropic/messages.ts||411|chat|anthropic|",
+  "src/providers/azure/foundry-agent.ts||724|chat|azure|",
+  "src/providers/bedrock/converse.ts||1226|chat|bedrock|",
+  "src/providers/bedrock/converse.ts||1695|chat|bedrock|",
+  "src/providers/google/gemini-image.ts||341|chat|gemini|",
+  "src/providers/google/gemini-image.ts||461|chat|gemini|",
+  "src/providers/google/vertex.ts||1289|chat|gemini|",
+  "src/providers/localai.ts||122|embedding|openai_compatible|",
+  "src/providers/localai.ts||71|chat|openai_compatible|",
+  "src/providers/mistral.ts||638|chat|mistral|",
+  "src/providers/mistral.ts||814|embedding|mistral|",
+  "src/providers/vercel.ts||336|chat|vercel_ai|",
+  "src/providers/vercel.ts||463|chat|vercel_ai|",
+  "src/providers/vercel.ts||595|embedding|vercel_ai|",
+  "src/providers/voyage.ts||91|embedding|openai_compatible|",
+  "src/providers/watsonx.ts||706|chat|watsonx|",
+  "src/types/optional-deps.d.ts||14|chat|vercel_ai|"
+ ],
  "baseline": 28,
  "baseline_found": 28,
  "missed": [],
@@ -122,7 +172,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpbxay1q5b/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpoaiq6gxx/usage_tokens_only.csv",
    "model": "gpt-4.1-mini",
    "expected": 21.786
   }
@@ -135,5 +185,6 @@
  "monthly_spend": 1574.23,
  "savings_high": null,
  "attributed_share": 0.9948899686787451,
- "wall_secs": 22.3
+ "wall_secs": 23.7,
+ "sha": "6e0991ccab72a9f376782b44c551b7ded47738f5"
 }

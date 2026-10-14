@@ -6,11 +6,11 @@
  "tests": {
   "T01": {
    "status": "pass",
-   "detail": "569 files, 5 sites"
+   "detail": "570 files, 5 sites"
   },
   "T02": {
    "status": "pass",
-   "detail": "0.5s, 1203 files/s"
+   "detail": "0.6s, 1015 files/s"
   },
   "T03": {
    "status": "pass",
@@ -66,8 +66,8 @@
    "examples": []
   }
  },
- "files": 569,
- "scan_secs": 0.47,
+ "files": 570,
+ "scan_secs": 0.56,
  "sites": 5,
  "call_sites": 5,
  "model_configs": 0,
@@ -79,6 +79,13 @@
   "javascript"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "app/routes/api.chat.ts||500|chat|vercel_ai|",
+  "app/routes/api.chat.ts||554|chat|vercel_ai|",
+  "app/routes/api.enhancer.ts||38|chat|vercel_ai|",
+  "app/routes/api.llmcall.ts||108|chat|vercel_ai|",
+  "app/routes/api.llmcall.ts||238|chat|vercel_ai|"
+ ],
  "baseline": 5,
  "baseline_found": 5,
  "missed": [],
@@ -101,7 +108,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpu_tqgdvu/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpokxw7bfv/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -114,5 +121,6 @@
  "monthly_spend": 79.33,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 1.7
+ "wall_secs": 1.8,
+ "sha": "da22ff7d9f346c130f09ac0953e2dbb852c9ba61"
 }

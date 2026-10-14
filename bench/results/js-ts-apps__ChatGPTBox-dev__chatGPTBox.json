@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.4s, 548 files/s"
+   "detail": "0.6s, 389 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 245,
- "scan_secs": 0.45,
+ "scan_secs": 0.63,
  "sites": 31,
  "call_sites": 31,
  "model_configs": 0,
@@ -89,6 +89,39 @@
   "javascript"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "src/config/index.mjs||1105|chat|openai_compatible|",
+  "src/config/index.mjs||1185|chat|openai_compatible|",
+  "src/config/index.mjs||1190|chat|openai_compatible|",
+  "src/config/index.mjs||1688|chat|openai_compatible|",
+  "src/config/index.mjs||1791|chat|openai_compatible|",
+  "src/config/index.mjs||1945|chat|openai_compatible|",
+  "src/config/index.mjs||843|chat|ollama|",
+  "src/popup/sections/ApiModes.jsx||326|chat|openai_compatible|",
+  "src/popup/sections/ApiModes.jsx||557|chat|openai_compatible|",
+  "src/popup/sections/ApiModes.jsx||59|chat|openai_compatible|",
+  "src/popup/sections/api-modes-provider-utils.mjs||62|chat|openai_compatible|",
+  "src/popup/sections/api-modes-provider-utils.mjs||73|chat|openai_compatible|",
+  "src/popup/sections/provider-secret-utils.mjs||33|chat|openai_compatible|",
+  "src/services/apis/claude-api.mjs||46|chat|anthropic|",
+  "src/services/apis/openai-api.mjs||290|chat|openai_compatible|",
+  "src/services/apis/openai-api.mjs||87|chat|openai_compatible|",
+  "src/services/apis/provider-registry.mjs||101|chat|xai|",
+  "src/services/apis/provider-registry.mjs||108|chat|openai_compatible|",
+  "src/services/apis/provider-registry.mjs||15|chat|openai_compatible|",
+  "src/services/apis/provider-registry.mjs||24|chat|deepseek|",
+  "src/services/apis/provider-registry.mjs||333|chat|openai_compatible|",
+  "src/services/apis/provider-registry.mjs||33|chat|nvidia|",
+  "src/services/apis/provider-registry.mjs||41|chat|moonshot|",
+  "src/services/apis/provider-registry.mjs||50|chat|mistral|",
+  "src/services/apis/provider-registry.mjs||58|chat|openrouter|",
+  "src/services/apis/provider-registry.mjs||67|chat|openai_compatible|",
+  "src/services/apis/provider-registry.mjs||728|chat|openai_compatible|",
+  "src/services/apis/provider-registry.mjs||76|chat|zhipu|",
+  "src/services/apis/provider-registry.mjs||84|chat|openai_compatible|",
+  "src/services/apis/provider-registry.mjs||8|chat|openai_compatible|",
+  "src/services/apis/provider-registry.mjs||93|chat|gemini|"
+ ],
  "baseline": 31,
  "baseline_found": 31,
  "missed": [],
@@ -111,7 +144,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp74n9ngti/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpaj3z07vi/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -124,5 +157,6 @@
  "monthly_spend": 121.45,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 1.2
+ "wall_secs": 1.2,
+ "sha": "7794d16f72b2d437031b8edcc77ca665900706c7"
 }

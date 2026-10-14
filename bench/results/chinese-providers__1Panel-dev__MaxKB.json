@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "1.4s, 976 files/s"
+   "detail": "1.0s, 1392 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 1409,
- "scan_secs": 1.44,
+ "scan_secs": 1.01,
  "sites": 13,
  "call_sites": 10,
  "model_configs": 3,
@@ -83,6 +83,21 @@
   "python"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "apps/chat/urls.py||21|chat|openai_compatible|",
+  "apps/models_provider/impl/aliyun_bai_lian_model_provider/model/stt/asr_stt.py||59|chat|dashscope|",
+  "apps/models_provider/impl/aliyun_bai_lian_model_provider/model/stt/omni_stt.py||58|chat|openai_compatible|",
+  "apps/models_provider/impl/aliyun_bai_lian_model_provider/model/tti.py||132|chat|dashscope|",
+  "apps/models_provider/impl/aliyun_bai_lian_model_provider/model/tts.py||56|chat|dashscope|",
+  "apps/models_provider/impl/aliyun_bai_lian_model_provider/model/tts.py||70|chat|dashscope|",
+  "apps/models_provider/impl/gemini_model_provider/model/stt.py||44|model_config|gemini|",
+  "apps/models_provider/impl/gemini_model_provider/model/stt.py||52|model_config|gemini|",
+  "apps/models_provider/impl/gemini_model_provider/model/tti.py||76|chat|gemini|",
+  "apps/models_provider/impl/siliconCloud_model_provider/model/embedding.py||52|embedding|openai_compatible|",
+  "apps/models_provider/impl/tencent_model_provider/model/embedding.py||47|embedding|openai_compatible|",
+  "apps/models_provider/impl/volcanic_engine_model_provider/model/embedding.py||57|embedding|volcengine|",
+  "apps/models_provider/impl/zhipu_model_provider/model/tti.py||49|model_config|openai|"
+ ],
  "baseline": 4,
  "baseline_found": 4,
  "missed": [],
@@ -110,7 +125,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpb9cilcip/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpbo0nifoz/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -123,5 +138,6 @@
  "monthly_spend": 53.5,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 5.2
+ "wall_secs": 3.8,
+ "sha": "e4b8b015d4321a22b5148643a0aed8785ae73fbd"
 }

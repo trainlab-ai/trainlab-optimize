@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "3.3s, 1290 files/s"
+   "detail": "3.8s, 1101 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 4200,
- "scan_secs": 3.26,
+ "scan_secs": 3.81,
  "sites": 48,
  "call_sites": 48,
  "model_configs": 0,
@@ -80,6 +80,56 @@
   "csharp"
  ],
  "resolved_model_pct": 17,
+ "site_keys": [
+  "OpenAI/src/Generated/ChatClient.RestClient.cs||107|chat|openai_compatible|",
+  "OpenAI/src/Generated/ChatClient.RestClient.cs||121|chat|openai_compatible|",
+  "OpenAI/src/Generated/ChatClient.RestClient.cs||23|chat|openai_compatible|",
+  "OpenAI/src/Generated/ChatClient.RestClient.cs||62|chat|openai_compatible|",
+  "OpenAI/src/Generated/ChatClient.RestClient.cs||77|chat|openai_compatible|",
+  "OpenAI/src/Generated/ChatClient.RestClient.cs||91|chat|openai_compatible|",
+  "OpenAI/src/Generated/EmbeddingClient.RestClient.cs||22|embedding|openai_compatible|",
+  "OpenAI/src/Generated/Models/Batch/InternalCreateBatchRequestEndpoint.cs||13|chat|openai_compatible|",
+  "OpenAI/src/Generated/Models/Batch/InternalCreateBatchRequestEndpoint.cs||14|embedding|openai_compatible|",
+  "docs/guides/mcp/chat_with_mcp.cs||39|chat|openai|",
+  "docs/guides/text/chat/chat_instructions.cs||10|chat|openai|",
+  "docs/guides/text/chat/chat_roles.cs||12|chat|openai|",
+  "docs/guides/text/chat/chat_simpleprompt.cs||10|chat|openai|",
+  "docs/guides/text/chat/chat_tools.cs||35|chat|openai|",
+  "examples/Chat/Example01_SimpleChat.cs||14|chat|openai|gpt-4o",
+  "examples/Chat/Example01_SimpleChatAsync.cs||15|chat|openai|gpt-4o",
+  "examples/Chat/Example02_SimpleChatStreaming.cs||15|chat|openai|gpt-4o",
+  "examples/Chat/Example02_SimpleChatStreamingAsync.cs||16|chat|openai|gpt-4o",
+  "examples/Chat/Example03_FunctionCalling.cs||77|chat|openai|",
+  "examples/Chat/Example03_FunctionCallingAsync.cs||37|chat|openai|",
+  "examples/Chat/Example04_FunctionCallingStreaming.cs||161|chat|openai|",
+  "examples/Chat/Example04_FunctionCallingStreamingAsync.cs||42|chat|openai|",
+  "examples/Chat/Example05_ChatWithVision.cs||27|chat|openai|",
+  "examples/Chat/Example05_ChatWithVisionAsync.cs||28|chat|openai|",
+  "examples/Chat/Example06_StructuredOutputs.cs||50|chat|openai|",
+  "examples/Chat/Example06_StructuredOutputsAsync.cs||51|chat|openai|",
+  "examples/Chat/Example07_ChatProtocol.cs||29|chat|openai|",
+  "examples/Chat/Example07_ChatProtocolAsync.cs||30|chat|openai|",
+  "examples/Chat/Example08_ChatSerialization.cs||70|chat|openai|",
+  "examples/Chat/Example08_ChatSerializationAsync.cs||36|chat|openai|",
+  "examples/Chat/Example09_ChatWithAudio.cs||38|chat|openai|",
+  "examples/Chat/Example09_ChatWithAudio.cs||63|chat|openai|",
+  "examples/Chat/Example09_ChatWithAudioAsync.cs||39|chat|openai|",
+  "examples/Chat/Example09_ChatWithAudioAsync.cs||64|chat|openai|",
+  "examples/Chat/Example10_AdditionalProperties.cs||22|chat|openai|gpt-5",
+  "examples/Chat/Example10_AdditionalPropertiesAsync.cs||23|chat|openai|gpt-5",
+  "examples/CombinationExamples.cs||119|chat|openai|",
+  "examples/CombinationExamples.cs||32|chat|openai|",
+  "examples/CombinationExamples.cs||73|chat|openai|",
+  "examples/Embeddings/Example01_SimpleEmbedding.cs||18|embedding|openai|",
+  "examples/Embeddings/Example01_SimpleEmbeddingAsync.cs||19|embedding|openai|",
+  "examples/Embeddings/Example02_EmbeddingWithOptions.cs||20|embedding|openai|",
+  "examples/Embeddings/Example02_EmbeddingWithOptionsAsync.cs||21|embedding|openai|",
+  "examples/Embeddings/Example03_MultipleEmbeddings.cs||21|embedding|openai|",
+  "examples/Embeddings/Example03_MultipleEmbeddingsAsync.cs||22|embedding|openai|",
+  "examples/Embeddings/Example04_EmbeddingProtocol.cs||28|embedding|openai|text-embedding-3-small",
+  "examples/Embeddings/Example04_EmbeddingProtocolAsync.cs||29|embedding|openai|text-embedding-3-small",
+  "examples/MutualTls/Example01_MutualTlsAsync.cs||72|chat|openai|"
+ ],
  "baseline": 108,
  "baseline_found": 30,
  "missed": [
@@ -502,7 +552,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp0fzgo2lo/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpqwl90l6a/usage_tokens_only.csv",
    "model": "gpt-4o",
    "expected": 136.1625
   }
@@ -514,5 +564,6 @@
  "monthly_spend": 911.0,
  "savings_high": null,
  "attributed_share": 0.9219673158078063,
- "wall_secs": 11.3
+ "wall_secs": 12.6,
+ "sha": "1f0e8829acac4e004ebe0960fa24f3a0f0e59e40"
 }

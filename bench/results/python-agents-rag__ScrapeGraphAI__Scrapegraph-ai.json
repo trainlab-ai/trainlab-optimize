@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.6s, 517 files/s"
+   "detail": "0.4s, 772 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 304,
- "scan_secs": 0.59,
+ "scan_secs": 0.39,
  "sites": 16,
  "call_sites": 6,
  "model_configs": 10,
@@ -84,6 +84,24 @@
   "python"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "examples/ScrapegraphAI_cookbook.ipynb|19|17|model_config|openai|",
+  "examples/custom_graph/ollama/custom_graph_ollama.py||34|model_config|openai|",
+  "examples/custom_graph/ollama/custom_graph_ollama.py||35|model_config|openai|",
+  "examples/custom_graph/openai/custom_graph_openai.py||37|model_config|openai|",
+  "examples/custom_graph/openai/custom_graph_openai.py||38|model_config|openai|",
+  "scrapegraphai/builders/graph_builder.py||70|model_config|openai|",
+  "scrapegraphai/builders/graph_builder.py||78|model_config|gemini|",
+  "scrapegraphai/graphs/abstract_graph.py||253|model_config|unknown|",
+  "scrapegraphai/graphs/abstract_graph.py||285|model_config|together|",
+  "scrapegraphai/models/nvidia.py||32|model_config|nvidia|",
+  "scrapegraphai/nodes/generate_answer_from_image_node.py||60|chat|openai|",
+  "scrapegraphai/nodes/generate_answer_node_k_level.py||130|embedding|openai|",
+  "scrapegraphai/nodes/rag_node.py||77|embedding|openai|",
+  "scrapegraphai/utils/batch_api.py||153|batch|openai|",
+  "scrapegraphai/utils/batch_api.py||155|chat|openai_compatible|",
+  "scrapegraphai/utils/batch_api.py||65|chat|openai_compatible|"
+ ],
  "baseline": 5,
  "baseline_found": 5,
  "missed": [],
@@ -111,7 +129,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpduggc8ye/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpu7bnk2eo/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -124,5 +142,6 @@
  "monthly_spend": 12.25,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 2.1
+ "wall_secs": 1.7,
+ "sha": "194055e203afce41ed4e70365dbc416bad756115"
 }

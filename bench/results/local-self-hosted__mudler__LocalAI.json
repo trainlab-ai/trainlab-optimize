@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "5.8s, 554 files/s"
+   "detail": "4.1s, 778 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 3209,
- "scan_secs": 5.8,
+ "scan_secs": 4.12,
  "sites": 50,
  "call_sites": 50,
  "model_configs": 0,
@@ -84,6 +84,58 @@
   "python"
  ],
  "resolved_model_pct": 2,
+ "site_keys": [
+  "backend/go/localai-proxy/text.go||134|chat|openai_compatible|",
+  "backend/go/localai-proxy/text.go||329|embedding|openai_compatible|",
+  "core/cli/benchmark/benchmark.go||79|chat|openai_compatible|",
+  "core/http/auth/features.go||124|chat|openai_compatible|",
+  "core/http/auth/features.go||125|chat|openai_compatible|",
+  "core/http/auth/features.go||126|chat|openai_compatible|",
+  "core/http/auth/features.go||19|chat|openai_compatible|",
+  "core/http/auth/features.go||20|chat|openai_compatible|",
+  "core/http/auth/features.go||28|chat|anthropic|",
+  "core/http/auth/features.go||32|chat|openai_compatible|",
+  "core/http/auth/features.go||34|chat|openai_compatible|",
+  "core/http/auth/features.go||38|embedding|openai_compatible|",
+  "core/http/auth/features.go||39|embedding|openai_compatible|",
+  "core/http/auth/features.go||40|embedding|openai_compatible|",
+  "core/http/auth/features.go||6|chat|openai_compatible|",
+  "core/http/middleware/compress.go||28|chat|openai_compatible|",
+  "core/http/middleware/compress.go||29|chat|openai_compatible|",
+  "core/http/middleware/compress.go||33|chat|openai_compatible|",
+  "core/http/middleware/compress.go||34|chat|anthropic|",
+  "core/http/react-ui/scripts/translate-locales.mjs||114|chat|openai|",
+  "core/http/react-ui/scripts/translate-locales.mjs||90|chat|anthropic|",
+  "core/http/react-ui/src/components/HomeConnect.jsx||23|chat|anthropic|",
+  "core/http/react-ui/src/components/HomeConnect.jsx||25|chat|openai_compatible|",
+  "core/http/react-ui/src/components/identity/MoreFaceTools.jsx||187|embedding|vercel_ai|",
+  "core/http/react-ui/src/components/identity/MoreVoiceTools.jsx||165|embedding|vercel_ai|",
+  "core/http/react-ui/src/utils/config.js||73|chat|openai_compatible|",
+  "core/http/react-ui/src/utils/config.js||74|chat|openai_compatible|",
+  "core/http/react-ui/src/utils/config.js||87|embedding|openai_compatible|",
+  "core/http/react-ui/src/utils/modelTemplates.js||116|chat|anthropic|",
+  "core/http/react-ui/src/utils/modelTemplates.js||92|chat|openai|",
+  "core/http/routes/localai.go||358|chat|openai_compatible|",
+  "core/http/routes/localai.go||360|embedding|openai_compatible|",
+  "core/http/routes/localai.go||382|chat|openai_compatible|",
+  "core/http/routes/localai.go||384|embedding|openai_compatible|",
+  "core/http/routes/localai.go||423|chat|openai_compatible|",
+  "core/http/static/chat.js||1215|chat|openai_compatible|",
+  "core/services/cloudproxy/mitm/handler.go||218|chat|openai_compatible|",
+  "core/services/cloudproxy/mitm/handler.go||220|chat|anthropic|",
+  "core/services/failover/prober.go||187|chat|anthropic|",
+  "core/services/failover/prober.go||189|chat|openai_compatible|",
+  "core/services/failover/prober.go||191|embedding|openai_compatible|",
+  "examples/vllm-bench/ttft_streaming_tool_parser.py||74|chat|openai_compatible|",
+  "scripts/model_gallery_info.py||38|chat|openai|hermes-2-theta-llama-3-8b",
+  "swagger/docs.go||3423|chat|openai_compatible|",
+  "swagger/docs.go||3619|embedding|openai_compatible|",
+  "swagger/docs.go||3973|chat|openai_compatible|",
+  "swagger/docs.go||4000|chat|anthropic|",
+  "swagger/docs.go||4113|chat|openai_compatible|",
+  "swagger/docs.go||4140|chat|openai_compatible|",
+  "swagger/docs.go||4192|chat|openai_compatible|"
+ ],
  "baseline": 38,
  "baseline_found": 32,
  "missed": [
@@ -142,7 +194,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpbe9vwv8h/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp61oc5mxu/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -155,5 +207,6 @@
  "monthly_spend": 96.03,
  "savings_high": null,
  "attributed_share": 0.8678231478873993,
- "wall_secs": 15.8
+ "wall_secs": 13.5,
+ "sha": "5cb2e74bb67d76d853a2a0ad8705e24f4674bc7f"
 }

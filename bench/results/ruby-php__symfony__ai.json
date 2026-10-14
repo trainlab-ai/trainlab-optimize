@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "4.5s, 729 files/s"
+   "detail": "4.6s, 716 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 3288,
- "scan_secs": 4.51,
+ "scan_secs": 4.59,
  "sites": 47,
  "call_sites": 47,
  "model_configs": 0,
@@ -90,6 +90,55 @@
   "php"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "src/ai-bundle/config/platform/generic.php||31|chat|openai_compatible|",
+  "src/ai-bundle/config/platform/generic.php||32|embedding|openai_compatible|",
+  "src/ai-bundle/config/platform/openresponses.php||29|chat|openai_compatible|",
+  "src/platform/src/Bridge/Anthropic/ModelClient.php||123|chat|anthropic|",
+  "src/platform/src/Bridge/Azure/Meta/LlamaModelClient.php||56|chat|openai_compatible|",
+  "src/platform/src/Bridge/Azure/OpenAi/EmbeddingsModelClient.php||64|embedding|openai_compatible|",
+  "src/platform/src/Bridge/Azure/Responses/ModelClient.php||54|chat|openai_compatible|",
+  "src/platform/src/Bridge/Bedrock/Mantle/Factory.php||175|chat|bedrock|",
+  "src/platform/src/Bridge/Bedrock/Mantle/Factory.php||199|chat|bedrock|",
+  "src/platform/src/Bridge/Bedrock/Mantle/Messages/ModelClient.php||35|chat|anthropic|",
+  "src/platform/src/Bridge/Bedrock/Mantle/ModelClient.php||47|chat|openai_compatible|",
+  "src/platform/src/Bridge/Cerebras/ModelClient.php||65|chat|cerebras|",
+  "src/platform/src/Bridge/DeepSeek/ModelClient.php||55|chat|deepseek|",
+  "src/platform/src/Bridge/DockerModelRunner/Completions/ModelClient.php||55|chat|openai_compatible|",
+  "src/platform/src/Bridge/DockerModelRunner/Embeddings/ModelClient.php||44|embedding|openai_compatible|",
+  "src/platform/src/Bridge/EdenAi/Factory.php||52|chat|openai_compatible|",
+  "src/platform/src/Bridge/EdenAi/Factory.php||53|embedding|openai_compatible|",
+  "src/platform/src/Bridge/EdenAi/ModelApiCatalog.php||196|embedding|openai_compatible|",
+  "src/platform/src/Bridge/Fireworks/FireworksClient.php||65|chat|fireworks|",
+  "src/platform/src/Bridge/Fireworks/FireworksClient.php||78|embedding|fireworks|",
+  "src/platform/src/Bridge/Fireworks/FireworksResultConverter.php||78|embedding|fireworks|",
+  "src/platform/src/Bridge/Generic/Completions/ModelClient.php||43|chat|openai_compatible|",
+  "src/platform/src/Bridge/Generic/Embeddings/ModelClient.php||37|embedding|openai_compatible|",
+  "src/platform/src/Bridge/Generic/Factory.php||42|chat|openai_compatible|",
+  "src/platform/src/Bridge/Generic/Factory.php||43|embedding|openai_compatible|",
+  "src/platform/src/Bridge/Generic/Factory.php||74|chat|openai_compatible|",
+  "src/platform/src/Bridge/Generic/Factory.php||75|embedding|openai_compatible|",
+  "src/platform/src/Bridge/HuggingFace/ModelClient.php||68|chat|huggingface|",
+  "src/platform/src/Bridge/HuggingFace/ModelClient.php||72|chat|huggingface|",
+  "src/platform/src/Bridge/MiniMax/MiniMaxClient.php||67|chat|minimax|",
+  "src/platform/src/Bridge/MiniMax/MiniMaxResultConverter.php||82|chat|minimax|",
+  "src/platform/src/Bridge/Mistral/Embeddings/ModelClient.php||48|embedding|openai_compatible|",
+  "src/platform/src/Bridge/Mistral/Llm/ModelClient.php||56|chat|mistral|",
+  "src/platform/src/Bridge/OpenAi/Embeddings/ModelClient.php||41|embedding|openai_compatible|",
+  "src/platform/src/Bridge/OpenAi/Gpt/ModelClient.php||39|chat|openai_compatible|",
+  "src/platform/src/Bridge/OpenResponses/Factory.php||41|chat|openai_compatible|",
+  "src/platform/src/Bridge/OpenResponses/Factory.php||66|chat|openai_compatible|",
+  "src/platform/src/Bridge/OpenResponses/ModelClient.php||42|chat|openai_compatible|",
+  "src/platform/src/Bridge/OpenRouter/Factory.php||50|chat|openrouter|",
+  "src/platform/src/Bridge/OpenRouter/Factory.php||51|embedding|openrouter|",
+  "src/platform/src/Bridge/OpenRouter/ModelApiCatalog.php||136|embedding|openai_compatible|",
+  "src/platform/src/Bridge/Perplexity/ModelClient.php||64|chat|perplexity|",
+  "src/platform/src/Bridge/Scaleway/Embeddings/ModelClient.php||50|embedding|openai_compatible|",
+  "src/platform/src/Bridge/Scaleway/Llm/ModelClient.php||56|chat|openai_compatible|",
+  "src/platform/src/Bridge/Together/TogetherClient.php||59|chat|together|",
+  "src/platform/src/Bridge/Together/TogetherClient.php||70|embedding|together|",
+  "src/platform/src/Bridge/Together/TogetherResultConverter.php||79|embedding|together|"
+ ],
  "baseline": 23,
  "baseline_found": 23,
  "missed": [],
@@ -112,7 +161,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpm920px5o/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp958ejm3i/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -124,5 +173,6 @@
  "monthly_spend": 81.8,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 11.0
+ "wall_secs": 11.9,
+ "sha": "5ad77d9418152e61e5b2b2bbb29d070a07fc2a67"
 }

@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.4s, 957 files/s"
+   "detail": "0.5s, 806 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 374,
- "scan_secs": 0.39,
+ "scan_secs": 0.46,
  "sites": 26,
  "call_sites": 26,
  "model_configs": 0,
@@ -85,6 +85,34 @@
   "go"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "internal/plugins/ai/anthropic/anthropic.go||230|chat|anthropic|",
+  "internal/plugins/ai/anthropic/anthropic.go||233|chat|anthropic|",
+  "internal/plugins/ai/anthropic/anthropic.go||339|chat|anthropic|",
+  "internal/plugins/ai/anthropic/anthropic.go||342|chat|anthropic|",
+  "internal/plugins/ai/azureaigateway/backend_azure_openai.go||53|chat|azure|",
+  "internal/plugins/ai/azureaigateway/backend_vertex_ai.go||46|chat|gemini|",
+  "internal/plugins/ai/bedrock/bedrock.go||555|chat|bedrock|",
+  "internal/plugins/ai/codex/codex.go||24|chat|openai_compatible|",
+  "internal/plugins/ai/codex/codex.go||251|chat|openai|",
+  "internal/plugins/ai/codex/codex.go||298|chat|openai|",
+  "internal/plugins/ai/gemini/gemini.go||111|chat|gemini|",
+  "internal/plugins/ai/gemini/gemini.go||139|chat|gemini|",
+  "internal/plugins/ai/gemini/gemini.go||337|chat|gemini|",
+  "internal/plugins/ai/lmstudio/lmstudio.go||203|chat|lmstudio|",
+  "internal/plugins/ai/lmstudio/lmstudio.go||321|embedding|lmstudio|",
+  "internal/plugins/ai/lmstudio/lmstudio.go||93|chat|lmstudio|",
+  "internal/plugins/ai/openai/chat_completions.go||22|chat|openai|",
+  "internal/plugins/ai/openai/chat_completions.go||41|chat|openai|",
+  "internal/plugins/ai/openai/openai.go||180|chat|openai|",
+  "internal/plugins/ai/openai/openai.go||21|chat|openai|",
+  "internal/plugins/ai/openai/openai.go||237|chat|openai|",
+  "internal/plugins/ai/openai/openai_image.go||14|chat|openai_compatible|",
+  "internal/plugins/ai/vertexai/vertexai.go||152|chat|anthropic|",
+  "internal/plugins/ai/vertexai/vertexai.go||205|chat|anthropic|",
+  "internal/plugins/ai/vertexai/vertexai.go||268|chat|gemini|",
+  "internal/plugins/ai/vertexai/vertexai.go||336|chat|gemini|"
+ ],
  "baseline": 9,
  "baseline_found": 9,
  "missed": [],
@@ -107,7 +135,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpw80ntlfn/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpcc0cbnm1/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -119,5 +147,6 @@
  "monthly_spend": 110.32,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 1.3
+ "wall_secs": 1.4,
+ "sha": "dde3fc49f29098f1b7b0a07bd740c32607f7f055"
 }

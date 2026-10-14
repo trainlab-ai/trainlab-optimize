@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "2.2s, 424 files/s"
+   "detail": "1.2s, 770 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 950,
- "scan_secs": 2.24,
+ "scan_secs": 1.23,
  "sites": 4,
  "call_sites": 2,
  "model_configs": 2,
@@ -81,6 +81,12 @@
   "python"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "private_gpt/components/embedding/discovery.py||35|model_config|openai|",
+  "private_gpt/components/embedding/factories/openai.py||34|model_config|openai|",
+  "private_gpt/components/llm/discovery.py||82|chat|openai_compatible|",
+  "private_gpt/server/chat_async/chat_async_router.py||140|chat|anthropic|"
+ ],
  "baseline": 3,
  "baseline_found": 1,
  "missed": [
@@ -114,7 +120,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpmnwtljgy/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpxsmkl_pw/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -127,5 +133,6 @@
  "monthly_spend": 63.09,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 5.8
+ "wall_secs": 4.3,
+ "sha": "4a5cb6863a13de1ae6176659b45efc5c925b11b7"
 }

@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.2s, 3034 files/s"
+   "detail": "0.2s, 2716 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 460,
- "scan_secs": 0.15,
+ "scan_secs": 0.17,
  "sites": 9,
  "call_sites": 6,
  "model_configs": 3,
@@ -83,6 +83,17 @@
   "python"
  ],
  "resolved_model_pct": 33,
+ "site_keys": [
+  "next/src/server/api/routers/agentRouter.ts||30|chat|openai|gpt-3.5-turbo",
+  "next/src/services/agent/agent-work/chat-work.ts||23|chat|vercel_ai|",
+  "next/src/services/agent/agent-work/execute-task-work.ts||26|chat|vercel_ai|",
+  "next/src/services/agent/agent-work/summarize-work.ts||23|chat|vercel_ai|",
+  "platform/reworkd_platform/services/anthropic.py||35|chat|anthropic|",
+  "platform/reworkd_platform/services/pinecone/pinecone.py||41|model_config|openai|",
+  "platform/reworkd_platform/web/api/agent/tools/image.py||21|chat|replicate|",
+  "platform/reworkd_platform/web/api/agent/views.py||107|model_config|openai|gpt-3.5-turbo-16k",
+  "platform/reworkd_platform/web/api/agent/views.py||90|model_config|openai|gpt-3.5-turbo-16k"
+ ],
  "baseline": 4,
  "baseline_found": 4,
  "missed": [],
@@ -107,7 +118,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp2tocla79/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpo4x3eppq/usage_tokens_only.csv",
    "model": "gpt-3.5-turbo-16k",
    "expected": 115.395
   }
@@ -122,5 +133,6 @@
  "monthly_spend": 778.45,
  "savings_high": null,
  "attributed_share": 0.9974367445393651,
- "wall_secs": 0.6
+ "wall_secs": 0.8,
+ "sha": "18b073ab05b2902e1d052c3d2799786d8623b5e5"
 }

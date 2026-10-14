@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.1s, 391 files/s"
+   "detail": "0.1s, 417 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 54,
- "scan_secs": 0.14,
+ "scan_secs": 0.13,
  "sites": 7,
  "call_sites": 7,
  "model_configs": 0,
@@ -81,6 +81,15 @@
   "rust"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "src/client/azure_openai.rs||51|chat|azure|",
+  "src/client/openai.rs||51|chat|openai|",
+  "src/client/openai.rs||71|embedding|openai|",
+  "src/client/openai_compatible.rs||45|chat|openai_compatible|",
+  "src/client/openai_compatible.rs||65|embedding|openai_compatible|",
+  "src/serve.rs||158|chat|openai_compatible|",
+  "src/serve.rs||160|embedding|openai_compatible|"
+ ],
  "baseline": 4,
  "baseline_found": 4,
  "missed": [],
@@ -103,7 +112,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmprbsenp2s/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpwgf97x72/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -115,5 +124,6 @@
  "monthly_spend": 33.02,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 0.5
+ "wall_secs": 0.5,
+ "sha": "82976d349ad97ac9aae0655ad631dace5e2a6385"
 }

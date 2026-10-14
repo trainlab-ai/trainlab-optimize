@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "1.5s, 1413 files/s"
+   "detail": "1.6s, 1286 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 2066,
- "scan_secs": 1.46,
+ "scan_secs": 1.61,
  "sites": 16,
  "call_sites": 16,
  "model_configs": 0,
@@ -84,6 +84,24 @@
   "jvm"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "examples/koog-agentcore-runtime/src/main/kotlin/com/example/koogagentcore/App.kt||144|chat|bedrock|",
+  "examples/koog-agentcore-runtime/src/main/kotlin/com/example/koogagentcore/App.kt||167|chat|bedrock|",
+  "examples/spring-ai-java/src/main/java/com/example/spring_ai_java/service/customersupport/SpringAICustomerSupportAgent.java||46|chat|unknown|",
+  "examples/spring-ai-kotlin/src/main/kotlin/com/example/spring_ai_kotlin/service/customersupport/SpringAICustomerSupportAgent.kt||36|chat|unknown|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-bedrock-client/src/jvmMain/kotlin/ai/koog/prompt/executor/clients/bedrock/BedrockLLMClient.kt||278|chat|bedrock|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-bedrock-client/src/jvmMain/kotlin/ai/koog/prompt/executor/clients/bedrock/BedrockLLMClient.kt||343|chat|bedrock|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-bedrock-client/src/jvmMain/kotlin/ai/koog/prompt/executor/clients/bedrock/BedrockLLMClient.kt||401|chat|bedrock|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-bedrock-client/src/jvmMain/kotlin/ai/koog/prompt/executor/clients/bedrock/BedrockLLMClient.kt||498|chat|bedrock|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-bedrock-client/src/jvmMain/kotlin/ai/koog/prompt/executor/clients/bedrock/BedrockLLMClient.kt||539|chat|bedrock|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-dashscope-client/src/commonMain/kotlin/ai/koog/prompt/executor/clients/dashscope/DashscopeLLMClient.kt||40|chat|dashscope|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-mistralai-client/src/commonMain/kotlin/ai/koog/prompt/executor/clients/mistralai/MistralAILLMClient.kt||59|chat|mistral|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-mistralai-client/src/commonMain/kotlin/ai/koog/prompt/executor/clients/mistralai/MistralAILLMClient.kt||60|embedding|mistral|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-openai-client/src/commonMain/kotlin/ai/koog/prompt/executor/clients/openai/OpenAILLMClient.kt||91|chat|openai|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-openai-client/src/commonMain/kotlin/ai/koog/prompt/executor/clients/openai/OpenAILLMClient.kt||93|embedding|openai|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-openrouter-client/src/commonMain/kotlin/ai/koog/prompt/executor/clients/openrouter/OpenRouterLLMClient.kt||50|chat|openrouter|",
+  "prompt/prompt-executor/prompt-executor-clients/prompt-executor-openrouter-client/src/commonMain/kotlin/ai/koog/prompt/executor/clients/openrouter/OpenRouterLLMClient.kt||52|embedding|openrouter|"
+ ],
  "baseline": 8,
  "baseline_found": 8,
  "missed": [],
@@ -106,7 +124,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpc9ax7ezg/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp0be2j6bv/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -118,5 +136,6 @@
  "monthly_spend": 287.18,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 6.4
+ "wall_secs": 6.3,
+ "sha": "22e342e033c716f835312dd6cbe83193e1cbcf76"
 }

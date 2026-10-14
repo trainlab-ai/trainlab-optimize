@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.1s, 2080 files/s"
+   "detail": "0.1s, 2704 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 269,
- "scan_secs": 0.13,
+ "scan_secs": 0.1,
  "sites": 11,
  "call_sites": 10,
  "model_configs": 1,
@@ -80,6 +80,19 @@
   "python"
  ],
  "resolved_model_pct": 64,
+ "site_keys": [
+  "examples/customer_service_streaming/configs/tools/query_docs/handler.py||20|embedding|openai|text-embedding-3-large",
+  "examples/customer_service_streaming/prep_data.py||31|embedding|openai|text-embedding-3-large",
+  "examples/customer_service_streaming/src/evals/eval_function.py||45|chat|openai|gpt-4-turbo-preview",
+  "examples/customer_service_streaming/src/swarm/engines/assistants_engine.py||148|chat|openai|",
+  "examples/customer_service_streaming/src/utils.py||23|chat|unknown|",
+  "examples/customer_service_streaming/src/utils.py||35|chat|unknown|",
+  "examples/support_bot/customer_service.py||26|embedding|openai|text-embedding-3-large",
+  "examples/support_bot/main.py||23|embedding|openai|text-embedding-3-large",
+  "examples/support_bot/prep_data.py||34|embedding|openai|text-embedding-3-large",
+  "examples/triage_agent/evals_util.py||15|model_config|openai|gpt-4o",
+  "swarm/core.py||69|chat|openai|"
+ ],
  "baseline": 10,
  "baseline_found": 9,
  "missed": [
@@ -112,7 +125,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpc89iiim_/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpd9ms__ij/usage_tokens_only.csv",
    "model": "text-embedding-3-large",
    "expected": 3.9605
   }
@@ -129,5 +142,6 @@
  "monthly_spend": 1289.0,
  "savings_high": 132.91,
  "attributed_share": 0.9782118579204511,
- "wall_secs": 0.5
+ "wall_secs": 0.5,
+ "sha": "6af0b4caf37dca4526dfd98e9fbd8ce36e7eeb22"
 }

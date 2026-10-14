@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "1.2s, 133 files/s"
+   "detail": "0.6s, 246 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 158,
- "scan_secs": 1.19,
+ "scan_secs": 0.64,
  "sites": 35,
  "call_sites": 15,
  "model_configs": 20,
@@ -90,6 +90,43 @@
   "python"
  ],
  "resolved_model_pct": 49,
+ "site_keys": [
+  "fastchat/conversation.py||1085|model_config|openai|gpt-4-turbo-2024-04-09",
+  "fastchat/conversation.py||1138|model_config|anthropic|claude-3-haiku-20240307",
+  "fastchat/conversation.py||1162|model_config|anthropic|claude-3-sonnet-20240229",
+  "fastchat/conversation.py||1186|model_config|anthropic|claude-3-5-sonnet-20240620-v2",
+  "fastchat/conversation.py||1263|model_config|anthropic|claude-3-5-sonnet-20240620",
+  "fastchat/conversation.py||1340|model_config|anthropic|claude-3-opus-20240229",
+  "fastchat/conversation.py||1504|model_config|gemini|gemini-1.5-pro",
+  "fastchat/conversation.py||1521|model_config|gemini|gemini-1.5-pro-002-test-sp",
+  "fastchat/conversation.py||1739|model_config|unknown|llama-2",
+  "fastchat/conversation.py||1753|model_config|unknown|llama-3",
+  "fastchat/conversation.py||1812|model_config|mistral|mistral-7b-openorca",
+  "fastchat/conversation.py||1873|model_config|dashscope|qwen-7b-chat",
+  "fastchat/conversation.py||1969|model_config|unknown|llama2-chinese",
+  "fastchat/conversation.py||2159|model_config|deepseek|deepseek-chat",
+  "fastchat/conversation.py||2276|model_config|xai|grok-2",
+  "fastchat/conversation.py||2289|model_config|xai|grok-2-mini",
+  "fastchat/conversation.py||954|model_config|deepseek|deepseek-coder",
+  "fastchat/llm_judge/common.py||481|chat|anthropic|",
+  "fastchat/serve/api_provider.py||1124|chat|cohere|",
+  "fastchat/serve/api_provider.py||1191|model_config|vertex|",
+  "fastchat/serve/api_provider.py||319|chat|cohere|",
+  "fastchat/serve/api_provider.py||337|chat|cohere|",
+  "fastchat/serve/api_provider.py||344|chat|cohere|",
+  "fastchat/serve/api_provider.py||469|chat|cohere|",
+  "fastchat/serve/api_provider.py||666|chat|anthropic|",
+  "fastchat/serve/api_provider.py||739|chat|cohere|",
+  "fastchat/serve/api_provider.py||798|model_config|gemini|",
+  "fastchat/serve/api_provider.py||959|chat|mistral|",
+  "fastchat/serve/huggingface_api_worker.py||158|chat|huggingface|",
+  "fastchat/serve/monitor/classify/label.py||109|chat|anthropic|",
+  "fastchat/serve/monitor/classify/label.py||158|model_config|gemini|",
+  "fastchat/serve/monitor/classify/label.py||60|chat|openai|",
+  "fastchat/serve/monitor/criteria_labeling.py||85|chat|openai|",
+  "fastchat/serve/monitor/topic_clustering.py||90|embedding|openai|",
+  "playground/FastChat_API_GoogleColab.ipynb|9|8|embedding|openai_compatible|"
+ ],
  "baseline": 11,
  "baseline_found": 9,
  "missed": [
@@ -136,7 +173,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpw_g1r1e3/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpto56vfbc/usage_tokens_only.csv",
    "model": "gpt-4-turbo-2024-04-09",
    "expected": 484.65
   }
@@ -152,5 +189,6 @@
  "monthly_spend": 3863.26,
  "savings_high": null,
  "attributed_share": 0.992998451153806,
- "wall_secs": 2.9
+ "wall_secs": 2.0,
+ "sha": "587d5cfa1609a43d192cedb8441cac3c17db105d"
 }

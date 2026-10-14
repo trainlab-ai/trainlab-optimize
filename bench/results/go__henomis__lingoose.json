@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.1s, 3488 files/s"
+   "detail": "0.1s, 3525 files/s"
   },
   "T03": {
    "status": "pass",
@@ -80,6 +80,15 @@
   "go"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "embedder/ollama/api.go||18|embedding|openai_compatible|",
+  "embedder/openai/openai.go||73|embedding|openai|",
+  "embedder/voyage/api.go||18|embedding|openai_compatible|",
+  "llm/openai/legacy.go||287|chat|openai|",
+  "llm/openai/legacy.go||334|chat|openai|",
+  "llm/openai/openai.go||276|chat|openai|",
+  "llm/openai/openai.go||324|chat|openai|"
+ ],
  "baseline": 4,
  "baseline_found": 4,
  "missed": [],
@@ -102,7 +111,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp1ozyncnj/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpficu_1l5/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -115,5 +124,6 @@
  "monthly_spend": 15.71,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 0.3
+ "wall_secs": 0.3,
+ "sha": "96c51c0f184da0bd5a0a15d0d6ab9ba76cbb79c4"
 }

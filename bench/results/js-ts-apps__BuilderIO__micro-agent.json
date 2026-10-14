@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.0s, 1244 files/s"
+   "detail": "0.1s, 987 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 62,
- "scan_secs": 0.05,
+ "scan_secs": 0.06,
  "sites": 5,
  "call_sites": 5,
  "model_configs": 0,
@@ -81,6 +81,13 @@
   "javascript"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "src/helpers/llm.ts||142|chat|openai|",
+  "src/helpers/llm.ts||229|chat|ollama|",
+  "src/helpers/llm.ts||248|chat|openai|",
+  "src/helpers/llm.ts||374|chat|openai|",
+  "src/helpers/llm.ts||65|chat|azure|"
+ ],
  "baseline": 5,
  "baseline_found": 5,
  "missed": [],
@@ -103,7 +110,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpb9r_ny1a/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpcdyxt0xc/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -116,5 +123,6 @@
  "monthly_spend": 28.16,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 0.2
+ "wall_secs": 0.3,
+ "sha": "f33523ce9f9c52a698d13a2883eb2ba7fb4fb462"
 }

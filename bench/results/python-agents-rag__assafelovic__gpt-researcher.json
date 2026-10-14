@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.7s, 730 files/s"
+   "detail": "0.7s, 812 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 534,
- "scan_secs": 0.73,
+ "scan_secs": 0.66,
  "sites": 48,
  "call_sites": 1,
  "model_configs": 47,
@@ -94,6 +94,56 @@
   "python"
  ],
  "resolved_model_pct": 10,
+ "site_keys": [
+  "deep_agents/breadth_benchmark.py||169|model_config|openai|",
+  "deep_agents/hybrid_benchmark.py||175|model_config|openai|",
+  "deep_agents/recency_benchmark.py||274|model_config|openai|",
+  "deep_agents/report_benchmark.py||164|model_config|openai|",
+  "docs/docs/examples/examples.ipynb|6|27|model_config|openai|gpt-4",
+  "evals/context_filter/judge.py||37|chat|openai|",
+  "evals/quality_eval/benchmark.py||507|model_config|openai|gpt-4-turbo",
+  "evals/quality_eval/perturbation.py||234|model_config|openai|gpt-4-turbo",
+  "evals/quality_eval/run_eval.py||193|model_config|openai|gpt-4-turbo",
+  "evals/simple_evals/run_eval.py||117|model_config|openai|gpt-4-turbo",
+  "gpt_researcher/llm_provider/generic/base.py||159|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||164|model_config|anthropic|",
+  "gpt_researcher/llm_provider/generic/base.py||173|model_config|azure|",
+  "gpt_researcher/llm_provider/generic/base.py||178|model_config|cohere|",
+  "gpt_researcher/llm_provider/generic/base.py||183|model_config|gemini|",
+  "gpt_researcher/llm_provider/generic/base.py||188|model_config|gemini|",
+  "gpt_researcher/llm_provider/generic/base.py||193|model_config|fireworks|",
+  "gpt_researcher/llm_provider/generic/base.py||204|model_config|ollama|",
+  "gpt_researcher/llm_provider/generic/base.py||209|model_config|together|",
+  "gpt_researcher/llm_provider/generic/base.py||218|model_config|mistral|",
+  "gpt_researcher/llm_provider/generic/base.py||226|model_config|huggingface|",
+  "gpt_researcher/llm_provider/generic/base.py||231|model_config|groq|",
+  "gpt_researcher/llm_provider/generic/base.py||239|model_config|bedrock|",
+  "gpt_researcher/llm_provider/generic/base.py||244|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||252|model_config|xai|",
+  "gpt_researcher/llm_provider/generic/base.py||257|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||265|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||273|model_config|litellm|",
+  "gpt_researcher/llm_provider/generic/base.py||293|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||302|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||311|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||319|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||327|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||335|model_config|openai|",
+  "gpt_researcher/llm_provider/generic/base.py||344|model_config|openai|",
+  "gpt_researcher/memory/embeddings.py||108|model_config|openai|",
+  "gpt_researcher/memory/embeddings.py||112|model_config|azure|",
+  "gpt_researcher/memory/embeddings.py||125|model_config|cohere|",
+  "gpt_researcher/memory/embeddings.py||147|model_config|ollama|",
+  "gpt_researcher/memory/embeddings.py||163|model_config|mistral|",
+  "gpt_researcher/memory/embeddings.py||175|model_config|voyage|",
+  "gpt_researcher/memory/embeddings.py||183|model_config|dashscope|",
+  "gpt_researcher/memory/embeddings.py||187|model_config|bedrock|",
+  "gpt_researcher/memory/embeddings.py||191|model_config|openai|",
+  "gpt_researcher/memory/embeddings.py||200|model_config|openai|",
+  "gpt_researcher/memory/embeddings.py||209|model_config|openai|",
+  "gpt_researcher/memory/embeddings.py||218|model_config|openai|",
+  "gpt_researcher/memory/embeddings.py||92|model_config|openai|"
+ ],
  "baseline": 1,
  "baseline_found": 1,
  "missed": [],
@@ -123,7 +173,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpaubp8sut/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpkawye9vb/usage_tokens_only.csv",
    "model": "gpt-4-turbo",
    "expected": 484.65
   }
@@ -137,5 +187,6 @@
  "monthly_spend": 9568.64,
  "savings_high": null,
  "attributed_share": 0.9966966042767966,
- "wall_secs": 2.3
+ "wall_secs": 2.0,
+ "sha": "3582a6841fe7dc801e2a34e34ee408641aea9bce"
 }

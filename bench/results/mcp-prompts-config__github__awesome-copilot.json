@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "2.2s, 315 files/s"
+   "detail": "1.4s, 507 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 692,
- "scan_secs": 2.19,
+ "scan_secs": 1.36,
  "sites": 10,
  "call_sites": 1,
  "model_configs": 9,
@@ -81,6 +81,18 @@
   "python"
  ],
  "resolved_model_pct": 100,
+ "site_keys": [
+  "cookbook/copilot-sdk/python/recipe/accessibility_report.py||36|model_config|anthropic|claude-opus-4.6",
+  "cookbook/copilot-sdk/python/recipe/error_handling.py||11|model_config|openai|gpt-5",
+  "cookbook/copilot-sdk/python/recipe/managing_local_files.py||19|model_config|openai|gpt-5",
+  "cookbook/copilot-sdk/python/recipe/multiple_sessions.py||11|model_config|openai|gpt-5",
+  "cookbook/copilot-sdk/python/recipe/multiple_sessions.py||13|model_config|openai|gpt-5",
+  "cookbook/copilot-sdk/python/recipe/multiple_sessions.py||15|model_config|anthropic|claude-sonnet-4.5",
+  "cookbook/copilot-sdk/python/recipe/persisting_sessions.py||11|model_config|openai|gpt-5",
+  "cookbook/copilot-sdk/python/recipe/pr_visualization.py||102|model_config|openai|gpt-5",
+  "cookbook/copilot-sdk/python/recipe/ralph_loop.py||46|model_config|openai|gpt-5.1-codex-mini",
+  "skills/nano-banana-pro-openrouter/scripts/generate_image.py||152|chat|openrouter|google/gemini-3-pro-image-preview"
+ ],
  "baseline": 1,
  "baseline_found": 1,
  "missed": [],
@@ -111,7 +123,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpyoyvnnn1/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpjxkycs74/usage_tokens_only.csv",
    "model": "gpt-5",
    "expected": 98.0812
   }
@@ -124,5 +136,6 @@
  "monthly_spend": 1307.28,
  "savings_high": null,
  "attributed_share": 0.992483529049188,
- "wall_secs": 7.3
+ "wall_secs": 5.3,
+ "sha": "f25421d3f1b8b3bb217f78a7c0567cf7ec117cd8"
 }

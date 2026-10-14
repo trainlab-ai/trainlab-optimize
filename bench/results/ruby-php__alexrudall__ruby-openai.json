@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.3s, 849 files/s"
+   "detail": "0.3s, 779 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 263,
- "scan_secs": 0.31,
+ "scan_secs": 0.34,
  "sites": 3,
  "call_sites": 3,
  "model_configs": 0,
@@ -79,6 +79,11 @@
   "ruby"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "lib/openai/client.rb||25|chat|openai_compatible|",
+  "lib/openai/client.rb||29|embedding|openai_compatible|",
+  "lib/openai/usage.rb||16|embedding|openai_compatible|"
+ ],
  "baseline": 1,
  "baseline_found": 1,
  "missed": [],
@@ -101,7 +106,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp3mhsc36f/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpfisk6ywz/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -114,5 +119,6 @@
  "monthly_spend": 101.57,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 0.6
+ "wall_secs": 0.8,
+ "sha": "62938e02bb83e9f243ad2447805bc461d5d126fe"
 }

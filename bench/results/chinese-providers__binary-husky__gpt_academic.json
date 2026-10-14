@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "1.7s, 185 files/s"
+   "detail": "0.8s, 386 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 310,
- "scan_secs": 1.68,
+ "scan_secs": 0.8,
  "sites": 20,
  "call_sites": 20,
  "model_configs": 0,
@@ -91,6 +91,28 @@
   "python"
  ],
  "resolved_model_pct": 0,
+ "site_keys": [
+  "request_llms/bridge_all.py||1385|chat|openai_compatible|",
+  "request_llms/bridge_all.py||73|chat|openai|",
+  "request_llms/bridge_all.py||74|chat|openai_compatible|",
+  "request_llms/bridge_all.py||77|chat|anthropic|",
+  "request_llms/bridge_all.py||79|chat|ollama|",
+  "request_llms/bridge_all.py||80|chat|01ai|",
+  "request_llms/bridge_all.py||81|chat|deepseek|",
+  "request_llms/bridge_all.py||82|chat|xai|",
+  "request_llms/bridge_all.py||83|chat|volcengine|",
+  "request_llms/bridge_all.py||86|chat|openai_compatible|",
+  "request_llms/bridge_all.py||90|chat|openai|",
+  "request_llms/bridge_moonshot.py||19|chat|moonshot|",
+  "request_llms/bridge_qianfan.py||82|chat|qianfan|",
+  "request_llms/com_google.py||128|chat|gemini|",
+  "request_llms/com_qwenapi.py||44|chat|dashscope|",
+  "request_llms/com_zhipuglm.py||116|chat|zhipu|",
+  "request_llms/embed_models/bridge_all_embed.py||10|chat|openai_compatible|",
+  "request_llms/embed_models/bridge_all_embed.py||8|chat|openai|",
+  "request_llms/embed_models/openai_embed.py||65|embedding|openai_compatible|",
+  "shared_utils/config_loader.py||81|chat|openai|"
+ ],
  "baseline": 18,
  "baseline_found": 18,
  "missed": [],
@@ -118,7 +140,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmptoexc8bi/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp7ssxibqj/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -131,5 +153,6 @@
  "monthly_spend": 60.52,
  "savings_high": null,
  "attributed_share": 0.0,
- "wall_secs": 4.5
+ "wall_secs": 2.4,
+ "sha": "d6bde0fa54373309bd05823a49bda8da019d2c77"
 }

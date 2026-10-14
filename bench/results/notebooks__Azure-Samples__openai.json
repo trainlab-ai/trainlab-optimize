@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.7s, 1127 files/s"
+   "detail": "0.7s, 1165 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 835,
- "scan_secs": 0.74,
+ "scan_secs": 0.72,
  "sites": 45,
  "call_sites": 40,
  "model_configs": 5,
@@ -82,6 +82,53 @@
   "python"
  ],
  "resolved_model_pct": 4,
+ "site_keys": [
+  "Agent_Based_Samples/market_research_analyst/src/solution_accelerators/market_research_analyst/utils/azure_ai_search_util.py||58|embedding|azure|",
+  "Agent_Based_Samples/release_manager/src/solution_accelerators/release_manager/orchestrator/agent_orchestrator.py||456|model_config|unknown|",
+  "Basic_Samples/Chat/basic_chatcompletions_example_sdk.ipynb|4|6|chat|azure|",
+  "Basic_Samples/Chat/chatGPT_managing_conversation.ipynb|6|4|chat|azure|",
+  "Basic_Samples/Chat/chat_with_your_own_data.ipynb|9|14|chat|openai_compatible|",
+  "Basic_Samples/Chat/dotnet/csharp/Chat_with_your_own_data.ipynb|6|21|chat|azure|",
+  "Basic_Samples/Chat/dotnet/csharp/Entity_extraction_for_long_documents.ipynb|11|27|chat|azure|",
+  "Basic_Samples/Chat/dotnet/csharp/Entity_extraction_for_long_documents.ipynb|13|27|chat|azure|",
+  "Basic_Samples/Chat/dotnet/csharp/chat.ipynb|6|12|chat|azure|",
+  "Basic_Samples/Chat/dotnet/csharp/chat.ipynb|7|12|chat|azure|",
+  "Basic_Samples/Completions/basic_completions_example_sdk.ipynb|4|6|chat|azure|",
+  "Basic_Samples/Completions/completions_with_dynamic_prompt.ipynb|8|10|chat|azure|",
+  "Basic_Samples/Datastores/dotnet/csharp/Question_answering_using_vector_store_search_milvus.ipynb|23|32|chat|azure|",
+  "Basic_Samples/Datastores/dotnet/csharp/Question_answering_using_vector_store_search_qdrant.ipynb|18|32|chat|azure|",
+  "Basic_Samples/Embeddings/dotnet/csharp/Clustering.ipynb|12|16|chat|azure|",
+  "Basic_Samples/Embeddings/dotnet/csharp/Question_answering_using_embeddings.ipynb|14|34|chat|azure|",
+  "Basic_Samples/Embeddings/dotnet/csharp/Question_answering_using_embeddings.ipynb|6|11|chat|azure|",
+  "Basic_Samples/Embeddings/dotnet/csharp/Question_answering_using_embeddings.ipynb|8|20|chat|azure|",
+  "Basic_Samples/Embeddings/dotnet/csharp/Question_answering_using_fusion_retriever_architecture.ipynb|13|34|chat|azure|",
+  "Basic_Samples/Embeddings/dotnet/csharp/Question_answering_using_fusion_retriever_architecture.ipynb|9|22|chat|azure|",
+  "Basic_Samples/Embeddings/dotnet/csharp/Question_answering_using_llamaindex.ipynb|17|32|chat|azure|",
+  "Basic_Samples/Embeddings/dotnet/polyglot/Question_answering_using_llamaindex.ipynb|16|32|chat|azure|",
+  "Basic_Samples/Functions/dotnet/csharp/Function_calling_finding_nearby_places.ipynb|11|20|chat|azure|",
+  "Basic_Samples/Functions/dotnet/csharp/Function_calling_finding_nearby_places.ipynb|11|81|chat|azure|",
+  "Basic_Samples/Functions/dotnet/csharp/Function_calling_finding_nearby_places.ipynb|9|2|chat|azure|",
+  "Basic_Samples/Functions/functions_with_azure_search.ipynb|5|4|embedding|azure|text-embedding-ada-002",
+  "Basic_Samples/Functions/functions_with_azure_search.ipynb|7|46|chat|azure|",
+  "Basic_Samples/Functions/functions_with_azure_search.ipynb|9|4|chat|azure|",
+  "Basic_Samples/Functions/functions_with_azure_search.ipynb|9|63|chat|azure|",
+  "Basic_Samples/Functions/functions_with_bing_search.ipynb|4|31|chat|azure|",
+  "Basic_Samples/Functions/functions_with_bing_search.ipynb|5|4|chat|azure|",
+  "Basic_Samples/Functions/functions_with_bing_search.ipynb|5|64|chat|azure|",
+  "Basic_Samples/Functions/working_with_functions.ipynb|13|3|chat|azure|",
+  "Basic_Samples/Functions/working_with_functions.ipynb|13|66|chat|azure|",
+  "Basic_Samples/Functions/working_with_functions.ipynb|15|3|chat|azure|",
+  "Basic_Samples/Functions/working_with_functions.ipynb|15|66|chat|azure|",
+  "Basic_Samples/Functions/working_with_functions.ipynb|3|25|chat|azure|",
+  "Basic_Samples/LangChain/azure_openai_getting_started.ipynb|32|1|model_config|azure|",
+  "Basic_Samples/LangChain/azure_openai_getting_started.ipynb|5|1|model_config|azure|",
+  "Basic_Samples/LangChain/working_with_langchain.ipynb|3|2|model_config|azure|",
+  "Basic_Samples/Whisper/dotnet/csharp/Whisper_processing_guide.ipynb|14|1|chat|azure|",
+  "Basic_Samples/Whisper/dotnet/csharp/Whisper_processing_guide.ipynb|15|1|chat|azure|",
+  "Basic_Samples/Whisper/dotnet/csharp/Whisper_prompting_guide.ipynb|19|2|chat|azure|",
+  "End_to_end_Solutions/AOAISearchDemo/notebooks/read-decompose-ask.ipynb|3|38|model_config|azure|davinci",
+  "End_to_end_Solutions/InsightsGenerator/insights_generator/core/OAI_client.py||72|embedding|azure|"
+ ],
  "baseline": 40,
  "baseline_found": 37,
  "missed": [
@@ -122,7 +169,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpa834yi0u/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmped4i9w7k/usage_tokens_only.csv",
    "model": "text-embedding-ada-002",
    "expected": 3.0465
   }
@@ -137,5 +184,6 @@
  "monthly_spend": 188.23,
  "savings_high": 19.31,
  "attributed_share": 0.9508442535217994,
- "wall_secs": 4.2
+ "wall_secs": 4.2,
+ "sha": "ce4fc1f1bc4de4c0914fb87984d488e12a3bbde2"
 }

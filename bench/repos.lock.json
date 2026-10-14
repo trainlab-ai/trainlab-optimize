@@ -1,0 +1,506 @@
+{
+ "frozen_at": "2026-10-14",
+ "seed": 20261014,
+ "repos": [
+  {
+   "category": "chinese-providers",
+   "repo": "1Panel-dev/MaxKB",
+   "sha": "e4b8b015d4321a22b5148643a0aed8785ae73fbd"
+  },
+  {
+   "category": "chinese-providers",
+   "repo": "THUDM/ChatGLM3",
+   "sha": "732294f42e2625509000daa87a9c3748d0bbb957"
+  },
+  {
+   "category": "chinese-providers",
+   "repo": "binary-husky/gpt_academic",
+   "sha": "d6bde0fa54373309bd05823a49bda8da019d2c77"
+  },
+  {
+   "category": "chinese-providers",
+   "repo": "deepseek-ai/DeepSeek-V3",
+   "sha": "9b4e9788e4a3a731f7567338ed15d3ec549ce03b"
+  },
+  {
+   "category": "chinese-providers",
+   "repo": "labring/FastGPT",
+   "sha": "b6c419dd2214e7e85a70a6a04df3e839e7326859"
+  },
+  {
+   "category": "chinese-providers",
+   "repo": "lss233/kirara-ai",
+   "sha": "8295a5deda0b289a3f70d946064b6c9a3e1b0753"
+  },
+  {
+   "category": "chinese-providers",
+   "repo": "modelscope/ms-agent",
+   "sha": "a56afcc73f0049ba822af9569fd413a2e90677eb"
+  },
+  {
+   "category": "chinese-providers",
+   "repo": "xtekky/gpt4free",
+   "sha": "74661d164023bb3d4830fe51aa6e76749c781bc2"
+  },
+  {
+   "category": "chinese-providers",
+   "repo": "zhayujie/chatgpt-on-wechat",
+   "sha": "396d22618090659480650719cf236c57598a8b82"
+  },
+  {
+   "category": "dotnet",
+   "repo": "betalgo/openai",
+   "sha": "7c4859e368a2fd6b28ff731985ec5f074988b140"
+  },
+  {
+   "category": "dotnet",
+   "repo": "dotnet/ai-samples",
+   "sha": "b4933e6302edc4840c69164679199c81b1d898ad"
+  },
+  {
+   "category": "dotnet",
+   "repo": "dotnet/eShop",
+   "sha": "dc7ea499cd356924fb6689b3702964a5869dbae9"
+  },
+  {
+   "category": "dotnet",
+   "repo": "openai/openai-dotnet",
+   "sha": "1f0e8829acac4e004ebe0960fa24f3a0f0e59e40"
+  },
+  {
+   "category": "dotnet",
+   "repo": "tryAGI/LangChain",
+   "sha": "a4720c1acc85886de2ce9d8940313b8285d7392f"
+  },
+  {
+   "category": "gateways",
+   "repo": "BerriAI/litellm",
+   "sha": "ccc656873d846e0883b25bce897721bd0e55648c"
+  },
+  {
+   "category": "gateways",
+   "repo": "Helicone/helicone",
+   "sha": "067d9290acb4f1fc9320e902fc67b4b399b50363"
+  },
+  {
+   "category": "gateways",
+   "repo": "Portkey-AI/gateway",
+   "sha": "669825cbe89ee51569918b8f78a9db486fd69dd4"
+  },
+  {
+   "category": "gateways",
+   "repo": "QuantumNous/new-api",
+   "sha": "1b63c28dcc999c4445c70f21ec90103ab49e8be5"
+  },
+  {
+   "category": "gateways",
+   "repo": "maximhq/bifrost",
+   "sha": "d131188f66ff2a950dd8ac46a549cbdad7fc6dfc"
+  },
+  {
+   "category": "go",
+   "repo": "appleboy/CodeGPT",
+   "sha": "fe85deb464a2fed3c6cc790f76be93e5c4df3b55"
+  },
+  {
+   "category": "go",
+   "repo": "charmbracelet/mods",
+   "sha": "0425d0d7861e4bbc396200b3bd2eee1825715300"
+  },
+  {
+   "category": "go",
+   "repo": "cloudwego/eino",
+   "sha": "58d184303f4e73413c454a9626f79c17af0fd9fb"
+  },
+  {
+   "category": "go",
+   "repo": "danielmiessler/fabric",
+   "sha": "dde3fc49f29098f1b7b0a07bd740c32607f7f055"
+  },
+  {
+   "category": "go",
+   "repo": "envoyproxy/ai-gateway",
+   "sha": "5a9c6ef6354eeb77354f19b1a93a623d5ff50008"
+  },
+  {
+   "category": "go",
+   "repo": "henomis/lingoose",
+   "sha": "96c51c0f184da0bd5a0a15d0d6ab9ba76cbb79c4"
+  },
+  {
+   "category": "go",
+   "repo": "mark3labs/mcphost",
+   "sha": "632cc196002275d42dbf93ad3f1241ff853deb80"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "BuilderIO/micro-agent",
+   "sha": "f33523ce9f9c52a698d13a2883eb2ba7fb4fb462"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "ChatGPTBox-dev/chatGPTBox",
+   "sha": "7794d16f72b2d437031b8edcc77ca665900706c7"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "CopilotKit/CopilotKit",
+   "sha": "9bf2dcecc4f1e133c42ac14c72e89c371355df6e"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "FlowiseAI/Flowise",
+   "sha": "9291856d1ea4a4ceea9f8fef8ce14f4f6c81e8eb"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "Mintplex-Labs/anything-llm",
+   "sha": "1336d327f4460510b755059b15481fd94a57cef7"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "Nutlope/llamacoder",
+   "sha": "75a3a78e1fa080657b696b95e6d7e393dfa999a5"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "mastra-ai/mastra",
+   "sha": "9e81ff08c8abb72a45b4c205537839606dc7f9e9"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "promptfoo/promptfoo",
+   "sha": "6e0991ccab72a9f376782b44c551b7ded47738f5"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "reworkd/AgentGPT",
+   "sha": "18b073ab05b2902e1d052c3d2799786d8623b5e5"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "run-llama/LlamaIndexTS",
+   "sha": "ba24377def1b056f7eae066247e9ae1230509164"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "stackblitz-labs/bolt.diy",
+   "sha": "da22ff7d9f346c130f09ac0953e2dbb852c9ba61"
+  },
+  {
+   "category": "js-ts-apps",
+   "repo": "vercel/ai-chatbot",
+   "sha": "c2f8235e1f3ea903ad8b7f61447c4f74164b5c58"
+  },
+  {
+   "category": "jvm",
+   "repo": "Grt1228/chatgpt-java",
+   "sha": "ae761b89450812fab4cd7bba6626f9874705ca40"
+  },
+  {
+   "category": "jvm",
+   "repo": "JetBrains/koog",
+   "sha": "22e342e033c716f835312dd6cbe83193e1cbcf76"
+  },
+  {
+   "category": "jvm",
+   "repo": "anthropics/anthropic-sdk-java",
+   "sha": "59079f010f7036c15e8839f8a032e96b2f35d074"
+  },
+  {
+   "category": "jvm",
+   "repo": "langchain4j/langchain4j-spring",
+   "sha": "42321ff3b00bf94593a8e35b111131003c8794fb"
+  },
+  {
+   "category": "jvm",
+   "repo": "spring-projects/spring-ai",
+   "sha": "aab7d9bc0a979b5e07f28588268767a33018f781"
+  },
+  {
+   "category": "jvm",
+   "repo": "tjake/Jlama",
+   "sha": "7b8ba424dd7203ba261e41e53fe555bb1ecd6b68"
+  },
+  {
+   "category": "local-self-hosted",
+   "repo": "janhq/jan",
+   "sha": "2ff2c4f4f982740dd1cc3adbc33d292fe44b2339"
+  },
+  {
+   "category": "local-self-hosted",
+   "repo": "lm-sys/FastChat",
+   "sha": "587d5cfa1609a43d192cedb8441cac3c17db105d"
+  },
+  {
+   "category": "local-self-hosted",
+   "repo": "mudler/LocalAI",
+   "sha": "5cb2e74bb67d76d853a2a0ad8705e24f4674bc7f"
+  },
+  {
+   "category": "local-self-hosted",
+   "repo": "ollama/ollama",
+   "sha": "cf410b09f026cb8c3ca96798268e848dd9ca3157"
+  },
+  {
+   "category": "local-self-hosted",
+   "repo": "oobabooga/text-generation-webui",
+   "sha": "c93f8871239550de2ccfe1e95d469aa82616f07e"
+  },
+  {
+   "category": "mcp-prompts-config",
+   "repo": "dair-ai/Prompt-Engineering-Guide",
+   "sha": "57673726396dd94acb23bdb1e67f27c78ee85a8e"
+  },
+  {
+   "category": "mcp-prompts-config",
+   "repo": "f/awesome-chatgpt-prompts",
+   "sha": "bbd0529530d99fa76ab2f51809b6184ea4b625b8"
+  },
+  {
+   "category": "mcp-prompts-config",
+   "repo": "github/awesome-copilot",
+   "sha": "f25421d3f1b8b3bb217f78a7c0567cf7ec117cd8"
+  },
+  {
+   "category": "mcp-prompts-config",
+   "repo": "modelcontextprotocol/python-sdk",
+   "sha": "754254c08fe1c3eda18b69da3d336106fe8d72d6"
+  },
+  {
+   "category": "mcp-prompts-config",
+   "repo": "modelcontextprotocol/servers",
+   "sha": "bbb701e7ac1e57f3edd1c2836b94c5457eaf7b9c"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "encode/httpx",
+   "sha": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "fastapi/full-stack-fastapi-template",
+   "sha": "7257e606cb94eada1dca40173e2b7f99dd549bc6"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "gin-gonic/gin",
+   "sha": "0f09c3a9b4626d9fe9979cf4d0521d6ae32ab646"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "jquery/jquery",
+   "sha": "c2f27864e4ffc2d1409c289fcb9a42b6165dfeaf"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "laravel/laravel",
+   "sha": "f4000aeb018fcbf71d4a13e3ee4b80c7e2d45be5"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "pallets/flask",
+   "sha": "d086db856be187255b8ec61ef409357393020f32"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "psf/requests",
+   "sha": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "spring-projects/spring-petclinic",
+   "sha": "500158f732419217507c7656904b8e6aa1bcc0d6"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "tokio-rs/axum",
+   "sha": "e57b547eb95de74b73b34719dd5926254a085634"
+  },
+  {
+   "category": "negative-controls",
+   "repo": "twbs/bootstrap",
+   "sha": "ebd627c654c49dbe929b11ebfe9b67e459e5d127"
+  },
+  {
+   "category": "negative-traps",
+   "repo": "slackapi/bolt-js",
+   "sha": "378b5b2de5ea061c4b3875c1b85c1f805f445c59"
+  },
+  {
+   "category": "negative-traps",
+   "repo": "stripe/stripe-python",
+   "sha": "29363094b09a67f8b1b50f577b463edbbb27ec9a"
+  },
+  {
+   "category": "negative-traps",
+   "repo": "twilio/twilio-node",
+   "sha": "1f261bdcf665bc50bc8ca5b67e407e723de07c68"
+  },
+  {
+   "category": "negative-traps",
+   "repo": "twilio/twilio-python",
+   "sha": "74b96296b0805986252b798bda4bca90341487ee"
+  },
+  {
+   "category": "notebooks",
+   "repo": "Azure-Samples/openai",
+   "sha": "ce4fc1f1bc4de4c0914fb87984d488e12a3bbde2"
+  },
+  {
+   "category": "notebooks",
+   "repo": "NirDiamant/RAG_Techniques",
+   "sha": "cbf9e528206bbb5cd23970ff612d12c1074e02dc"
+  },
+  {
+   "category": "notebooks",
+   "repo": "aws-samples/amazon-bedrock-workshop",
+   "sha": "d536b9ba030dbc18ebc5766468adfddd454f2aaa"
+  },
+  {
+   "category": "notebooks",
+   "repo": "google-gemini/cookbook",
+   "sha": "3e3d26f35f39e16f5ca4e8889b9c76193633fb39"
+  },
+  {
+   "category": "notebooks",
+   "repo": "huggingface/cookbook",
+   "sha": "b23df069425fe24cd9a38f8a86c5cb9e163917a0"
+  },
+  {
+   "category": "notebooks",
+   "repo": "mlabonne/llm-course",
+   "sha": "7abd96e8284bfae232048fdb77b52397a2114847"
+  },
+  {
+   "category": "notebooks",
+   "repo": "pinecone-io/examples",
+   "sha": "db002421c7272032fdef3a326adbe8934ca61ef6"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "SWE-agent/SWE-agent",
+   "sha": "3ea751c087f32b16e039a2233dd6eefecef325d5"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "ScrapeGraphAI/Scrapegraph-ai",
+   "sha": "194055e203afce41ed4e70365dbc416bad756115"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "agno-agi/agno",
+   "sha": "00497422d4a386d93ab3b45c1a11faf42fcc932f"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "assafelovic/gpt-researcher",
+   "sha": "3582a6841fe7dc801e2a34e34ee408641aea9bce"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "confident-ai/deepeval",
+   "sha": "016946f6d770f8bc4e2f63f665140aea527d6641"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "geekan/MetaGPT",
+   "sha": "11cdf466d042aece04fc6cfd13b28e1a70341b1f"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "griptape-ai/griptape",
+   "sha": "aa95c59934c7d8ff691cd7112034f9cc016b9a0c"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "h2oai/h2ogpt",
+   "sha": "5af700f5bdd155816de33cf95a41ced8393c48dc"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "microsoft/TaskWeaver",
+   "sha": "d44ddef23f90059fb17999d3095db4240e98f955"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "openai/swarm",
+   "sha": "6af0b4caf37dca4526dfd98e9fbd8ce36e7eeb22"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "pydantic/pydantic-ai",
+   "sha": "882b0fe3e46a3e9ff3f0e02b6f7d925b4eb8d23b"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "stanford-oval/storm",
+   "sha": "fb951af7744dab086e34962e9bc6fe878e145f83"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "vanna-ai/vanna",
+   "sha": "365d0617c1a4567ffee1b19b40c27feb4206bfcf"
+  },
+  {
+   "category": "python-agents-rag",
+   "repo": "zylon-ai/private-gpt",
+   "sha": "4a5cb6863a13de1ae6176659b45efc5c925b11b7"
+  },
+  {
+   "category": "ruby-php",
+   "repo": "alexrudall/ruby-openai",
+   "sha": "62938e02bb83e9f243ad2447805bc461d5d126fe"
+  },
+  {
+   "category": "ruby-php",
+   "repo": "crmne/ruby_llm",
+   "sha": "91f5d95c19e48ad97818a6eba5ff9bcea2984348"
+  },
+  {
+   "category": "ruby-php",
+   "repo": "openai-php/client",
+   "sha": "58cc18ed065a7eeebd1fe43a411ff7bf9ce2cf60"
+  },
+  {
+   "category": "ruby-php",
+   "repo": "openai-php/laravel",
+   "sha": "f1aba1ba96c612743234a72baa052ac40b03fdeb"
+  },
+  {
+   "category": "ruby-php",
+   "repo": "orhanerday/open-ai",
+   "sha": "88097be0cd5fc219c6e2d7cbf29fe7fdf1ed2ac4"
+  },
+  {
+   "category": "ruby-php",
+   "repo": "symfony/ai",
+   "sha": "5ad77d9418152e61e5b2b2bbb29d070a07fc2a67"
+  },
+  {
+   "category": "rust",
+   "repo": "64bit/async-openai",
+   "sha": "c2deb8880566c3db35979654ea9dd45dc3deffd9"
+  },
+  {
+   "category": "rust",
+   "repo": "Abraxas-365/langchain-rust",
+   "sha": "cfc709a71fee02083ced078252d73c1f76fe9849"
+  },
+  {
+   "category": "rust",
+   "repo": "TabbyML/tabby",
+   "sha": "21b29048d7bcf6b94f9f482f2d0fd05efadfd19f"
+  },
+  {
+   "category": "rust",
+   "repo": "rustformers/llm",
+   "sha": "b11ffb14fde039f068c808df8dcbd1257a01b8db"
+  },
+  {
+   "category": "rust",
+   "repo": "sigoden/aichat",
+   "sha": "82976d349ad97ac9aae0655ad631dace5e2a6385"
+  }
+ ]
+}
