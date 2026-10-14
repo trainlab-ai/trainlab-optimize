@@ -8,7 +8,7 @@ import hashlib
 import re
 
 from ..schema import CallSite
-from .python_ast import MODEL_NAME_RE, TEST_PATH_RE
+from .python_ast import EXAMPLE_PATH_RE, MODEL_NAME_RE, TEST_PATH_RE
 
 JS_EXTS = {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"}
 CONFIG_EXTS = {".yaml", ".yml", ".json", ".toml", ".ini", ".cfg", ".env"}
@@ -22,9 +22,11 @@ JS_CALLS: list[tuple[re.Pattern, str, str]] = [
     (re.compile(r"\b(generateText|streamText|generateObject|streamObject)\s*\("), "chat", "vercel_ai"),
     (re.compile(r"\b(embed|embedMany)\s*\(\s*\{"), "embedding", "vercel_ai"),
     (re.compile(r"\.(models\.generateContent(?:Stream)?)\s*\("), "chat", "gemini"),
+    (re.compile(r"\bnew\s+(Converse(?:Stream)?Command|InvokeModel(?:WithResponseStream)?Command)\s*\("),
+     "chat", "bedrock"),
 ]
 JS_MODEL = [
-    re.compile(r"""\bmodel\s*:\s*['"`]([^'"`]+)['"`]"""),
+    re.compile(r"""\b(?:model|modelId)\s*:\s*['"`]([^'"`]+)['"`]"""),
     re.compile(r"""\b(openai|anthropic|google|azure|bedrock|mistral|groq)\s*\(\s*['"`]([^'"`]+)['"`]"""),
     re.compile(r"""\bmodel\s*:\s*(\w+)\s*\(\s*['"`]([^'"`]+)['"`]"""),
 ]
@@ -73,6 +75,7 @@ def scan_js(rel_path: str, text: str) -> list[CallSite]:
                 model_source="literal" if model else "unresolved",
                 params=params, uses_cache_control="cache_control" in window,
                 is_test=is_test, confidence="heuristic",
+                scope="example" if EXAMPLE_PATH_RE.search(rel_path) else "app",
             ))
             break
     return sites

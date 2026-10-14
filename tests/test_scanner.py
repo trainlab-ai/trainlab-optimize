@@ -30,9 +30,11 @@ def test_demo_app_golden():
 
 
 def test_injected_client_without_import():
-    s = sites_of("def create(x):\n    return x.chat.completions.create(model='gpt-4o')\n")
+    s = sites_of("def create(x):\n    return x.chat.completions.create(model='gpt-4o', messages=[])\n")
     assert [(x.kind, x.provider, x.model, x.confidence) for x in s] == [("chat", "openai", "gpt-4o", "heuristic")]
-    assert sites_of("def create(x):\n    return x.chat.completions.create(model=m)\n") == []
+    s = sites_of("def create(x, m):\n    return x.chat.completions.create(model=m, messages=[])\n")
+    assert [(x.kind, x.model) for x in s] == [("chat", None)]
+    assert sites_of("def create(x):\n    return x.chat.completions.create(foo=1)\n") == []
 
 
 def test_param_default_and_self_attr():
@@ -150,3 +152,53 @@ def test_exclude(tmp_path):
     (tmp_path / "examples/demo.py").write_text("from openai import OpenAI\nOpenAI().responses.create(model='gpt-4o', input='x')\n")
     assert len(scan(tmp_path).call_sites) == 2
     assert [s.path for s in scan(tmp_path, exclude=["examples"]).call_sites] == ["app.py"]
+
+
+def test_litellm_via_project_wrapper():
+    src = "from myapp.llm import litellm\ndef f(**kw):\n    return litellm.completion(**kw)\n"
+    s = sites_of(src)
+    assert [(x.kind, x.provider) for x in s] == [("chat", "litellm")]
+
+
+def test_client_from_factory_without_import():
+    src = '''
+from myapp.helpers import get_openai_client
+def embed(self, docs):
+    client = get_openai_client(self.key)
+    return client.embeddings.create(input=docs, model=self.model_name)
+'''
+    s = sites_of(src)
+    assert [(x.kind, x.provider, x.confidence) for x in s] == [("embedding", "openai", "heuristic")]
+
+
+def test_aioboto3_bedrock_async_with():
+    src = '''
+import aioboto3
+async def run(session, req):
+    async with session.client(service_name="bedrock-runtime") as client:
+        return await client.converse(**req)
+'''
+    s = sites_of(src)
+    assert [(x.kind, x.provider) for x in s] == [("chat", "bedrock")]
+
+
+def test_js_bedrock_command():
+    from trainlab_optimize.scanner.generic import scan_js
+    js = 'const out = await client.send(new ConverseCommand({ modelId: "anthropic.claude-haiku-4-5-20251001-v1:0", messages }));'
+    s = scan_js("a.ts", js)
+    assert s[0].provider == "bedrock" and s[0].model.startswith("anthropic.claude-haiku")
+
+
+def test_loop_kinds_and_scope():
+    src = '''
+from openai import OpenAI
+c = OpenAI()
+def batch(docs):
+    return [c.responses.create(model="gpt-4o", input=d) for d in docs]
+def agent():
+    while True:
+        r = c.responses.create(model="gpt-4o", input="x")
+'''
+    s = PythonFileScanner("examples/a.py", src).scan()
+    assert [x.loop_kind for x in s] == ["comprehension", "while"]
+    assert all(x.scope == "example" for x in s)

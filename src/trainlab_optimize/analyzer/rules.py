@@ -138,12 +138,23 @@ def rule_premium_model(site: CallSite, ctx: RuleContext) -> list[Finding]:
     )]
 
 
+FAMILY_PREFIXES = {"gemini": ("gemini/", "vertex_ai/"), "openai": ("openai/",),
+                   "anthropic": ("anthropic/",), "azure": ("azure/",), "bedrock": ()}
+
+
 def rule_deprecated(site: CallSite, ctx: RuleContext) -> list[Finding]:
     if not site.model:
         return []
     p = site_price(site, ctx.catalog)
     if not p or not _deprecated_soon(p, ctx.today):
         return []
+    # The same model name can exist under several providers (e.g. Gemini API vs Vertex) with
+    # different retirement dates. Only flag when every entry for this provider family agrees.
+    bare = site.model.split("/", 1)[1] if "/" in site.model else site.model
+    for prefix in FAMILY_PREFIXES.get(family(site), ()):
+        alt = ctx.catalog.lookup(prefix + bare)
+        if alt and not _deprecated_soon(alt, ctx.today):
+            return []
     d = date.fromisoformat(p.deprecated[:10])
     past = d <= ctx.today
     a = ctx.attribution.get(site.id)
@@ -155,6 +166,7 @@ def rule_deprecated(site: CallSite, ctx: RuleContext) -> list[Finding]:
                  "shutdown date, and older models are usually priced above their successors."),
         recommendation="Migrate to the provider's current model; run `trainlab experiment` to compare quality first.",
         evidence={"model": p.model, "deprecation_date": p.deprecated[:10],
+                  "source": "price catalog (LiteLLM model data); confirm on the provider's deprecations page",
                   "per_1m_in": round(p.input * 1e6, 3), "per_1m_out": round(p.output * 1e6, 3)},
         tier="estimated" if a else "static", monthly_spend_usd=a.monthly_spend_usd if a else None,
     )]
@@ -208,7 +220,10 @@ def rule_caching(site: CallSite, ctx: RuleContext) -> list[Finding]:
 
 
 def rule_batch(site: CallSite, ctx: RuleContext) -> list[Finding]:
-    if site.kind != "chat" or not site.in_loop or site.params.get("stream") is True:
+    # Only loops over a collection can be batched; `while` loops are agent/retry loops where each
+    # call depends on the previous response.
+    if site.kind != "chat" or site.loop_kind not in ("for", "comprehension") \
+            or site.params.get("stream") is True:
         return []
     fam = family(site)
     if fam not in ("openai", "azure", "anthropic", "bedrock", "gemini"):
@@ -238,7 +253,7 @@ def rule_output_cap(site: CallSite, ctx: RuleContext) -> list[Finding]:
     if site.kind != "chat" or site.confidence != "high" or family(site) in ("anthropic", "bedrock"):
         return []
     if any(k in site.params for k in ("max_tokens", "max_completion_tokens", "max_output_tokens",
-                                      "_kwargs_passthrough", "maxTokens")):
+                                      "_kwargs_passthrough", "maxTokens", "config", "generation_config")):
         return []
     return [Finding(
         id="", rule="R105", strategy="config", call_site_ids=[site.id], severity="low",

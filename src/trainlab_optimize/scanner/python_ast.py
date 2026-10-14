@@ -40,6 +40,16 @@ CALL_SUFFIXES: list[tuple[str, str, str]] = [
     (".converse", "chat", "bedrock"),
 ]
 
+# OpenAI-shaped method chains that are specific enough to trust without an SDK import
+# (suffix, kind, required companion kwargs or None)
+INJECTED_SUFFIXES = [
+    (".chat.completions.create", "chat", ("messages",)),
+    (".chat.completions.parse", "chat", ("messages",)),
+    (".responses.create", "chat", ("input", "instructions", "prompt")),
+    (".responses.parse", "chat", ("input", "instructions")),
+    (".embeddings.create", "embedding", ("input",)),
+]
+
 LITELLM_FUNCS = {
     "completion": "chat", "acompletion": "chat", "text_completion": "chat",
     "embedding": "embedding", "aembedding": "embedding", "batch_completion": "chat",
@@ -65,7 +75,7 @@ CLIENT_CLASSES = {
     "AnthropicBedrock": "bedrock", "AsyncAnthropicBedrock": "bedrock",
     "AnthropicVertex": "gemini", "AsyncAnthropicVertex": "gemini", "Client": None,
 }
-LLM_IMPORT_ROOTS = {"openai", "anthropic", "litellm", "boto3", "google", "langchain_openai",
+LLM_IMPORT_ROOTS = {"openai", "anthropic", "litellm", "boto3", "aioboto3", "aiobotocore", "botocore", "google", "langchain_openai",
                     "langchain_anthropic", "langchain_aws", "langchain_google_genai",
                     "langchain_google_vertexai", "langchain", "langchain_community",
                     "llama_index", "pydantic_ai", "agents", "instructor", "mistralai",
@@ -78,7 +88,7 @@ MODEL_KWARGS = ("model", "modelId", "model_id", "model_name", "deployment_name",
 PARAM_KWARGS = ("max_tokens", "max_completion_tokens", "max_output_tokens", "temperature",
                 "stream", "response_format", "text_format", "tools", "tool_choice", "n",
                 "reasoning_effort", "reasoning", "service_tier", "seed", "top_p",
-                "prompt_cache_key", "thinking")
+                "prompt_cache_key", "thinking", "config", "generation_config")
 PROMPT_KWARGS = ("messages", "system", "instructions", "input", "prompt", "contents")
 
 MODEL_NAME_RE = re.compile(
@@ -97,6 +107,9 @@ HINT_PATTERNS = [
     ("translation", re.compile(r"\btranslat", re.I)),
 ]
 
+EXAMPLE_PATH_RE = re.compile(
+    r"(^|/)(examples?|samples?|demos?|docs?|cookbooks?|notebooks?|benchmarks?|evals?|tutorials?|"
+    r"playground|sandbox|scratch|quickstarts?)(/|$)", re.I)
 TEST_PATH_RE = re.compile(r"(^|/)(tests?|testing)(/|$)|(^|/)test_[^/]*\.py$|_test\.py$|(^|/)conftest\.py$")
 
 
@@ -224,6 +237,12 @@ class PythonFileScanner(ast.NodeVisitor):
                 f.imports.add(node.module.split(".")[0])
                 for a in node.names:
                     f.from_imports[a.asname or a.name] = f"{node.module}.{a.name}"
+            elif isinstance(node, (ast.With, ast.AsyncWith)):
+                for item in node.items:
+                    if isinstance(item.optional_vars, ast.Name):
+                        client = self._client_from_call(item.context_expr)
+                        if client:
+                            f.clients[item.optional_vars.id] = client
             elif isinstance(node, (ast.Assign, ast.AnnAssign)):
                 targets = node.targets if isinstance(node, ast.Assign) else [node.target]
                 value = node.value
@@ -262,10 +281,18 @@ class PythonFileScanner(ast.NodeVisitor):
                 return ("openai_compatible", base_url)
             return (provider, base_url)
         if name.endswith("client") or name.endswith(".client"):
-            # boto3.client("bedrock-runtime")
-            if value.args and isinstance(value.args[0], ast.Constant) and value.args[0].value in (
-                    "bedrock-runtime", "bedrock"):
+            # boto3.client("bedrock-runtime"), session.client(service_name="bedrock-runtime")
+            svc = value.args[0] if value.args else next(
+                (kw.value for kw in value.keywords if kw.arg == "service_name"), None)
+            if isinstance(svc, ast.Constant) and svc.value in ("bedrock-runtime", "bedrock"):
                 return ("bedrock", None)
+        low = last.lower()
+        if "client" in low or low.startswith(("get_", "make_", "create_", "build_", "init_")):
+            for key, prov in (("azure_openai", "azure"), ("azure", "azure"), ("openai", "openai"),
+                              ("anthropic", "anthropic"), ("claude", "anthropic"), ("bedrock", "bedrock"),
+                              ("gemini", "gemini"), ("genai", "gemini")):
+                if key in low:
+                    return (prov, None)
         return None
 
     # ---- traversal with context
@@ -311,18 +338,28 @@ class PythonFileScanner(ast.NodeVisitor):
         kind = provider = None
         last = chain.split(".")[-1]
 
+        # litellm.completion(...) is unambiguous even when litellm comes through a project wrapper
+        if chain.startswith("litellm.") and last in LITELLM_FUNCS and not self.has_llm_import:
+            self._record(node, chain, LITELLM_FUNCS[last], "litellm", confidence="heuristic")
+            return
+
         if not self.has_llm_import:
-            kw = self._wrapper_model_kwarg(node)
-            if not kw:
-                return
-            # Client injected from elsewhere: def f(client): client.chat.completions.create(model="gpt-4o")
-            for suffix, k in ((".chat.completions.create", "chat"), (".chat.completions.parse", "chat"),
-                              (".responses.create", "chat"), (".responses.parse", "chat"),
-                              (".embeddings.create", "embedding")):
-                if chain.endswith(suffix) and kw == "model":
-                    self._record(node, chain, k, "unknown", confidence="heuristic", model_kwarg=kw)
+            has_model = any(k.arg == "model" for k in node.keywords)
+            root = receiver_root(chain)
+            client = self.facts.clients.get(root)
+            # Client injected or built by a helper: client.chat.completions.create(model=..., messages=...)
+            for suffix, k, needs in INJECTED_SUFFIXES:
+                if chain.endswith(suffix) and has_model and (
+                        not needs or any(kw.arg in needs for kw in node.keywords)):
+                    self._record(node, chain, k, client[0] if client else "unknown", confidence="heuristic")
                     return
-            self._record(node, chain, "model_config", "unknown", confidence="heuristic", model_kwarg=kw)
+            if client and chain.endswith((".messages.create", ".messages.stream")) and has_model \
+                    and client[0] in ("anthropic", "bedrock"):
+                self._record(node, chain, "chat", client[0], confidence="heuristic")
+                return
+            kw = self._wrapper_model_kwarg(node)
+            if kw:
+                self._record(node, chain, "model_config", "unknown", confidence="heuristic", model_kwarg=kw)
             return
 
         for suffix, k, p in CALL_SUFFIXES:
@@ -336,7 +373,7 @@ class PythonFileScanner(ast.NodeVisitor):
             client = self.facts.clients.get(root)
             if client:
                 provider = client[0]
-            elif provider == "bedrock" and "boto3" not in self.facts.imports:
+            elif provider == "bedrock" and not self.facts.imports & {"boto3", "aioboto3", "aiobotocore", "botocore"}:
                 return
             elif provider == "gemini" and "google" not in self.facts.imports:
                 return
@@ -405,7 +442,8 @@ class PythonFileScanner(ast.NodeVisitor):
         params = self._params(node)
         prompt = self._prompt(node)
         func = self._enclosing_function()
-        in_loop = self._in_loop()
+        loop_kind = self._loop_kind()
+        in_loop = loop_kind is not None
         has_retry, unbounded = self._retry_info()
 
         hints: list[str] = []
@@ -423,7 +461,8 @@ class PythonFileScanner(ast.NodeVisitor):
             id=site_id, path=self.rel_path, line=node.lineno, kind=kind, provider=provider,
             sdk_call=chain, function=func.name if func else None, model=model,
             model_expr=model_expr, model_source=model_source, params=params,
-            in_loop=in_loop, is_async=self._is_await(node) or bool(func and isinstance(func, ast.AsyncFunctionDef)),
+            in_loop=in_loop, loop_kind=loop_kind,
+            scope="example" if EXAMPLE_PATH_RE.search(self.rel_path) else "app", is_async=self._is_await(node) or bool(func and isinstance(func, ast.AsyncFunctionDef)),
             retry_unbounded=unbounded, has_retry=has_retry,
             prompt_fingerprint=prompt["fingerprint"], system_prompt_tokens=prompt["system_tokens"],
             prompt_static_tokens=prompt["static_tokens"], prompt_dynamic_prefix=prompt["dynamic_prefix"],
@@ -672,14 +711,18 @@ class PythonFileScanner(ast.NodeVisitor):
                 return n
         return None
 
-    def _in_loop(self) -> bool:
+    def _loop_kind(self) -> str | None:
+        """Innermost loop around the call within the same function: for | comprehension | while."""
         for n in reversed(self._stack):
             if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda, ast.ClassDef)):
-                return False
-            if isinstance(n, (ast.For, ast.AsyncFor, ast.While, ast.ListComp, ast.SetComp,
-                              ast.DictComp, ast.GeneratorExp)):
-                return True
-        return False
+                return None
+            if isinstance(n, (ast.For, ast.AsyncFor)):
+                return "for"
+            if isinstance(n, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
+                return "comprehension"
+            if isinstance(n, ast.While):
+                return "while"
+        return None
 
     def _is_await(self, node: ast.Call) -> bool:
         return bool(self._stack) and isinstance(self._stack[-1], ast.Await)

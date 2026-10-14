@@ -31,6 +31,8 @@ class CallSite:
     model_source: str = "unknown"  # literal | constant | env_default | unresolved | missing
     params: dict[str, Any] = field(default_factory=dict)  # max_tokens, temperature, stream, response_format...
     in_loop: bool = False
+    loop_kind: str | None = None  # for | comprehension | while
+    scope: str = "app"            # app | example (examples/, docs/, notebooks/, benchmarks/ ...)
     is_async: bool = False
     retry_unbounded: bool = False
     has_retry: bool = False

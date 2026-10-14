@@ -1,7 +1,7 @@
 {
  "schema_version": "1",
  "tool_version": "0.1.0",
- "generated_at": "2026-10-14 08:53 UTC",
+ "generated_at": "2026-10-14 09:01 UTC",
  "catalog": {
   "source": "BerriAI/litellm model_prices_and_context_window.json",
   "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
@@ -27,6 +27,8 @@
     "model_source": "literal",
     "params": {},
     "in_loop": false,
+    "loop_kind": null,
+    "scope": "app",
     "is_async": false,
     "retry_unbounded": false,
     "has_retry": false,
@@ -57,6 +59,8 @@
      "temperature": 0
     },
     "in_loop": false,
+    "loop_kind": null,
+    "scope": "app",
     "is_async": false,
     "retry_unbounded": true,
     "has_retry": true,
@@ -89,6 +93,8 @@
      "response_format": "<expr>"
     },
     "in_loop": true,
+    "loop_kind": "for",
+    "scope": "app",
     "is_async": false,
     "retry_unbounded": false,
     "has_retry": false,
@@ -121,6 +127,8 @@
      "max_tokens": 300
     },
     "in_loop": true,
+    "loop_kind": "comprehension",
+    "scope": "app",
     "is_async": false,
     "retry_unbounded": false,
     "has_retry": false,
@@ -152,6 +160,8 @@
      "max_tokens": 4096
     },
     "in_loop": false,
+    "loop_kind": null,
+    "scope": "app",
     "is_async": false,
     "retry_unbounded": false,
     "has_retry": false,
@@ -181,6 +191,8 @@
      "max_tokens": 5
     },
     "in_loop": false,
+    "loop_kind": null,
+    "scope": "app",
     "is_async": false,
     "retry_unbounded": false,
     "has_retry": false,
@@ -212,6 +224,8 @@
      "max_completion_tokens": 200
     },
     "in_loop": false,
+    "loop_kind": null,
+    "scope": "app",
     "is_async": false,
     "retry_unbounded": false,
     "has_retry": true,
@@ -247,7 +261,7 @@
    "python": 5
   },
   "parse_errors": [],
-  "duration_s": 0.04,
+  "duration_s": 0.03,
   "excluded": []
  },
  "spend": {
@@ -453,6 +467,7 @@
    "evidence": {
     "model": "gpt-4",
     "deprecation_date": "2026-10-23",
+    "source": "price catalog (LiteLLM model data); confirm on the provider's deprecations page",
     "per_1m_in": 30.0,
     "per_1m_out": 60.0
    },
@@ -547,6 +562,7 @@
    "evidence": {
     "model": "claude-sonnet-4-5",
     "deprecation_date": "2026-11-30",
+    "source": "price catalog (LiteLLM model data); confirm on the provider's deprecations page",
     "per_1m_in": 3.0,
     "per_1m_out": 15.0
    },

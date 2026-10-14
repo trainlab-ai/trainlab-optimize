@@ -94,7 +94,12 @@ def analyze(scan: ScanResult, usage: list[UsageRecord], catalog: PriceCatalog | 
     findings: list[Finding] = []
     for site in scan.call_sites:
         for rule in SITE_RULES:
-            findings.extend(rule(site, ctx))
+            for f in rule(site, ctx):
+                if site.scope == "example":
+                    # Example/docs/notebook code: still reported, never above low severity.
+                    f.severity = "low" if f.severity != "info" else f.severity
+                    f.evidence = {**f.evidence, "scope": "example code"}
+                findings.append(f)
 
     # Non-overlapping total, computed on per-site findings BEFORE grouping:
     # for each call site take only its single largest saving, never the sum of

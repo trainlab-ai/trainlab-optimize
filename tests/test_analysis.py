@@ -114,3 +114,32 @@ def test_kwargs_passthrough_not_flagged_for_output_cap():
     src = "from openai import OpenAI\nc = OpenAI()\ndef f(m, **kw):\n    return c.chat.completions.create(model=m, messages=[], **kw)\n"
     r = ScanResult(root="x"); r.call_sites = PythonFileScanner("a.py", src).scan()
     assert not [f for f in analyze(r, [], today=TODAY).findings if f.rule == "R105"]
+
+
+def _analyze_src(src, path="a.py"):
+    from trainlab_optimize.scanner import ScanResult
+    from trainlab_optimize.scanner.python_ast import PythonFileScanner
+    r = ScanResult(root="x"); r.call_sites = PythonFileScanner(path, src).scan()
+    return analyze(r, [], today=TODAY)
+
+
+def test_while_loop_not_batch_candidate():
+    src = "from openai import OpenAI\nc = OpenAI()\ndef agent_loop():\n    while True:\n        c.chat.completions.create(model='gpt-5-mini', messages=[], max_tokens=5)\n"
+    assert not [f for f in _analyze_src(src).findings if f.rule == "R104"]
+
+
+def test_gemini_config_not_flagged_for_output_cap():
+    src = "from google import genai\nc = genai.Client()\nc.models.generate_content(model='gemini/gemini-3.5-flash-lite', contents='x', config=cfg)\n"
+    assert not [f for f in _analyze_src(src).findings if f.rule == "R105"]
+
+
+def test_deprecation_requires_all_family_entries():
+    # 'gemini-2.5-flash' is deprecated on Vertex in the catalog but not on the Gemini API
+    src = "from google import genai\nc = genai.Client()\nc.models.generate_content(model='gemini-2.5-flash', contents='x')\n"
+    assert not [f for f in _analyze_src(src).findings if f.rule == "R102"]
+
+
+def test_example_scope_capped_low():
+    src = "from openai import OpenAI\nc = OpenAI()\nc.chat.completions.create(model='gpt-4', messages=[])\n"
+    sev = {f.rule: f.severity for f in _analyze_src(src, "examples/x.py").findings}
+    assert sev["R102"] == "low"
