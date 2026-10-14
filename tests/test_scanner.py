@@ -321,3 +321,105 @@ allowed = RestrictModel(model="gpt-4")
 llm = get_llm(model="gpt-4o")
 '''
     assert [(x.line, x.model) for x in sites_of(src)] == [(5, "gpt-4"), (6, "gpt-4o")]
+
+
+def test_cross_file_prompt_and_model(tmp_path):
+    pkg = tmp_path / "app"
+    pkg.mkdir()
+    (pkg / "__init__.py").write_text("")
+    big = "Follow these support rules carefully. " * 200
+    (pkg / "prompts.py").write_text(f'BASE = "{big}"\nSYSTEM_PROMPT = BASE + "Answer briefly."\nMODEL = "claude-sonnet-4-5"\n')
+    (pkg / "service.py").write_text('''
+import anthropic
+from .prompts import SYSTEM_PROMPT, MODEL
+from app import prompts as P
+c = anthropic.Anthropic()
+def answer(q):
+    return c.messages.create(model=MODEL, max_tokens=300, system=SYSTEM_PROMPT,
+                             messages=[{"role": "user", "content": q}])
+def answer2(q):
+    return c.messages.create(model=P.MODEL, max_tokens=300, system=P.SYSTEM_PROMPT, messages=[])
+''')
+    r = scan(tmp_path)
+    assert [(s.model, s.model_source) for s in r.call_sites] == [("claude-sonnet-4-5", "constant")] * 2
+    assert all(s.system_prompt_tokens > 1500 for s in r.call_sites)
+
+
+def test_notebook_cells(tmp_path):
+    import json
+    nb = {"metadata": {"kernelspec": {"language": "python"}}, "cells": [
+        {"cell_type": "markdown", "source": ["# Demo"]},
+        {"cell_type": "code", "source": ["!pip install openai\n", "%load_ext autoreload\n",
+                                         "from openai import OpenAI\n", "client = OpenAI()\n"]},
+        {"cell_type": "code", "source": "resp = client.chat.completions.create(\n    model='gpt-4o', messages=[])"},
+    ]}
+    (tmp_path / "demo.ipynb").write_text(json.dumps(nb))
+    r = scan(tmp_path)
+    s = r.call_sites[0]
+    assert (s.cell, s.line, s.model, s.provider, s.scope) == (2, 1, "gpt-4o", "openai", "example")
+    assert s.location == "demo.ipynb:cell 2:1"
+
+
+def test_bom_nullbyte_minified_and_broken_symlink(tmp_path):
+    (tmp_path / "bom.py").write_bytes(b"\xef\xbb\xbffrom openai import OpenAI\nOpenAI().responses.create(model='gpt-4o', input='x')\n")
+    (tmp_path / "app.min.js").write_text("openai.chat.completions.create({model:'gpt-4o'})")
+    (tmp_path / "dangling.py").symlink_to(tmp_path / "missing.py")
+    r = scan(tmp_path)
+    assert [s.path for s in r.call_sites] == ["bom.py"]
+
+
+def test_ruby_php_rust_kotlin():
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    rb = 'response = client.chat(parameters: { model: "gpt-4o-mini", messages: [{ role: "user", content: q }] })'
+    assert [(x.provider, x.model) for x in scan_heuristic("app/services/ai.rb", rb, "ruby")] == [("openai", "gpt-4o-mini")]
+    php = "$result = $client->chat()->create([\n    'model' => 'gpt-4o',\n    'messages' => $messages,\n]);"
+    assert [(x.provider, x.model) for x in scan_heuristic("app/Ai.php", php, "php")] == [("openai", "gpt-4o")]
+    rs = 'use async_openai::Client;\nlet req = CreateChatCompletionRequestArgs::default().model("gpt-4o-mini").build()?;\nlet resp = client.chat().create(req).await?;'
+    assert [(x.provider, x.model) for x in scan_heuristic("src/main.rs", rs, "rust")] == [("openai", "gpt-4o-mini")]
+    rig = 'use rig::providers::openai;\nlet agent = client.agent(openai::GPT_4O).preamble("You are helpful").build();'
+    assert [(x.kind, x.model) for x in scan_heuristic("src/agent.rs", rig, "rust")] == [("model_config", "gpt-4o")]
+    kt = 'import com.aallam.openai.client.OpenAI\nval req = ChatCompletionRequest(model = ModelId("gpt-4o-mini"), messages = msgs)\nval c = openAI.chatCompletion(req)'
+    assert [(x.provider, x.model) for x in scan_heuristic("app/src/main/kotlin/Chat.kt", kt, "jvm")] == [("openai", "gpt-4o-mini")]
+
+
+def test_notebook_top_level_await_and_broken_cell(tmp_path):
+    import json
+    nb = {"metadata": {"kernelspec": {"language": "python"}}, "cells": [
+        {"cell_type": "code", "source": "import anthropic\nclient = anthropic.AsyncAnthropic()"},
+        {"cell_type": "code", "source": "%%bash\necho hi"},
+        {"cell_type": "code", "source": "def broken(:\n    pass"},
+        {"cell_type": "code", "source": "r = await client.messages.create(model='claude-haiku-4-5', max_tokens=50, messages=[])"},
+    ]}
+    (tmp_path / "nb.ipynb").write_text(json.dumps(nb))
+    s = scan(tmp_path).call_sites
+    assert [(x.cell, x.model) for x in s] == [(4, "claude-haiku-4-5")]
+
+
+def test_langchain4j_any_builder_and_semantic_kernel():
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    java = 'import dev.langchain4j.model.bedrock.BedrockChatModel;\nChatModel m = BedrockChatModel.builder()\n    .modelId("anthropic.claude-haiku-4-5-20251001-v1:0")\n    .build();'
+    assert [(x.kind, x.model) for x in scan_heuristic("src/main/java/A.java", java, "jvm")] == [
+        ("model_config", "anthropic.claude-haiku-4-5-20251001-v1:0")]
+    cs = 'using Microsoft.SemanticKernel;\nbuilder.AddOpenAIChatCompletion(modelId: "gpt-4o-mini", apiKey: key);\nvar r = await chat.GetChatMessageContentAsync(history);'
+    assert [(x.kind, x.model) for x in scan_heuristic("src/P.cs", cs, "csharp")] == [
+        ("model_config", "gpt-4o-mini"), ("chat", "gpt-4o-mini")]
+    py = 'from semantic_kernel.connectors.ai.open_ai import OpenAIChatCompletion\nsvc = OpenAIChatCompletion(ai_model_id="gpt-4o")\n'
+    assert [(x.kind, x.model) for x in sites_of(py)] == [("model_config", "gpt-4o")]
+
+
+def test_test_like_folders(tmp_path):
+    for d in ("ecosystem-tests", "integration_tests", "tests-e2e", "latest", "contest"):
+        (tmp_path / d).mkdir()
+        (tmp_path / d / "a.py").write_text("from openai import OpenAI\nOpenAI().responses.create(model='gpt-4o', input='x')\n")
+    assert sorted(s.path.split("/")[0] for s in scan(tmp_path).call_sites) == ["contest", "latest"]
+
+
+def test_latin1_crlf_and_unreadable(tmp_path):
+    (tmp_path / "latin.py").write_bytes("# caf\xe9\r\nfrom openai import OpenAI\r\nOpenAI().responses.create(model='gpt-4o', input='x')\r\n".encode("latin-1"))
+    bad = tmp_path / "secret.py"
+    bad.write_text("from openai import OpenAI\nOpenAI().responses.create(model='gpt-4o', input='x')\n")
+    bad.chmod(0)
+    r = scan(tmp_path)
+    paths = [s.path for s in r.call_sites]
+    assert "latin.py" in paths and r.call_sites[0].line == 3
+    bad.chmod(0o644)

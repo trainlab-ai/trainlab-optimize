@@ -1,0 +1,131 @@
+import json
+from pathlib import Path
+
+from trainlab_optimize.importers.cloud_csv import detect, read_cloud_csv
+from trainlab_optimize.importers.csv_generic import read_csv
+from trainlab_optimize.importers.traces import read_langfuse, read_otel
+
+FX = Path(__file__).parent / "fixtures"
+
+
+def test_aws_cur():
+    recs = read_csv(FX / "aws_cur.csv")          # auto-detected through the generic CSV entry point
+    assert [(r.provider, r.model, r.input_tokens, r.output_tokens, r.cost_usd) for r in recs] == [
+        ("bedrock", "Claude3.5Sonnet", 1_200_000, 0, 3.60), ("bedrock", "Claude3.5Sonnet", 0, 150_000, 2.25)]
+
+
+def test_azure_cost():
+    recs = read_csv(FX / "azure_cost.csv")
+    assert [(r.date, r.model, r.input_tokens, r.output_tokens, r.cost_usd, r.project) for r in recs] == [
+        ("2026-09-01", "azure/gpt-4o-0806", 5_000_000, 0, 12.5, "support-bot"),
+        ("2026-09-01", "azure/gpt-4o-0806", 0, 800_000, 8.0, "support-bot")]
+
+
+def test_gcp_billing():
+    recs = read_csv(FX / "gcp_billing.csv")
+    assert [(r.model, r.input_tokens, r.output_tokens, r.cost_usd) for r in recs] == [
+        ("gemini-2.5-flash", 0, 0, 12.0), ("gemini-2.5-flash", 0, 0, 10.0)]
+    assert detect(["service.description", "sku.description", "cost"]) == "gcp"
+
+
+def test_langfuse_no_prompt_text():
+    recs = read_langfuse(FX / "langfuse_obs.json")
+    assert sorted((r.model, r.input_tokens, r.output_tokens, round(r.cost_usd, 5), r.code_path, r.code_line)
+                  for r in recs) == [
+        ("claude-sonnet-4-5", 2500, 400, 0.0135, None, None),
+        ("gpt-4o-2024-08-06", 1500, 300, 0.00675, "/app/services/invoice_extractor.py", 19)]
+    assert "SECRET" not in json.dumps([r.to_dict() for r in recs])
+
+
+def test_otel_spans():
+    recs = read_otel(FX / "otel_spans.json")
+    assert [(r.provider, r.model, r.input_tokens, r.cached_input_tokens, r.project, r.code_line) for r in recs] == [
+        ("openai", "gpt-4o", 1500, 1024, "support-api", 34)]
+    assert "SECRET" not in json.dumps([r.to_dict() for r in recs])
+
+
+def test_trace_location_gives_exact_attribution():
+    from datetime import date
+    from trainlab_optimize.analyzer.engine import analyze
+    from trainlab_optimize.scanner import scan
+    root = Path(__file__).resolve().parents[1] / "examples/demo_app"
+    a = analyze(scan(root), read_otel(FX / "otel_spans.json"), today=date(2026, 10, 14))
+    exact = [x for x in a.attributions if x.method == "exact_trace"]
+    sites = {s.id: s for s in a.scan.call_sites}
+    assert [(sites[x.call_site_id].path, sites[x.call_site_id].line) for x in exact] == [
+        ("services/invoice_extractor.py", 34)]
+
+
+def test_billing_plus_traces_not_double_counted():
+    from trainlab_optimize.analyzer.spend import summarize
+    from trainlab_optimize.pricing import PriceCatalog
+    from trainlab_optimize.schema import UsageRecord
+    cat = PriceCatalog.load()
+    billing = [UsageRecord(date=f"2026-09-{d:02d}", provider="openai", model="gpt-4o", cost_usd=100.0,
+                           requests=1000, source="openai_usage_api") for d in range(1, 31)]
+    traces = [UsageRecord(date="2026-09-01", provider="openai", model="gpt-4o", input_tokens=1000,
+                          output_tokens=100, requests=10, source="otel:x.json",
+                          code_path="/app/a.py", code_line=10),
+              UsageRecord(date="2026-09-01", provider="openai", model="gpt-4o", input_tokens=1000,
+                          output_tokens=100, requests=30, source="otel:x.json")]
+    s = summarize(billing + traces, cat)
+    assert round(s.monthly_total) == 3000                     # billing only, traces not added
+    (key, (cost, req)), = s.by_location.items()
+    assert round(cost) == 1500                                # half the traced cost -> half the bill
+    assert s.days == 30
+
+
+def test_auto_detect_every_supported_file():
+    from trainlab_optimize.importers.auto import detect_kind, read_any
+    demo = Path(__file__).parent.parent / "examples" / "demo_usage"
+    expected = {
+        FX / "aws_cur.csv": "aws", FX / "azure_cost.csv": "azure", FX / "gcp_billing.csv": "gcp",
+        FX / "langfuse_obs.json": "langfuse", FX / "otel_spans.json": "otel",
+        demo / "billing_export.csv": "csv", demo / "anthropic_usage.json": "anthropic-file",
+        demo / "openai_usage_completions.json": "openai-file", demo / "openai_usage_embeddings.json": "openai-file",
+    }
+    for path, kind in expected.items():
+        assert detect_kind(path) == kind, path
+        records, got = read_any(path)
+        assert got == kind and records, path
+    emb, _ = read_any(demo / "openai_usage_embeddings.json")
+    assert all(r.output_tokens == 0 for r in emb) and any("embedding" in r.model for r in emb)
+
+
+def test_cli_import_by_path(tmp_path, capsys):
+    from trainlab_optimize.cli import main
+    ws = str(tmp_path / "ws")
+    demo = Path(__file__).parent.parent / "examples" / "demo_usage"
+    assert main(["--workspace", ws, "import", str(demo / "anthropic_usage.json")]) == 0
+    assert "Anthropic usage API file" in capsys.readouterr().out
+    # a JSON file handed to `import csv` is routed to detection instead of failing
+    assert main(["--workspace", ws, "import", "csv", str(demo / "openai_usage_completions.json")]) == 0
+    assert main(["--workspace", ws, "import", str(tmp_path / "missing.csv")]) == 2
+    # re-importing the same file replaces its rows instead of doubling them
+    def count():
+        data = json.loads((tmp_path / "ws" / "usage.json").read_text())
+        return len(data if isinstance(data, list) else data["records"])
+    n = count()
+    main(["--workspace", ws, "import", str(demo / "anthropic_usage.json")])
+    assert count() == n
+
+
+def test_overlapping_billing_sources_counted_once():
+    from trainlab_optimize.analyzer.spend import summarize
+    from trainlab_optimize.importers.auto import read_any
+    from trainlab_optimize.pricing import PriceCatalog
+    demo = Path(__file__).parent.parent / "examples" / "demo_usage"
+    cat = PriceCatalog.load()
+    csv_only, _ = read_any(demo / "billing_export.csv")
+    api = []
+    for name in ("openai_usage_completions.json", "openai_usage_embeddings.json", "anthropic_usage.json"):
+        api += read_any(demo / name)[0]
+    one = summarize(csv_only, cat).monthly_total
+    both = summarize(csv_only + api, cat)
+    assert abs(both.monthly_total - one) / one < 0.01      # same traffic, not doubled
+    assert both.overlaps and "billing_export.csv" in both.overlaps[0]
+    # a source covering *different* models is still added
+    extra = [r for r in api if "claude" in r.model]
+    for r in extra:
+        r.model = "claude-opus-4-1"
+    assert summarize(csv_only + extra, cat).monthly_total > one

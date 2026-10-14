@@ -277,7 +277,85 @@ def rule_retry(site: CallSite, ctx: RuleContext) -> list[Finding]:
     )]
 
 
-SITE_RULES = [rule_premium_model, rule_deprecated, rule_caching, rule_batch, rule_output_cap, rule_retry]
+def rule_embedding_loop(site: CallSite, ctx: RuleContext) -> list[Finding]:
+    if site.kind != "embedding" or site.loop_kind not in ("for", "comprehension"):
+        return []
+    p = site_price(site, ctx.catalog)
+    discount = (1 - p.batch_input / p.input) if (p and p.batch_input) else 0.5
+    a = ctx.attribution.get(site.id)
+    spend = a.monthly_spend_usd if a else None
+    return [Finding(
+        id="", rule="R109", strategy="batch", call_site_ids=[site.id], severity="low",
+        title=f"One embedding request per item{' in `' + site.function + '`' if site.function else ''}",
+        summary=("Embeddings are requested one item at a time inside a loop. Each request carries "
+                 "overhead and counts against rate limits; the embeddings APIs accept many inputs per call."),
+        recommendation=(f"Send inputs in batches (a list per request). For backfills and re-indexing, the "
+                        f"Batch API is ~{discount:.0%} cheaper."),
+        evidence={"function": site.function, "batch_discount": round(discount, 2)},
+        tier="estimated" if spend else "static", monthly_spend_usd=spend,
+        savings_low_usd=0.0 if spend else None, savings_high_usd=spend * discount if spend else None,
+    )]
+
+
+SITE_RULES = [rule_premium_model, rule_deprecated, rule_caching, rule_batch, rule_output_cap, rule_retry,
+              rule_embedding_loop]
+
+LARGE_CONTEXT_TOKENS = 8000
+DUPLICATE_MIN_TOKENS = 200
+
+
+def aggregate_findings(sites: list[CallSite], ctx: RuleContext) -> list[Finding]:
+    """Findings that look across call sites or at usage patterns."""
+    out: list[Finding] = []
+
+    # R107: the same sizeable prompt copied into several files
+    groups: dict[str, list[CallSite]] = {}
+    for s in sites:
+        if s.prompt_fingerprint and (s.prompt_static_tokens or 0) >= DUPLICATE_MIN_TOKENS:
+            groups.setdefault(s.prompt_fingerprint, []).append(s)
+    for fp, group in groups.items():
+        files = sorted({g.path for g in group})
+        if len(files) < 2:
+            continue
+        out.append(Finding(
+            id="", rule="R107", strategy="prompt", severity="low", call_site_ids=[g.id for g in group],
+            title=f"Same ~{group[0].prompt_static_tokens:,}-token prompt copied into {len(files)} files",
+            summary=("Identical prompt text is maintained in several places. Optimizations (shortening, "
+                     "caching order, model changes) have to be repeated in each copy and drift apart."),
+            recommendation="Move the prompt to one shared module and import it everywhere.",
+            evidence={"fingerprint": fp, "files": files[:10]},
+        ))
+
+    # R108: large average context with little caching (needs request counts from usage)
+    by_base: dict[str, list[CallSite]] = {}
+    for s in sites:
+        if s.model:
+            by_base.setdefault(base_model(s.model), []).append(s)
+    for b, ms in ctx.spend.by_model.items():
+        if not ms.monthly_requests or not ms.monthly_input_tokens:
+            continue
+        avg_in = ms.monthly_input_tokens / ms.monthly_requests
+        cached = ms.monthly_cached_tokens / ms.monthly_input_tokens
+        if avg_in < LARGE_CONTEXT_TOKENS or cached >= 0.3:
+            continue
+        p = ctx.catalog.lookup(ms.model, ms.provider)
+        discount = (1 - p.cache_read / p.input) if (p and p.cache_read) else 0.5
+        high = ms.monthly_cost * ms.input_cost_share * discount * 0.5
+        out.append(Finding(
+            id="", rule="R108", strategy="prompt", call_site_ids=[s.id for s in by_base.get(b, [])],
+            severity="high" if ms.monthly_cost >= 2000 else "medium",
+            title=f"`{ms.model}` requests average {avg_in:,.0f} input tokens with {cached:.0%} cached",
+            summary=("Most of the bill for this model is input tokens re-sent on every request. Large, "
+                     "uncached contexts usually come from full conversation history, whole documents, or "
+                     "broad retrieval results."),
+            recommendation=("Check what fills the context: trim conversation history, retrieve fewer/smaller "
+                            "chunks, and put the stable part first so prompt caching applies."),
+            evidence={"avg_input_tokens": round(avg_in), "cached_share": round(cached, 3),
+                      "input_cost_share": round(ms.input_cost_share, 2), "cache_read_discount": round(discount, 2)},
+            tier="estimated", monthly_spend_usd=ms.monthly_cost,
+            savings_low_usd=high * 0.4, savings_high_usd=high,
+        ))
+    return out
 
 
 def coverage_findings(sites: list[CallSite], coverage: dict, spend: SpendSummary) -> list[Finding]:
@@ -291,7 +369,7 @@ def coverage_findings(sites: list[CallSite], coverage: dict, spend: SpendSummary
             summary=("The model comes from configuration, an argument, or an environment variable "
                      "without a default, so spend cannot be linked to these lines statically."),
             recommendation="Add `trainlab.instrument()` (profile 2) to tag live calls with their source location.",
-            evidence={"examples": [f"{s.path}:{s.line} ({s.model_expr or 'no model argument'})"
+            evidence={"examples": [f"{s.location} ({s.model_expr or 'no model argument'})"
                                    for s in unresolved[:5]]},
         ))
     if coverage.get("unattributed_usd"):

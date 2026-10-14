@@ -1,0 +1,4 @@
+identity/LineItemId,lineItem/UsageStartDate,lineItem/ProductCode,lineItem/UsageType,lineItem/UsageAmount,pricing/unit,lineItem/UnblendedCost,lineItem/UsageAccountId,lineItem/LineItemDescription
+a1,2026-09-01T00:00:00Z,AmazonBedrock,USE1-Claude3.5Sonnet-input-tokens,1200,1K tokens,3.60,111122223333,Claude 3.5 Sonnet input tokens
+a2,2026-09-01T00:00:00Z,AmazonBedrock,USE1-Claude3.5Sonnet-output-tokens,150,1K tokens,2.25,111122223333,Claude 3.5 Sonnet output tokens
+a3,2026-09-01T00:00:00Z,AmazonEC2,USE1-BoxUsage:m5.large,24,Hrs,2.30,111122223333,EC2 instance

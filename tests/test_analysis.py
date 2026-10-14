@@ -35,7 +35,7 @@ def analysis():
 @pytest.mark.parametrize("raw,base", [
     ("gpt-4o-2024-08-06", "gpt-4o"), ("openai/gpt-4o", "gpt-4o"), ("gpt-4-0613", "gpt-4"),
     ("claude-sonnet-4-5-20250929", "claude-sonnet-4-5"),
-    ("us.anthropic.claude-haiku-4-5-20251001-v1:0", "anthropic.claude-haiku-4-5"),
+    ("us.anthropic.claude-haiku-4-5-20251001-v1:0", "claude-haiku-4-5"),
     ("gpt-4-1106-preview", "gpt-4"),
 ])
 def test_base_model(raw, base):
@@ -143,3 +143,56 @@ def test_example_scope_capped_low():
     src = "from openai import OpenAI\nc = OpenAI()\nc.chat.completions.create(model='gpt-4', messages=[])\n"
     sev = {f.rule: f.severity for f in _analyze_src(src, "examples/x.py").findings}
     assert sev["R102"] == "low"
+
+
+@pytest.mark.parametrize("a,b", [
+    ("Claude3.5Sonnet", "anthropic.claude-3-5-sonnet-20240620-v1:0"),
+    ("claude-3-5-sonnet-20241022", "claude-3.5-sonnet"),
+    ("claude-sonnet-4-5-20250929", "us.anthropic.claude-sonnet-4-5-20250929-v1:0"),
+    ("Claude4.5Sonnet", "claude-sonnet-4-5"),
+    ("azure/gpt-4o-0806", "gpt-4o"),
+])
+def test_billing_and_code_names_meet(a, b):
+    assert base_model(a) == base_model(b)
+
+
+def test_r107_r108_r109(tmp_path):
+    from trainlab_optimize.schema import UsageRecord
+    big = "You are a meticulous analyst. " * 60
+    for name in ("a.py", "b.py"):
+        (tmp_path / name).write_text(f'''from openai import OpenAI
+c = OpenAI()
+PROMPT = "{big}"
+def run(q):
+    return c.chat.completions.create(model="gpt-5-mini", max_tokens=50,
+        messages=[{{"role": "system", "content": PROMPT}}, {{"role": "user", "content": q}}])
+def index(docs):
+    return [c.embeddings.create(model="text-embedding-3-small", input=d) for d in docs]
+''')
+    usage = [UsageRecord(date=f"2026-09-{d:02d}", provider="openai", model="gpt-5-mini", input_tokens=20_000_000,
+                         output_tokens=100_000, requests=1000, source="api") for d in range(1, 31)]
+    a = analyze(scan(tmp_path), usage, today=TODAY)
+    rules = {f.rule for f in a.findings}
+    assert {"R107", "R108", "R109"} <= rules
+    r108 = next(f for f in a.findings if f.rule == "R108")
+    assert r108.evidence["avg_input_tokens"] == 20000 and r108.savings_high_usd > 0
+
+
+def test_multi_repo_and_markdown(tmp_path):
+    from trainlab_optimize.report.markdown import render_markdown
+    a_dir, b_dir = tmp_path / "svc-a", tmp_path / "svc-b"
+    for d, model in ((a_dir, "gpt-4"), (b_dir, "gpt-4o")):
+        d.mkdir()
+        (d / "app.py").write_text(f"from openai import OpenAI\nOpenAI().chat.completions.create(model='{model}', messages=[], max_tokens=10)\n")
+    merged = scan(a_dir).merge(scan(b_dir))
+    assert merged.repos == ["svc-a", "svc-b"]
+    assert sorted(s.location for s in merged.call_sites) == ["svc-a/app.py:2", "svc-b/app.py:2"]
+    md = render_markdown(analyze(merged, [], today=TODAY))
+    assert "svc-a, svc-b" in md and "`svc-a/app.py:2`" in md
+    paths = write_reports(analyze(merged, [], today=TODAY), tmp_path / "out", formats=("md",))
+    assert paths[0].name == "trainlab-report.md"
+
+
+def test_unknown_format_rejected(tmp_path):
+    with pytest.raises(ValueError):
+        write_reports(analyze(scan(DEMO), [], today=TODAY), tmp_path, formats=("docx",))

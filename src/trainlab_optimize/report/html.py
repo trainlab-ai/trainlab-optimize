@@ -91,6 +91,10 @@ td.r,th.r{text-align:right}
 .tiers .on{border-color:var(--ink)}
 .empty{background:var(--sheet);border:1px dashed var(--rule);border-radius:8px;padding:16px}
 footer{margin-top:56px;font-size:12px;color:var(--muted)}
+@media print{body{background:#fff;color:#000;font-size:11pt}.wrap{max-width:none;padding:0}
+.bill,.tiers div,.empty{border-color:#bbb}details{display:block}details>summary{list-style:none}
+details[open] summary~*,details summary~*{display:block}.finding{break-inside:avoid}h2{break-after:avoid}
+a{color:#000;text-decoration:none}}
 @media (max-width:640px){.bill-row{grid-template-columns:1fr;gap:4px}.bill-row .amt{text-align:left}
 .fhead{flex-direction:column}}
 """
@@ -109,7 +113,7 @@ def _bill(a: Analysis, sites: dict) -> str:
     groups: dict[str, float] = {}
     for at in a.attributions:
         s = sites.get(at.call_site_id)
-        key = f"{s.path}" if s else at.model
+        key = (f"{s.repo}/{s.path}" if s.repo else s.path) if s else at.model
         groups[key] = groups.get(key, 0.0) + at.monthly_spend_usd
     if a.coverage.get("unattributed_usd"):
         groups["Not found in this repo"] = a.coverage["unattributed_usd"]
@@ -149,7 +153,7 @@ def _finding(f, sites: dict) -> str:
         s = sites.get(sid)
         if s:
             fn = f" in <code>{e(s.function)}()</code>" if s.function else ""
-            locs.append(f"<code>{e(s.path)}:{s.line}</code>{fn}")
+            locs.append(f"<code>{e(s.location)}</code>{fn}")
     more = f" and {len(f.call_site_ids) - 6} more" if len(f.call_site_ids) > 6 else ""
     loc = (", ".join(locs) + more) if locs else ""
     save = ""
@@ -187,7 +191,7 @@ def _finding(f, sites: dict) -> str:
 def render_html(a: Analysis) -> str:
     sites = {s.id: s for s in a.scan.call_sites}
     attr = {at.call_site_id: at for at in a.attributions}
-    root = a.scan.root.rstrip("/").split("/")[-1]
+    root = ", ".join(a.scan.repos) if a.scan.repos else a.scan.root.rstrip("/").split("/")[-1]
     period = f"{a.spend.start} to {a.spend.end}" if a.spend.start else "code only"
     findings = [f for f in a.findings if f.strategy != "coverage"]
     coverage = [f for f in a.findings if f.strategy == "coverage"]
@@ -238,6 +242,19 @@ if quality falls short, a custom model is the next step.</p>
             out.append(f"<h2>Spend by project</h2><table><thead><tr><th>Project / workspace</th>"
                        f"<th class=r>Per month</th></tr></thead><tbody>{prow}</tbody></table>")
 
+    if a.scan.repos and a.spend.has_usage:
+        by_repo: dict[str, float] = {}
+        for at in a.attributions:
+            s = sites.get(at.call_site_id)
+            if s:
+                by_repo[s.repo or "?"] = by_repo.get(s.repo or "?", 0.0) + at.monthly_spend_usd
+        rrows = "".join(f"<tr><td><code>{e(k)}</code></td><td class=r>{money(v)}</td></tr>"
+                        for k, v in sorted(by_repo.items(), key=lambda kv: -kv[1]))
+        if a.coverage.get("unattributed_usd"):
+            rrows += f"<tr><td>Not found in these repositories</td><td class=r>{money(a.coverage['unattributed_usd'])}</td></tr>"
+        out.append(f"<h2>Spend by repository</h2><table><thead><tr><th>Repository</th>"
+                   f"<th class=r>Per month</th></tr></thead><tbody>{rrows}</tbody></table>")
+
     srows = []
     fids: dict[str, list[str]] = {}
     for f in a.findings:
@@ -245,10 +262,10 @@ if quality falls short, a custom model is the next step.</p>
             fids.setdefault(sid, []).append(f.id)
     for s in sorted(a.scan.call_sites, key=lambda s: -(attr[s.id].monthly_spend_usd if s.id in attr else 0)):
         at = attr.get(s.id)
-        method = {"exact_model": "", "split_model": " (shared)"}.get(at.method, "") if at else ""
+        method = {"exact_model": "", "split_model": " (shared)", "exact_trace": " (traced)"}.get(at.method, "") if at else ""
         model = f"<code>{e(s.model)}</code>" if s.model else f'<span class="note">{e(s.model_expr or "not set")}</span>'
         links = " ".join(f'<a href="#{i}">{i}</a>' for i in fids.get(s.id, []))
-        srows.append(f"<tr><td><code>{e(s.path)}:{s.line}</code>{'<br><span class=note>' + e(s.function) + '()</span>' if s.function else ''}</td>"
+        srows.append(f"<tr><td><code>{e(s.location)}</code>{'<br><span class=note>' + e(s.function) + '()</span>' if s.function else ''}</td>"
                      f"<td>{e(s.kind)}</td><td>{model}</td>"
                      f"<td class=r>{money(at.monthly_spend_usd) + method if at else '—'}</td><td>{links}</td></tr>")
     out.append(f"""<h2>Every LLM call site</h2>
@@ -269,7 +286,8 @@ if quality falls short, a custom model is the next step.</p>
 <div><b>Validated</b>Tested on your real inputs with <code>trainlab experiment</code>.</div>
 <div><b>Realized</b>Confirmed in production billing after the change.</div></div>
 <p class="note" style="margin-top:12px">Spend is linked to code by model name: when several call sites use the same model,
-its spend is split evenly between them (marked "shared"). For exact per-line attribution, add <code>trainlab.instrument()</code>.</p>""")
+its spend is split evenly between them (marked "shared"). Imported traces that carry a source location
+(<code>code.file.path</code>, <code>code.line.number</code>) are attributed to that exact line (marked "traced").</p>""")
     if coverage:
         out.append("<h2>Gaps in this analysis</h2>")
         out.extend(_finding(f, sites) for f in coverage)
@@ -277,5 +295,5 @@ its spend is split evenly between them (marked "shared"). For exact per-line att
     cat = a.catalog_meta
     out.append(f"""<footer>Generated locally by trainlab-optimize {e(__version__)}. No code or usage data left this machine.
 Prices: {e(cat.get('source', ''))} ({e(cat.get('source_license', ''))}), built {e(cat.get('built_at', ''))}.
-Usage sources: {e(', '.join(a.spend.sources) or 'none')}.</footer></main></body></html>""")
+Usage sources: {e(', '.join(a.spend.sources) or 'none')}.{''.join('<br>Overlap: ' + e(o) + '.' for o in a.spend.overlaps)}</footer></main></body></html>""")
     return "".join(out)

@@ -1,0 +1,4 @@
+service.description,sku.description,usage_start_time,usage.amount,usage.unit,cost,project.id
+Vertex AI,Gemini 2.5 Flash Input Text,2026-09-01T00:00:00Z,40000000,count,12.00,acme-prod
+Vertex AI,Gemini 2.5 Flash Output Text,2026-09-01T00:00:00Z,4000000,count,10.00,acme-prod
+Compute Engine,N2 Instance Core running in Americas,2026-09-01T00:00:00Z,24,hour,0.80,acme-prod

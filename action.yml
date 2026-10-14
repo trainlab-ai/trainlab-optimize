@@ -1,0 +1,111 @@
+name: TrainLab Optimize
+description: Find LLM call sites and cost waste in this repository; post a summary and keep the full report.
+author: EtherTech Innovations / TrainLab.ai
+branding:
+  icon: dollar-sign
+  color: green
+
+inputs:
+  path:
+    description: Folder(s) to scan, space-separated.
+    default: "."
+  exclude:
+    description: Comma-separated globs to skip (e.g. "examples,docs").
+    default: ""
+  usage-csv:
+    description: Optional usage file(s) to import, space-separated: billing CSVs (OpenAI/Anthropic/AWS/Azure/GCP), usage API JSON, Langfuse or OpenTelemetry exports. Type is detected.
+    default: ""
+  openai-admin-key:
+    description: Optional OpenAI admin key (read-only usage access). Pass a secret.
+    default: ""
+  anthropic-admin-key:
+    description: Optional Anthropic admin key (read-only usage access). Pass a secret.
+    default: ""
+  days:
+    description: Days of usage to import from the usage APIs.
+    default: "30"
+  fail-on:
+    description: Fail the step if findings at or above this severity exist (none, high, medium, low).
+    default: "none"
+  comment:
+    description: Post (or update) a pull request comment with the summary.
+    default: "true"
+  python-version:
+    description: Python used to run the tool (must already be on the runner, or set up beforehand).
+    default: "python3"
+
+outputs:
+  report-dir:
+    description: Folder with trainlab-report.html/.json/.md
+    value: ${{ steps.run.outputs.report-dir }}
+  findings:
+    description: Number of findings (excluding coverage notes)
+    value: ${{ steps.run.outputs.findings }}
+  monthly-spend:
+    description: Measured monthly spend in USD (empty without usage data)
+    value: ${{ steps.run.outputs.monthly-spend }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install trainlab-optimize
+      shell: bash
+      run: ${{ inputs.python-version }} -m pip install --quiet --disable-pip-version-check "${{ github.action_path }}"
+
+    - name: Scan, import, report
+      id: run
+      shell: bash
+      env:
+        OPENAI_ADMIN_KEY: ${{ inputs.openai-admin-key }}
+        ANTHROPIC_ADMIN_KEY: ${{ inputs.anthropic-admin-key }}
+        TL_PATHS: ${{ inputs.path }}
+        TL_EXCLUDE: ${{ inputs.exclude }}
+        TL_CSVS: ${{ inputs.usage-csv }}
+        TL_DAYS: ${{ inputs.days }}
+        TL_FAIL_ON: ${{ inputs.fail-on }}
+      run: |
+        set -uo pipefail
+        WS="$RUNNER_TEMP/trainlab"; OUT="$RUNNER_TEMP/trainlab-report"
+        EXCL=()
+        IFS=',' read -ra PARTS <<< "$TL_EXCLUDE"
+        for e in "${PARTS[@]}"; do [ -n "${e// }" ] && EXCL+=(--exclude "${e// }"); done
+        # shellcheck disable=SC2086
+        trainlab --workspace "$WS" scan $TL_PATHS "${EXCL[@]}"
+        for f in $TL_CSVS; do trainlab --workspace "$WS" import "$f"; done
+        if [ -n "$OPENAI_ADMIN_KEY" ]; then trainlab --workspace "$WS" import openai --days "$TL_DAYS" || echo "::warning::OpenAI usage import failed"; fi
+        if [ -n "$ANTHROPIC_ADMIN_KEY" ]; then trainlab --workspace "$WS" import anthropic --days "$TL_DAYS" || echo "::warning::Anthropic usage import failed"; fi
+        set +e
+        trainlab --workspace "$WS" report --out "$OUT" --format html,json,md --fail-on "$TL_FAIL_ON"
+        RC=$?
+        set -e
+        cat "$OUT/trainlab-report.md" >> "$GITHUB_STEP_SUMMARY"
+        ${{ inputs.python-version }} - "$OUT/trainlab-report.json" >> "$GITHUB_OUTPUT" <<'PY'
+        import json, sys
+        d = json.load(open(sys.argv[1]))
+        print("findings=%d" % sum(1 for f in d["findings"] if f["strategy"] != "coverage"))
+        spend = d["spend"]["monthly_total_usd"] if d["spend"]["by_model"] else ""
+        print("monthly-spend=%s" % spend)
+        PY
+        echo "report-dir=$OUT" >> "$GITHUB_OUTPUT"
+        echo "TL_RC=$RC" >> "$GITHUB_ENV"
+
+    - name: Comment on pull request
+      if: ${{ inputs.comment == 'true' && github.event_name == 'pull_request' }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR: ${{ github.event.pull_request.number }}
+      run: |
+        BODY="$RUNNER_TEMP/trainlab-report/trainlab-report.md"
+        printf '\n<!-- trainlab-optimize -->\n' >> "$BODY"
+        gh pr comment "$PR" --body-file "$BODY" --edit-last 2>/dev/null || gh pr comment "$PR" --body-file "$BODY" \
+          || echo "::warning::Could not comment (needs 'pull-requests: write' permission)"
+
+    - name: Apply fail-on threshold
+      shell: bash
+      run: |
+        if [ "${TL_RC:-0}" = "3" ]; then
+          echo "::error::TrainLab Optimize found issues at or above '${{ inputs.fail-on }}' severity"; exit 1
+        elif [ "${TL_RC:-0}" != "0" ]; then
+          echo "::error::trainlab report failed (exit ${TL_RC})"; exit 1
+        fi

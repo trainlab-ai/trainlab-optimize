@@ -26,6 +26,8 @@ class CallSite:
     sdk_call: str                # e.g. client.chat.completions.create
     language: str = "python"
     function: str | None = None
+    cell: int | None = None      # notebook cell number (1-based) when path is an .ipynb
+    repo: str | None = None      # repository name when several repositories are analysed together
     model: str | None = None     # resolved literal model name, if known
     model_expr: str | None = None  # source expression when model is not a literal
     model_source: str = "unknown"  # literal | constant | env_default | unresolved | missing
@@ -49,6 +51,11 @@ class CallSite:
     def to_dict(self) -> dict:
         return asdict(self)
 
+    @property
+    def location(self) -> str:
+        loc = f"{self.path}:cell {self.cell}:{self.line}" if self.cell else f"{self.path}:{self.line}"
+        return f"{self.repo}/{loc}" if self.repo else loc
+
     @classmethod
     def from_dict(cls, d: dict) -> "CallSite":
         return _from_dict(cls, d)
@@ -70,6 +77,8 @@ class UsageRecord:
     batch: bool | None = None
     project: str | None = None      # project / workspace / api key for team attribution
     source: str = "unknown"
+    code_path: str | None = None    # from traces that carry a source location (exact attribution)
+    code_line: int | None = None
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -110,7 +119,7 @@ class Attribution:
     model: str
     monthly_spend_usd: float
     monthly_requests: float
-    method: str                  # exact_model | split_model | unattributed
+    method: str                  # exact_trace | exact_model | split_model | unattributed
 
     def to_dict(self) -> dict:
         return asdict(self)

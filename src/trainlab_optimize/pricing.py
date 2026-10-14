@@ -42,11 +42,18 @@ class Price:
         return 1000 * (self.input * in_out_ratio + self.output) / total
 
 
+def _VENDOR_NORM(name: str) -> str:
+    """claude-opus-4-1-20250805-v1:0 -> claude-opus-4-1"""
+    name = re.sub(r"-v\d+(:\d+)?$", "", name)
+    return re.sub(r"-(20\d{6}|\d{4}-\d{2}-\d{2})$", "", name)
+
+
 class PriceCatalog:
     def __init__(self, data: dict):
         self.meta = data.get("_meta", {})
         self._models: dict[str, dict] = data["models"]
         self._lower = {k.lower(): k for k in self._models}
+        self._vidx: dict[str, str] | None = None
 
     @classmethod
     def load(cls, path: str | None = None) -> "PriceCatalog":
@@ -70,11 +77,27 @@ class PriceCatalog:
         """Resolve a model name as written in code or billing to a catalog price."""
         if not model:
             return None
-        for cand in self._candidates(model, provider):
+        cands = list(self._candidates(model, provider))
+        for cand in cands:
             key = self._lower.get(cand.lower())
             if key:
                 return self._price(key)
+        # Retired direct-API names (claude-opus-4-1) often survive only as Bedrock entries
+        # (anthropic.claude-opus-4-1-20250805-v1:0): same model, same list price.
+        idx = self._vendor_index()
+        for cand in cands:
+            key = idx.get(_VENDOR_NORM(cand.lower()))
+            if key:
+                return self._price(key)
         return None
+
+    def _vendor_index(self) -> dict[str, str]:
+        if self._vidx is None:
+            self._vidx = {}
+            for k in sorted(self._models):
+                if re.match(r"^(anthropic|meta|amazon|cohere|mistral|ai21)\.", k):
+                    self._vidx.setdefault(_VENDOR_NORM(k.lower().split(".", 1)[1]), k)
+        return self._vidx
 
     def _candidates(self, model: str, provider: str | None):
         m = model.strip()
@@ -111,7 +134,21 @@ class PriceCatalog:
             yield self._price(k)
 
 
+def user_catalog_path():
+    import os
+    from pathlib import Path
+    env = os.environ.get("TRAINLAB_PRICES")
+    return Path(env) if env else Path.home() / ".cache" / "trainlab" / "prices.json"
+
+
 @lru_cache(maxsize=1)
 def _default_catalog() -> PriceCatalog:
-    text = resources.files("trainlab_optimize.catalog").joinpath("prices.json").read_text()
-    return PriceCatalog(json.loads(text))
+    """User cache (from `trainlab prices update`) if present and newer, else the bundled copy."""
+    bundled = json.loads(resources.files("trainlab_optimize.catalog").joinpath("prices.json").read_text())
+    try:
+        user = json.loads(user_catalog_path().read_text())
+        if user.get("_meta", {}).get("built_at", "") > bundled.get("_meta", {}).get("built_at", ""):
+            return PriceCatalog(user)
+    except (OSError, ValueError):
+        pass
+    return PriceCatalog(bundled)

@@ -7,10 +7,19 @@ from __future__ import annotations
 import ast
 import hashlib
 import re
+import warnings
 from dataclasses import dataclass, field
 
 from ..redact import redact
 from ..schema import CallSite
+
+
+def quiet_parse(source: str, filename: str) -> ast.AST:
+    """Parse to an AST without printing SyntaxWarnings (e.g. invalid escapes) from scanned code."""
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        return compile(source, filename, "exec",
+                       flags=ast.PyCF_ONLY_AST | ast.PyCF_ALLOW_TOP_LEVEL_AWAIT, dont_inherit=True)
 
 # --------------------------------------------------------------------------- signatures
 
@@ -83,7 +92,7 @@ LLM_IMPORT_ROOTS = {"openai", "anthropic", "litellm", "boto3", "aioboto3", "aiob
 
 WRAPPER_MODEL_KWARGS = ("model", "model_name", "name", "llm", "llm_model", "summary_llm",
                         "agent_llm", "embedding", "embedding_model", "fast_llm", "smart_llm",
-                        "strategic_llm", "judge_model")
+                        "strategic_llm", "judge_model", "ai_model_id", "model_id", "deployment_name")
 LLM_IMPORT_PREFIXES = ("langchain", "llama_index", "openai_", "anthropic_", "litellm_")
 
 MODEL_KWARGS = ("model", "modelId", "model_id", "model_name", "deployment_name", "azure_deployment")
@@ -112,7 +121,8 @@ HINT_PATTERNS = [
 EXAMPLE_PATH_RE = re.compile(
     r"(^|/)(examples?|samples?|demos?|docs?|cookbooks?|notebooks?|benchmarks?|evals?|tutorials?|"
     r"playground|sandbox|scratch|quickstarts?)(/|$)", re.I)
-TEST_PATH_RE = re.compile(r"(^|/)(tests?|testing|e2e|__tests__|__mocks__|fixtures?|mocks?)(/|$)|(^|/)test_[^/]*\.py$|_test\.py$|(^|/)conftest\.py$")
+TEST_PATH_RE = re.compile(r"(^|/)(tests?|testing|e2e|__tests__|__mocks__|fixtures?|mocks?|"
+                          r"[\w.-]+[-_]tests?|tests?[-_][\w.-]+)(/|$)|(^|/)test_[^/]*\.py$|_test\.py$|(^|/)conftest\.py$")
 
 
 # --------------------------------------------------------------------------- helpers
@@ -195,6 +205,7 @@ class Template:
 class FileFacts:
     imports: set[str] = field(default_factory=set)          # root modules
     from_imports: dict[str, str] = field(default_factory=dict)  # local name -> module.name
+    module_aliases: dict[str, str] = field(default_factory=dict)  # local alias -> module
     constants: dict[str, list[ast.AST]] = field(default_factory=dict)  # NAME -> value nodes
     clients: dict[str, tuple[str, str | None]] = field(default_factory=dict)  # var -> (provider, base_url)
     retry_funcs: set[str] = field(default_factory=set)
@@ -203,9 +214,15 @@ class FileFacts:
 # --------------------------------------------------------------------------- scanner
 
 class PythonFileScanner:
-    def __init__(self, rel_path: str, source: str):
+    def __init__(self, rel_path: str, source: str, external: dict[str, ast.AST] | None = None):
         self.rel_path = rel_path
-        self.source = source
+        self.source = source[1:] if source.startswith("\ufeff") else source   # UTF-8 BOM
+        self.external = external or {}      # imported name -> value node from another module
+        self.wanted: set[str] = set()       # fully-qualified imported names we could not resolve
+        parts = rel_path[:-3].split("/") if rel_path.endswith(".py") else rel_path.split("/")
+        if parts and parts[-1] == "__init__":
+            parts = parts[:-1]
+        self.module = ".".join(parts)
         self.sites: list[CallSite] = []
         self.model_refs: list[tuple[int, str]] = []
         self.facts = FileFacts()
@@ -220,7 +237,7 @@ class PythonFileScanner:
     # ---- entry
     def scan(self) -> list[CallSite]:
         try:
-            tree = ast.parse(self.source)
+            tree = quiet_parse(self.source.replace("\x00", ""), self.rel_path)
         except (SyntaxError, ValueError, RecursionError, MemoryError):
             self.parse_error = True
             return []
@@ -311,10 +328,18 @@ class PythonFileScanner:
             if isinstance(node, ast.Import):
                 for a in node.names:
                     f.imports.add(a.name.split(".")[0])
-            elif isinstance(node, ast.ImportFrom) and node.module:
-                f.imports.add(node.module.split(".")[0])
+                    if a.asname:
+                        f.module_aliases[a.asname] = a.name
+            elif isinstance(node, ast.ImportFrom) and (node.module or node.level):
+                module = node.module or ""
+                if node.level:   # relative import: resolve against this file's package
+                    base = self.module.split(".")
+                    base = base[: len(base) - node.level] if len(base) >= node.level else []
+                    module = ".".join([*base, module] if module else base)
+                if module:
+                    f.imports.add(module.split(".")[0])
                 for a in node.names:
-                    f.from_imports[a.asname or a.name] = f"{node.module}.{a.name}"
+                    f.from_imports[a.asname or a.name] = f"{module}.{a.name}" if module else a.name
             elif isinstance(node, (ast.With, ast.AsyncWith)):
                 for item in node.items:
                     if isinstance(item.optional_vars, ast.Name):
@@ -587,7 +612,18 @@ class PythonFileScanner:
                 m = next(iter(pairs))[0]
                 env = any(s == "env_default" for _, s in pairs)
                 return m, src, "env_default" if env else "constant"
+            ext = self._external(expr.id) if not values else None
+            if ext is not None:
+                m, _, s = self._resolve_str(ext, depth + 1)
+                if m:
+                    return m, src, "env_default" if s == "env_default" else "constant"
             return None, src, "unresolved"
+        if isinstance(expr, ast.Attribute) and isinstance(expr.value, ast.Name) and expr.value.id != "self":
+            ext = self._external_attr(expr.value.id, expr.attr)
+            if ext is not None:
+                m, _, s = self._resolve_str(ext, depth + 1)
+                if m:
+                    return m, src, "env_default" if s == "env_default" else "constant"
         if isinstance(expr, ast.Attribute):
             key = f"self.{expr.attr}" if isinstance(expr.value, ast.Name) and expr.value.id == "self" else expr.attr
             values = self.facts.constants.get(key, []) or self.facts.constants.get(expr.attr, [])
@@ -700,11 +736,38 @@ class PythonFileScanner:
                 if len(vals) == 1:
                     nxt = vals[0]
             if nxt is None:
+                nxt = self._external(node.id)
+            if nxt is None:
                 break
             node = nxt
+        if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name):
+            # prompts.SYSTEM_PROMPT where `prompts` is an imported module
+            ext = self._external_attr(node.value.id, node.attr)
+            if ext is not None:
+                return self._deref(ext) if isinstance(ext, ast.Name) else ext
         return node
 
-    def _is_local_name(self, name: str) -> bool:
+    def _external(self, name: str) -> ast.AST | None:
+        """Value of a name imported from another project module (filled in on a second pass)."""
+        origin = self.facts.from_imports.get(name)
+        if not origin:
+            return None
+        if origin in self.external:
+            return self.external[origin]
+        self.wanted.add(origin)
+        return None
+
+    def _external_attr(self, alias: str, attr: str) -> ast.AST | None:
+        module = self.facts.module_aliases.get(alias) or self.facts.from_imports.get(alias)
+        if not module:
+            return None
+        key = f"{module}.{attr}"
+        if key in self.external:
+            return self.external[key]
+        self.wanted.add(key)
+        return None
+
+    def _is_local_name(self, name: str) -> bool:  # noqa: D401
         """True if the name is a function local/param (dynamic at runtime)."""
         return any(name in s for s in self._local_scopes()) or any(name in s for s in self._func_params)
 
@@ -922,6 +985,47 @@ def _params_of(fn) -> dict[str, ast.AST]:
         if d is not None:
             params[a.arg] = d
     return params
+
+
+def module_constants(source: str) -> dict[str, ast.AST]:
+    """Top-level NAME = <str-ish> assignments of a module (for cross-file prompt/model resolution).
+
+    Names inside the values that refer to other constants of the same module are inlined, so
+    SYSTEM = BASE + RULES resolves when BASE and RULES are defined in that module.
+    """
+    try:
+        tree = quiet_parse(source[1:] if source.startswith("\ufeff") else source, "<module>")
+    except (SyntaxError, ValueError, RecursionError, MemoryError):
+        return {}
+    consts: dict[str, ast.AST] = {}
+    for node in tree.body:
+        targets = node.targets if isinstance(node, ast.Assign) else [node.target] if isinstance(
+            node, ast.AnnAssign) and node.value is not None else []
+        for t in targets:
+            if isinstance(t, ast.Name) and isinstance(node.value, (
+                    ast.Constant, ast.JoinedStr, ast.BinOp, ast.Call, ast.Name)):
+                consts[t.id] = node.value
+
+    class _Inline(ast.NodeTransformer):
+        def __init__(self, depth=0):
+            self.depth = depth
+
+        def visit_Name(self, n):
+            v = consts.get(n.id)
+            if v is not None and self.depth < 3 and not isinstance(v, ast.Call):
+                return _Inline(self.depth + 1).visit(ast.fix_missing_locations(ast.parse(
+                    ast.unparse(v), mode="eval").body))
+            return n
+
+    out = {}
+    for name, v in consts.items():
+        if isinstance(v, ast.Constant) and not isinstance(v.value, str):
+            continue
+        try:
+            out[name] = _Inline().visit(ast.parse(ast.unparse(v), mode="eval").body)
+        except Exception:  # pragma: no cover
+            out[name] = v
+    return out
 
 
 def _unparse(node: ast.AST) -> str:

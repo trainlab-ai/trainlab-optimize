@@ -1,7 +1,7 @@
 {
  "schema_version": "1",
- "tool_version": "0.1.0",
- "generated_at": "2026-10-14 09:01 UTC",
+ "tool_version": "0.1.3",
+ "generated_at": "2026-10-14 10:05 UTC",
  "catalog": {
   "source": "BerriAI/litellm model_prices_and_context_window.json",
   "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
@@ -22,6 +22,8 @@
     "sdk_call": "chat.completions.create",
     "language": "javascript",
     "function": null,
+    "cell": null,
+    "repo": null,
     "model": "gpt-4o",
     "model_expr": null,
     "model_source": "literal",
@@ -51,6 +53,8 @@
     "sdk_call": "client.chat.completions.create",
     "language": "python",
     "function": "extract_invoice",
+    "cell": null,
+    "repo": null,
     "model": "gpt-4o",
     "model_expr": "EXTRACTION_MODEL",
     "model_source": "constant",
@@ -86,6 +90,8 @@
     "sdk_call": "client.chat.completions.create",
     "language": "python",
     "function": "process_batch",
+    "cell": null,
+    "repo": null,
     "model": "gpt-4o",
     "model_expr": "EXTRACTION_MODEL",
     "model_source": "constant",
@@ -120,6 +126,8 @@
     "sdk_call": "client.chat.completions.create",
     "language": "python",
     "function": "summarize_notes",
+    "cell": null,
+    "repo": null,
     "model": "gpt-4",
     "model_expr": null,
     "model_source": "literal",
@@ -153,6 +161,8 @@
     "sdk_call": "client.messages.create",
     "language": "python",
     "function": "answer",
+    "cell": null,
+    "repo": null,
     "model": "claude-sonnet-4-5",
     "model_expr": null,
     "model_source": "literal",
@@ -184,6 +194,8 @@
     "sdk_call": "litellm.completion",
     "language": "python",
     "function": "classify_ticket",
+    "cell": null,
+    "repo": null,
     "model": "gpt-4.1",
     "model_expr": "ROUTER_MODEL",
     "model_source": "env_default",
@@ -217,6 +229,8 @@
     "sdk_call": "client.chat.completions.create",
     "language": "python",
     "function": "short_reply",
+    "cell": null,
+    "repo": null,
     "model": "gpt-5-mini",
     "model_expr": null,
     "model_source": "literal",
@@ -261,8 +275,9 @@
    "python": 5
   },
   "parse_errors": [],
-  "duration_s": 0.03,
-  "excluded": []
+  "duration_s": 0.02,
+  "excluded": [],
+  "repos": []
  },
  "spend": {
   "days": 30,
@@ -270,7 +285,13 @@
   "end": "2026-09-30",
   "monthly_total_usd": 23501.47,
   "sources": [
-   "csv:billing_export.csv"
+   "anthropic_usage_file:anthropic_usage.json",
+   "csv:billing_export.csv",
+   "openai_usage_file:openai_usage_completions.json",
+   "openai_usage_file:openai_usage_embeddings.json"
+  ],
+  "overlaps": [
+   "csv:billing_export.csv overlaps anthropic_usage_file:anthropic_usage.json, openai_usage_file:openai_usage_completions.json, openai_usage_file:openai_usage_embeddings.json for the same models and days; counted once"
   ],
   "by_model": [
    {
@@ -287,7 +308,7 @@
     "model": "claude-sonnet-4-5-20250929",
     "provider": "anthropic",
     "monthly_cost_usd": 8066.88,
-    "monthly_requests": 597547,
+    "monthly_requests": 0,
     "monthly_input_tokens": 1493867500,
     "monthly_output_tokens": 239018800,
     "cached_share": 0.0,
@@ -343,6 +364,13 @@
  },
  "attribution": [
   {
+   "call_site_id": "8307de61d68e",
+   "model": "claude-sonnet-4-5-20250929",
+   "monthly_spend_usd": 8066.884500000002,
+   "monthly_requests": 0.0,
+   "method": "exact_model"
+  },
+  {
    "call_site_id": "c06983e9ba9d",
    "model": "gpt-4o-2024-08-06",
    "monthly_spend_usd": 3986.22825,
@@ -383,13 +411,6 @@
    "monthly_spend_usd": 104.85825,
    "monthly_requests": 299595.0,
    "method": "exact_model"
-  },
-  {
-   "call_site_id": "8307de61d68e",
-   "model": "claude-sonnet-4-5-20250929",
-   "monthly_spend_usd": 8066.884500000002,
-   "monthly_requests": 597547.0,
-   "method": "exact_model"
   }
  ],
  "coverage": {
@@ -398,7 +419,8 @@
   "unattributed_by_model": {
    "text-embedding-3-large": 760.5556399999999
   },
-  "attributed_share": 0.9676379513507752
+  "attributed_share": 0.9676379513507752,
+  "exact_share": 0.0
  },
  "findings": [
   {

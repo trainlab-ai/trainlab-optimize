@@ -9,7 +9,7 @@ from ..pricing import PriceCatalog
 from ..scanner import ScanResult
 from ..schema import Attribution, Finding, UsageRecord
 from .attribution import attribute
-from .rules import SITE_RULES, RuleContext, coverage_findings, load_candidates
+from .rules import SITE_RULES, RuleContext, aggregate_findings, coverage_findings, load_candidates
 from .spend import SpendSummary, summarize
 
 SEV_ORDER = {"high": 0, "medium": 1, "low": 2, "info": 3}
@@ -38,6 +38,7 @@ class Analysis:
                 "days": self.spend.days, "start": self.spend.start, "end": self.spend.end,
                 "monthly_total_usd": round(self.spend.monthly_total, 2),
                 "sources": self.spend.sources,
+                "overlaps": self.spend.overlaps,
                 "by_model": [
                     {"model": m.model, "provider": m.provider,
                      "monthly_cost_usd": round(m.monthly_cost, 2),
@@ -118,6 +119,7 @@ def analyze(scan: ScanResult, usage: list[UsageRecord], catalog: PriceCatalog | 
         high, low = sum(best_high.values()), sum(best_low.values())
 
     findings = _group(findings, {s.id: s for s in scan.call_sites})
+    findings.extend(aggregate_findings(scan.call_sites, ctx))
     findings.extend(coverage_findings(scan.call_sites, coverage, spend))
 
     findings.sort(key=lambda f: (SEV_ORDER.get(f.severity, 9), -(f.savings_high_usd or 0), f.rule))

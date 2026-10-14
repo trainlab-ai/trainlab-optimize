@@ -53,6 +53,11 @@ def read_csv(path: str | Path, default_provider: str | None = None) -> list[Usag
         reader = csv.DictReader(fh)
         if not reader.fieldnames:
             raise ValueError(f"{path}: empty CSV")
+        from .cloud_csv import detect, read_cloud_csv
+        kind = detect(list(reader.fieldnames))
+        if kind:
+            fh.close()
+            return read_cloud_csv(path, kind)
         cols = {h.lower().strip(): h for h in reader.fieldnames}
         mapping = {}
         for field, names in ALIASES.items():

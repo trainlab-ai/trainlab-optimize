@@ -1,0 +1,8 @@
+{"data": [
+ {"id":"o1","traceId":"t1","type":"GENERATION","startTime":"2026-09-01T10:00:00Z","model":"gpt-4o-2024-08-06",
+  "usageDetails":{"input":1500,"output":300},"costDetails":{"input":0.00375,"output":0.003},"totalCost":0.00675,
+  "input":"SECRET PROMPT TEXT","output":"SECRET ANSWER","metadata":{"code.file.path":"/app/services/invoice_extractor.py","code.line.number":19}},
+ {"id":"o2","traceId":"t2","type":"GENERATION","startTime":"2026-09-01T11:00:00Z","model":"claude-sonnet-4-5",
+  "usage":{"input":2500,"output":400},"calculatedTotalCost":0.0135,"input":"x","output":"y"},
+ {"id":"o3","traceId":"t3","type":"SPAN","startTime":"2026-09-01T11:00:00Z","name":"retrieve"}
+]}

@@ -21,13 +21,23 @@ def _ws(args) -> Workspace:
 
 
 def cmd_scan(args) -> int:
-    result = scan(args.path, include_tests=args.include_tests, exclude=args.exclude or [])
+    paths = args.path if isinstance(args.path, list) else [args.path]
+    result = None
+    if getattr(args, "append", False):
+        result = _ws(args).load_scan()
+    for path in paths:
+        if not Path(path).is_dir():
+            print(f"Not a directory: {path}", file=sys.stderr)
+            return 2
+        r = scan(path, include_tests=args.include_tests, exclude=args.exclude or [])
+        result = r if result is None else result.merge(r)
     p = _ws(args).save_scan(result)
     by_kind: dict[str, int] = {}
     for s in result.call_sites:
         by_kind[s.kind] = by_kind.get(s.kind, 0) + 1
     unresolved = sum(1 for s in result.call_sites if s.kind in ("chat", "embedding") and not s.model)
-    print(f"Scanned {result.files_scanned} files in {result.duration_s:.1f}s: "
+    repos = f" across {len(result.repos)} repositories" if result.repos else ""
+    print(f"Scanned {result.files_scanned} files{repos} in {result.duration_s:.1f}s: "
           f"{len(result.call_sites)} LLM call sites {by_kind or ''}")
     if unresolved:
         print(f"  {unresolved} call site(s) choose the model at runtime")
@@ -72,10 +82,70 @@ def _import_api(args, provider: str) -> int:
     return 0
 
 
+IMPORT_SOURCES = ("file", "openai", "anthropic", "csv", "langfuse", "otel", "aws", "azure", "gcp")
+KIND_NAMES = {"csv": "billing CSV", "aws": "AWS cost export", "azure": "Azure cost export", "gcp": "Google Cloud billing export",
+              "langfuse": "Langfuse export", "otel": "OpenTelemetry traces", "openai-file": "OpenAI usage API file",
+              "anthropic-file": "Anthropic usage API file"}
+
+
+def _import_file_auto(args) -> int:
+    from .importers.auto import read_any
+    try:
+        records, kind = read_any(args.file, "auto", default_provider=getattr(args, "provider", None))
+    except (ValueError, OSError, KeyError) as exc:
+        print(f"Import failed: {exc}", file=sys.stderr)
+        return 1
+    if not records:
+        print(f"No LLM usage found in {args.file}. Check the service and period it covers.", file=sys.stderr)
+        return 1
+    n = _ws(args).add_usage(records)
+    located = sum(1 for r in records if r.code_path)
+    print(f"Imported {n} usage records from {args.file} (detected: {KIND_NAMES.get(kind, kind)})"
+          + (f"; {located} carry source locations for exact per-line attribution" if located else "") + ".")
+    return 0
+
+
 def cmd_import(args) -> int:
     args.file = getattr(args, "file_opt", None) or getattr(args, "path_arg", None) or getattr(args, "file", None)
+    if args.source not in IMPORT_SOURCES:
+        # `trainlab import billing.csv` -> detect the file type
+        if Path(args.source).is_file():
+            args.file, args.source = args.source, "file"
+        else:
+            print(f"'{args.source}' is neither a file nor a source ({', '.join(IMPORT_SOURCES)}).", file=sys.stderr)
+            return 2
+    if args.source == "file" or (args.source == "csv" and args.file
+                                 and Path(args.file).suffix.lower() in (".json", ".jsonl", ".ndjson")):
+        if not args.file:
+            print("Pass the file: trainlab import <file>", file=sys.stderr)
+            return 2
+        return _import_file_auto(args)
     if args.source in ("openai", "anthropic"):
         return _import_api(args, args.source)
+    if args.source in ("langfuse", "otel", "aws", "azure", "gcp"):
+        if not args.file:
+            print(f"Pass the export file: trainlab import {args.source} <file>", file=sys.stderr)
+            return 2
+        try:
+            if args.source == "langfuse":
+                from .importers.traces import read_langfuse
+                records = read_langfuse(args.file)
+            elif args.source == "otel":
+                from .importers.traces import read_otel
+                records = read_otel(args.file)
+            else:
+                from .importers.cloud_csv import read_cloud_csv
+                records = read_cloud_csv(args.file, args.source)
+        except (ValueError, OSError, KeyError) as exc:
+            print(f"Import failed: {exc}", file=sys.stderr)
+            return 1
+        n = _ws(args).add_usage(records)
+        located = sum(1 for r in records if r.code_path)
+        print(f"Imported {n} usage records from {args.file}"
+              + (f" ({located} with source locations: exact per-line attribution)" if located else "") + ".")
+        if not records:
+            print("  No LLM usage rows found. Check that the export covers the right service and period.")
+        return 0
     if args.source == "csv":
         from .importers.csv_generic import read_csv
         if not args.file:
@@ -95,6 +165,8 @@ def cmd_import(args) -> int:
 def _print_summary(a) -> None:
     if a.spend.has_usage:
         print(f"Monthly LLM spend: ${a.spend.monthly_total:,.0f} ({a.spend.days} days of data)")
+        for o in a.spend.overlaps:
+            print(f"  Note: {o}")
         if a.savings_high:
             print(f"Potential saving (estimated, untested): ${a.savings_low:,.0f} – ${a.savings_high:,.0f}/month")
     else:
@@ -116,10 +188,25 @@ def cmd_report(args) -> int:
         return 2
     a = analyze(result, ws.load_usage())
     out = Path(args.out) if args.out else ws.path / "report"
-    paths = write_reports(a, out, formats=tuple(args.format.split(",")))
+    try:
+        paths = write_reports(a, out, formats=tuple(f.strip() for f in args.format.split(",") if f.strip()))
+    except Exception as exc:   # PdfError, ValueError
+        print(f"Report failed: {exc}", file=sys.stderr)
+        return 1
     _print_summary(a)
     for p in paths:
         print(f"Wrote {p}")
+    from .report import warnings as report_warnings
+    for w in report_warnings:
+        print(f"Warning: {w}", file=sys.stderr)
+    fail_on = getattr(args, "fail_on", None)
+    if fail_on and fail_on != "none":
+        order = {"high": 0, "medium": 1, "low": 2}
+        hits = [f for f in a.findings if f.strategy != "coverage"
+                and order.get(f.severity, 9) <= order[fail_on]]
+        if hits:
+            print(f"{len(hits)} finding(s) at or above '{fail_on}' severity.", file=sys.stderr)
+            return 3
     return 0
 
 
@@ -128,9 +215,15 @@ def cmd_run(args) -> int:
     if rc:
         return rc
     for f in args.usage_csv or []:
-        args.source, args.file, args.provider = "csv", f, None
-        cmd_import(args)
+        args.source, args.file, args.provider = "file", f, None
+        _import_file_auto(args)
     return cmd_report(args)
+
+
+def cmd_ui(args) -> int:
+    from .ui import run
+    run(_ws(args), port=args.port, open_browser=not args.no_browser)
+    return 0
 
 
 def cmd_prices(args) -> int:
@@ -154,6 +247,17 @@ def cmd_prices(args) -> int:
         cat = PriceCatalog.load()
         print(json.dumps(cat.meta, indent=1))
         return 0
+    if args.action == "update":
+        from .catalog.build import update
+        from .pricing import user_catalog_path
+        try:
+            cat = update(user_catalog_path())
+        except OSError as exc:
+            print(f"Could not download prices: {exc}. The bundled catalog stays in use.", file=sys.stderr)
+            return 1
+        print(f"Updated {cat['_meta']['model_count']} model prices ({cat['_meta']['built_at']}) "
+              f"-> {user_catalog_path()}")
+        return 0
     return 2
 
 
@@ -167,15 +271,18 @@ def build_parser() -> argparse.ArgumentParser:
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("scan", parents=[common], help="scan a repository for LLM calls")
-    s.add_argument("path", nargs="?", default=".")
+    s.add_argument("path", nargs="*", default=["."], help="one or more repository folders")
+    s.add_argument("--append", action="store_true", help="add to the existing scan instead of replacing it")
     s.add_argument("--include-tests", action="store_true")
     s.add_argument("--exclude", action="append", metavar="GLOB",
                    help="skip paths, e.g. --exclude examples --exclude 'docs/*' (repeatable)")
     s.set_defaults(fn=cmd_scan)
 
     i = sub.add_parser("import", parents=[common], help="import usage/billing data")
-    i.add_argument("source", choices=["openai", "anthropic", "csv"])
-    i.add_argument("path_arg", nargs="?", metavar="file", help="CSV path (for csv)")
+    i.add_argument("source", metavar="source|file",
+                   help="a file path (type detected automatically), or one of: openai/anthropic (usage API, "
+                        "needs an admin key), csv, langfuse, otel, aws, azure, gcp (force a file type)")
+    i.add_argument("path_arg", nargs="?", metavar="file", help="the export file when a source is named")
     i.add_argument("--file", dest="file_opt", help="read a saved usage API response instead of calling the API")
     i.add_argument("--key", help="admin key (default: OPENAI_ADMIN_KEY / ANTHROPIC_ADMIN_KEY)")
     i.add_argument("--days", type=int, default=30)
@@ -185,20 +292,29 @@ def build_parser() -> argparse.ArgumentParser:
 
     r = sub.add_parser("report", parents=[common], help="analyze and write the report")
     r.add_argument("--out", help="output directory (default .trainlab/report)")
-    r.add_argument("--format", default="html,json")
+    r.add_argument("--format", default="html,json", help="comma-separated: html,json,md,pdf")
+    r.add_argument("--fail-on", choices=["none", "high", "medium", "low"], default="none",
+                   help="exit with code 3 if findings at or above this severity exist (for CI)")
     r.set_defaults(fn=cmd_report)
 
     run = sub.add_parser("run", parents=[common], help="scan + import CSVs + report in one step")
-    run.add_argument("path", nargs="?", default=".")
-    run.add_argument("--usage-csv", action="append")
+    run.add_argument("path", nargs="*", default=["."])
+    run.add_argument("--usage", "--usage-csv", dest="usage_csv", action="append", metavar="FILE",
+                     help="usage/billing file to import (any supported type; repeatable)")
     run.add_argument("--include-tests", action="store_true")
     run.add_argument("--exclude", action="append", metavar="GLOB")
     run.add_argument("--out")
     run.add_argument("--format", default="html,json")
+    run.add_argument("--fail-on", choices=["none", "high", "medium", "low"], default="none")
     run.set_defaults(fn=cmd_run)
 
+    u = sub.add_parser("ui", parents=[common], help="open the local web interface")
+    u.add_argument("--port", type=int, default=0, help="port on 127.0.0.1 (default: random free port)")
+    u.add_argument("--no-browser", action="store_true", help="do not open a browser window")
+    u.set_defaults(fn=cmd_ui)
+
     p = sub.add_parser("prices", parents=[common], help="look up model prices")
-    p.add_argument("action", choices=["show", "info"])
+    p.add_argument("action", choices=["show", "info", "update"])
     p.add_argument("model", nargs="?")
     p.set_defaults(fn=cmd_prices)
     return ap

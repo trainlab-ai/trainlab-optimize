@@ -14,6 +14,9 @@ JS_EXTS = {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"}
 GO_EXTS = {".go"}
 JVM_EXTS = {".java", ".kt", ".kts"}
 CS_EXTS = {".cs"}
+RUBY_EXTS = {".rb"}
+PHP_EXTS = {".php"}
+RUST_EXTS = {".rs"}
 CONFIG_EXTS = {".yaml", ".yml", ".json", ".toml", ".ini", ".cfg", ".env"}
 
 # (pattern, kind, provider, required token in file or None)
@@ -48,19 +51,66 @@ LANG_CALLS: dict[str, list[tuple[re.Pattern, str, str, str | None]]] = {
         (re.compile(r"\.(embeddings\(\)\s*\.create)\("), "embedding", "openai", "com.openai"),
         (re.compile(r"\.(messages\(\)\s*\.create)\("), "chat", "anthropic", "com.anthropic"),
         (re.compile(r"\.(getChatCompletions(?:Stream)?)\("), "chat", "azure", "com.azure.ai.openai"),
-        (re.compile(r"\b((?:OpenAi|AzureOpenAi|Anthropic|BedrockAnthropic|GoogleAiGemini|VertexAiGemini|Ollama)"
-                    r"(?:Chat|Streaming|Embedding)Model\.builder)\(\)"), "model_config", "unknown", "langchain4j"),
+        (re.compile(r"\b([A-Z]\w*(?:Chat|Language|Embedding|Image|Scoring|Moderation)Model\.builder)\(\)"),
+         "model_config", "unknown", "langchain4j"),
         (re.compile(r"\b(chatClient\.prompt)\("), "chat", "unknown", "springframework.ai"),
+        # Kotlin: aallam/openai-kotlin
+        (re.compile(r"\.(chatCompletions?)\("), "chat", "openai", "com.aallam.openai"),
+        (re.compile(r"\.(embeddings)\(\s*(?:request\s*=\s*)?EmbeddingRequest"), "embedding", "openai",
+         "com.aallam.openai"),
+    ],
+    "ruby": [
+        # ruby-openai / anthropic (alexrudall), openai-ruby (official), RubyLLM, langchainrb
+        (re.compile(r"\.(chat)\(\s*parameters:"), "chat", "openai", None),
+        (re.compile(r"\.(embeddings)\(\s*parameters:"), "embedding", "openai", None),
+        (re.compile(r"\.(messages)\(\s*parameters:"), "chat", "anthropic", None),
+        (re.compile(r"\.(chat\.completions\.create)\("), "chat", "openai", None),
+        (re.compile(r"\.(messages\.create)\("), "chat", "anthropic", "anthropic"),
+        (re.compile(r"\b(RubyLLM\.(?:chat|embed))\b"), "chat", "unknown", None),
+        (re.compile(r"\b(Langchain::LLM::\w+\.new)\b"), "model_config", "unknown", None),
+        (re.compile(r"\.(invoke_model(?:_with_response_stream)?|converse(?:_stream)?)\("), "chat", "bedrock",
+         "Aws::BedrockRuntime"),
+    ],
+    "php": [
+        # openai-php/client and Laravel facade, Prism, LLPhant
+        (re.compile(r"->(chat\(\)\s*->\s*create(?:Streamed)?)\("), "chat", "openai", None),
+        (re.compile(r"->(responses\(\)\s*->\s*create(?:Streamed)?)\("), "chat", "openai", None),
+        (re.compile(r"->(embeddings\(\)\s*->\s*create)\("), "embedding", "openai", None),
+        (re.compile(r"->(messages\(\)\s*->\s*create(?:Streamed)?)\("), "chat", "anthropic", None),
+        (re.compile(r"\b(OpenAI::(?:chat|responses)\(\)\s*->\s*create)\("), "chat", "openai", None),
+        (re.compile(r"\b(Prism::(?:text|structured)\(\))"), "chat", "unknown", None),
+        (re.compile(r"\bnew\s+((?:OpenAI|Anthropic|Mistral|Ollama)Chat)\("), "model_config", "unknown", None),
+    ],
+    "rust": [
+        # async-openai, rig, genai crates
+        (re.compile(r"\.(chat\(\)\s*\.create(?:_stream)?)\("), "chat", "openai", "async_openai"),
+        (re.compile(r"\.(responses\(\)\s*\.create(?:_stream)?)\("), "chat", "openai", "async_openai"),
+        (re.compile(r"\.(embeddings\(\)\s*\.create)\("), "embedding", "openai", "async_openai"),
+        (re.compile(r"\.(agent|completion_model|embedding_model)\(\s*(?:openai|anthropic|gemini|\")"),
+         "model_config", "unknown", "rig"),
+        (re.compile(r"\.(exec_chat(?:_stream)?)\("), "chat", "unknown", "genai"),
+        (re.compile(r"\.(converse(?:_stream)?|invoke_model(?:_with_response_stream)?)\(\)"), "chat", "bedrock",
+         "aws_sdk_bedrockruntime"),
     ],
     "csharp": [
         (re.compile(r"\.(CompleteChat(?:Streaming)?(?:Async)?)\("), "chat", "openai", "OpenAI"),
         (re.compile(r"\.(GetChatCompletions(?:Streaming)?(?:Async)?)\("), "chat", "azure", "Azure.AI.OpenAI"),
         (re.compile(r"\.(GenerateEmbeddings?(?:Async)?)\("), "embedding", "openai", "OpenAI"),
         (re.compile(r"\.(Complete(?:Streaming)?Async)\("), "chat", "azure", "Azure.AI.Inference"),
+        (re.compile(r"\.(Add(?:Azure)?OpenAI(?:ChatCompletion|TextEmbeddingGeneration|EmbeddingGenerator)|"
+                    r"AddGoogleAIGeminiChatCompletion|AddBedrockChatCompletionService|AddAnthropicChatCompletion)\("),
+         "model_config", "unknown", "SemanticKernel"),
+        (re.compile(r"\.(GetChatMessageContents?Async|GetStreamingChatMessageContentsAsync|InvokePromptAsync)\("),
+         "chat", "unknown", "SemanticKernel"),
     ],
 }
 MODEL_PATTERNS = [
-    re.compile(r"""\b(?:model|modelId|Model|ModelID|modelName)\s*[:=]\s*['"`]([^'"`]+)['"`]"""),
+    re.compile(r"""\b(?:model|modelId|Model|ModelID|modelName|deploymentName|model_id)\s*[:=]\s*['"`]([^'"`]+)['"`]"""),
+    re.compile(r"""['"](?:model|model_name)['"]\s*=>\s*['"]([^'"]+)['"]"""),           # Ruby/PHP hashes
+    re.compile(r"""\bModelId\(\s*"([^"]+)"\s*\)"""),                                   # Kotlin
+    re.compile(r"""->using\(\s*Provider::\w+\s*,\s*['"]([^'"]+)['"]"""),             # Prism PHP
+    re.compile(r'\.(?:agent|completion_model|embedding_model)\(\s*"([^"]+)"'),         # rig
+    re.compile(r"""\b(?:openai|anthropic|gemini)::([A-Z][A-Z0-9_]{2,})\b"""),           # rig constants
     re.compile(r"""\.(?:model|modelName|modelId)\(\s*"([^"]+)"\s*\)"""),
     re.compile(r"""\b(openai|anthropic|google|azure|bedrock|mistral|groq)\s*\(\s*['"`]([^'"`]+)['"`]"""),
     re.compile(r"""\b(?:ChatModel|Model|EmbeddingModel)\.([A-Z][A-Z0-9_]{2,})\b"""),
@@ -72,7 +122,8 @@ ROUTE_DEF = re.compile(r"""\.(?:GET|POST|PUT|Handle|HandleFunc|Any|Group|get|pos
                        r"""Request\.Path|PathString|\.path\s*===?|\.url\s*===?|pathname\s*===?""")
 COMMENT = re.compile(r"^\s*(?://|#|\*|/\*|--)")
 QUOTED = re.compile(r"""['"]([A-Za-z0-9][\w.\-:/]{1,79})['"]|(?:=|:)\s*([A-Za-z0-9][\w.\-:/]{1,79})\s*$""")
-OTHER_TEST = re.compile(r"\.(test|spec)\.[jt]sx?$|_test\.go$|(^|/)src/test/|(^|/)[^/]*\.Tests?/|Tests?\.cs$")
+OTHER_TEST = re.compile(r"\.(test|spec)\.[jt]sx?$|_test\.go$|(^|/)src/test/|(^|/)[^/]*\.Tests?/|Tests?\.cs$|"
+                        r"_spec\.rb$|(^|/)spec/|Test\.php$|(^|/)benches/")
 
 
 def lang_of(ext: str) -> str | None:
@@ -84,6 +135,12 @@ def lang_of(ext: str) -> str | None:
         return "jvm"
     if ext in CS_EXTS:
         return "csharp"
+    if ext in RUBY_EXTS:
+        return "ruby"
+    if ext in PHP_EXTS:
+        return "php"
+    if ext in RUST_EXTS:
+        return "rust"
     return None
 
 
@@ -96,15 +153,19 @@ def _enum_to_model(name: str) -> str:
     return name.lower().replace("_", "-")
 
 
+_ENUM_PATTERNS = {5, 8}          # indexes of MODEL_PATTERNS that capture SCREAMING_CASE constants
+_PROVIDER_FN_PATTERN = 7
+
+
 def _find_model(window: str, provider: str) -> tuple[str | None, str]:
     for idx, mp in enumerate(MODEL_PATTERNS):
         m = mp.search(window)
         if not m:
             continue
         groups = [g for g in m.groups() if g]
-        if idx == 3:
+        if idx in _ENUM_PATTERNS:
             return _enum_to_model(groups[-1]), provider
-        if idx == 2 and len(groups) == 2 and provider in ("vercel_ai", "unknown"):
+        if idx == _PROVIDER_FN_PATTERN and len(groups) == 2 and provider in ("vercel_ai", "unknown"):
             provider = {"google": "gemini"}.get(groups[0], groups[0])
         return groups[-1], provider
     return None, provider
@@ -151,7 +212,7 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
         _, hit, kind, provider = per_line[i]
         window = "\n".join(lines[i: i + 25])
         model, provider = _find_model(window, provider)
-        if not model and lang in ("jvm", "csharp", "go"):
+        if not model and lang in ("jvm", "csharp", "go", "rust", "php"):
             # Builder-style APIs set the model on the request object before the call.
             before = "\n".join(lines[max(0, i - 15): i])
             model, provider = _find_model(before, provider)

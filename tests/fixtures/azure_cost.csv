@@ -1,0 +1,4 @@
+Date,MeterCategory,MeterSubCategory,MeterName,Quantity,UnitOfMeasure,CostInBillingCurrency,ResourceGroup,ResourceName
+09/01/2026,Foundry Models,Azure OpenAI,gpt-4o-0806-Inp-glbl 1K Tokens,5000,1K,12.50,rg-ai,support-bot
+09/01/2026,Foundry Models,Azure OpenAI,gpt-4o-0806-Outp-glbl 1K Tokens,800,1K,8.00,rg-ai,support-bot
+09/01/2026,Storage,Blob,Hot LRS Data Stored,100,1 GB/Month,1.80,rg-data,blobs

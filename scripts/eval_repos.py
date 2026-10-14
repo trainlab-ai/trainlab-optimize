@@ -29,9 +29,13 @@ BASELINE = re.compile(
     r"\.Chat\.Completions\.New|\.Messages\.New\(|CreateChatCompletion|\.Responses\.New\(|"
     r"\.chat\(\)\s*\.completions\(\)\s*\.create|\.messages\(\)\s*\.create|CompleteChat(?:Async)?\(|"
     r"GetChatCompletions|"
+    # Ruby / PHP / Rust / Kotlin / LangChain4j / Spring AI
+    r"\.(?:chat|messages|embeddings)\(\s*parameters:|->(?:chat|messages|embeddings|responses)\(\)\s*->\s*create|"
+    r"\.chat\(\)\s*\.create\(|\.chatCompletions?\(|ChatModel\.builder\(\)|chatClient\.prompt\(|"
     # raw HTTP endpoint strings
     r"[\"'`][^\"'`\s]*(?:/chat/completions|api\.anthropic\.com/v1/messages|/v1/messages)[\"'`?]")
-EXTS = {".py", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".go", ".java", ".kt", ".cs"}
+EXTS = {".py", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".go", ".java", ".kt", ".cs", ".rb", ".php", ".rs",
+        ".ipynb"}
 JS_TEST = re.compile(r"\.(test|spec)\.[jt]sx?$|_test\.go$|(^|/)src/test/|Tests?\.cs$")
 
 root = Path(sys.argv[1])
@@ -60,7 +64,9 @@ for name in sys.argv[2:]:
     sites = collections.defaultdict(list)
     for s in res.call_sites:
         sites[s.path].append(s.line)
-    missed = [b for b in base if not any(abs(b[1] - ln) <= 4 for ln in sites.get(b[0], []))]
+    nb_sites = {s.path for s in res.call_sites if s.cell is not None}
+    missed = [b for b in base if (b[0] not in nb_sites if b[0].endswith(".ipynb") else
+                                  not any(abs(b[1] - ln) <= 4 for ln in sites.get(b[0], [])))]
     found = len(base) - len(missed)
     rules = collections.Counter(f.rule for f in a.findings)
     out[name] = {
