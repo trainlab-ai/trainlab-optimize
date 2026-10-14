@@ -133,7 +133,17 @@ def test_openai_stream_without_usage_estimates_output(events):
             pass
     e = events[0]
     assert e["output_tokens"] == 5 and e["output_tokens_estimated"] is True   # 18 chars / 4
-    assert "input_tokens" not in e
+    assert "input_tokens" not in e                                           # messages=[]: nothing to count
+
+
+def test_stream_without_usage_estimates_input_from_request(events):
+    """Found in the sandbox: OpenAI streams report no usage by default, so input was missing."""
+    for _ in _openai().chat.completions.create(model="m", stream=True,
+                                               messages=[{"role": "user", "content": "x" * 400}]):
+        pass
+    e = events[0]
+    assert e["input_tokens"] == 104 and e["input_tokens_estimated"] is True     # 400/4 + 4 per message
+    assert "x" * 20 not in json.dumps(e)
 
 
 def test_openai_stream_abandoned_is_recorded_once(events):
@@ -141,7 +151,42 @@ def test_openai_stream_abandoned_is_recorded_once(events):
     next(iter(s))
     s.close()
     del s
-    assert len(events) == 1
+    assert len(events) == 1 and events[0]["stream_incomplete"] is True
+
+
+def test_abandoned_stream_keeps_tags_of_the_call(events):
+    """Found in the sandbox: a stream dropped inside tag() was recorded at garbage collection,
+    after the tag block had exited, and lost its tags."""
+    import gc
+
+    def peek():
+        with trainlab.tag(feature="peek"):
+            s = _openai().chat.completions.create(model="m", messages=[], stream=True)
+            for c in s:
+                return c
+    peek()
+    gc.collect()
+    assert events[0]["tags"] == {"feature": "peek"} and events[0]["stream_incomplete"] is True
+
+
+def test_litellm_style_cache_write_tokens():
+    """Found in the sandbox: LiteLLM reports Anthropic cache writes as cache_creation_input_tokens."""
+    from trainlab_optimize.runtime.core import CallEvent
+    from trainlab_optimize.runtime.patches import _openai_chat_usage
+    ev = CallEvent(provider="anthropic", model="m", op="chat", sdk="litellm")
+    _openai_chat_usage({"prompt_tokens": 900, "completion_tokens": 10, "cache_creation_input_tokens": 300,
+                        "prompt_tokens_details": {"cached_tokens": 200}}, ev)
+    assert (ev.input_tokens, ev.cached_input_tokens, ev.cache_write_tokens) == (900, 200, 300)
+
+
+def test_jsonl_is_write_through(tmp_path):
+    """Found in the sandbox: gunicorn workers exit without atexit, losing buffered calls."""
+    trainlab.instrument(path=tmp_path)
+    try:
+        _openai().chat.completions.create(model="m", messages=[])
+        assert len(next(tmp_path.glob("events-*.jsonl")).read_text().splitlines()) == 1   # no flush() needed
+    finally:
+        trainlab.uninstrument()
 
 
 def test_openai_responses_and_embeddings(events):
@@ -593,7 +638,7 @@ def test_forked_child_does_not_rewrite_parent_buffer(tmp_path):
         pytest.skip("no fork")
     trainlab.instrument(path=tmp_path, project_root=_root())
     try:
-        _openai().chat.completions.create(model="m", messages=[])     # buffered, not yet written
+        _openai().chat.completions.create(model="m", messages=[])     # written by the parent
         pid = os.fork()
         if pid == 0:
             try:

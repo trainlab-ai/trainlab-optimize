@@ -130,20 +130,25 @@ keys, headers or error messages. Nothing is sent anywhere.
 | Google Gen AI | generate_content, generate_content_stream, embed_content | gemini or vertex |
 
 A call made through LiteLLM (which itself calls the OpenAI SDK) is recorded once. Streams are
-recorded when the app finishes or closes them; if a stream carries no usage (OpenAI without
-`stream_options={"include_usage": True}`), output tokens are estimated from text length and
-marked as estimated.
+recorded when the app finishes or closes them. OpenAI streams carry no usage unless the app
+passes `stream_options={"include_usage": True}`; without it, input and output tokens are
+estimated from text length (counted locally, never stored) and marked as estimated, so pass
+that option for exact numbers. A stream the app abandons part-way is recorded with whatever
+usage had arrived and marked `stream_incomplete`.
 
 **Safety.** The app's results and exceptions pass through unchanged. If anything inside
 trainlab fails (a sink can't write, a response has an unexpected shape), that piece is
 switched off with one warning and the app carries on. `instrument()` doesn't import any
 SDK: each one is patched when your app imports it, so startup stays around 0.1 s.
-Overhead is about 0.1 ms per call. `TRAINLAB_INSTRUMENT=0` turns it into a no-op without a
+Overhead is about 0.1 ms per call. Each call is written to the trace file as it happens
+(no in-memory buffer), so nothing is lost when gunicorn/uvicorn workers exit or are killed. `TRAINLAB_INSTRUMENT=0` turns it into a no-op without a
 code change; `trainlab.uninstrument()` restores every SDK.
 
 **Options:** `instrument(path=..., service=..., tags={"env": "prod"}, sample_rate=0.1,
 include_packages=("myapp",), otel=True, sinks=[...], sdks=["openai"])`. With
-`sample_rate`, recorded calls carry a weight and the report scales them back up.
+`sample_rate`, recorded calls carry a weight and the report scales them back up. Sampling
+is unbiased but noisy at low volume: 10% of 2,000 calls lands within about ±10% of the true
+token total; use it only for high-volume services.
 `include_packages` is for apps installed into site-packages, whose frames would otherwise
 be skipped as library code.
 
@@ -159,6 +164,19 @@ trace.get_tracer_provider().add_span_processor(CodeLocationSpanProcessor())
 Exported spans then carry `code.file.path`, `code.line.number` and `trainlab.tag.*`, and
 `trainlab import spans.json` attributes them per line. `instrument(otel=True)` instead emits
 one GenAI span per call itself, for apps with no LLM tracing yet.
+
+**Sandbox test** (`bench/sandbox/run_sandbox.py`): the installed wheel and real SDKs make real
+HTTP calls to a local fake server that logs every token it serves; the traces are checked
+against that log.
+
+| Scenario | Calls | Recorded | Tokens and tags |
+|---|---|---|---|
+| Sync: OpenAI chat/stream/responses/embeddings, Anthropic create/stream, Gemini | 150 | 150 | exact, except streams without usage (estimated) and 10 abandoned streams (flagged) |
+| asyncio, 300 concurrent calls, 3 SDKs, per-task tags | 300 | 300 | exact |
+| LiteLLM → OpenAI and Anthropic | 40 | 40, once each | exact, incl. cache writes |
+| FastAPI + gunicorn, 4 workers, `--preload`, 800 requests | 800 | 800 | exact |
+| Errors: 500/429 with SDK retries, 400, 529 | 9 server hits | 4 failed + 1 ok logical calls | app sees the same exceptions |
+| `TRAINLAB_INSTRUMENT=0` | 20 | 0 | app unaffected |
 
 Try it offline: `python examples/instrument_demo/run_demo.py`, then in that folder
 `trainlab scan app && trainlab import .trainlab/traces && trainlab report`.

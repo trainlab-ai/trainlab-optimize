@@ -29,10 +29,12 @@ class _StreamProxy:
         self.__dict__.update(_inner=inner, _ev=ev, _finish=finish, _on_item=on_item, _on_end=on_end,
                              _it=None, _done=False)
 
-    def _close(self, error=None):
+    def _close(self, error=None, complete=False):
         if self._done:
             return
         self.__dict__["_done"] = True
+        if not complete and error is None:
+            self._ev.stream_incomplete = True
         try:
             if self._on_end:
                 self._on_end(self._inner, self._ev)
@@ -50,7 +52,7 @@ class _StreamProxy:
         try:
             item = next(self._it)
         except StopIteration:
-            self._close()
+            self._close(complete=True)
             raise
         except BaseException as exc:
             self._close(exc)
@@ -99,7 +101,7 @@ class _AsyncStreamProxy(_StreamProxy):
         try:
             item = await self._it.__anext__()
         except StopAsyncIteration:
-            self._close()
+            self._close(complete=True)
             raise
         except BaseException as exc:
             self._close(exc)
@@ -138,11 +140,30 @@ def _proxy(result, ev, finish, on_item, on_end=None):
     return cls(result, ev, finish, on_item, on_end)
 
 
+def _text_chars(x, depth=0) -> int:
+    """Characters of text in a request (messages / input / contents); counted, never kept."""
+    if depth > 6 or x is None:
+        return 0
+    if isinstance(x, str):
+        return len(x)
+    if isinstance(x, dict):
+        return sum(_text_chars(v, depth + 1) for k, v in x.items() if k in ("content", "text", "input", "parts"))
+    if isinstance(x, (list, tuple)):
+        return sum(_text_chars(v, depth + 1) for v in x)
+    return 0
+
+
 def _estimate_output(ev) -> None:
     chars = getattr(ev, "_chars", 0)
     if ev.output_tokens is None and chars:
         ev.output_tokens = math.ceil(chars / 4)
         ev.output_tokens_estimated = True
+    req = ev.__dict__.pop("_req", None)
+    if ev.input_tokens is None and req:
+        n = sum(_text_chars(req.get(k)) for k in ("messages", "input", "system", "contents"))
+        if n:
+            ev.input_tokens = math.ceil(n / 4) + 4 * len(req.get("messages") or [])
+            ev.input_tokens_estimated = True
 
 
 def _add_chars(ev, text) -> None:
@@ -197,6 +218,9 @@ def _openai_chat_usage(u, ev) -> None:
         num(get(u, "input_tokens_details", "cached_tokens"))
     ev.reasoning_tokens = num(get(u, "completion_tokens_details", "reasoning_tokens")) or \
         num(get(u, "output_tokens_details", "reasoning_tokens"))
+    cw = num(get(u, "cache_creation_input_tokens"))      # LiteLLM reports Anthropic cache writes here
+    if cw:
+        ev.cache_write_tokens = cw
 
 
 def _openai_specs():

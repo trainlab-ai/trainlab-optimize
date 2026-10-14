@@ -13,11 +13,13 @@ from pathlib import Path
 class JsonlSink:
     """Appends one JSON line per call to .trainlab/traces/events-YYYYMMDD-<pid>.jsonl.
 
-    Buffered: written every `flush_every` events or `interval` seconds, and at exit.
-    One file per process and day, so workers never interleave lines.
+    Write-through: each call is handed to the OS as it is recorded, so nothing is lost when a
+    server worker exits without running atexit hooks (gunicorn, uvicorn reloads) or is killed.
+    One file per process and day, so workers never interleave lines. Cost: one small write
+    per LLM call (a few microseconds).
     """
 
-    def __init__(self, directory: str | os.PathLike, flush_every: int = 50, interval: float = 2.0):
+    def __init__(self, directory: str | os.PathLike, flush_every: int | None = None, interval: float | None = None):
         self.dir = Path(directory)
         self.dir.mkdir(parents=True, exist_ok=True)
         gi = self.dir.parent / ".gitignore"
@@ -26,41 +28,50 @@ class JsonlSink:
                 gi.write_text("*\n")
         except OSError:
             pass
-        self.flush_every = flush_every
-        self.interval = interval
-        self._buf: list[str] = []
         self._lock = threading.Lock()
-        self._last = time.monotonic()
-        atexit.register(self.flush)
+        self._fh = None
+        self._key: tuple | None = None       # (day, pid) the open file belongs to
+        atexit.register(self.close)
         if hasattr(os, "register_at_fork"):
-            # A forked worker (gunicorn --preload, multiprocessing) inherits the parent's
-            # unwritten lines; the parent writes those, so the child must not.
+            # A forked worker must not write through the parent's file handle.
             os.register_at_fork(after_in_child=self._after_fork)
 
     def _after_fork(self) -> None:
         self._lock = threading.Lock()
-        self._buf = []
+        self._fh, self._key = None, None
 
     def path(self) -> Path:
         day = datetime.now(timezone.utc).strftime("%Y%m%d")
         return self.dir / f"events-{day}-{os.getpid()}.jsonl"
 
     def write(self, ev) -> None:
-        line = json.dumps(ev.to_json(), separators=(",", ":"), ensure_ascii=False)
+        line = json.dumps(ev.to_json(), separators=(",", ":"), ensure_ascii=False) + "\n"
+        key = (datetime.now(timezone.utc).strftime("%Y%m%d"), os.getpid())
         with self._lock:
-            self._buf.append(line)
-            due = len(self._buf) >= self.flush_every or time.monotonic() - self._last >= self.interval
-        if due:
-            self.flush()
+            if self._fh is None or key != self._key:
+                if self._fh is not None:
+                    try:
+                        self._fh.close()
+                    except OSError:
+                        pass
+                self._fh = open(self.dir / f"events-{key[0]}-{key[1]}.jsonl", "a", encoding="utf-8")
+                self._key = key
+            self._fh.write(line)
+            self._fh.flush()
 
     def flush(self) -> None:
         with self._lock:
-            if not self._buf:
-                return
-            lines, self._buf = self._buf, []
-            self._last = time.monotonic()
-        with open(self.path(), "a", encoding="utf-8") as fh:
-            fh.write("\n".join(lines) + "\n")
+            if self._fh is not None:
+                self._fh.flush()
+
+    def close(self) -> None:
+        with self._lock:
+            if self._fh is not None:
+                try:
+                    self._fh.close()
+                except OSError:
+                    pass
+                self._fh = None
 
 
 class CallbackSink:

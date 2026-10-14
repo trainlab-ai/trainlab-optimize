@@ -42,7 +42,9 @@ class CallEvent:
     cached_input_tokens: int | None = None
     cache_write_tokens: int | None = None
     reasoning_tokens: int | None = None
+    input_tokens_estimated: bool = False   # streams without usage: counted from request text length
     output_tokens_estimated: bool = False  # streams without usage: counted from text length
+    stream_incomplete: bool = False       # the app stopped reading before the end: usage may be missing
     stream: bool = False
     batch: bool = False
     ms: float | None = None
@@ -104,7 +106,7 @@ class Recorder:
         try:
             ev.ts = ev.ts or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
             ev.service = ev.service or self.service
-            merged = {**self.base_tags, **_tags.get()}
+            merged = {**self.base_tags, **ev.tags}
             ev.tags = {str(k): str(v)[:100] for k, v in list(merged.items())[:20]}
             ev.weight = 1.0 / self.sample_rate if 0 < self.sample_rate < 1 else 1.0
             for s in list(self.sinks):
@@ -262,7 +264,8 @@ def _begin(rec: Recorder, d, sdk_name):
         path, line, func = rec.locate()
     except Exception:  # noqa: BLE001
         path = line = func = None
-    ev = CallEvent(provider=provider, model=model, op=op, sdk=sdk_name, path=path, line=line, func=func)
+    ev = CallEvent(provider=provider, model=model, op=op, sdk=sdk_name, path=path, line=line, func=func,
+                   tags=dict(_tags.get()))            # captured now: a stream may finish outside the tag block
     return ev, time.perf_counter(), token
 
 
@@ -290,6 +293,7 @@ def _finish_or_stream(rec, ev, t0, result, args, kwargs, extract, is_stream, wra
     try:
         if is_stream is not None and wrap_stream is not None and is_stream(args, kwargs, result):
             ev.stream = True
+            ev._req = kwargs          # kept until the stream ends, for input estimates; never stored
 
             def finish(error: BaseException | None = None):
                 ev.ms = round((time.perf_counter() - t0) * 1000, 1)
