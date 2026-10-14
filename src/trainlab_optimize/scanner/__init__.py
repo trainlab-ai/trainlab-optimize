@@ -28,14 +28,21 @@ PY_TOKENS = ("openai", "anthropic", "litellm", "bedrock", "genai", "gemini", "co
              "embeddings", ".messages.", "responses.", "converse", "invoke_model", "generate_content",
              "langchain", "llama_index", "pydantic_ai", "init_chat_model", "gpt-", "chatgpt", "claude",
              "text-embedding", "o1", "o3", "o4", "mistral", "deepseek", "llama-", "llama3", "llama4",
-             "v1/messages", "generatecontent", "googleapis.com")
+             "v1/messages", "generatecontent", "googleapis.com", "dashscope", "qwen", "cohere", "groq",
+             "together", "fireworks", "cerebras", "zhipu", "zai", "volcengine", "huggingface_hub", "ollama",
+             "replicate", "voyageai", "xai_sdk", "grok", "generativemodel", "openrouter", "perplexity",
+             "sambanova", "ai21", "moonshot", "kimi", "glm-", "minimax", "doubao", "qianfan", "hunyuan",
+             "aisuite", "vertexai", ":11434", "aliyuncs", "api.cohere", "services/aigc")
 OTHER_TOKENS = ("completions", "messages", "responses", "embeddings", "generatetext", "streamtext",
                 "generateobject", "streamobject", "embedmany", "embed(", "generatecontent", "command(",
                 "gpt-", "claude", "gemini", "text-embedding", "model:", "model :", "chatmodel",
                 "completechat", "chatcompletion", "converse", "invokemodel", "langchain4j",
                 "springframework.ai", "api.openai", "api.anthropic", "parameters:", "->chat()",
                 "->create(", "prism::", "rubyllm", "langchain::llm", "async_openai", "rig::", "exec_chat",
-                "modelid(", "openaichat", "anthropicchat")
+                "modelid(", "openaichat", "anthropicchat", "dashscope", "openrouter", "mistralai", "cohere",
+                "groq", "together", "fireworks", "ollama", "qwen", "deepseek", "grok", "moonshot", "kimi",
+                "glm-", "minimax", "doubao", "perplexity", "chat.complete", "aliyuncs", "volces", "bigmodel",
+                "x.ai", "cerebras", "huggingface", "replicate")
 
 
 class _Trigger:

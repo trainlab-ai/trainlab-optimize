@@ -74,11 +74,16 @@ class SpendSummary:
     by_model: dict[str, ModelSpend] = field(default_factory=dict)   # key: base model
     by_project: dict[str, float] = field(default_factory=dict)
     unpriced_models: list[str] = field(default_factory=list)
+    # model -> catalog entry it was priced from, when that is another host's listing (no billed cost)
+    approx_priced: dict[str, str] = field(default_factory=dict)
     # (code_path, code_line, base model) -> [monthly_cost, monthly_requests]; from traces only
     by_location: dict[tuple, list] = field(default_factory=dict)
     sources: list[str] = field(default_factory=list)
     # billing sources that covered the same model-days as a preferred source and were not counted
     overlaps: list[str] = field(default_factory=list)
+    # API key (id or name, as the source reports it) -> monthly cost; and base models seen per key
+    by_api_key: dict[str, float] = field(default_factory=dict)
+    key_models: dict[str, set] = field(default_factory=dict)
 
     @property
     def has_usage(self) -> bool:
@@ -92,10 +97,22 @@ def _is_trace(source: str) -> bool:
     return source.startswith(TRACE_SOURCES)
 
 
+def _channel(r: UsageRecord) -> str:
+    """Who billed it: the same model bought directly, on Azure, on Bedrock or through OpenRouter is
+    different traffic, so it never counts as an overlap."""
+    from ..scanner.providers import maker_of
+    p = (r.provider or "").lower()
+    if r.model.lower().startswith("azure/"):
+        return "azure"
+    if p in ("", "unknown", "openai_compatible", "litellm"):
+        return maker_of(r.model) or p
+    return p
+
+
 def _source_rank(source: str, records: list[UsageRecord]) -> tuple:
     """Which billing source to trust when two cover the same model and day (lower wins)."""
     has_cost = any(r.cost_usd is not None for r in records)
-    is_api = source.startswith(("openai_usage", "anthropic_usage"))
+    is_api = source.startswith(("openai_usage", "anthropic_usage", "openrouter_usage", "openrouter_api"))
     return (0 if has_cost else 1 if is_api else 2, source)
 
 
@@ -109,17 +126,20 @@ def _dedupe_billing(billing: list[UsageRecord]) -> tuple[list[UsageRecord], list
         return billing, []
     rank = {src: _source_rank(src, rs) for src, rs in by_source.items()}
     owner: dict[tuple, str] = {}
+    def key_of(r: UsageRecord) -> tuple:
+        return (r.date, base_model(r.model) or r.model, _channel(r))
+
     for r in billing:
-        key = (r.date, base_model(r.model) or r.model)
+        key = key_of(r)
         cur = owner.get(key)
         if cur is None or rank[r.source] < rank[cur]:
             owner[key] = r.source
     kept, dropped = [], {}
     for r in billing:
-        if owner[(r.date, base_model(r.model) or r.model)] == r.source:
+        if owner[key_of(r)] == r.source:
             kept.append(r)
         else:
-            dropped.setdefault(r.source, set()).add(owner[(r.date, base_model(r.model) or r.model)])
+            dropped.setdefault(r.source, set()).add(owner[key_of(r)])
     notes = [f"{src} overlaps {', '.join(sorted(win))} for the same models and days; counted once"
              for src, win in sorted(dropped.items())]
     return kept, notes
@@ -180,6 +200,7 @@ def summarize(records: list[UsageRecord], catalog: PriceCatalog) -> SpendSummary
     raw_total: dict[str, float] = {}
     batch_cost: dict[str, float] = {}
     billed_models = {base_model(r.model) or r.model for r in billing}
+    billed_cost: set[str] = set()
 
     def add(r: UsageRecord, f: float) -> None:
         b = base_model(r.model) or r.model
@@ -189,6 +210,8 @@ def summarize(records: list[UsageRecord], catalog: PriceCatalog) -> SpendSummary
         spelling.setdefault(b, {}).setdefault(r.model, 0)
         spelling[b][r.model] += 1
         cost, in_part, priced = _record_cost(r, catalog)
+        if r.cost_usd is not None:
+            billed_cost.add(b)
         if not priced:
             ms.priced = False
         ms.monthly_cost += cost * f
@@ -203,6 +226,9 @@ def summarize(records: list[UsageRecord], catalog: PriceCatalog) -> SpendSummary
         if r.project:
             ms.projects[r.project] = ms.projects.get(r.project, 0.0) + cost * f
             s.by_project[r.project] = s.by_project.get(r.project, 0.0) + cost * f
+        if r.api_key:
+            s.by_api_key[r.api_key] = s.by_api_key.get(r.api_key, 0.0) + cost * f
+            s.key_models.setdefault(r.api_key, set()).add(b)
 
     for r in billing:
         add(r, factors[r.source])
@@ -239,5 +265,9 @@ def summarize(records: list[UsageRecord], catalog: PriceCatalog) -> SpendSummary
             ms.batch_share = batch_cost.get(b, 0.0) / raw_total[b]
         if not ms.priced:
             s.unpriced_models.append(ms.model)
+        elif b not in billed_cost:
+            price = catalog.lookup(ms.model, ms.provider)
+            if price and price.approximate:
+                s.approx_priced[ms.model] = price.model
         s.monthly_total += ms.monthly_cost
     return s

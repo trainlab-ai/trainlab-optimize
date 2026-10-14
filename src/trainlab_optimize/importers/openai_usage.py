@@ -32,7 +32,7 @@ def parse_pages(pages: list[dict], kind: str = "completions") -> list[UsageRecor
                         date=day, provider="openai", model=model,
                         input_tokens=int(r.get("input_tokens") or 0),
                         requests=int(r.get("num_model_requests") or 0),
-                        project=r.get("project_id"), source="openai_usage_api"))
+                        project=r.get("project_id"), api_key=r.get("api_key_id"), source="openai_usage_api"))
                     continue
                 out.append(UsageRecord(
                     date=day, provider="openai", model=model,
@@ -42,7 +42,7 @@ def parse_pages(pages: list[dict], kind: str = "completions") -> list[UsageRecor
                     cache_write_tokens=int(r.get("input_cache_write_tokens") or 0),
                     requests=int(r.get("num_model_requests") or 0),
                     batch=r.get("batch"),
-                    project=r.get("project_id"),
+                    project=r.get("project_id"), api_key=r.get("api_key_id"),
                     source="openai_usage_api"))
     return out
 
@@ -58,7 +58,8 @@ class OpenAIUsageImporter:
         start = int(time.time()) - days * 86400
         headers = {"Authorization": f"Bearer {self.admin_key}"}
         params = [("start_time", str(start)), ("bucket_width", "1d"), ("limit", "31"),
-                  ("group_by", "model"), ("group_by", "project_id"), ("group_by", "batch")]
+                  ("group_by", "model"), ("group_by", "project_id"), ("group_by", "api_key_id"),
+                  ("group_by", "batch")]
         records = parse_pages(list(paginate(f"{self.base_url}/completions", params, headers)))
         emb_params = [p for p in params if p != ("group_by", "batch")]
         records += parse_pages(list(paginate(f"{self.base_url}/embeddings", emb_params, headers)),

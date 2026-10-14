@@ -238,9 +238,18 @@ if quality falls short, a custom model is the next step.</p>
 <tbody>{''.join(rows)}</tbody></table>""")
         if a.spend.by_project:
             prow = "".join(f"<tr><td><code>{e(k)}</code></td><td class=r>{money(v)}</td></tr>"
-                           for k, v in list(a.spend.by_project.items())[:15])
+                           for k, v in sorted(a.spend.by_project.items(), key=lambda kv: -kv[1])[:15])
             out.append(f"<h2>Spend by project</h2><table><thead><tr><th>Project / workspace</th>"
                        f"<th class=r>Per month</th></tr></thead><tbody>{prow}</tbody></table>")
+        if a.spend.by_api_key:
+            krow = "".join(
+                f"<tr><td><code>{e(k)}</code></td><td>{e(', '.join(sorted(a.spend.key_models.get(k, ())))[:120])}</td>"
+                f"<td class=r>{money(v)}</td></tr>"
+                for k, v in sorted(a.spend.by_api_key.items(), key=lambda kv: -kv[1])[:25])
+            out.append(f"<h2>Spend by API key</h2><p class=note>As reported by the provider. Spend on one key "
+                       f"used by several applications can't be split by billing; see the shared-spend notes "
+                       f"below.</p><table><thead><tr><th>API key</th><th>Models</th><th class=r>Per month</th>"
+                       f"</tr></thead><tbody>{krow}</tbody></table>")
 
     if a.scan.repos and a.spend.has_usage:
         by_repo: dict[str, float] = {}

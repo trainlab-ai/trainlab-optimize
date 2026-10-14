@@ -1,0 +1,4 @@
+generation_id,created_at,cost_total,byok_usage_inference,tokens_prompt,tokens_completion,tokens_cached,model_permaslug,provider_name,api_key_name
+g1,2026-09-01 10:00:00,0.0125,0,1200,300,0,openai/gpt-4o-mini,OpenAI,support-bot
+g2,2026-09-01 11:00:00,0.0100,0,1000,200,0,openai/gpt-4o-mini,OpenAI,support-bot
+g3,2026-09-01 12:00:00,0.0500,0,2000,500,0,anthropic/claude-sonnet-4.5,Anthropic,analytics

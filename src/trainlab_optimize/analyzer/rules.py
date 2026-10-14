@@ -12,6 +12,7 @@ from datetime import date, timedelta
 from importlib import resources
 
 from ..pricing import Price, PriceCatalog
+from ..scanner.providers import SELF_HOSTED
 from ..schema import Attribution, CallSite, Finding
 from .spend import SpendSummary, base_model
 
@@ -38,9 +39,19 @@ def load_candidates() -> dict:
     return json.loads(text)
 
 
+# One key reaches every vendor's models, so any vendor is a one-line change. (LiteLLM is not one:
+# it still needs a key per vendor.)
+ROUTERS = {"openrouter", "vercel_ai_gateway", "portkey"}
+_VENDOR_NEUTRAL = {"openai", "anthropic", "unknown", "openai_compatible", "gemini", "litellm"}
+
+
 def family(site: CallSite) -> str:
     """Provider family for picking replacement candidates."""
     m = (site.model or "").lower()
+    if site.provider in ROUTERS:
+        return "router"          # any vendor is a one-line change through a router
+    if site.provider not in _VENDOR_NEUTRAL and site.provider not in ("azure", "bedrock"):
+        return site.provider     # dashscope, groq, mistral, deepseek, ...: stay on that provider
     if site.provider in ("azure",) or m.startswith("azure/"):
         return "azure"
     if site.provider == "bedrock" or "anthropic.claude" in m:
@@ -55,7 +66,10 @@ def family(site: CallSite) -> str:
 
 
 def site_price(site: CallSite, catalog: PriceCatalog) -> Price | None:
-    hint = site.provider if site.provider in ("azure", "bedrock", "gemini") else None
+    if site.provider in SELF_HOSTED:
+        return None              # Ollama / LM Studio / vLLM: no per-token bill to optimise
+    hint = None if site.provider in ("openai", "anthropic", "unknown", "openai_compatible", "litellm") \
+        else site.provider
     return catalog.lookup(site.model, hint)
 
 
@@ -358,8 +372,45 @@ def aggregate_findings(sites: list[CallSite], ctx: RuleContext) -> list[Finding]
     return out
 
 
-def coverage_findings(sites: list[CallSite], coverage: dict, spend: SpendSummary) -> list[Finding]:
+def _shared_spend_findings(sites: list[CallSite], spend: SpendSummary,
+                           attribution: dict[str, Attribution]) -> list[Finding]:
+    """One model's billed spend split across several scanned repositories: billing alone can't say
+    which app spends what (one shared API key/project), so the per-repo numbers are estimates."""
+    by_model: dict[str, dict] = {}
+    for s in sites:
+        a = attribution.get(s.id)
+        if not a or a.method != "split_model" or not s.repo:
+            continue
+        m = by_model.setdefault(a.model, {"repos": set(), "spend": 0.0, "sites": []})
+        m["repos"].add(s.repo)
+        m["spend"] += a.monthly_spend_usd
+        m["sites"].append(s.id)
+    out = []
+    for model, m in sorted(by_model.items(), key=lambda kv: -kv[1]["spend"]):
+        if len(m["repos"]) < 2 or m["spend"] < 1:
+            continue
+        keys = sorted(k for k, ms in spend.key_models.items() if model in ms)
+        key_note = (f" Billing shows {len(keys)} API key(s) for this model ({', '.join(keys[:5])}), "
+                    "but the code doesn't say which repository uses which key." if keys else
+                    " The usage data has no API-key breakdown.")
+        out.append(Finding(
+            id="", rule="R904", strategy="coverage", severity="info", call_site_ids=m["sites"],
+            title=f"${m['spend']:,.0f}/month on `{model}` is shared by {len(m['repos'])} repositories",
+            summary=(f"{', '.join(sorted(m['repos']))} all call `{model}`, and billing can't separate their spend, "
+                     "so it is split evenly between the call sites." + key_note),
+            recommendation=("Give each application its own API key or project (OpenAI projects, Anthropic workspaces, "
+                            "OpenRouter keys) so billing separates them, or add `trainlab.instrument()` (profile 2) "
+                            "for exact per-line cost."),
+            evidence={"model": model, "repos": sorted(m["repos"]), "api_keys": keys},
+            tier="estimated", monthly_spend_usd=m["spend"],
+        ))
+    return out
+
+
+def coverage_findings(sites: list[CallSite], coverage: dict, spend: SpendSummary,
+                      attribution: dict[str, Attribution] | None = None) -> list[Finding]:
     out: list[Finding] = []
+    out.extend(_shared_spend_findings(sites, spend, attribution or {}))
     unresolved = [s for s in sites if s.kind in ("chat", "embedding") and not s.model]
     if unresolved:
         out.append(Finding(
@@ -379,7 +430,10 @@ def coverage_findings(sites: list[CallSite], coverage: dict, spend: SpendSummary
             summary=("These models appear in billing but not in the scanned code. They may be called "
                      "from another repository, a notebook, a different service, or a runtime-configured model."),
             recommendation="Scan the other repositories that share this API key/project, or instrument at runtime.",
-            evidence={"by_model": {k: round(v, 2) for k, v in coverage["unattributed_by_model"].items()}},
+            evidence={"by_model": {k: round(v, 2) for k, v in coverage["unattributed_by_model"].items()},
+                      **({"api_keys_with_this_spend": sorted(
+                          k for k, ms in spend.key_models.items()
+                          if ms & set(coverage["unattributed_by_model"]))} if spend.key_models else {})},
             tier="estimated",
         ))
     if spend.unpriced_models:
@@ -389,5 +443,14 @@ def coverage_findings(sites: list[CallSite], coverage: dict, spend: SpendSummary
             summary="Their cost could not be computed from tokens (and the export had no cost column).",
             recommendation="Run `trainlab prices update`, or import a billing export that includes cost.",
             evidence={"models": spend.unpriced_models},
+        ))
+    if spend.approx_priced:
+        out.append(Finding(
+            id="", rule="R905", strategy="coverage", severity="info", call_site_ids=[],
+            title=f"{len(spend.approx_priced)} model(s) priced from another provider's list",
+            summary="Their maker's own price isn't published in the catalog, so the same model's price at another "
+                    "host was used: " + ", ".join(f"{m} (as {k})" for m, k in spend.approx_priced.items()) + ".",
+            recommendation="Import a billing export with the cost column, or run `trainlab prices update`.",
+            evidence={"models": spend.approx_priced},
         ))
     return out

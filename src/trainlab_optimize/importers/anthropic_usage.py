@@ -35,7 +35,7 @@ def parse_pages(pages: list[dict]) -> list[UsageRecord]:
                     cached_input_tokens=cache_read, cache_write_tokens=cache_write,
                     requests=0,  # the usage report does not include request counts
                     batch=(r.get("service_tier") == "batch") if r.get("service_tier") else None,
-                    project=r.get("workspace_id") or r.get("api_key_id"),
+                    project=r.get("workspace_id"), api_key=r.get("api_key_id"),
                     source="anthropic_usage_api"))
     return out
 
@@ -52,5 +52,5 @@ class AnthropicUsageImporter:
         headers = {"x-api-key": self.admin_key, "anthropic-version": "2023-06-01"}
         params = [("starting_at", start.strftime("%Y-%m-%dT00:00:00Z")), ("bucket_width", "1d"),
                   ("limit", "31"), ("group_by[]", "model"), ("group_by[]", "workspace_id"),
-                  ("group_by[]", "service_tier")]
+                  ("group_by[]", "api_key_id"), ("group_by[]", "service_tier")]
         return parse_pages(list(paginate(self.url, params, headers)))

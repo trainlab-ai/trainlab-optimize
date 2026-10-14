@@ -1,0 +1,4 @@
+{"data": [
+ {"date": "2026-09-01", "model": "anthropic/claude-sonnet-4.5", "model_permaslug": "anthropic/claude-4.5-sonnet-20250929", "endpoint_id": "e1", "provider_name": "Anthropic", "usage": 12.5, "byok_usage_inference": 0, "requests": 400, "prompt_tokens": 3000000, "completion_tokens": 200000, "reasoning_tokens": 0, "cached_tokens": 1000000},
+ {"date": "2026-09-01", "model": "qwen/qwen3-235b-a22b", "model_permaslug": "qwen/qwen3-235b-a22b-04-28", "endpoint_id": "e2", "provider_name": "DeepInfra", "usage": 0.8, "byok_usage_inference": 0.2, "requests": 900, "prompt_tokens": 2000000, "completion_tokens": 500000, "reasoning_tokens": 0, "cached_tokens": 0}
+]}

@@ -83,7 +83,7 @@ def test_negative_control_has_no_findings(analysis):
 def test_savings_not_double_counted(analysis):
     assert analysis.savings_high < analysis.spend.monthly_total
     assert analysis.savings_low <= analysis.savings_high
-    assert analysis.savings_high == pytest.approx(12412, rel=0.01)
+    assert analysis.savings_high == pytest.approx(12650, rel=0.01)
 
 
 def test_code_only_report(tmp_path):
@@ -196,3 +196,20 @@ def test_multi_repo_and_markdown(tmp_path):
 def test_unknown_format_rejected(tmp_path):
     with pytest.raises(ValueError):
         write_reports(analyze(scan(DEMO), [], today=TODAY), tmp_path, formats=("docx",))
+
+
+def test_shared_spend_across_repos_is_flagged(tmp_path):
+    from trainlab_optimize.schema import UsageRecord
+    for name in ("api", "worker"):
+        d = tmp_path / name
+        d.mkdir()
+        (d / "app.py").write_text('from openai import OpenAI\nc = OpenAI()\n'
+                                  'c.chat.completions.create(model="gpt-4o", messages=[], max_tokens=50)\n')
+    sc = scan(tmp_path / "api").merge(scan(tmp_path / "worker"))
+    usage = [UsageRecord(date=f"2026-09-{d:02d}", provider="openai", model="gpt-4o", input_tokens=10_000_000,
+                         output_tokens=1_000_000, api_key="key_prod", source="openai_usage_api") for d in range(1, 31)]
+    a = analyze(sc, usage, today=TODAY)
+    shared = [f for f in a.findings if f.rule == "R904"]
+    assert len(shared) == 1 and shared[0].evidence["repos"] == ["api", "worker"]
+    assert shared[0].evidence["api_keys"] == ["key_prod"]
+    assert a.to_dict()["spend"]["by_api_key"]["key_prod"]["models"] == ["gpt-4o"]

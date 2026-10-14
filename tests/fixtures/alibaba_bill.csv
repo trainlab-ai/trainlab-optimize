@@ -1,0 +1,3 @@
+Billing Date,Product,Billing Item,Instance ID,Usage,Pretax Amount (USD)
+2026-09-01,Model Studio,qwen-max input_tokens,ak-123,1200000,1.92
+2026-09-01,Model Studio,qwen-plus input_tokens,ak-123,5000000,2.00

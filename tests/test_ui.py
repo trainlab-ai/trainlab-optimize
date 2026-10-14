@@ -66,3 +66,15 @@ def test_errors_are_readable(server):
     assert code == 400 and b"Folder not found" in body
     code, body = call(base, "/api/report", token, {})
     assert code == 400 and b"Scan your code first" in body
+
+
+def test_unfamiliar_csv_offers_column_mapping(server):
+    base, token = server
+    from urllib.parse import quote
+    data = (ROOT / "tests/fixtures/alibaba_bill.csv").read_bytes()
+    code, body = call(base, "/api/import/file", token, data, {"X-Filename": "bill.csv"})
+    j = json.loads(body)
+    assert code == 400 and "Billing Item" in j["columns"]
+    cmap = quote(json.dumps({"model": "Billing Item", "cost_usd": "Pretax Amount (USD)", "date": "Billing Date"}))
+    code, body = call(base, "/api/import/file", token, data, {"X-Filename": quote("账单 bill.csv"), "X-Map": cmap})
+    assert code == 200 and json.loads(body)["usage"][0]["records"] == 2

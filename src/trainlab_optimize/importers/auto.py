@@ -10,7 +10,8 @@ from pathlib import Path
 
 from ..schema import UsageRecord
 
-KINDS = ("auto", "csv", "aws", "azure", "gcp", "langfuse", "otel", "openai-file", "anthropic-file")
+KINDS = ("auto", "csv", "aws", "azure", "gcp", "langfuse", "otel", "openai-file", "anthropic-file",
+         "openrouter-file")
 
 
 def detect_kind(path: str | Path) -> str:
@@ -33,10 +34,13 @@ def detect_kind(path: str | Path) -> str:
         return "openai-file"
     if "uncached_input_tokens" in head or '"cache_read_input_tokens"' in head:
         return "anthropic-file"
+    if '"model_permaslug"' in head or ('"provider_name"' in head and '"prompt_tokens"' in head):
+        return "openrouter-file"
     return "langfuse"
 
 
-def read_any(path: str | Path, kind: str = "auto", default_provider: str | None = None) -> tuple[list[UsageRecord], str]:
+def read_any(path: str | Path, kind: str = "auto", default_provider: str | None = None,
+             column_map: dict[str, str] | None = None) -> tuple[list[UsageRecord], str]:
     """Return (records, detected kind). Raises ValueError with a readable message on failure."""
     from .cloud_csv import read_cloud_csv
     from .csv_generic import read_csv
@@ -46,15 +50,22 @@ def read_any(path: str | Path, kind: str = "auto", default_provider: str | None 
     if kind not in KINDS:
         raise ValueError(f"Unknown file type '{kind}'. Use one of: {', '.join(KINDS)}")
     if kind == "auto":
-        kind = detect_kind(p)
+        kind = "csv" if column_map else detect_kind(p)
     if kind == "csv":
-        records = read_csv(p, default_provider=default_provider)
+        records = read_csv(p, default_provider=default_provider, column_map=column_map)
     elif kind in ("aws", "azure", "gcp"):
         records = read_cloud_csv(p, kind)
     elif kind == "langfuse":
         records = read_langfuse(p)
     elif kind == "otel":
         records = read_otel(p)
+    elif kind == "openrouter-file":
+        from .openrouter import parse_activity
+        try:
+            data = json.loads(p.read_text(encoding="utf-8-sig"))
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"{p.name} is not valid JSON ({exc})") from exc
+        records = parse_activity(data, source=f"openrouter_usage_file:{p.name}")
     else:
         from . import anthropic_usage, openai_usage
         try:

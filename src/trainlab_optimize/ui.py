@@ -15,7 +15,7 @@ import webbrowser
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 from . import __version__
 from .analyzer.engine import analyze
@@ -74,13 +74,23 @@ class App:
         self.ws.save_scan(result)
         return self.state()
 
-    def do_import_file(self, filename: str, kind: str, data: bytes) -> dict:
+    def do_import_file(self, filename: str, kind: str, data: bytes,
+                       column_map: dict[str, str] | None = None) -> dict:
         from .importers.auto import read_any
         suffix = Path(filename).suffix.lower() or ".csv"
         with tempfile.TemporaryDirectory() as td:
             tmp = Path(td) / (Path(filename).name or f"upload{suffix}")
             tmp.write_bytes(data)
-            records, _ = read_any(tmp, "auto" if kind == "csv" else kind)
+            try:
+                records, _ = read_any(tmp, "auto" if kind == "csv" else kind, column_map=column_map or None)
+            except ValueError as exc:
+                if suffix not in (".json", ".jsonl", ".ndjson") and "Columns" in str(exc):
+                    import csv
+                    with open(tmp, newline="", encoding="utf-8-sig", errors="replace") as fh:
+                        header = next(csv.reader(fh), [])
+                    raise ColumnsNeeded("This file's column names aren't ones we recognise. Tell us which column is which.",
+                                        header) from exc
+                raise
         if not records:
             raise ValueError("No LLM usage found in that file. Check the service and period it covers.")
         self.ws.add_usage(records)
@@ -89,11 +99,16 @@ class App:
     def do_import_api(self, body: dict) -> dict:
         from .importers.anthropic_usage import AnthropicUsageImporter
         from .importers.openai_usage import OpenAIUsageImporter
+        from .importers.openrouter import OpenRouterImporter
         provider, key = body.get("provider"), (body.get("key") or "").strip()
         days = int(body.get("days") or 30)
         if not key:
             raise ValueError("Paste an admin key (read-only usage access).")
-        imp = OpenAIUsageImporter(key) if provider == "openai" else AnthropicUsageImporter(key)
+        importers = {"openai": OpenAIUsageImporter, "anthropic": AnthropicUsageImporter,
+                     "openrouter": OpenRouterImporter}
+        if provider not in importers:
+            raise ValueError(f"Unknown provider: {provider}")
+        imp = importers[provider](key)
         records = imp.fetch(days=days)          # the key is used once and never stored
         self.ws.add_usage(records)
         return self.state()
@@ -129,6 +144,12 @@ class App:
             pass
         return {"path": str(p), "parent": str(p.parent), "dirs": dirs[:500],
                 "looks_like_repo": (p / ".git").exists()}
+
+
+class ColumnsNeeded(ValueError):
+    def __init__(self, message: str, columns: list[str]):
+        super().__init__(message)
+        self.columns = columns
 
 
 def make_handler(app: App):
@@ -208,9 +229,11 @@ def make_handler(app: App):
                 raw = self._body()
                 with app.lock:
                     if url.path == "/api/import/file":
+                        cmap = json.loads(unquote(self.headers.get("X-Map") or "") or "{}")
                         return self._json(200, app.do_import_file(
-                            self.headers.get("X-Filename") or "upload.csv",
-                            self.headers.get("X-Kind") or "auto", raw))
+                            unquote(self.headers.get("X-Filename") or "") or "upload.csv",
+                            self.headers.get("X-Kind") or "auto", raw,
+                            {k: v for k, v in cmap.items() if v} if isinstance(cmap, dict) else None))
                     body = json.loads(raw or b"{}")
                     if url.path == "/api/scan":
                         return self._json(200, app.do_scan(body))
@@ -220,6 +243,8 @@ def make_handler(app: App):
                         return self._json(200, app.do_clear_usage())
                     if url.path == "/api/report":
                         return self._json(200, app.do_report(body))
+            except ColumnsNeeded as exc:
+                return self._json(400, {"error": str(exc), "columns": exc.columns})
             except (ValueError, ImportError_, KeyError, OSError) as exc:
                 return self._json(400, {"error": str(exc)})
             except Exception as exc:  # pragma: no cover - surface unexpected errors to the page
@@ -276,6 +301,7 @@ button:disabled{opacity:.5;cursor:wait}button:focus-visible,input:focus-visible,
 .msg{margin-top:10px;font-size:14px}.err{color:var(--err)}.ok{color:var(--save)}
 .tabs{display:flex;gap:6px;margin:8px 0}.tabs button{background:transparent;color:var(--ink);border-color:var(--rule)}.tabs button[aria-selected=true]{border-color:var(--ink);font-weight:600}
 .big{font-size:22px;font-weight:600}.save{color:var(--save)}
+#mapfields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 14px}
 iframe{width:100%;height:70vh;border:1px solid var(--rule);border-radius:8px;margin-top:12px;background:#fff}
 a{color:var(--accent)}
 </style></head><body><main class="wrap">
@@ -297,11 +323,12 @@ a{color:var(--accent)}
 <h2>Add what you spend <span class="note">(optional, but needed for savings in dollars)</span></h2>
 <div class="tabs" role="tablist"><button role="tab" aria-selected="true" data-tab="file">Upload a billing or trace file</button><button role="tab" aria-selected="false" data-tab="key">Connect with an admin key</button></div>
 <div id="tab-file">
-<p class="note">CSV billing exports (OpenAI, Anthropic, AWS, Azure, Google Cloud), usage API JSON, Langfuse exports or OpenTelemetry traces. The file type is detected automatically. Prompt text in traces is never kept.</p>
-<div class="row"><input type="file" id="file" accept=".csv,.json,.jsonl"><select id="kind" style="max-width:220px"><option value="auto">Detect automatically</option><option value="aws">AWS cost report</option><option value="azure">Azure cost export</option><option value="gcp">Google Cloud billing</option><option value="langfuse">Langfuse export</option><option value="otel">OpenTelemetry traces</option></select><button id="upload">Import file</button></div></div>
+<p class="note">Billing or usage exports from any provider (OpenAI, Anthropic, OpenRouter, Alibaba Cloud, DeepSeek, Mistral, AWS, Azure, Google Cloud and others), usage API JSON, gateway logs, Langfuse exports or OpenTelemetry traces. The file type is detected automatically. Prompt text in traces is never kept.</p>
+<div class="row"><input type="file" id="file" accept=".csv,.json,.jsonl"><select id="kind" style="max-width:220px"><option value="auto">Detect automatically</option><option value="aws">AWS cost report</option><option value="azure">Azure cost export</option><option value="gcp">Google Cloud billing</option><option value="langfuse">Langfuse export</option><option value="otel">OpenTelemetry traces</option></select><button id="upload">Import file</button></div>
+<div id="mapper" hidden><p id="mapmsg"></p><p class="note">Model and either cost or tokens are needed. Leave the rest blank if the file doesn't have them.</p><div id="mapfields"></div><div class="row" style="margin-top:8px"><button id="mapgo">Import with these columns</button></div></div></div>
 <div id="tab-key" hidden>
-<p class="note">Needs an organization <b>admin</b> key with read access to usage. It is used once for this import and never saved.</p>
-<div class="row"><select id="prov" style="max-width:160px"><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option></select><input type="password" id="key" placeholder="Admin key" autocomplete="off"><select id="days" style="max-width:120px"><option>7</option><option selected>30</option><option>60</option><option>90</option></select><button id="connect">Import usage</button></div></div>
+<p class="note">Needs an organization <b>admin</b> key (OpenAI, Anthropic) or a <b>management</b> key (OpenRouter), with read access to usage. Spend is broken down per API key. The key is used once for this import and never saved.</p>
+<div class="row"><select id="prov" style="max-width:160px"><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="openrouter">OpenRouter</option></select><input type="password" id="key" placeholder="Admin or management key" autocomplete="off"><select id="days" style="max-width:120px"><option>7</option><option selected>30</option><option>60</option><option>90</option></select><button id="connect">Import usage</button></div></div>
 <div class="chips" id="sources"></div>
 <div class="row" style="margin-top:8px"><button class="ghost" id="clear">Remove imported usage</button></div>
 <div class="msg" id="m2"></div></div></section>
@@ -317,7 +344,7 @@ a{color:var(--accent)}
 const T="__TOKEN__", H={"X-Trainlab-Token":T};
 const $=id=>document.getElementById(id);
 let chosen=[];
-async function api(path,opts={}){const r=await fetch(path,{...opts,headers:{...H,...(opts.headers||{})}});const j=await r.json().catch(()=>({error:"Unexpected response"}));if(!r.ok)throw new Error(j.error||r.statusText);return j}
+async function api(path,opts={}){const r=await fetch(path,{...opts,headers:{...H,...(opts.headers||{})}});const j=await r.json().catch(()=>({error:"Unexpected response"}));if(!r.ok){const e=new Error(j.error||r.statusText);e.data=j;throw e}return j}
 function busy(btn,on){btn.disabled=on}
 function msg(id,text,cls){const el=$(id);el.textContent=text||"";el.className="msg "+(cls||"")}
 function money(v){return v==null?"—":"$"+Math.round(v).toLocaleString()}
@@ -339,8 +366,15 @@ async function openDir(p){try{const r=await api("/api/ls?path="+encodeURICompone
 $("scan").onclick=async e=>{const b=e.target;const paths=chosen.length?chosen:[$("path").value.trim()];busy(b,true);msg("m1","Scanning…");
  try{render(await api("/api/scan",{method:"POST",body:JSON.stringify({paths,exclude:$("exclude").value.split(",")})}));$("picker").style.display="none"}catch(err){msg("m1",err.message,"err")}finally{busy(b,false)}};
 document.querySelectorAll(".tabs button").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===t));$("tab-file").hidden=t.dataset.tab!=="file";$("tab-key").hidden=t.dataset.tab!=="key"});
-$("upload").onclick=async e=>{const f=$("file").files[0];if(!f){msg("m2","Choose a file first.","err");return}busy(e.target,true);msg("m2","Importing…");
- try{render(await api("/api/import/file",{method:"POST",headers:{"X-Filename":f.name,"X-Kind":$("kind").value},body:await f.arrayBuffer()}));msg("m2","Imported "+f.name,"ok")}catch(err){msg("m2",err.message,"err")}finally{busy(e.target,false)}};
+const MAPF=[["model","Model (required)"],["cost_usd","Cost"],["input_tokens","Input tokens"],["output_tokens","Output tokens"],["date","Date"],["api_key","API key"],["project","Project / team"],["provider","Provider"]];
+async function upload(btn,map){const f=$("file").files[0];if(!f){msg("m2","Choose a file first.","err");return}busy(btn,true);msg("m2","Importing…");
+ const hd={"X-Filename":encodeURIComponent(f.name),"X-Kind":$("kind").value};if(map)hd["X-Map"]=encodeURIComponent(JSON.stringify(map));
+ try{render(await api("/api/import/file",{method:"POST",headers:hd,body:await f.arrayBuffer()}));$("mapper").hidden=true;msg("m2","Imported "+f.name,"ok")}
+ catch(err){if(err.data&&err.data.columns){msg("m2","");$("mapmsg").textContent=err.message;showMapper(err.data.columns)}else msg("m2",err.message,"err")}finally{busy(btn,false)}}
+function showMapper(cols){const opts=`<option value="">—</option>`+cols.map(c=>`<option>${esc(c)}</option>`).join("");
+ $("mapfields").innerHTML=MAPF.map(([k,l])=>`<div><label for="map-${k}">${l}</label><select id="map-${k}">${opts}</select></div>`).join("");$("mapper").hidden=false}
+$("upload").onclick=e=>upload(e.target,null);
+$("mapgo").onclick=e=>{const m={};MAPF.forEach(([k])=>{const v=$("map-"+k).value;if(v)m[k]=v});if(!m.model){msg("m2","Pick the model column.","err");return}upload(e.target,m)};
 $("connect").onclick=async e=>{busy(e.target,true);msg("m2","Fetching usage…");
  try{render(await api("/api/import/api",{method:"POST",body:JSON.stringify({provider:$("prov").value,key:$("key").value,days:$("days").value})}));$("key").value="";msg("m2","Usage imported.","ok")}catch(err){msg("m2",err.message,"err")}finally{busy(e.target,false)}};
 $("clear").onclick=async()=>{render(await api("/api/usage/clear",{method:"POST"}));msg("m2","Usage removed.","ok")};

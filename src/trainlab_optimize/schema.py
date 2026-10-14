@@ -75,7 +75,8 @@ class UsageRecord:
     requests: int = 0
     cost_usd: float | None = None   # as billed, if the source provides it
     batch: bool | None = None
-    project: str | None = None      # project / workspace / api key for team attribution
+    project: str | None = None      # project / workspace for team attribution
+    api_key: str | None = None      # API key id or name, where the source reports it
     source: str = "unknown"
     code_path: str | None = None    # from traces that carry a source location (exact attribution)
     code_line: int | None = None

@@ -52,6 +52,9 @@ class Analysis:
                 ],
                 "by_project": {k: round(v, 2) for k, v in
                                sorted(self.spend.by_project.items(), key=lambda kv: -kv[1])},
+                "by_api_key": {k: {"monthly_cost_usd": round(v, 2),
+                                   "models": sorted(self.spend.key_models.get(k, ()))}
+                               for k, v in sorted(self.spend.by_api_key.items(), key=lambda kv: -kv[1])},
             },
             "attribution": [a.to_dict() for a in self.attributions],
             "coverage": self.coverage,
@@ -120,7 +123,7 @@ def analyze(scan: ScanResult, usage: list[UsageRecord], catalog: PriceCatalog | 
 
     findings = _group(findings, {s.id: s for s in scan.call_sites})
     findings.extend(aggregate_findings(scan.call_sites, ctx))
-    findings.extend(coverage_findings(scan.call_sites, coverage, spend))
+    findings.extend(coverage_findings(scan.call_sites, coverage, spend, ctx.attribution))
 
     findings.sort(key=lambda f: (SEV_ORDER.get(f.severity, 9), -(f.savings_high_usd or 0), f.rule))
     for i, f in enumerate(findings, 1):

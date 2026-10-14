@@ -23,7 +23,11 @@ def render_markdown(a: Analysis, max_findings: int = 15) -> str:
                        "(estimated, not yet tested)  ")
         share = a.coverage.get("attributed_share")
         if share is not None:
-            out.append(f"**Spend traced to code:** {share:.0%}")
+            out.append(f"**Spend traced to code:** {share:.0%}  ")
+        if a.spend.by_api_key:
+            top = sorted(a.spend.by_api_key.items(), key=lambda kv: -kv[1])[:5]
+            out.append("**By API key:** " + ", ".join(f"`{k}` {_money(v)}" for k, v in top)
+                       + (f" (+{len(a.spend.by_api_key) - 5} more)" if len(a.spend.by_api_key) > 5 else ""))
     else:
         out.append("_No usage imported: findings come from code only and have no cost attached._")
     out += ["", f"{len(a.scan.call_sites)} LLM call sites in {a.scan.files_scanned} files, "

@@ -12,6 +12,8 @@ from dataclasses import dataclass, field
 
 from ..redact import redact
 from ..schema import CallSite
+from .providers import (SELF_HOSTED, file_provider_hint, maker_of, provider_from_class_name, provider_from_env,
+                        provider_from_model_prefix, provider_from_url)
 
 
 def quiet_parse(source: str, filename: str) -> ast.AST:
@@ -71,7 +73,22 @@ CONFIG_CLASSES = {
     "AzureOpenAIEmbeddings": "azure", "ChatAnthropic": "anthropic", "ChatBedrock": "bedrock",
     "ChatBedrockConverse": "bedrock", "BedrockEmbeddings": "bedrock",
     "ChatGoogleGenerativeAI": "gemini", "ChatVertexAI": "gemini", "ChatLiteLLM": "litellm",
-    "ChatGroq": "openai_compatible", "ChatMistralAI": "mistral",
+    "ChatGroq": "groq", "ChatMistralAI": "mistral", "ChatCohere": "cohere", "ChatTogether": "together",
+    "ChatFireworks": "fireworks", "ChatDeepSeek": "deepseek", "ChatXAI": "xai", "ChatOllama": "ollama",
+    "OllamaLLM": "ollama", "ChatTongyi": "dashscope", "Tongyi": "dashscope", "ChatZhipuAI": "zhipu",
+    "ChatHuggingFace": "huggingface", "HuggingFaceEndpoint": "huggingface", "ChatPerplexity": "perplexity",
+    "ChatNVIDIA": "nvidia", "ChatCerebras": "cerebras", "ChatSambaNovaCloud": "sambanova",
+    "MoonshotChat": "moonshot", "QianfanChatEndpoint": "qianfan", "ChatHunyuan": "tencent",
+    "VolcEngineMaasChat": "volcengine", "ChatDatabricks": "databricks", "ChatWatsonx": "watsonx",
+    "ChatOpenRouter": "openrouter", "CohereEmbeddings": "cohere", "MistralAIEmbeddings": "mistral",
+    "OllamaEmbeddings": "ollama", "DashScopeEmbeddings": "dashscope", "VoyageAIEmbeddings": "voyage",
+    "ChatMiniMax": "minimax", "MiniMaxChat": "minimax", "ChatBaichuan": "baichuan", "ChatYi": "01ai",
+    # LlamaIndex (only when imported from llama_index)
+    "Groq": "groq", "MistralAI": "mistral", "Cohere": "cohere", "Ollama": "ollama", "OpenRouter": "openrouter",
+    "DashScope": "dashscope", "TogetherLLM": "together", "Fireworks": "fireworks", "DeepSeek": "deepseek",
+    "Perplexity": "perplexity", "HuggingFaceInferenceAPI": "huggingface", "Vertex": "vertex", "NVIDIA": "nvidia",
+    "OpenAILike": "openai_compatible", "MistralAIEmbedding": "mistral", "CohereEmbedding": "cohere",
+    "OllamaEmbedding": "ollama", "DashScopeEmbedding": "dashscope", "VoyageEmbedding": "voyage",
     # LlamaIndex
     "OpenAI": "openai", "Anthropic": "anthropic", "AzureOpenAI": "azure", "Bedrock": "bedrock",
     "OpenAIEmbedding": "openai", "Gemini": "gemini",
@@ -88,14 +105,56 @@ LLM_IMPORT_ROOTS = {"openai", "anthropic", "litellm", "boto3", "aioboto3", "aiob
                     "langchain_anthropic", "langchain_aws", "langchain_google_genai",
                     "langchain_google_vertexai", "langchain", "langchain_community",
                     "llama_index", "pydantic_ai", "agents", "instructor", "mistralai",
-                    "groq", "together", "cohere"}
+                    "groq", "together", "cohere", "dashscope", "fireworks", "cerebras", "zhipuai", "zai",
+                    "volcenginesdkarkruntime", "huggingface_hub", "ollama", "replicate", "voyageai", "xai_sdk",
+                    "openrouter", "perplexity", "sambanova", "ai21", "vertexai", "aisuite", "qianfan"}
+
+# SDK module -> provider, for client objects built from that SDK (cohere.ClientV2(), Groq(), ...)
+SDK_MODULES = {"groq": "groq", "together": "together", "fireworks": "fireworks", "cerebras": "cerebras",
+               "zhipuai": "zhipu", "zai": "zhipu", "volcenginesdkarkruntime": "volcengine", "mistralai": "mistral",
+               "cohere": "cohere", "huggingface_hub": "huggingface", "ollama": "ollama", "voyageai": "voyage",
+               "xai_sdk": "xai", "dashscope": "dashscope", "replicate": "replicate", "openrouter": "openrouter",
+               "perplexity": "perplexity", "sambanova": "sambanova", "ai21": "ai21", "qianfan": "qianfan"}
+SDK_CLASS_NAMES = {"Groq", "AsyncGroq", "Together", "AsyncTogether", "Fireworks", "AsyncFireworks", "Cerebras",
+                   "AsyncCerebras", "ZhipuAI", "ZaiClient", "ZhipuAiClient", "Ark", "AsyncArk", "Mistral",
+                   "MistralClient", "MistralAsyncClient", "InferenceClient", "AsyncInferenceClient", "OpenRouter",
+                   "Perplexity", "AsyncPerplexity", "SambaNova", "AI21Client", "AsyncAI21Client"}
+# Native (non-OpenAI-shaped) methods on a client of that provider: method path after the client -> kind
+CLIENT_METHODS = {
+    "cohere": {"chat": "chat", "chat_stream": "chat", "embed": "embedding", "generate": "chat"},
+    "ollama": {"chat": "chat", "generate": "chat", "embed": "embedding", "embeddings": "embedding"},
+    "huggingface": {"chat_completion": "chat", "text_generation": "chat", "feature_extraction": "embedding"},
+    "voyage": {"embed": "embedding", "contextualized_embed": "embedding"},
+    "mistral": {"chat.complete": "chat", "chat.complete_async": "chat", "chat.stream": "chat",
+                "chat.stream_async": "chat", "chat.parse": "chat", "fim.complete": "chat", "chat": "chat",
+                "embeddings.create": "embedding", "embeddings": "embedding"},
+    "xai": {"chat.create": "chat"},
+    "replicate": {"run": "chat", "stream": "chat"},
+}
+# Module-level functions: chain -> (kind, provider, module that must be imported)
+MODULE_FUNCS = {
+    "ollama.chat": ("chat", "ollama", "ollama"), "ollama.generate": ("chat", "ollama", "ollama"),
+    "ollama.embed": ("embedding", "ollama", "ollama"), "ollama.embeddings": ("embedding", "ollama", "ollama"),
+    "replicate.run": ("chat", "replicate", "replicate"), "replicate.stream": ("chat", "replicate", "replicate"),
+    "dashscope.Generation.call": ("chat", "dashscope", "dashscope"),
+    "Generation.call": ("chat", "dashscope", "dashscope"),
+    "dashscope.AioGeneration.call": ("chat", "dashscope", "dashscope"),
+    "AioGeneration.call": ("chat", "dashscope", "dashscope"),
+    "dashscope.MultiModalConversation.call": ("chat", "dashscope", "dashscope"),
+    "MultiModalConversation.call": ("chat", "dashscope", "dashscope"),
+    "dashscope.TextEmbedding.call": ("embedding", "dashscope", "dashscope"),
+    "TextEmbedding.call": ("embedding", "dashscope", "dashscope"),
+}
+# Constructors that pin a model for later generate_content() calls (google-generativeai, Vertex AI)
+MODEL_CONSTRUCTORS = {"GenerativeModel": {"google": "gemini", "vertexai": "vertex"}}
+POSITIONAL_MODEL = ("replicate.run", "replicate.stream", "GenerativeModel")
 
 WRAPPER_MODEL_KWARGS = ("model", "model_name", "name", "llm", "llm_model", "summary_llm",
                         "agent_llm", "embedding", "embedding_model", "fast_llm", "smart_llm",
                         "strategic_llm", "judge_model", "ai_model_id", "model_id", "deployment_name")
 LLM_IMPORT_PREFIXES = ("langchain", "llama_index", "openai_", "anthropic_", "litellm_")
 
-MODEL_KWARGS = ("model", "modelId", "model_id", "model_name", "deployment_name", "azure_deployment")
+MODEL_KWARGS = ("model", "modelId", "model_id", "model_name", "deployment_name", "azure_deployment", "model_version")
 PARAM_KWARGS = ("max_tokens", "max_completion_tokens", "max_output_tokens", "temperature",
                 "stream", "response_format", "text_format", "tools", "tool_choice", "n",
                 "reasoning_effort", "reasoning", "service_tier", "seed", "top_p",
@@ -103,11 +162,20 @@ PARAM_KWARGS = ("max_tokens", "max_completion_tokens", "max_output_tokens", "tem
 PROMPT_KWARGS = ("messages", "system", "instructions", "input", "prompt", "contents")
 
 MODEL_NAME_RE = re.compile(
-    r"^(gpt-[0-9][\w.\-]*|chatgpt-[\w.\-]+|o[1-9](?:-[\w.\-]+)?|claude-[\w.\-:]+|"
+    r"^(gpt-[0-9][\w.\-]*|gpt-oss-[\w.\-]+|chatgpt-[\w.\-]+|o[1-9](?:-[\w.\-]+)?|claude-[\w.\-:]+|"
     r"gemini-[\w.\-]+|text-embedding-[\w.\-]+|(?:us|eu|apac|global)?\.?anthropic\.claude[\w.\-:]+|"
-    r"(?:meta|amazon|mistral|cohere)\.[\w.\-:]+|(?:openai|anthropic|gemini|azure|bedrock|groq|"
-    r"together_ai|mistral|deepseek)/[\w.\-:/]+|mistral-(?:large|medium|small|tiny)[\w.\-]*|"
-    r"deepseek-(?:chat|reasoner|r1|v3)[\w.\-]*|llama-?\d[\w.\-]*)$",
+    r"(?:meta|amazon|mistral|cohere|qwen|deepseek|moonshotai|minimax|openai)\.[\w.\-:]+|"
+    r"(?:openai|anthropic|gemini|azure|azure_ai|bedrock|groq|together_ai|mistral|mistralai|deepseek|deepseek-ai|"
+    r"openrouter|dashscope|xai|x-ai|cohere|fireworks_ai|perplexity|moonshot|moonshotai|zai|z-ai|ollama|"
+    r"ollama_chat|qwen|meta-llama|vertex_ai|huggingface|nvidia_nim|cerebras|deepinfra|volcengine|minimax)"
+    r"/[\w.\-:/]+|"
+    r"(?:mistral|mixtral|codestral|ministral|magistral|devstral|pixtral)-[\w.\-]+|"
+    r"deepseek-(?:chat|reasoner|r1|v\d|coder)[\w.\-]*|llama-?\d[\w.\-:]*|"
+    r"qwen[\d\-][\w.\-:]*|qwq-[\w.\-]+|glm-\d[\w.\-]*|kimi-[\w.\-]+|moonshot-v\d[\w.\-]*|"
+    r"grok-\d[\w.\-]*|grok-(?:beta|code|vision)[\w.\-]*|command-(?:r|a|light|nightly)[\w.\-]*|"
+    r"doubao-[\w.\-]+|ernie-\d[\w.\-]*|hunyuan-[\w.\-]+|minimax-[\w.\-]+|abab\d[\w.\-]*|"
+    r"sonar-(?:pro|reasoning|deep)[\w.\-]*|gemma-?\d[\w.\-:]*|phi-?\d[\w.\-:]*|jamba-[\w.\-]+|"
+    r"voyage-[\w.\-]+|embed-(?:english|multilingual|v\d)[\w.\-]*|nova-(?:pro|lite|micro|premier)[\w.\-:]*)$",
     re.IGNORECASE,
 )
 
@@ -294,7 +362,8 @@ class PythonFileScanner:
                 candidates.append((node, tuple(stack)))
             elif isinstance(node, ast.Constant) and isinstance(node.value, str) and \
                     ("completions" in node.value or "messages" in node.value or "responses" in node.value
-                     or "embeddings" in node.value or "enerateContent" in node.value):
+                     or "embeddings" in node.value or "enerateContent" in node.value
+                     or "/services/" in node.value or ":11434/api" in node.value or "/v2/" in node.value):
                 ep = http_endpoint(node.value)
                 if ep and not _in_decorator(stack):
                     self._http_candidates.append((node, ep, tuple(stack)))
@@ -365,23 +434,46 @@ class PythonFileScanner:
                         f.clients[name] = client
 
     def _client_from_call(self, value: ast.AST) -> tuple[str, str | None] | None:
+        if isinstance(value, ast.Await):
+            value = value.value
         if not isinstance(value, ast.Call):
             return None
         name = dotted(value.func) or ""
         last = name.split(".")[-1]
+        # Client factories: AIProjectClient.get_openai_client(), get_azure_openai_client(), _openai_client()
+        if re.fullmatch(r"_?(get_|create_|make_|build_)?(azure_)?(async_)?openai_client", last):
+            return ("azure" if "azure" in self.facts.imports or "azure" in last else "openai", None)
         base_url = None
         for kw in value.keywords:
             if kw.arg == "base_url" and isinstance(kw.value, ast.Constant) and isinstance(kw.value.value, str):
                 base_url = kw.value.value
+        origin = self.facts.from_imports.get(last) or self.facts.from_imports.get(name.split(".")[0], "")
+        origin = origin or name
+        if name.split(".")[0] in self.facts.module_aliases:
+            origin = self.facts.module_aliases[name.split(".")[0]] + "." + ".".join(name.split(".")[1:])
+        sdk = SDK_MODULES.get(origin.split(".")[0])
+        # Vendor SDK clients: Groq(), cohere.ClientV2(), ollama.Client(), voyageai.Client(), Ark(), ...
+        if sdk and last[:1].isupper() and (last in SDK_CLASS_NAMES or last.endswith(("Client", "ClientV2"))):
+            return (sdk, base_url)
+        if last in MODEL_CONSTRUCTORS:
+            root = origin.split(".")[0]
+            prov = MODEL_CONSTRUCTORS[last].get(root) or (
+                "gemini" if "generativeai" in origin else "vertex" if "vertexai" in origin else None)
+            if prov:
+                return (prov, None)
         if last in CLIENT_CLASSES:
-            origin = self.facts.from_imports.get(last, name)
             if last == "Client":
                 if "genai" in origin or "genai" in name:
                     return ("gemini", None)
                 return None
             provider = CLIENT_CLASSES[last]
-            if provider in ("openai",) and (base_url or any(kw.arg == "base_url" for kw in value.keywords)):
-                return ("openai_compatible", base_url)
+            if provider in ("openai", "anthropic", "azure"):
+                # OpenAI()/Anthropic() pointed at another provider: OpenRouter, DashScope, DeepSeek, Groq, ...
+                ep = self._endpoint_provider(value)
+                if ep and ep != provider and not (provider == "azure" and ep == "openai"):
+                    return (ep, base_url)
+                if provider == "openai" and (base_url or any(kw.arg == "base_url" for kw in value.keywords)):
+                    return ("openai_compatible", base_url)
             return (provider, base_url)
         if name.endswith("client") or name.endswith(".client"):
             # boto3.client("bedrock-runtime"), session.client(service_name="bedrock-runtime")
@@ -435,8 +527,10 @@ class PythonFileScanner:
                 specific = suffix.startswith((".chat.completions", ".responses"))
                 if chain.endswith(suffix) and (
                         (has_model and (not needs or any(kw.arg in needs for kw in node.keywords)))
-                        or (specific and has_splat)):
-                    self._record(node, chain, k, client[0] if client else "unknown", confidence="heuristic")
+                        or (specific and has_splat)
+                        or (client and any(kw.arg in needs for kw in node.keywords))):
+                    self._record(node, chain, k, client[0] if client else (self._file_hint() or "unknown"),
+                                 confidence="heuristic")
                     return
             if client and chain.endswith((".messages.create", ".messages.stream")) and has_model \
                     and client[0] in ("anthropic", "bedrock"):
@@ -445,6 +539,11 @@ class PythonFileScanner:
             kw = self._wrapper_model_kwarg(node)
             if kw:
                 self._record(node, chain, "model_config", "unknown", confidence="heuristic", model_kwarg=kw)
+            return
+
+        native = self._native_call(node, chain)
+        if native:
+            self._record(node, chain, native[0], native[1])
             return
 
         for suffix, k, p in CALL_SUFFIXES:
@@ -456,6 +555,9 @@ class PythonFileScanner:
             # Disambiguate with imports / client variables.
             root = receiver_root(chain)
             client = self.facts.clients.get(root)
+            if not client and provider == "openai" and self._file_hint():
+                # Client built elsewhere in the file/app, which points at one other provider
+                client = (self._file_hint(), None)
             if client:
                 provider = client[0]
             elif provider == "bedrock" and not self.facts.imports & {"boto3", "aioboto3", "aiobotocore", "botocore"}:
@@ -490,6 +592,72 @@ class PythonFileScanner:
             return
 
         self._record(node, chain, kind, provider)
+
+    def _endpoint_provider(self, call: ast.Call) -> str | None:
+        """Provider named by a client's base URL or API-key env var (literals, constants, env defaults)."""
+        strings: list[str] = []
+        for kw in call.keywords:
+            if kw.arg not in ("base_url", "api_base", "azure_endpoint", "endpoint", "api_key", "host", "url"):
+                continue
+            for n in ast.walk(kw.value):
+                if isinstance(n, ast.Constant) and isinstance(n.value, str):
+                    strings.append(n.value)
+                elif isinstance(n, ast.Name):
+                    for v in self.facts.constants.get(n.id, [])[:3]:
+                        strings.extend(m.value for m in ast.walk(v)
+                                       if isinstance(m, ast.Constant) and isinstance(m.value, str))
+                    strings.append(n.id)
+                elif isinstance(n, ast.Attribute):
+                    strings.append(n.attr)
+        for v in strings:
+            p = provider_from_url(v)
+            if p:
+                return p
+        for v in strings:
+            if re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{2,}", v) and (v.isupper() or v.endswith(("key", "url"))):
+                p = provider_from_env(v)
+                if p and p not in ("openai", "anthropic"):
+                    return p
+        return None
+
+    def _file_hint(self) -> str | None:
+        if not hasattr(self, "_hint_cache"):
+            self._hint_cache = file_provider_hint(self.source)
+        return self._hint_cache
+
+    def _native_call(self, node: ast.Call, chain: str) -> tuple[str, str] | None:
+        """Vendor SDK calls that aren't OpenAI-shaped: cohere co.chat(), ollama.chat(), Generation.call(), ..."""
+        root = receiver_root(chain)
+        rest = chain[len(root) + 1:] if chain.startswith(root + ".") else ""
+        client = self.facts.clients.get(root)
+        if client and rest in CLIENT_METHODS.get(client[0], {}):
+            return CLIENT_METHODS[client[0]][rest], client[0]
+        spec = MODULE_FUNCS.get(chain)
+        if not spec and "." not in chain:
+            # from ollama import chat; chat(model=...)
+            origin = self.facts.from_imports.get(chain, "")
+            if origin in MODULE_FUNCS:
+                kind, provider, _ = MODULE_FUNCS[origin]
+                return kind, provider
+        if spec:
+            kind, provider, module = spec
+            origin = (self.facts.module_aliases.get(root) or self.facts.from_imports.get(root, root)).split(".")[0]
+            if origin == module or module in self.facts.imports and root == module:
+                return kind, provider
+        alias = self.facts.module_aliases.get(root)
+        if alias and rest and f"{alias.split('.')[0]}.{rest}" in MODULE_FUNCS:
+            kind, provider, _ = MODULE_FUNCS[f"{alias.split('.')[0]}.{rest}"]
+            return kind, provider
+        last = chain.split(".")[-1]
+        if last in MODEL_CONSTRUCTORS:
+            origin = self.facts.from_imports.get(last, chain)
+            if root in self.facts.module_aliases:
+                origin = self.facts.module_aliases[root] + "." + last
+            if "generativeai" in origin or origin.startswith("google"):
+                return "model_config", "gemini"
+            if "vertexai" in origin:
+                return "model_config", "vertex"
+        return None
 
     def _litellm_func(self, chain: str) -> str | None:
         """Name of the litellm function an imported alias points to (litellm_completion -> completion)."""
@@ -528,16 +696,21 @@ class PythonFileScanner:
             model, model_expr, model_source = value.value.strip(), None, "literal"
         else:
             model, model_expr, model_source = self._resolve_model(node, kind)
-        if model and provider in ("unknown", "litellm", "openai_compatible") and "/" in model:
-            prefix = model.split("/")[0].lower()
-            if prefix in ("openai", "anthropic", "azure", "bedrock", "gemini", "vertex_ai", "groq",
-                          "mistral", "together_ai", "deepseek", "openrouter"):
-                provider = provider if provider == "litellm" else prefix
+        if model and provider in ("unknown", "openai_compatible"):
+            # "openrouter/anthropic/claude-x", "groq:llama-3" (aisuite)
+            provider = provider_from_model_prefix(model) or provider
+        if kind == "model_config" and provider in ("openai", "unknown", "openai_compatible"):
+            # ChatOpenAI(base_url="https://openrouter.ai/api/v1"), OpenAILike(api_base=...)
+            ep = self._endpoint_provider(node)
+            if ep and ep not in ("openai", "anthropic"):
+                provider = ep
+        if provider == "unknown" and confidence == "heuristic" and kind == "model_config":
+            # In-house wrapper: ChatGroq(model=...), DeepSeekLLM(...) name their provider
+            provider = provider_from_class_name(chain.split(".")[-1]) or provider
+        if provider in ("unknown", "openai_compatible"):
+            provider = self._file_hint() or provider
         if provider == "unknown" and model:
-            low = model.lower()
-            provider = ("anthropic" if low.startswith("claude") else
-                        "openai" if low.startswith(("gpt", "o1", "o3", "o4", "text-embedding")) else
-                        "gemini" if low.startswith("gemini") else provider)
+            provider = maker_of(model) or provider
 
         params = self._params(node)
         prompt = self._prompt(node)
@@ -582,7 +755,7 @@ class PythonFileScanner:
         if expr is None and node.args:
             chain = dotted(node.func) or ""
             last = chain.split(".")[-1]
-            if last in LITELLM_FUNCS or last in CONFIG_FUNCS or last == "Agent":
+            if last in LITELLM_FUNCS or last in CONFIG_FUNCS or last == "Agent" or chain.endswith(POSITIONAL_MODEL):
                 expr = node.args[0]
         if expr is None:
             # Model may come from the framework object, the batch file, or a default.
@@ -903,7 +1076,9 @@ class PythonFileScanner:
 
 _HTTP_PATH_RE = re.compile(
     r"(/v\d+(?:beta\d*|alpha)?)?(/chat/completions|/messages|/responses|/embeddings|"
-    r":generatecontent|:streamgeneratecontent)(?=$|[?#\"'/])")
+    r":generatecontent|:streamgeneratecontent|/services/aigc/text-generation/generation|"
+    r"/services/aigc/multimodal-generation/generation|/services/embeddings/text-embedding/text-embedding|"
+    r"/api/chat|/api/generate|/v2/chat|/v2/embed)(?=$|[?#\"'/])")
 _PROVIDER_HOSTS = (("api.anthropic.com", "anthropic"), ("api.openai.com", "openai"),
                    ("openai.azure.com", "azure"), ("generativelanguage.googleapis.com", "gemini"),
                    ("aiplatform.googleapis.com", "gemini"), ("bedrock-runtime", "bedrock"),
@@ -922,7 +1097,8 @@ def http_endpoint(value: str) -> tuple[str, str, str] | None:
     if not v or len(v) > 200 or "\n" in v or " " in v:
         return None
     low = v.lower()
-    host = next((p for h, p in _PROVIDER_HOSTS if h in low), None)
+    host = provider_from_url(low) if ("://" in low or low.startswith(("//", "api.")) or
+                                      re.match(r"^[a-z0-9.-]+\.[a-z]{2,}(:\d+)?/", low)) else None
     m = _HTTP_PATH_RE.search(low)
     if not m:
         return None
@@ -932,11 +1108,14 @@ def http_endpoint(value: str) -> tuple[str, str, str] | None:
         return None                     # own server route, e.g. /api/chat/completions
     if path in ("/messages", "/responses") and not (version or host):
         return None                     # too generic without /v1 or a provider host
+    if path in ("/api/chat", "/api/generate", "/v2/chat", "/v2/embed") and not host:
+        return None                     # Ollama / Cohere paths only count with their host
     if path == "/embeddings" and not (version or host or low.endswith("/embeddings") and len(low) < 40):
         return None
-    kind = "embedding" if path == "/embeddings" else "chat"
+    kind = "embedding" if path in ("/embeddings", "/v2/embed") or "text-embedding" in path else "chat"
     provider = host or ("anthropic" if path == "/messages" else
-                        "gemini" if "generatecontent" in path else "openai_compatible")
+                        "gemini" if "generatecontent" in path else
+                        "dashscope" if "/services/" in path else "openai_compatible")
     return kind, provider, (version or "") + path
 
 
@@ -960,6 +1139,10 @@ def _init_candidate_names() -> None:
     _CANDIDATE_NAMES.update(CONFIG_CLASSES)
     _CANDIDATE_NAMES.update(CONFIG_FUNCS)
     _CANDIDATE_NAMES.add("Agent")
+    for methods in CLIENT_METHODS.values():
+        _CANDIDATE_NAMES.update(m.rsplit(".", 1)[-1] for m in methods)
+    _CANDIDATE_NAMES.update(c.rsplit(".", 1)[-1] for c in MODULE_FUNCS)
+    _CANDIDATE_NAMES.update(MODEL_CONSTRUCTORS)
 
 
 def _is_candidate(node: ast.Call) -> bool:

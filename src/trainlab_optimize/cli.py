@@ -49,28 +49,40 @@ def cmd_scan(args) -> int:
     return 0
 
 
+API_KEY_ENV = {"openai": "OPENAI_ADMIN_KEY", "anthropic": "ANTHROPIC_ADMIN_KEY",
+               "openrouter": "OPENROUTER_MANAGEMENT_KEY"}
+API_KEY_KIND = {"openai": "an organization admin key", "anthropic": "an organization admin key",
+                "openrouter": "a management key (Settings > Management keys)"}
+
+
 def _import_api(args, provider: str) -> int:
-    from .importers import anthropic_usage, openai_usage
-    mod = openai_usage if provider == "openai" else anthropic_usage
+    from .importers import anthropic_usage, openai_usage, openrouter
     if args.file:
-        pages = json.loads(Path(args.file).read_text())
-        pages = pages if isinstance(pages, list) else [pages]
+        name = Path(args.file).name
+        try:
+            data = json.loads(Path(args.file).read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError) as exc:
+            print(f"Import failed: {exc}", file=sys.stderr)
+            return 1
+        pages = data if isinstance(data, list) else [data]
         if provider == "openai":
-            records = mod.parse_pages(pages, kind="embeddings" if args.embeddings else "completions")
-            for r in records:
-                r.source = f"openai_usage_file:{Path(args.file).name}"
+            records = openai_usage.parse_pages(pages, kind="embeddings" if args.embeddings else "completions")
+        elif provider == "anthropic":
+            records = anthropic_usage.parse_pages(pages)
         else:
-            records = mod.parse_pages(pages)
-            for r in records:
-                r.source = f"anthropic_usage_file:{Path(args.file).name}"
+            records = openrouter.parse_activity(data)
+        for r in records:
+            r.source = f"{provider}_usage_file:{name}"
     else:
-        env = "OPENAI_ADMIN_KEY" if provider == "openai" else "ANTHROPIC_ADMIN_KEY"
+        env = API_KEY_ENV[provider]
         key = args.key or os.environ.get(env)
         if not key:
-            print(f"No admin key. Set {env} or pass --key. Usage APIs need an organization admin key "
-                  "(read-only usage access), not a normal API key.", file=sys.stderr)
+            print(f"No key. Set {env} or pass --key. The usage API needs {API_KEY_KIND[provider]} "
+                  "(read-only usage access), not the key your app uses.", file=sys.stderr)
             return 2
-        importer = (mod.OpenAIUsageImporter(key) if provider == "openai" else mod.AnthropicUsageImporter(key))
+        importer = {"openai": lambda: openai_usage.OpenAIUsageImporter(key),
+                    "anthropic": lambda: anthropic_usage.AnthropicUsageImporter(key),
+                    "openrouter": lambda: openrouter.OpenRouterImporter(key)}[provider]()
         try:
             records = importer.fetch(days=args.days)
         except ImportError_ as exc:
@@ -78,20 +90,24 @@ def _import_api(args, provider: str) -> int:
             return 1
     n = _ws(args).add_usage(records)
     models = sorted({r.model for r in records})
-    print(f"Imported {n} usage records for {len(models)} model(s) from {provider}.")
+    keys = sorted({r.api_key for r in records if r.api_key})
+    print(f"Imported {n} usage records for {len(models)} model(s) from {provider}"
+          + (f", across {len(keys)} API key(s)" if keys else "") + ".")
     return 0
 
 
-IMPORT_SOURCES = ("file", "openai", "anthropic", "csv", "langfuse", "otel", "aws", "azure", "gcp")
+IMPORT_SOURCES = ("file", "openai", "anthropic", "openrouter", "csv", "langfuse", "otel", "aws", "azure", "gcp")
 KIND_NAMES = {"csv": "billing CSV", "aws": "AWS cost export", "azure": "Azure cost export", "gcp": "Google Cloud billing export",
               "langfuse": "Langfuse export", "otel": "OpenTelemetry traces", "openai-file": "OpenAI usage API file",
-              "anthropic-file": "Anthropic usage API file"}
+              "anthropic-file": "Anthropic usage API file", "openrouter-file": "OpenRouter activity file"}
 
 
 def _import_file_auto(args) -> int:
     from .importers.auto import read_any
+    from .importers.csv_generic import parse_map
     try:
-        records, kind = read_any(args.file, "auto", default_provider=getattr(args, "provider", None))
+        records, kind = read_any(args.file, "auto", default_provider=getattr(args, "provider", None),
+                                 column_map=parse_map(getattr(args, "map", None)) or None)
     except (ValueError, OSError, KeyError) as exc:
         print(f"Import failed: {exc}", file=sys.stderr)
         return 1
@@ -120,7 +136,7 @@ def cmd_import(args) -> int:
             print("Pass the file: trainlab import <file>", file=sys.stderr)
             return 2
         return _import_file_auto(args)
-    if args.source in ("openai", "anthropic"):
+    if args.source in ("openai", "anthropic", "openrouter"):
         return _import_api(args, args.source)
     if args.source in ("langfuse", "otel", "aws", "azure", "gcp"):
         if not args.file:
@@ -152,7 +168,9 @@ def cmd_import(args) -> int:
             print("Pass the CSV path: trainlab import csv billing.csv", file=sys.stderr)
             return 2
         try:
-            records = read_csv(args.file, default_provider=args.provider)
+            from .importers.csv_generic import parse_map
+            records = read_csv(args.file, default_provider=args.provider,
+                               column_map=parse_map(getattr(args, "map", None)) or None)
         except (ValueError, OSError) as exc:
             print(f"Import failed: {exc}", file=sys.stderr)
             return 1
@@ -280,14 +298,18 @@ def build_parser() -> argparse.ArgumentParser:
 
     i = sub.add_parser("import", parents=[common], help="import usage/billing data")
     i.add_argument("source", metavar="source|file",
-                   help="a file path (type detected automatically), or one of: openai/anthropic (usage API, "
-                        "needs an admin key), csv, langfuse, otel, aws, azure, gcp (force a file type)")
+                   help="a file path (type detected automatically), or one of: openai/anthropic/openrouter "
+                        "(usage API, needs an admin or management key), csv, langfuse, otel, aws, azure, gcp "
+                        "(force a file type)")
     i.add_argument("path_arg", nargs="?", metavar="file", help="the export file when a source is named")
     i.add_argument("--file", dest="file_opt", help="read a saved usage API response instead of calling the API")
-    i.add_argument("--key", help="admin key (default: OPENAI_ADMIN_KEY / ANTHROPIC_ADMIN_KEY)")
+    i.add_argument("--key", help="admin/management key (default: OPENAI_ADMIN_KEY / ANTHROPIC_ADMIN_KEY / "
+                                 "OPENROUTER_MANAGEMENT_KEY)")
     i.add_argument("--days", type=int, default=30)
     i.add_argument("--embeddings", action="store_true", help="the --file holds embeddings usage (OpenAI)")
     i.add_argument("--provider", help="default provider for CSV rows without one")
+    i.add_argument("--map", metavar="FIELD=COLUMN,...",
+                   help='name the columns of an unfamiliar CSV, e.g. --map model="Model",cost_usd="Amount (USD)"')
     i.set_defaults(fn=cmd_import)
 
     r = sub.add_parser("report", parents=[common], help="analyze and write the report")

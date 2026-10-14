@@ -1,14 +1,14 @@
 {
  "schema_version": "1",
- "tool_version": "0.1.3",
- "generated_at": "2026-10-14 10:05 UTC",
+ "tool_version": "0.1.4",
+ "generated_at": "2026-10-14 11:33 UTC",
  "catalog": {
-  "source": "BerriAI/litellm model_prices_and_context_window.json",
+  "source": "BerriAI/litellm model_prices_and_context_window.json (MIT)",
   "source_url": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
   "source_license": "MIT",
-  "built_at": "2026-10-14T08:36:59Z",
+  "built_at": "2026-10-14T10:51:19Z",
   "unit": "USD per token",
-  "model_count": 1618
+  "model_count": 3095
  },
  "scan": {
   "root": "/home/claude/trainlab-optimize/examples/demo_app",
@@ -275,7 +275,7 @@
    "python": 5
   },
   "parse_errors": [],
-  "duration_s": 0.02,
+  "duration_s": 0.03,
   "excluded": [],
   "repos": []
  },
@@ -360,7 +360,8 @@
    "wrkspc_support": 8066.88,
    "proj_support": 2715.34,
    "proj_search": 760.56
-  }
+  },
+  "by_api_key": {}
  },
  "attribution": [
   {
@@ -433,23 +434,23 @@
     "fbd81edc7e93",
     "00277158872c"
    ],
-   "summary": "`gpt-4o` costs ~17x more per token than `gpt-4o-mini`. Signals: extraction, structured_output.",
-   "recommendation": "Test `gpt-4o-mini` (~17x cheaper per token) on a sample of real inputs with `trainlab experiment`. This is a narrow, repetitive task: a fine-tuned small model can usually match quality at a fraction of the cost.",
+   "summary": "`gpt-4o` costs ~32x more per token than `gpt-5-nano`. Signals: extraction, structured_output.",
+   "recommendation": "Test `gpt-5-nano` (~32x cheaper per token) on a sample of real inputs with `trainlab experiment`. This is a narrow, repetitive task: a fine-tuned small model can usually match quality at a fraction of the cost.",
    "evidence": {
     "current_model": "gpt-4o",
-    "candidate_model": "gpt-4o-mini",
-    "price_ratio": 16.7,
+    "candidate_model": "gpt-5-nano",
+    "price_ratio": 31.8,
     "task_hints": [
      "extraction",
      "structured_output"
     ],
     "current_per_1m_in": 2.5,
-    "candidate_per_1m_in": 0.15
+    "candidate_per_1m_in": 0.05
    },
    "tier": "estimated",
    "monthly_spend_usd": 7972.4565,
-   "savings_low_usd": 3747.0545549999997,
-   "savings_high_usd": 7494.109109999999,
+   "savings_low_usd": 3860.9467907142857,
+   "savings_high_usd": 7721.893581428571,
    "trainlab_candidate": true
   },
   {
@@ -552,22 +553,22 @@
    "call_site_ids": [
     "0327c15c12c2"
    ],
-   "summary": "`gpt-4.1` costs ~13x more per token than `gpt-4o-mini`. Signals: classification.",
-   "recommendation": "Test `gpt-4o-mini` (~13x cheaper per token) on a sample of real inputs with `trainlab experiment`. This is a narrow, repetitive task: a fine-tuned small model can usually match quality at a fraction of the cost.",
+   "summary": "`gpt-4.1` costs ~25x more per token than `gpt-5-nano`. Signals: classification.",
+   "recommendation": "Test `gpt-5-nano` (~25x cheaper per token) on a sample of real inputs with `trainlab experiment`. This is a narrow, repetitive task: a fine-tuned small model can usually match quality at a fraction of the cost.",
    "evidence": {
     "current_model": "gpt-4.1",
-    "candidate_model": "gpt-4o-mini",
-    "price_ratio": 13.3,
+    "candidate_model": "gpt-5-nano",
+    "price_ratio": 25.5,
     "task_hints": [
      "classification"
     ],
     "current_per_1m_in": 2.0,
-    "candidate_per_1m_in": 0.15
+    "candidate_per_1m_in": 0.05
    },
    "tier": "estimated",
    "monthly_spend_usd": 302.230528,
-   "savings_low_usd": 139.7816192,
-   "savings_high_usd": 279.5632384,
+   "savings_low_usd": 145.1785929142857,
+   "savings_high_usd": 290.3571858285714,
    "trainlab_candidate": true
   },
   {
@@ -655,8 +656,8 @@
   }
  ],
  "savings": {
-  "monthly_low_usd": 5628.799652742234,
-  "monthly_high_usd": 12411.726305484468,
+  "monthly_low_usd": 5748.088862170805,
+  "monthly_high_usd": 12650.304724341611,
   "tier": "estimated"
  }
 }

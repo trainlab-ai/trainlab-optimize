@@ -8,6 +8,7 @@ import hashlib
 import re
 
 from ..schema import CallSite
+from .providers import file_provider_hint, maker_of, provider_from_model_prefix, provider_from_url
 from .python_ast import EXAMPLE_PATH_RE, MODEL_NAME_RE, TEST_PATH_RE, http_endpoint
 
 JS_EXTS = {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"}
@@ -32,6 +33,20 @@ LANG_CALLS: dict[str, list[tuple[re.Pattern, str, str, str | None]]] = {
         (re.compile(r"\.(models\.generateContent(?:Stream)?)\s*\("), "chat", "gemini", None),
         (re.compile(r"\bnew\s+(Converse(?:Stream)?Command|InvokeModel(?:WithResponseStream)?Command)\s*\("),
          "chat", "bedrock", None),
+        # Vendor SDKs that aren't OpenAI-shaped
+        (re.compile(r"\.(chat\.(?:complete|stream|parse))\s*\("), "chat", "mistral", "mistralai"),
+        (re.compile(r"\.(chat(?:Stream)?)\s*\(\s*\{"), "chat", "cohere", "cohere-ai"),
+        (re.compile(r"\.(embed)\s*\(\s*\{"), "embedding", "cohere", "cohere-ai"),
+        (re.compile(r"\b(ollama\.(?:chat|generate|embed))\s*\("), "chat", "ollama", "ollama"),
+        (re.compile(r"\.(chatCompletion(?:Stream)?|textGeneration)\s*\(\s*\{"), "chat", "huggingface",
+         "@huggingface/inference"),
+        (re.compile(r"\b(replicate\.run)\s*\("), "chat", "replicate", "replicate"),
+        # LangChain.js model classes
+        (re.compile(r"\bnew\s+(Chat(?:OpenAI|Anthropic|GoogleGenerativeAI|VertexAI|Groq|MistralAI|Ollama|Cohere|"
+                    r"DeepSeek|XAI|TogetherAI|Fireworks|AlibabaTongyi|BedrockConverse|Bedrock|ZhipuAI|"
+                    r"Moonshot|Cerebras|Perplexity|OpenRouter)|AzureChatOpenAI|OpenAIEmbeddings|"
+                    r"(?:Cohere|MistralAI|Ollama|Voyage)Embeddings)\s*\("),
+         "model_config", "unknown", "langchain"),
     ],
     "go": [
         (re.compile(r"\.(Chat\.Completions\.New(?:Streaming)?)\("), "chat", "openai", "openai-go"),
@@ -112,17 +127,19 @@ MODEL_PATTERNS = [
     re.compile(r'\.(?:agent|completion_model|embedding_model)\(\s*"([^"]+)"'),         # rig
     re.compile(r"""\b(?:openai|anthropic|gemini)::([A-Z][A-Z0-9_]{2,})\b"""),           # rig constants
     re.compile(r"""\.(?:model|modelName|modelId)\(\s*"([^"]+)"\s*\)"""),
-    re.compile(r"""\b(openai|anthropic|google|azure|bedrock|mistral|groq)\s*\(\s*['"`]([^'"`]+)['"`]"""),
+    re.compile(r"""\b(openai|anthropic|google|azure|bedrock|mistral|groq|openrouter|deepseek|xai|cohere|"""
+               r"""togetherai|fireworks|perplexity|cerebras|deepinfra|alibaba|qwen|ollama|vertex|moonshotai|"""
+               r"""zhipu|vercel|gateway)(?:\.(?:chat|languageModel|textEmbeddingModel))?\s*\(\s*['"`]([^'"`]+)['"`]"""),
     re.compile(r"""\b(?:ChatModel|Model|EmbeddingModel)\.([A-Z][A-Z0-9_]{2,})\b"""),
 ]
 MODEL_EXPR = re.compile(r"""\b(?:model|modelId|Model|modelName)\s*[:=]\s*([^,\n}\)]+)""")
 STRING = re.compile(r"""(["'`])((?:(?!\1).){3,200}?)\1""")
 ROUTE_DEF = re.compile(r"""\.(?:GET|POST|PUT|Handle|HandleFunc|Any|Group|get|post|put|route|all)\s*\(\s*["'`]|"""
-                       r"""@(?:Post|Get|Request)Mapping|\[Http(?:Post|Get)|Map(?:Post|Get)\(|router\.|"""
+                       r"""@(?:Post|Get|Request)Mapping|\[Http(?:Post|Get)|Map(?:Post|Get)\(|\brouter\.|"""
                        r"""Request\.Path|PathString|\.path\s*===?|\.url\s*===?|pathname\s*===?""")
 COMMENT = re.compile(r"^\s*(?://|#|\*|/\*|--)")
 QUOTED = re.compile(r"""['"]([A-Za-z0-9][\w.\-:/]{1,79})['"]|(?:=|:)\s*([A-Za-z0-9][\w.\-:/]{1,79})\s*$""")
-OTHER_TEST = re.compile(r"\.(test|spec)\.[jt]sx?$|_test\.go$|(^|/)src/test/|(^|/)[^/]*\.Tests?/|Tests?\.cs$|"
+OTHER_TEST = re.compile(r"\.(test|spec|vitest|e2e|stories)\.[cm]?[jt]sx?$|(^|/)(locales?|i18n)/|_test\.go$|(^|/)src/test/|(^|/)[^/]*\.Tests?/|Tests?\.cs$|"
                         r"_spec\.rb$|(^|/)spec/|Test\.php$|(^|/)benches/")
 
 
@@ -166,7 +183,9 @@ def _find_model(window: str, provider: str) -> tuple[str | None, str]:
         if idx in _ENUM_PATTERNS:
             return _enum_to_model(groups[-1]), provider
         if idx == _PROVIDER_FN_PATTERN and len(groups) == 2 and provider in ("vercel_ai", "unknown"):
-            provider = {"google": "gemini"}.get(groups[0], groups[0])
+            provider = {"google": "gemini", "togetherai": "together", "alibaba": "dashscope",
+                        "qwen": "dashscope", "moonshotai": "moonshot", "vertex": "vertex",
+                        "vercel": "vercel_ai_gateway", "gateway": "vercel_ai_gateway"}.get(groups[0], groups[0])
         return groups[-1], provider
     return None, provider
 
@@ -178,7 +197,52 @@ def _line_index(text: str):
     return starts
 
 
-ENDPOINT_HINT = re.compile(r"chat/completions|/messages|/responses|/embeddings|generatecontent", re.I)
+ENDPOINT_HINT = re.compile(r"chat/completions|/messages|/responses|/embeddings|generatecontent|"
+                           r"services/aigc|services/embeddings|:11434/api|api\.cohere\.(?:com|ai)/v2", re.I)
+_LC_CLASS_PROVIDER = {
+    "ChatOpenAI": "openai", "AzureChatOpenAI": "azure", "OpenAIEmbeddings": "openai", "ChatAnthropic": "anthropic",
+    "ChatGoogleGenerativeAI": "gemini", "ChatVertexAI": "vertex", "ChatGroq": "groq", "ChatMistralAI": "mistral",
+    "ChatOllama": "ollama", "ChatCohere": "cohere", "ChatDeepSeek": "deepseek", "ChatXAI": "xai",
+    "ChatTogetherAI": "together", "ChatFireworks": "fireworks", "ChatAlibabaTongyi": "dashscope",
+    "ChatBedrockConverse": "bedrock", "ChatBedrock": "bedrock", "ChatZhipuAI": "zhipu", "ChatMoonshot": "moonshot",
+    "ChatCerebras": "cerebras", "ChatPerplexity": "perplexity", "ChatOpenRouter": "openrouter",
+    "CohereEmbeddings": "cohere", "MistralAIEmbeddings": "mistral", "OllamaEmbeddings": "ollama",
+    "VoyageEmbeddings": "voyage",
+}
+
+
+_BARE_URL = re.compile(r"https?://[^\s'\"`]+")
+_CONST_NAME = re.compile(r"\b[A-Z][A-Z0-9_]*(?:BASE_URL|_URL|_ENDPOINT|_HOST|API_KEY)\b")
+
+
+def _nearby_provider(lines: list[str], i: int, reach: int = 4) -> str | None:
+    """Closest line (within `reach`) naming a provider by a bare base URL or a provider-named constant."""
+    from .providers import provider_from_env
+    for d in [x for k in range(1, reach + 1) for x in (-k, k)]:
+        j = i + d
+        if not 0 <= j < len(lines):
+            continue
+        line = lines[j]
+        for um in _BARE_URL.finditer(line):
+            if not http_endpoint(um.group(0)):          # skip other endpoints; only base URLs
+                p = provider_from_url(um.group(0))
+                if p:
+                    return p
+        for cm in _CONST_NAME.finditer(line):
+            p = provider_from_env(cm.group(0))
+            if p and p not in ("openai", "anthropic"):
+                return p
+    return None
+
+
+def _stem_provider(rel_path: str) -> str | None:
+    """providers/deepseek.ts -> deepseek (only for files named after one provider)."""
+    from .providers import provider_from_class_name
+    stem = rel_path.rsplit("/", 1)[-1].split(".")[0].lower()
+    if "compat" in stem or len(stem) > 30:
+        return None
+    p = provider_from_class_name(stem)
+    return p if p not in ("openai", "anthropic", "gemini") or stem in ("openai", "anthropic", "gemini") else None
 
 
 def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
@@ -205,6 +269,7 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
             per_line[i] = (order, hit, kind, provider)
     if per_line and lines is None:
         lines = text.splitlines()
+    file_hint = file_provider_hint(text) if (per_line or "completions" in text or "/messages" in text) else None
     for i in sorted(per_line):
         line = lines[i] if i < len(lines) else ""
         if len(line) > 400 or COMMENT.match(line):
@@ -212,7 +277,7 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
         _, hit, kind, provider = per_line[i]
         window = "\n".join(lines[i: i + 25])
         model, provider = _find_model(window, provider)
-        if not model and lang in ("jvm", "csharp", "go", "rust", "php"):
+        if not model and (lang in ("jvm", "csharp", "go", "rust", "php") or provider == "vercel_ai"):
             # Builder-style APIs set the model on the request object before the call.
             before = "\n".join(lines[max(0, i - 15): i])
             model, provider = _find_model(before, provider)
@@ -222,6 +287,15 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
             model_expr = mx.group(1).strip()[:80] if mx else None
         if lang == "javascript" and provider == "anthropic" and "anthropic" not in text.lower():
             provider = "openai_compatible"
+        if kind == "model_config" and provider == "unknown":
+            provider = _LC_CLASS_PROVIDER.get(hit.group(1), "unknown")
+            if provider == "openai" and file_hint:
+                provider = file_hint            # new ChatOpenAI({ configuration: { baseURL: openrouter } })
+        elif provider in ("openai", "openai_compatible", "vercel_ai") and file_hint:
+            provider = file_hint                # OpenAI SDK pointed at OpenRouter, DashScope, Groq, ...
+        if provider in ("unknown", "openai_compatible", "vercel_ai") and model:
+            provider = provider_from_model_prefix(model) or (maker_of(model) if provider == "unknown" else None) \
+                or provider
         params = {}
         for p in ("max_tokens", "maxTokens", "max_completion_tokens", "MaxTokens", "maxOutputTokens",
                   "MaxCompletionTokens", "temperature", "stream", "response_format", "tools"):
@@ -239,7 +313,8 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
     done = set(per_line)
     low = text.lower()
     if not any(t in low for t in ("chat/completions", "/messages", "/responses", "/embeddings",
-                                  "generatecontent")):
+                                  "generatecontent", "services/aigc", "services/embeddings", ":11434/api",
+                                  "/v2/chat")):
         sites.sort(key=lambda x: x.line)
         return sites
     if starts is None:
@@ -258,6 +333,11 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
             ep = http_endpoint(sm.group(2))
             if ep:
                 kind, provider, path = ep
+                if provider == "openai_compatible":
+                    # Provider config blocks: { endpoint: MOONSHOT_BASE_URL, chatPath: "v1/chat/completions" }
+                    provider = _nearby_provider(lines, i) or provider
+                    if provider == "openai_compatible":
+                        provider = file_hint or _stem_provider(rel_path) or provider
                 sites.append(CallSite(
                     id=_sid(rel_path, i + 1, kind), path=rel_path, line=i + 1, kind=kind,
                     provider=provider, sdk_call=f"HTTP {path}", language=lang,
@@ -274,10 +354,13 @@ def scan_js(rel_path: str, text: str) -> list[CallSite]:
     return scan_heuristic(rel_path, text, "javascript")
 
 
-_MODEL_PREFIX = (r"(?:gpt-\d|chatgpt-|o[1-9]\b|o[1-9]-|claude-|gemini-|text-embedding-|"
-                 r"(?:us\.|eu\.|apac\.|global\.)?anthropic\.claude|(?:meta|amazon|mistral|cohere)\.|"
-                 r"(?:openai|anthropic|gemini|azure|bedrock|groq|together_ai|mistral|deepseek)/|"
-                 r"mistral-|deepseek-|llama-?\d)")
+_MODEL_PREFIX = (r"(?:gpt-\d|gpt-oss-|chatgpt-|o[1-9]\b|o[1-9]-|claude-|gemini-|text-embedding-|"
+                 r"(?:us\.|eu\.|apac\.|global\.)?anthropic\.claude|(?:meta|amazon|mistral|cohere|qwen)\.|"
+                 r"(?:openai|anthropic|gemini|azure|bedrock|groq|together_ai|mistral|mistralai|deepseek|"
+                 r"openrouter|dashscope|xai|x-ai|cohere|fireworks_ai|moonshotai|zai|z-ai|qwen|meta-llama)/|"
+                 r"mistral-|mixtral-|codestral-|ministral-|deepseek-|llama-?\d|qwen[\d\-]|qwq-|glm-\d|kimi-|"
+                 r"moonshot-v\d|grok-\d|command-r|command-a|doubao-|ernie-\d|hunyuan-|minimax-|gemma-?\d|"
+                 r"sonar-pro|sonar-reasoning)")
 MODEL_TOKEN = re.compile(
     r"""['"](""" + _MODEL_PREFIX + r"""[\w.\-:/]{0,78})['"]|(?:=|:)[ \t]*(""" + _MODEL_PREFIX
     + r"""[\w.\-:/]{0,78})[ \t]*$""", re.M)
@@ -285,7 +368,9 @@ MODEL_TOKEN = re.compile(
 
 _MODEL_HINTS = ("gpt-", "chatgpt", "o1", "o3", "o4", "o5", "o6", "o7", "o8", "o9", "claude", "gemini",
                 "text-embedding", "anthropic.", "meta.", "amazon.", "mistral", "cohere.", "openai/",
-                "gemini/", "azure/", "bedrock/", "groq/", "together_ai/", "deepseek", "llama")
+                "gemini/", "azure/", "bedrock/", "groq/", "together_ai/", "deepseek", "llama", "qwen", "qwq",
+                "glm-", "kimi", "moonshot", "grok-", "command-", "doubao", "ernie", "hunyuan", "minimax",
+                "gemma", "sonar-", "openrouter/", "dashscope/", "codestral", "mixtral")
 
 
 def scan_model_refs(rel_path: str, text: str) -> list[tuple[int, str]]:

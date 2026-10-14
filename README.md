@@ -2,9 +2,10 @@
 
 Find out where your LLM money goes, line by line, and what to change.
 
-`trainlab` scans your repositories for LLM calls, imports your actual usage (usage APIs,
-billing exports, cloud cost exports or traces), links the spend to the code that causes
-it, and writes a report of concrete changes with estimated monthly savings.
+`trainlab` scans your repositories for LLM calls to any provider, imports your actual usage
+(usage APIs, billing exports, cloud cost exports, gateway logs or traces), links the spend
+to the code that causes it, and writes a report of concrete changes with estimated monthly
+savings.
 
 - **Runs locally.** Your code and usage data never leave your machine. The HTML report is a
   single file with no external requests.
@@ -43,7 +44,9 @@ trainlab run examples/demo_app --usage examples/demo_usage/billing_export.csv
 |---|---|---|
 | OpenAI Usage API | `trainlab import openai` | `OPENAI_ADMIN_KEY` (organization admin key, read-only usage) |
 | Anthropic Usage & Cost API | `trainlab import anthropic` | `ANTHROPIC_ADMIN_KEY` (admin key) |
-| Any billing CSV | `trainlab import FILE.csv` | columns for model and tokens or cost (names are matched loosely) |
+| OpenRouter activity API | `trainlab import openrouter` | `OPENROUTER_MANAGEMENT_KEY` (management key) |
+| Any provider's billing or usage CSV | `trainlab import FILE.csv` | columns for model and tokens or cost (names matched loosely) |
+| OpenRouter activity export | `trainlab import activity.csv` | CSV from the OpenRouter dashboard |
 | AWS Cost and Usage Report (Bedrock) | `trainlab import cur.csv` | CUR legacy or 2.0 export |
 | Azure cost export (Azure OpenAI / AI Foundry) | `trainlab import cost.csv` | Cost Management export |
 | Google Cloud billing (Vertex AI / Gemini) | `trainlab import billing.csv` | BigQuery billing export saved as CSV |
@@ -54,11 +57,34 @@ trainlab run examples/demo_app --usage examples/demo_usage/billing_export.csv
 The file type is detected from its contents; name it explicitly if needed
 (`trainlab import azure cost.csv`). Prompt text inside traces is never stored.
 
+**Exports with unfamiliar column names** (Alibaba Cloud bills, gateway logs, a finance
+team's sheet): the UI lists the file's columns and asks which is which. On the command line:
+`trainlab import bill.csv --map model="Billing Item",cost_usd="Pretax Amount (USD)",api_key="Instance ID"`.
+Bill lines such as `qwen-max input_tokens` are read as model `qwen-max`.
+
+### Spend per API key
+
+The OpenAI, Anthropic and OpenRouter imports break spend down per API key, as do CSVs with
+a key column. The report has a "Spend by API key" table.
+
+One key used by several applications can't be split by billing. How exact the numbers
+are depends on how keys are set up:
+
+| Setup | What the report can say |
+|---|---|
+| One key or project per application | Exact cost per application, from billing |
+| Shared key, but each application uses different models | Exact: the code shows which application uses which model |
+| Shared key, same model in several scanned repos | Spend is split evenly between the call sites and flagged (R904), with the keys involved |
+| Shared key, but only one of the repos was scanned | The rest shows as spend with no matching code (R902), with the keys that carry it |
+| Any of the above with `trainlab.instrument()` (v0.2) | Exact per line, whatever the key setup |
+
 **When sources overlap**, nothing is counted twice:
 
 - Billing sources (usage APIs, CSVs, cloud exports) are the authority on totals. If two of
-  them cover the same model on the same day, one is counted, in this order: billed cost,
-  then usage API, then token-only CSV. The report says which source was set aside.
+  them cover the same model on the same day through the same channel, one is counted, in
+  this order: billed cost, then usage API, then token-only CSV. The report says which
+  source was set aside. The same model bought directly, on Azure, on Bedrock or through
+  OpenRouter is different traffic and is always counted separately.
 - Traces only decide *where* billed spend comes from. Models that appear only in traces
   are added to the total.
 - Each source is scaled to 30 days on its own period (30 days of billing plus 7 days of
@@ -77,7 +103,13 @@ The file type is detected from its contents; name it explicitly if needed
 | R107 | The same long prompt duplicated across files | One shared, cached prompt |
 | R108 | Large average context per request with little caching | Trim retrieval, cache the stable part |
 | R109 | Embeddings computed one item at a time in a loop | Send a list per request |
-| R9xx | Coverage gaps: runtime-selected models, spend with no matching code | Instrument, or scan the other repos |
+| R904 | One model's spend shared by several repositories (one key, can't be split by billing) | A key or project per application, or instrument |
+| R905 | A model priced from another host's list (its maker publishes no price) | Import billing with the cost column |
+| R9xx | Other coverage gaps: runtime-selected models, spend with no matching code, unpriced models | Instrument, or scan the other repos |
+
+Cheaper-model suggestions stay with the provider you call: a Groq user gets Groq models, a
+DashScope user gets Qwen models. Calls through a router (OpenRouter, Vercel AI Gateway,
+Portkey) get suggestions from any vendor, since switching is one line there.
 
 Findings in examples, notebooks and docs are capped at low severity. Tests are skipped
 unless `--include-tests` is given.
@@ -103,17 +135,44 @@ largest saving per call site.
 2. **By model:** one call site uses a model, so it gets all of that model's spend.
 3. **Split:** several call sites share a model; spend is split evenly and marked "shared".
 
+## Providers
+
+The scanner works out where each call goes, in this order:
+
+1. The SDK or framework class: `cohere.ClientV2`, `Groq()`, `Mistral()`, `ChatTongyi`, `ChatOllama`,
+   LlamaIndex `OpenRouter`, Vercel AI `openrouter("...")`, ...
+2. The client's base URL or API-key variable: `OpenAI(base_url="https://openrouter.ai/api/v1")`,
+   `api_key=os.environ["DASHSCOPE_API_KEY"]`, including values set in constants or env defaults.
+3. Hosts, key variables and provider packages elsewhere in the same file, when they point at
+   exactly one provider.
+4. The model name: `openrouter/...`, `groq:...` (aisuite), or the model family's maker.
+
+Recognised providers include OpenAI, Azure OpenAI and AI Foundry, Anthropic, Google Gemini and
+Vertex AI, AWS Bedrock, OpenRouter, Vercel AI Gateway, Portkey, Alibaba DashScope (Qwen), DeepSeek,
+Moonshot (Kimi), Zhipu (GLM), MiniMax, ByteDance Volcengine (Doubao), Baidu Qianfan (ERNIE),
+Tencent Hunyuan, iFlytek Spark, SiliconFlow, Mistral, Cohere, xAI, Perplexity, Groq, Together,
+Fireworks, DeepInfra, Novita, Cerebras, SambaNova, NVIDIA NIM, Hugging Face, Replicate,
+Cloudflare Workers AI, Voyage, AI21, Databricks, watsonx, and self-hosted Ollama and LM Studio.
+Self-hosted calls are listed but never priced (there's no per-token bill). Adding a provider
+is one line in `scanner/providers.py`.
+
+**Prices** cover about 3,100 text and embedding models across all of these. A model is priced
+at its maker's list price when the catalog has it. Otherwise the same model's price at
+another host is used, and the report says so (R905). `trainlab prices update` refreshes the
+list and also merges OpenRouter's public model list (about 300 models at OpenRouter's prices).
+
 ## Languages and SDKs
 
 | | Python (AST, high confidence) | Other languages (pattern-based) |
 |---|---|---|
-| OpenAI / Azure OpenAI | chat, responses, embeddings, batches | JS/TS; Go (openai-go, go-openai); Java/Kotlin (openai-java, Azure, aallam); C# (OpenAI .NET, Azure.AI.OpenAI, Azure.AI.Inference); Ruby (ruby-openai); PHP (openai-php); Rust (async-openai) |
+| OpenAI-compatible APIs (any provider above) | chat, responses, embeddings, batches | JS/TS; Go (openai-go, go-openai); Java/Kotlin (openai-java, Azure, aallam); C# (OpenAI .NET, Azure.AI.OpenAI, Azure.AI.Inference); Ruby (ruby-openai); PHP (openai-php); Rust (async-openai) |
 | Anthropic | messages, batches | JS/TS; Go; Java; Ruby; PHP |
 | AWS Bedrock | invoke_model, converse (boto3, aioboto3) | JS commands; Go; Ruby; Rust |
-| Google Gemini / Vertex | generate_content, embed_content | JS/TS; Go genai |
-| LiteLLM | completion, embedding (incl. aliases, `functools.partial`) | — |
-| Frameworks | LangChain, LlamaIndex, Semantic Kernel, wrapper configs | Vercel AI SDK, LangChain4j, Spring AI, langchaingo, Semantic Kernel (.NET), RubyLLM, langchainrb, Prism, LLPhant, rig, genai |
-| Raw HTTP to provider APIs | `/chat/completions`, `/v1/messages`, `/v1/responses`, `/embeddings`, `:generateContent` | same |
+| Google Gemini / Vertex | generate_content, embed_content, `GenerativeModel` | JS/TS; Go genai |
+| Native vendor SDKs | DashScope (`Generation.call`), Mistral, Cohere, Ollama, Hugging Face, Replicate, Voyage, xAI, Zhipu, Volcengine Ark, Groq, Together, Fireworks, Cerebras | Mistral, Cohere, Ollama, Hugging Face, Replicate (JS/TS) |
+| LiteLLM / aisuite | completion, embedding (incl. aliases, `functools.partial`) | — |
+| Frameworks | LangChain and LlamaIndex (all provider classes), Semantic Kernel, wrapper configs | Vercel AI SDK (all providers), LangChain.js, LangChain4j, Spring AI, langchaingo, Semantic Kernel (.NET), RubyLLM, langchainrb, Prism, LLPhant, rig, genai |
+| Raw HTTP to provider APIs | `/chat/completions`, `/v1/messages`, `/v1/responses`, `/embeddings`, `:generateContent`, DashScope, Ollama and Cohere native paths | same |
 | Injected or factory-built clients | `client.chat.completions.create(...)` without an SDK import | — |
 
 Also handled:
@@ -155,9 +214,9 @@ exist. A ready-made GitHub Action posts the summary on pull requests: see
 
 ```
 trainlab scan [PATH ...] [--append] [--exclude GLOB] [--include-tests]
-trainlab import FILE                                   # type detected
+trainlab import FILE [--map FIELD=COLUMN,...]          # type detected
 trainlab import {csv,aws,azure,gcp,langfuse,otel} FILE # force a type
-trainlab import {openai,anthropic} [--days 30] [--key KEY | --file saved.json]
+trainlab import {openai,anthropic,openrouter} [--days 30] [--key KEY | --file saved.json]
 trainlab report [--out DIR] [--format html,json,md,pdf] [--fail-on high|medium|low]
 trainlab run [PATH ...] [--usage FILE ...] [--exclude GLOB] [--format ...] [--fail-on ...]
 trainlab ui [--port N] [--no-browser]
@@ -168,37 +227,41 @@ All state lives in `.trainlab/` (git-ignored automatically). Use `--workspace DI
 keep several analyses apart.
 
 Prices ship with the package. `trainlab prices update` downloads the latest list to
-`~/.cache/trainlab/prices.json` (or `$TRAINLAB_PRICES`). That and the usage API imports
-are the only network calls the tool makes, each only when you run it.
+`~/.cache/trainlab/prices.json` (or `$TRAINLAB_PRICES`), including OpenRouter's public
+model list. That and the usage API imports are the only network calls the tool makes,
+each only when you run it.
 
 ## Benchmark
 
 `scripts/eval_repos.py` scans real repositories and compares detected call sites with a
-plain-text search for SDK call patterns. It was run on 33 open-source projects in October
-2026 (shallow clones, 2 CPU cores). The set includes 9 typical AI apps, the 12 largest AI
-codebases we could find, and 12 corner cases: cookbooks full of notebooks, SDK repos, and
-Go, Java, Kotlin, C#, Ruby, PHP and Rust projects.
+plain-text search for SDK call patterns. It was run on 41 open-source projects in October
+2026 (shallow clones, 2 CPU cores):
+
+- 9 typical AI apps and the 12 largest AI codebases we could find;
+- 12 corner cases: cookbooks full of notebooks, SDK repos, and Go, Java, Kotlin, C#, Ruby,
+  PHP and Rust projects;
+- 8 multi-provider projects: Qwen-Agent (DashScope), Cohere Toolkit, the Mistral cookbook,
+  ollama-python, OpenRouter's examples, CAMEL, NextChat and opencode.
 
 | Repo | Files | Scan time | Call sites |
 |---|---|---|---|
-| lobe-chat | 17,765 | 19.0s | 99 |
-| dify | 12,957 | 11.6s | 15 |
-| onyx | 7,595 | 5.9s | 23 |
-| LibreChat | 6,156 | 8.4s | 9 |
-| llama_index | 5,278 | 9.8s | 902 (752 in notebooks) |
-| ragflow (Go) | 4,480 | 3.4s | 11 |
-| semantic-kernel (C#, Python) | 4,060 | 4.4s | 650 |
-| rig (Rust) | 2,911 | 4.4s | 106 |
-| langchain | 2,762 | 5.1s | 52 |
-| openai-cookbook (notebooks) | 1,237 | 5.3s | 544 |
-| langchaingo (Go) | 718 | 0.6s | 100 |
-| langchain4j-examples (Java) | 307 | 0.2s | 149 |
-| …21 more | | | |
+| lobe-chat | 17,765 | 20.7s | 100 |
+| dify | 12,957 | 14.2s | 15 |
+| onyx | 7,595 | 7.2s | 28 |
+| opencode (40 providers) | 5,675 | 6.0s | 50 |
+| llama_index | 5,278 | 12.3s | 1,100 (about 900 in notebooks) |
+| semantic-kernel (C#, Python) | 4,060 | 5.5s | 658 |
+| langchain | 2,762 | 6.0s | 77 |
+| camel | 1,268 | 2.7s | 34 |
+| openai-cookbook (notebooks) | 1,237 | 4.4s | 544 |
+| Mistral cookbook (notebooks) | 246 | 2.2s | 220 |
+| …31 more | | | |
 
 Every real SDK call found by the text search was also found by the scanner. The
 remaining text matches were docstrings and markdown, server route definitions, a
-framework's own internal helper methods, generated clients for the app's own API, and test
-mocks.
+framework's own internal helper methods, generated clients for the app's own API, other
+APIs with the same method names (Twilio and Plivo `messages.create`), and mocks in test
+files.
 
 ## Known limits
 
@@ -211,6 +274,12 @@ mocks.
   no model-switch recommendation.
 - The usage API importers have been tested against the documented response formats, not
   yet against live organization accounts.
+- Frameworks that pick the provider at runtime from configuration (CAMEL's model factory,
+  a gateway service that serves many tenants) show one call site for all providers. Traces
+  or `trainlab.instrument()` split them.
+- OpenRouter's activity API covers the last 30 days. BYOK inference (billed on your own
+  provider keys through OpenRouter) is counted as spend; if you also import that provider's
+  own billing, the same calls appear in both.
 - Prices are list prices. Negotiated discounts aren't known unless the billing export
   carries the billed cost, which then takes precedence.
 

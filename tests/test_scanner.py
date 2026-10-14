@@ -61,7 +61,7 @@ client = OpenAI(base_url="https://api.groq.com/openai/v1")
 client.chat.completions.create(model="llama-3.3-70b-versatile", messages=[])
 '''
     s = sites_of(src)
-    assert s[0].provider == "openai_compatible"
+    assert s[0].provider == "groq"
 
 
 def test_azure_and_bedrock_clients():

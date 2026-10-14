@@ -1,12 +1,109 @@
 {
-  "_meta": {
-    "purpose": "Economy-tier models to test as replacements, per provider. Curated; the analyzer skips any candidate that is missing from the price catalog, deprecated, or not cheaper than the current model. Review when providers release new models.",
-    "reviewed": "2026-10-14"
-  },
-  "openai": ["gpt-5-mini", "gpt-4.1-mini", "gpt-4o-mini"],
-  "azure": ["azure/gpt-5-mini", "azure/gpt-4.1-mini", "azure/gpt-4o-mini"],
-  "anthropic": ["claude-haiku-4-5"],
-  "bedrock": ["anthropic.claude-haiku-4-5-20251001-v1:0"],
-  "gemini": ["gemini/gemini-3.5-flash-lite", "gemini/gemini-flash-lite-latest"],
-  "embedding": ["text-embedding-3-small"]
+ "_meta": {
+  "purpose": "Economy-tier models to test as replacements, per provider (or per router, where any vendor is one line away). Curated; the analyzer skips any candidate that is missing from the price catalog, deprecated, or not cheaper than the current model. Review when providers release new models.",
+  "reviewed": "2026-10-14"
+ },
+ "openai": [
+  "gpt-5-mini",
+  "gpt-4.1-mini",
+  "gpt-4o-mini",
+  "gpt-5-nano"
+ ],
+ "azure": [
+  "azure/gpt-5-mini",
+  "azure/gpt-4.1-mini",
+  "azure/gpt-4o-mini"
+ ],
+ "anthropic": [
+  "claude-haiku-5-5",
+  "claude-haiku-4-5"
+ ],
+ "bedrock": [
+  "anthropic.claude-haiku-4-5-20251001-v1:0",
+  "amazon.nova-lite-v1:0",
+  "amazon.nova-micro-v1:0"
+ ],
+ "gemini": [
+  "gemini/gemini-3.5-flash-lite",
+  "gemini/gemini-flash-lite-latest"
+ ],
+ "vertex": [
+  "vertex_ai/gemini-3.1-flash-lite-preview",
+  "gemini-2.5-flash-lite"
+ ],
+ "dashscope": [
+  "dashscope/qwen-turbo",
+  "dashscope/qwen3.8-flash",
+  "dashscope/qwen-plus"
+ ],
+ "mistral": [
+  "mistral/mistral-small-latest",
+  "mistral/ministral-8b-latest",
+  "mistral/ministral-3b-latest"
+ ],
+ "deepseek": [
+  "deepseek-v4-flash",
+  "deepseek/deepseek-v3.2"
+ ],
+ "xai": [
+  "xai/grok-4.20-non-reasoning"
+ ],
+ "cohere": [
+  "command-r7b-12-2024",
+  "command-r-08-2024"
+ ],
+ "groq": [
+  "groq/openai/gpt-oss-20b",
+  "groq/openai/gpt-oss-120b"
+ ],
+ "together": [
+  "together_ai/openai/gpt-oss-20b",
+  "together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
+ ],
+ "fireworks": [
+  "fireworks_ai/gpt-oss-20b",
+  "fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct"
+ ],
+ "deepinfra": [
+  "deepinfra/openai/gpt-oss-20b",
+  "deepinfra/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
+ ],
+ "cerebras": [
+  "cerebras/llama3.1-8b",
+  "cerebras/gpt-oss-120b"
+ ],
+ "novita": [
+  "novita/meta-llama/llama-3.1-8b-instruct",
+  "novita/openai/gpt-oss-20b"
+ ],
+ "moonshot": [
+  "moonshot/kimi-k2.5",
+  "moonshot/moonshot-v1-8k"
+ ],
+ "zhipu": [
+  "zai/glm-4.5-air",
+  "zai/glm-5.3-flash",
+  "zai/glm-4.5-flash"
+ ],
+ "minimax": [
+  "minimax/MiniMax-M2.5-lightning",
+  "minimax/MiniMax-M2"
+ ],
+ "volcengine": [
+  "volcengine/doubao-seed-2-1-turbo-260628"
+ ],
+ "perplexity": [
+  "perplexity/sonar"
+ ],
+ "router": [
+  "gpt-5-mini",
+  "gemini/gemini-flash-lite-latest",
+  "claude-haiku-4-5",
+  "dashscope/qwen-turbo",
+  "deepseek-v4-flash",
+  "gpt-4o-mini"
+ ],
+ "embedding": [
+  "text-embedding-3-small"
+ ]
 }

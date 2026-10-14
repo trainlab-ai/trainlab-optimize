@@ -129,3 +129,73 @@ def test_overlapping_billing_sources_counted_once():
     for r in extra:
         r.model = "claude-opus-4-1"
     assert summarize(csv_only + extra, cat).monthly_total > one
+
+
+def test_openrouter_activity_file_and_parse():
+    from trainlab_optimize.importers.auto import read_any
+    recs, kind = read_any(FX / "openrouter_activity.json")
+    assert kind == "openrouter-file"
+    assert [(r.provider, r.model, r.input_tokens, r.cached_input_tokens, r.cost_usd) for r in recs] == [
+        ("openrouter", "anthropic/claude-sonnet-4.5", 3_000_000, 1_000_000, 12.5),
+        ("openrouter", "qwen/qwen3-235b-a22b", 2_000_000, 0, 1.0)]       # BYOK inference counts as spend
+
+
+def test_openrouter_importer_splits_by_key(monkeypatch):
+    from trainlab_optimize.importers import openrouter
+    activity = json.loads((FX / "openrouter_activity.json").read_text())
+    calls = []
+
+    def fake(url, params, headers):
+        calls.append((url, dict(params)))
+        if url.endswith("/keys"):
+            return {"data": [{"hash": "h1", "name": "support-bot"}, {"hash": "h2", "name": "analytics"}]
+                    if dict(params)["offset"] == "0" else []}
+        return {"data": activity["data"][:1]} if dict(params)["api_key_hash"] == "h1" else {"data": activity["data"][1:]}
+    monkeypatch.setattr(openrouter, "http_get_json", fake)
+    recs = openrouter.OpenRouterImporter("mgmt").fetch()
+    assert [(r.api_key, r.model) for r in recs] == [("support-bot", "anthropic/claude-sonnet-4.5"),
+                                                   ("analytics", "qwen/qwen3-235b-a22b")]
+
+
+def test_openrouter_csv_export_aggregates_rows_per_key():
+    recs = read_csv(FX / "openrouter_export.csv")
+    got = sorted((r.provider, r.model, r.api_key, r.input_tokens, r.requests, round(r.cost_usd, 4)) for r in recs)
+    assert got == [("openrouter", "anthropic/claude-sonnet-4.5", "analytics", 2000, 1, 0.05),
+                   ("openrouter", "openai/gpt-4o-mini", "support-bot", 2200, 2, 0.0225)]
+
+
+def test_unfamiliar_csv_needs_map_then_imports():
+    import pytest
+    from trainlab_optimize.importers.csv_generic import parse_map
+    with pytest.raises(ValueError, match="Billing Item"):        # error lists the file's columns
+        read_csv(FX / "alibaba_bill.csv")
+    recs = read_csv(FX / "alibaba_bill.csv", column_map=parse_map(
+        'model=Billing Item,cost_usd=Pretax Amount (USD),date=Billing Date,api_key=Instance ID'))
+    assert sum(r.cost_usd for r in recs) == 3.92 and {r.api_key for r in recs} == {"ak-123"}
+    assert sorted(r.model for r in recs) == ["qwen-max", "qwen-plus"]
+
+
+def test_same_model_on_different_channels_is_not_an_overlap():
+    from trainlab_optimize.analyzer.spend import summarize
+    from trainlab_optimize.pricing import PriceCatalog
+    from trainlab_optimize.schema import UsageRecord
+    direct = UsageRecord(date="2026-09-01", provider="anthropic", model="claude-sonnet-4-5", input_tokens=1_000_000,
+                         source="anthropic_usage_api")
+    routed = UsageRecord(date="2026-09-01", provider="openrouter", model="anthropic/claude-sonnet-4.5",
+                         input_tokens=1_000_000, cost_usd=3.0, source="openrouter_api")
+    azure = UsageRecord(date="2026-09-01", provider="azure", model="azure/gpt-4o", input_tokens=1_000_000,
+                        cost_usd=2.5, source="azure:cost.csv")
+    openai = UsageRecord(date="2026-09-01", provider="openai", model="gpt-4o", input_tokens=1_000_000,
+                         source="openai_usage_api")
+    s = summarize([direct, routed, azure, openai], PriceCatalog.load())
+    assert not s.overlaps
+    assert round(s.monthly_total / 30, 2) == 11.0          # 3 + 3 + 2.5 + 2.5, all counted
+
+
+def test_spend_by_api_key():
+    from trainlab_optimize.analyzer.spend import summarize
+    from trainlab_optimize.pricing import PriceCatalog
+    recs = read_csv(FX / "openrouter_export.csv")
+    s = summarize(recs, PriceCatalog.load())
+    assert set(s.by_api_key) == {"support-bot", "analytics"}
+    assert s.by_api_key["analytics"] > s.by_api_key["support-bot"]
