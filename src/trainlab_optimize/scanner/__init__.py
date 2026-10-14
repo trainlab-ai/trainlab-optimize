@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+import re
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -16,6 +17,17 @@ EXCLUDE_DIRS = {".git", "node_modules", "venv", ".venv", "env", ".env", "site-pa
                 "build", "__pycache__", ".tox", ".mypy_cache", ".pytest_cache", ".trainlab",
                 ".next", ".nuxt", "coverage", "vendor", ".idea", ".vscode", "target", ".ruff_cache"}
 MAX_FILE_BYTES = 1_000_000
+
+# Cheap text pre-filters: a file without any of these tokens cannot contain a call site or a
+# model reference, so it is never parsed. Keep in sync with python_ast/generic signatures.
+PY_TRIGGER = re.compile(
+    r"openai|anthropic|litellm|bedrock|genai|gemini|completions|embeddings|\.messages\.|"
+    r"responses\.|converse|invoke_model|generate_content|langchain|llama_index|pydantic_ai|"
+    r"init_chat_model|gpt-|chatgpt|claude|text-embedding|\bo[1-9]\b|o[1-9]-|mistral|deepseek|llama-?\d")
+JS_TRIGGER = re.compile(
+    r"completions|messages\.|responses\.|embeddings|generateText|streamText|generateObject|"
+    r"streamObject|embedMany|\bembed\(|generateContent|Command\(|gpt-|claude|gemini|"
+    r"text-embedding|model\s*:", re.I)
 
 
 @dataclass
@@ -68,6 +80,58 @@ def iter_files(root: Path):
             yield p
 
 
+PARALLEL_MIN_FILES = 400
+
+
+def _scan_python_text(rel: str, text: str):
+    if not PY_TRIGGER.search(text):
+        return [], [], False   # no LLM-related token anywhere in the file: skip the AST entirely
+    s = PythonFileScanner(rel, text)
+    sites = s.scan()
+    return sites, s.model_refs, s.parse_error
+
+
+def _scan_python_batch(items: list[tuple[str, str]]):
+    out = {}
+    for rel, path in items:
+        try:
+            text = Path(path).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        sites, refs, perr = _scan_python_text(rel, text)
+        if sites or refs or perr:
+            out[rel] = ([s.to_dict() for s in sites], refs, perr)
+    return out
+
+
+def _scan_python_parallel(root: Path, files: list[Path], exclude) -> dict:
+    """Parse Python files across CPU cores. Returns {rel: (sites, refs, parse_error)}; files that
+    produced nothing are reported as empty results so they are not parsed again."""
+    import concurrent.futures as cf
+    items = []
+    for p in files:
+        if p.suffix.lower() != ".py":
+            continue
+        rel = p.relative_to(root).as_posix()
+        if exclude and _excluded(rel, exclude):
+            continue
+        items.append((rel, str(p)))
+    workers = max(1, min(8, (os.cpu_count() or 2)))
+    if workers == 1 or len(items) < PARALLEL_MIN_FILES:
+        return {}
+    chunk = max(20, len(items) // (workers * 4))
+    batches = [items[i:i + chunk] for i in range(0, len(items), chunk)]
+    results: dict = {rel: ([], [], False) for rel, _ in items}
+    try:
+        with cf.ProcessPoolExecutor(max_workers=workers) as ex:
+            for part in ex.map(_scan_python_batch, batches):
+                for rel, (sites, refs, perr) in part.items():
+                    results[rel] = ([CallSite.from_dict(d) for d in sites], refs, perr)
+    except (OSError, RuntimeError, cf.process.BrokenProcessPool):
+        return {}   # fall back to sequential scanning
+    return results
+
+
 def _excluded(rel: str, patterns: list[str]) -> bool:
     import fnmatch
     for pat in patterns:
@@ -88,7 +152,10 @@ def scan(root: str | Path, include_tests: bool = False, catalog: PriceCatalog | 
     result.excluded = list(exclude or [])
     refs: list[tuple[str, int, str]] = []
 
-    for path in iter_files(root):
+    files = list(iter_files(root))
+    py_results = _scan_python_parallel(root, files, exclude) if len(files) >= PARALLEL_MIN_FILES else {}
+
+    for path in files:
         rel = path.relative_to(root).as_posix()
         if exclude and _excluded(rel, exclude):
             continue
@@ -105,13 +172,17 @@ def scan(root: str | Path, include_tests: bool = False, catalog: PriceCatalog | 
         result.files_by_language[lang] = result.files_by_language.get(lang, 0) + 1
 
         if lang == "python":
-            s = PythonFileScanner(rel, text)
-            sites = s.scan()
-            if not sites and not s.model_refs and "import" in text and _syntax_error(text):
+            if rel in py_results:
+                sites, mrefs, perr = py_results[rel]
+            else:
+                sites, mrefs, perr = _scan_python_text(rel, text)
+            if perr:
                 result.parse_errors.append(rel)
             result.call_sites.extend(sites)
-            refs.extend((rel, ln, m) for ln, m in s.model_refs)
+            refs.extend((rel, ln, m) for ln, m in mrefs)
         elif lang == "javascript":
+            if not JS_TRIGGER.search(text):
+                continue
             result.call_sites.extend(scan_js(rel, text))
             refs.extend((rel, ln, m) for ln, m in scan_model_refs(rel, text))
         else:
@@ -146,15 +217,6 @@ def scan(root: str | Path, include_tests: bool = False, catalog: PriceCatalog | 
 def _is_test_path(rel: str) -> bool:
     from .python_ast import TEST_PATH_RE
     return bool(TEST_PATH_RE.search(rel))
-
-
-def _syntax_error(text: str) -> bool:
-    import ast
-    try:
-        ast.parse(text)
-        return False
-    except (SyntaxError, ValueError):
-        return True
 
 
 def repo_fingerprint(root: str | Path) -> str:

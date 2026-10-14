@@ -200,7 +200,7 @@ class FileFacts:
 
 # --------------------------------------------------------------------------- scanner
 
-class PythonFileScanner(ast.NodeVisitor):
+class PythonFileScanner:
     def __init__(self, rel_path: str, source: str):
         self.rel_path = rel_path
         self.source = source
@@ -208,7 +208,9 @@ class PythonFileScanner(ast.NodeVisitor):
         self.model_refs: list[tuple[int, str]] = []
         self.facts = FileFacts()
         self._stack: list[ast.AST] = []
-        self._func_locals: list[dict[str, ast.AST]] = []
+        self._func_nodes: list[ast.AST] = []
+        self._locals_cache: dict[int, dict[str, ast.AST]] = {}
+        self.parse_error = False
         self._func_params: list[dict[str, ast.AST]] = []
         self.is_test = bool(TEST_PATH_RE.search(rel_path))
         self.has_llm_import = False
@@ -217,19 +219,58 @@ class PythonFileScanner(ast.NodeVisitor):
     def scan(self) -> list[CallSite]:
         try:
             tree = ast.parse(self.source)
-        except (SyntaxError, ValueError):
+        except (SyntaxError, ValueError, RecursionError, MemoryError):
+            self.parse_error = True
             return []
-        self._collect_facts(tree)
+        # Single traversal: collect file facts and remember plausible call nodes with their
+        # ancestors; resolve those candidates afterwards, once every fact in the file is known.
+        candidates = self._traverse(tree)
         # Without an LLM SDK import only wrapper configs (Settings(llm="gpt-4o")) are recorded.
         self.has_llm_import = bool(self.facts.imports & LLM_IMPORT_ROOTS)
-        self.visit(tree)
-        self._collect_model_refs(tree, used_lines={s.line for s in self.sites})
+        for call, ancestors in candidates:
+            self._stack = list(ancestors)
+            self._func_nodes = [n for n in ancestors if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+            self._func_params = [_params_of(fn) for fn in self._func_nodes]
+            self._check_call(call)
+        used = {s.line for s in self.sites}
+        self.model_refs = [(ln, v) for ln, v in self._ref_candidates if ln not in used]
         return self.sites
 
-    # ---- pass 1: file-level facts
-    def _collect_facts(self, tree: ast.AST) -> None:
+    # ---- single pass: facts + candidate calls
+    def _traverse(self, tree: ast.AST) -> list[tuple[ast.Call, tuple]]:
+        """Iterative DFS in source order (no recursion limit issues on deep expressions)."""
+        self._ref_candidates: list[tuple[int, str]] = []
+        self._seen_refs: set = set()
+        candidates: list[tuple[ast.Call, tuple]] = []
+        stack: list[ast.AST] = []
+        todo: list[tuple[ast.AST, bool]] = [(tree, False)]
+        iter_children = ast.iter_child_nodes
+        while todo:
+            node, exiting = todo.pop()
+            if exiting:
+                stack.pop()
+                continue
+            self._fact(node)
+            if isinstance(node, ast.Call) and _is_candidate(node):
+                candidates.append((node, tuple(stack)))
+            stack.append(node)
+            todo.append((node, True))
+            children = list(iter_children(node))
+            for c in reversed(children):
+                todo.append((c, False))
+        return candidates
+
+    def _fact(self, node: ast.AST) -> None:
         f = self.facts
-        for node in ast.walk(tree):
+        if True:
+            if isinstance(node, ast.Constant):
+                v = node.value
+                if isinstance(v, str) and 1 < len(v) < 80 and MODEL_NAME_RE.match(v.strip()):
+                    key = (node.lineno, v.strip())
+                    if key not in self._seen_refs:
+                        self._seen_refs.add(key)
+                        self._ref_candidates.append(key)
+                return
             if isinstance(node, ast.Import):
                 for a in node.names:
                     f.imports.add(a.name.split(".")[0])
@@ -247,7 +288,7 @@ class PythonFileScanner(ast.NodeVisitor):
                 targets = node.targets if isinstance(node, ast.Assign) else [node.target]
                 value = node.value
                 if value is None:
-                    continue
+                    return
                 for t in targets:
                     name = t.id if isinstance(t, ast.Name) else (
                         f"self.{t.attr}" if isinstance(t, ast.Attribute) and isinstance(t.value, ast.Name)
@@ -294,41 +335,6 @@ class PythonFileScanner(ast.NodeVisitor):
                 if key in low:
                     return (prov, None)
         return None
-
-    # ---- traversal with context
-    def generic_visit(self, node: ast.AST) -> None:
-        self._stack.append(node)
-        super().generic_visit(node)
-        self._stack.pop()
-
-    def visit_FunctionDef(self, node) -> None:
-        self._enter_function(node)
-
-    def visit_AsyncFunctionDef(self, node) -> None:
-        self._enter_function(node)
-
-    def _enter_function(self, node) -> None:
-        local: dict[str, ast.AST] = {}
-        for sub in ast.walk(node):
-            if isinstance(sub, ast.Assign) and len(sub.targets) == 1 and isinstance(sub.targets[0], ast.Name):
-                local[sub.targets[0].id] = sub.value
-        params: dict[str, ast.AST] = {}
-        args = node.args
-        positional = args.posonlyargs + args.args
-        for a, d in zip(positional[len(positional) - len(args.defaults):], args.defaults):
-            params[a.arg] = d
-        for a, d in zip(args.kwonlyargs, args.kw_defaults):
-            if d is not None:
-                params[a.arg] = d
-        self._func_locals.append(local)
-        self._func_params.append(params)
-        self.generic_visit(node)
-        self._func_locals.pop()
-        self._func_params.pop()
-
-    def visit_Call(self, node: ast.Call) -> None:
-        self._check_call(node)
-        self.generic_visit(node)
 
     # ---- call detection
     def _check_call(self, node: ast.Call) -> None:
@@ -496,7 +502,7 @@ class PythonFileScanner(ast.NodeVisitor):
         if isinstance(expr, ast.Constant) and isinstance(expr.value, str):
             return expr.value, None, "literal"
         if isinstance(expr, ast.Name):
-            for scope in reversed(self._func_locals):
+            for scope in self._local_scopes():
                 if expr.id in scope:
                     m, _, s = self._resolve_str(scope[expr.id], depth + 1)
                     if m:
@@ -616,7 +622,7 @@ class PythonFileScanner(ast.NodeVisitor):
         while isinstance(node, ast.Name) and seen < 4:
             seen += 1
             nxt = None
-            for scope in reversed(self._func_locals):
+            for scope in self._local_scopes():
                 if node.id in scope:
                     nxt = scope[node.id]
                     break
@@ -631,7 +637,7 @@ class PythonFileScanner(ast.NodeVisitor):
 
     def _is_local_name(self, name: str) -> bool:
         """True if the name is a function local/param (dynamic at runtime)."""
-        return any(name in s for s in self._func_locals) or any(name in s for s in self._func_params)
+        return any(name in s for s in self._local_scopes()) or any(name in s for s in self._func_params)
 
     def _has_cache_control(self, node: ast.AST) -> bool:
         return any(isinstance(n, ast.Constant) and n.value == "cache_control" for n in ast.walk(node))
@@ -747,15 +753,56 @@ class PythonFileScanner(ast.NodeVisitor):
                     unbounded = True
         return has, unbounded
 
-    # ---- model references outside calls (config dicts, constants)
-    def _collect_model_refs(self, tree: ast.AST, used_lines: set[int]) -> None:
-        seen = set()
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Constant) and isinstance(node.value, str) and len(node.value) < 80:
-                v = node.value.strip()
-                if MODEL_NAME_RE.match(v) and node.lineno not in used_lines and (node.lineno, v) not in seen:
-                    seen.add((node.lineno, v))
-                    self.model_refs.append((node.lineno, v))
+    # ---- lazily computed function locals (only for functions that contain a detected call)
+    def _local_scopes(self):
+        """Innermost-first local assignment maps for the enclosing functions."""
+        for fn in reversed(self._func_nodes):
+            key = id(fn)
+            local = self._locals_cache.get(key)
+            if local is None:
+                local = {}
+                for sub in ast.walk(fn):
+                    if isinstance(sub, ast.Assign) and len(sub.targets) == 1 \
+                            and isinstance(sub.targets[0], ast.Name):
+                        local[sub.targets[0].id] = sub.value
+                self._locals_cache[key] = local
+            yield local
+
+
+_CANDIDATE_NAMES: set[str] = set()
+
+
+def _init_candidate_names() -> None:
+    _CANDIDATE_NAMES.update(suf.rsplit(".", 1)[-1] for suf, _, _ in CALL_SUFFIXES)
+    _CANDIDATE_NAMES.update(LITELLM_FUNCS)
+    _CANDIDATE_NAMES.update(CONFIG_CLASSES)
+    _CANDIDATE_NAMES.update(CONFIG_FUNCS)
+    _CANDIDATE_NAMES.add("Agent")
+
+
+def _is_candidate(node: ast.Call) -> bool:
+    """Cheap filter: could this call be an LLM call or a model configuration?"""
+    func = node.func
+    name = func.attr if isinstance(func, ast.Attribute) else func.id if isinstance(func, ast.Name) else None
+    if name in _CANDIDATE_NAMES:
+        return True
+    for kw in node.keywords:
+        if kw.arg in WRAPPER_MODEL_KWARGS and isinstance(kw.value, ast.Constant) \
+                and isinstance(kw.value.value, str):
+            return True
+    return False
+
+
+def _params_of(fn) -> dict[str, ast.AST]:
+    params: dict[str, ast.AST] = {}
+    args = fn.args
+    positional = args.posonlyargs + args.args
+    for a, d in zip(positional[len(positional) - len(args.defaults):], args.defaults):
+        params[a.arg] = d
+    for a, d in zip(args.kwonlyargs, args.kw_defaults):
+        if d is not None:
+            params[a.arg] = d
+    return params
 
 
 def _unparse(node: ast.AST) -> str:
@@ -763,3 +810,6 @@ def _unparse(node: ast.AST) -> str:
         return ast.unparse(node)[:120]
     except Exception:  # pragma: no cover
         return "<expr>"
+
+
+_init_candidate_names()

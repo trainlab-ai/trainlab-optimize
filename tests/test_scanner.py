@@ -202,3 +202,16 @@ def agent():
     s = PythonFileScanner("examples/a.py", src).scan()
     assert [x.loop_kind for x in s] == ["comprehension", "while"]
     assert all(x.scope == "example" for x in s)
+
+
+def test_short_model_names_are_refs():
+    s = PythonFileScanner("cfg.py", 'REASONING = "o3"\nFAST = "gpt-5-mini"\n')
+    s.scan()
+    assert sorted(v for _, v in s.model_refs) == ["gpt-5-mini", "o3"]
+
+
+def test_deeply_nested_expression_does_not_crash(tmp_path):
+    expr = " + ".join(["'a'"] * 3000)
+    (tmp_path / "deep.py").write_text(f"import openai\nx = {expr}\n")
+    r = scan(tmp_path)
+    assert r.call_sites == []
