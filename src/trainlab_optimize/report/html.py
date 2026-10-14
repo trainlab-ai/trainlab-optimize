@@ -165,7 +165,7 @@ def _finding(f, sites: dict) -> str:
     elif f.monthly_spend_usd:
         save = f'<span class="note">{money(f.monthly_spend_usd)}/mo affected</span>'
     tags = f'<span class="tag">{e(f.severity)}</span><span class="tag">{e(f.strategy)}</span>'
-    tags += f'<span class="tag">{"estimated" if f.tier == "estimated" else "from code only"}</span>'
+    tags += f'<span class="tag">{ {"estimated": "estimated", "validated": "validated by experiment"}.get(f.tier, "from code only")}</span>'
     if f.evidence.get("scope") == "example code":
         tags += '<span class="tag">example code</span>'
     if f.trainlab_candidate:

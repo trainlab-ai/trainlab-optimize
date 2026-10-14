@@ -205,6 +205,75 @@ against that log.
 Try it offline: `python examples/instrument_demo/run_demo.py`, then in that folder
 `trainlab scan app && trainlab import .trainlab/traces && trainlab report`.
 
+## Prove a saving: `trainlab experiment`
+
+A finding like "`gpt-4o` on a classification task, try `gpt-4o-mini`, save ~$5k/month" is an
+estimate. An experiment proves it or disproves it: real inputs from that call site are replayed
+against the current model and cheaper candidates, **with your own API keys**, every answer is
+scored, and the finding becomes **validated** with the measured saving, or is closed as tested.
+
+```bash
+trainlab experiment plan                                  # call sites worth testing, with candidates
+trainlab experiment run --site app/support.py:42 --max-cost 5
+trainlab report                                           # the finding now shows "validated by experiment"
+```
+
+**Samples.** Real inputs, one call site at a time:
+- captured by `instrument()`, opt-in and local:
+  `trainlab.instrument(capture={"sites": ["app/support.py:42"], "sample_rate": 0.05})` writes
+  inputs and production outputs to `.trainlab/samples/` (git-ignored). Emails, phone numbers,
+  card numbers and keys are redacted unless `"redact": False`. Off by default;
+- or a file you have: JSONL (chat messages, prompt/completion, input/expected), CSV
+  (`--input-column`, `--expected-column`, `--system`), a Langfuse export, OpenTelemetry spans
+  with prompt content.
+
+**What counts as a pass.** Each answer is compared with the reference: the expected answer if
+the dataset has one, otherwise the production output (or a fresh call to the current model).
+
+| Task (detected, or `--task`) | A sample passes when |
+|---|---|
+| classification | same label (case, punctuation and "Label:" wrappers ignored) |
+| extraction | valid JSON with every field equal (numbers numerically, text case- and space-insensitive) |
+| generation | an LLM judge (`--judge`) finds it not worse than the reference in both A/B orders |
+
+A candidate is **validated (PASS)** only when the one-sided 95% lower confidence bound of its pass
+rate clears the bar (95%; 90% for free text). It **FAILS** when the upper bound is below the bar,
+and is **INCONCLUSIVE** otherwise, with the number of samples that would settle it. Free-text
+answers without a judge are reported but never validated: similarity to the old answer isn't
+quality. When expected answers show the current model itself is below the bar, the bar becomes
+its own accuracy minus 2 points; `--calibrate` measures how often it agrees with itself.
+
+**Cost control.**
+- `trainlab experiment plan` shows the estimated and worst-case cost, and where data will go,
+  before anything is sent.
+- `--max-cost` is a hard cap: each call's worst case is reserved before it is sent, so spend
+  can't pass the cap even with parallel calls.
+- Production outputs are reused instead of calling the current model again.
+- A candidate that is clearly failing after 30 samples isn't called again.
+- Every response is cached locally, so an interrupted or budget-cut run resumes without paying
+  twice.
+
+**Privacy.**
+- Samples go only to the endpoints listed in the plan.
+- Sending them to a provider that doesn't already serve that call needs `--yes`, or a confirmation.
+- Keys are read from the environment and never written.
+- Results store scores, not answers.
+- Base URLs can be pointed at a gateway with `TRAINLAB_BASE_<PROVIDER>`.
+
+**Models.** OpenAI, Azure OpenAI (`azure/<deployment>`), Anthropic, Gemini, Bedrock (boto3),
+and OpenAI-compatible providers by prefix or name: Groq, Together, Fireworks, DeepSeek,
+Mistral, DashScope/Qwen, xAI, OpenRouter, Moonshot, Zhipu, Cohere, Perplexity, Ollama. Anything
+else goes through LiteLLM if it is installed. No extra dependencies.
+
+**Tested on the 100-repo suite** ([results](bench/experiments/RESULTS.md)): 120 experiments
+across the 100 frozen repositories, run against a simulated model zoo where every model's
+accuracy is designed:
+- No model below the bar was ever validated, and no model clearly above it was ever failed.
+- Every sample's score matched the truth, and cost matched the token log to the cent.
+- The budget was never exceeded, and resumed runs never paid twice.
+- All injected rate-limit and server errors were recovered.
+- Nothing was sent to any endpoint other than the configured ones.
+
 ## What it finds
 
 | Rule | Finding | Typical fix |
@@ -237,7 +306,7 @@ Every number carries a confidence tier:
 |---|---|
 | From code | Pattern found in source, no cost attached |
 | Estimated | Measured spend × price difference. Quality not yet tested |
-| Validated | Tested on your real inputs (`trainlab experiment`, coming in v0.3) |
+| Validated | Tested on your real inputs with `trainlab experiment`: quality gate passed, saving measured |
 | Realized | Confirmed in production billing |
 
 Recommendations on the same call site overlap, so the headline total only counts the
@@ -336,6 +405,10 @@ trainlab report [--out DIR] [--format html,json,md,pdf] [--fail-on high|medium|l
 trainlab run [PATH ...] [--usage FILE ...] [--exclude GLOB] [--format ...] [--fail-on ...]
 trainlab ui [--port N] [--no-browser]
 trainlab prices show MODEL | prices info | prices update
+trainlab experiment plan [--site PATH:LINE] [--samples FILE] [--candidates M1,M2]
+trainlab experiment run --site PATH:LINE | --samples FILE --baseline M [--candidates M1,M2] [--max-cost USD]
+                        [--judge MODEL] [--task ...] [--n 100] [--calibrate] [--yes]
+trainlab experiment list | show ID
 ```
 
 All state lives in `.trainlab/` (git-ignored automatically). Use `--workspace DIR` to
@@ -343,8 +416,8 @@ keep several analyses apart.
 
 Prices ship with the package. `trainlab prices update` downloads the latest list to
 `~/.cache/trainlab/prices.json` (or `$TRAINLAB_PRICES`), including OpenRouter's public
-model list. That and the usage API imports are the only network calls the tool makes,
-each only when you run it.
+model list. That, the usage API imports and `trainlab experiment run` (which calls the models
+you name, with your keys) are the only network calls the tool makes, each only when you run it.
 
 ## Benchmark
 
@@ -427,6 +500,12 @@ intended, `python bench/freeze.py save` makes the new results the baseline.
   `google-generativeai` and `vertexai` SDKs default to gRPC; `google-genai` uses HTTP),
   `urllib.request`/`pycurl`, realtime/WebSocket APIs, and LLM APIs at paths outside the
   standard ones. Scan and billing still cover those calls.
+- Experiments score what can be checked automatically: labels, JSON fields, and free text with
+  an LLM judge. They don't run your downstream tests (did the agent's tool call succeed, did the
+  user accept the draft). For agents and multi-step flows, test on the final output with a
+  judge, or bring expected answers.
+- Experiments replay single calls. Multi-turn conversations are replayed with the history as
+  production sent it, so a candidate is tested on the current model's earlier turns.
 - Prices are list prices. Negotiated discounts aren't known unless the billing export
   carries the billed cost, which then takes precedence.
 
@@ -446,10 +525,10 @@ Price data comes from [BerriAI/litellm](https://github.com/BerriAI/litellm)'s
 
 ## Roadmap
 
-- **v0.2** (this release) `trainlab.instrument()`: exact cost per line, feature and team
+- **v0.2** `trainlab.instrument()`: exact cost per line, feature and team
+- **v0.3** (this release) `trainlab experiment`: prove a saving on real inputs before making it
 - JS/TypeScript `instrument()` for Node apps
-- **v0.3** `trainlab experiment`: replay real inputs against cheaper candidates with
-  quality gates; `trainlab export` for a TrainLab optimization engagement
+- **v0.4** `trainlab export`: hand a validated workload to TrainLab for a fine-tuned model
 
 ## License
 

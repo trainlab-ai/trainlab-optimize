@@ -27,6 +27,11 @@ class Analysis:
     generated_at: str
     catalog_meta: dict = field(default_factory=dict)
 
+    @property
+    def validated_savings(self) -> float | None:
+        v = [f.savings_high_usd for f in self.findings if f.tier == "validated" and f.savings_high_usd]
+        return round(sum(v), 2) if v else None
+
     def to_dict(self) -> dict:
         return {
             "schema_version": SCHEMA_VERSION,
@@ -61,6 +66,7 @@ class Analysis:
             "coverage": self.coverage,
             "findings": [f.to_dict() for f in self.findings],
             "savings": {"monthly_low_usd": self.savings_low, "monthly_high_usd": self.savings_high,
+                        "validated_monthly_usd": self.validated_savings,
                         "tier": "estimated" if self.savings_high is not None else "static"},
         }
 
@@ -87,7 +93,7 @@ def _group(findings: list[Finding], sites: dict) -> list[Finding]:
 
 
 def analyze(scan: ScanResult, usage: list[UsageRecord], catalog: PriceCatalog | None = None,
-            today: date | None = None) -> Analysis:
+            today: date | None = None, experiments: list[dict] | None = None) -> Analysis:
     catalog = catalog or PriceCatalog.load()
     today = today or date.today()
     spend = summarize(usage, catalog)
@@ -105,6 +111,9 @@ def analyze(scan: ScanResult, usage: list[UsageRecord], catalog: PriceCatalog | 
                     f.severity = "low" if f.severity != "info" else f.severity
                     f.evidence = {**f.evidence, "scope": "example code"}
                 findings.append(f)
+
+    from .experiments import apply as apply_experiments
+    findings = apply_experiments(findings, scan.call_sites, ctx.attribution, experiments or [])
 
     # Non-overlapping total, computed on per-site findings BEFORE grouping:
     # for each call site take only its single largest saving, never the sum of

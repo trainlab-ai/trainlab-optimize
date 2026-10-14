@@ -121,7 +121,8 @@ class App:
         sc = self.ws.load_scan()
         if sc is None:
             raise ValueError("Scan your code first.")
-        a = analyze(sc, self.ws.load_usage())
+        from .experiment.runner import load_results
+        a = analyze(sc, self.ws.load_usage(), experiments=load_results(self.ws.path))
         formats = tuple(f for f in body.get("formats", ["html", "json", "md"]) if f in ("html", "json", "md", "pdf"))
         write_reports(a, self.ws.path / "report", formats=formats or ("html",))
         st = self.state()

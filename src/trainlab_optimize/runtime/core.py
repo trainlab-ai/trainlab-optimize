@@ -114,6 +114,7 @@ class Recorder:
         self._kind: dict[str, int] = {}   # filename -> 0 library, 1 app, 2 thread/loop boundary
         self._relpath: dict[str, str] = {}
         self.counts = {"recorded": 0, "dropped": 0, "errors": 0}
+        self.capture = None                 # runtime.capture.Capture when samples are being captured
 
     # -- stack walking
     def _classify(self, fn: str) -> int:
@@ -498,11 +499,15 @@ def _finish_or_stream(rec, ev, t0, result, args, kwargs, extract, is_stream, wra
         if is_stream is not None and wrap_stream is not None and is_stream(args, kwargs, result):
             ev.stream = True
             ev._req = kwargs          # kept until the stream ends, for input estimates; never stored
+            if rec.capture is not None and rec.capture.wants(ev):
+                from .capture import request_of
+                ev._cap_text, ev._cap_req = [], request_of(kwargs)
 
             def finish(error: BaseException | None = None):
                 ev.ms = round((time.perf_counter() - t0) * 1000, 1)
                 if error is not None:
                     ev.ok, ev.error = False, type(error).__name__
+                _capture_stream(rec, ev)
                 rec.emit(ev)
             return wrap_stream(result, ev, finish)
         snapshot = (ev.input_tokens, ev.output_tokens, ev.cached_input_tokens, ev.cache_write_tokens,
@@ -524,10 +529,28 @@ def _finish_or_stream(rec, ev, t0, result, args, kwargs, extract, is_stream, wra
         if ev.__dict__.get("_defer"):
             ev._t0 = t0                       # recorded by the HTTP layer when the body has been read
             return result
+        if rec.capture is not None:
+            try:
+                if rec.capture.wants(ev):
+                    from .capture import request_of, result_text
+                    rec.capture.write(ev, request_of(kwargs), result_text(result))
+            except Exception:  # noqa: BLE001
+                rec._warn("capture", "could not capture a sample")
         rec.emit(ev)
     except Exception:  # noqa: BLE001
         rec._warn(f"extract:{ev.sdk}", f"could not read usage from {ev.sdk}")
     return result
+
+
+def _capture_stream(rec, ev) -> None:
+    parts = ev.__dict__.pop("_cap_text", None)
+    req = ev.__dict__.pop("_cap_req", None)
+    if parts is None or rec.capture is None or not ev.ok or ev.stream_incomplete:
+        return
+    try:
+        rec.capture.write(ev, req, "".join(parts))
+    except Exception:  # noqa: BLE001
+        rec._warn("capture", "could not capture a sample")
 
 
 def num(x) -> int | None:

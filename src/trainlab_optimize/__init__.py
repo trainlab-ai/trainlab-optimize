@@ -1,6 +1,6 @@
 """TrainLab Optimize: find and prove LLM cost savings in your codebase."""
 
-__version__ = "0.2.2"
+__version__ = "0.3.0"
 SCHEMA_VERSION = "1"
 
 _INSTRUMENT_API = {"instrument", "uninstrument", "flush", "tag", "current_tags", "status"}

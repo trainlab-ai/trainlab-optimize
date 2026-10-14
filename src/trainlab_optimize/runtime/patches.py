@@ -183,6 +183,9 @@ def _estimate_output(ev) -> None:
 def _add_chars(ev, text) -> None:
     if text:
         ev._chars = getattr(ev, "_chars", 0) + len(text)
+        cap = ev.__dict__.get("_cap_text")
+        if cap is not None:
+            cap.append(text)
 
 
 # ------------------------------------------------------------------ raw-response wrappers

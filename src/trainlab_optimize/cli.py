@@ -205,7 +205,8 @@ def cmd_report(args) -> int:
     if result is None:
         print("No scan found. Run `trainlab scan <path>` first.", file=sys.stderr)
         return 2
-    a = analyze(result, ws.load_usage())
+    from .experiment.runner import load_results
+    a = analyze(result, ws.load_usage(), experiments=load_results(ws.path))
     out = Path(args.out) if args.out else ws.path / "report"
     try:
         paths = write_reports(a, out, formats=tuple(f.strip() for f in args.format.split(",") if f.strip()))
@@ -340,6 +341,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("action", choices=["show", "info", "update"])
     p.add_argument("model", nargs="?")
     p.set_defaults(fn=cmd_prices)
+
+    from .experiment.cli import add_parser as add_experiment
+    add_experiment(sub, common)
     return ap
 
 

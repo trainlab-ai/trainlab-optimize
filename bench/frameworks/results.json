@@ -33,7 +33,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 18.3,
+   "secs": 20.8,
    "status": "PASS"
   },
   {
@@ -65,7 +65,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 26.4,
+   "secs": 31.5,
    "status": "PASS"
   },
   {
@@ -96,7 +96,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 15.4,
+   "secs": 15.8,
    "status": "PASS"
   },
   {
@@ -127,7 +127,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 7.9,
+   "secs": 10.9,
    "status": "PASS"
   },
   {
@@ -163,7 +163,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 77.1,
+   "secs": 115.6,
    "status": "PASS"
   },
   {
@@ -194,7 +194,7 @@
    ],
    "exit": 1,
    "exit_without_trainlab": 1,
-   "secs": 11.2,
+   "secs": 13.9,
    "status": "PASS"
   },
   {
@@ -225,7 +225,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 13.5,
+   "secs": 14.1,
    "status": "PASS"
   },
   {
@@ -255,7 +255,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 10.0,
+   "secs": 9.5,
    "status": "PASS"
   },
   {
@@ -286,7 +286,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 15.0,
+   "secs": 14.3,
    "status": "PASS"
   },
   {
@@ -317,7 +317,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 8.5,
+   "secs": 7.9,
    "status": "PASS"
   },
   {
@@ -348,7 +348,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 9.0,
+   "secs": 8.9,
    "status": "PASS"
   },
   {
@@ -380,7 +380,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 9.6,
+   "secs": 9.0,
    "status": "PASS"
   },
   {
@@ -410,7 +410,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 9.3,
+   "secs": 7.1,
    "status": "PASS"
   },
   {
@@ -439,7 +439,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 6.5,
+   "secs": 4.8,
    "status": "PASS"
   },
   {
@@ -468,7 +468,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 14.5,
+   "secs": 18.8,
    "status": "PASS"
   },
   {
@@ -499,7 +499,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 14.0,
+   "secs": 9.9,
    "status": "PASS"
   },
   {
@@ -530,7 +530,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 20.2,
+   "secs": 19.2,
    "status": "PASS"
   },
   {
@@ -559,7 +559,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 16.8,
+   "secs": 22.3,
    "status": "PASS"
   },
   {
@@ -590,7 +590,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 3.9,
+   "secs": 3.4,
    "status": "PASS"
   },
   {
@@ -621,7 +621,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 4.7,
+   "secs": 4.4,
    "status": "PASS"
   },
   {
@@ -650,7 +650,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 4.8,
+   "secs": 5.3,
    "status": "PASS"
   },
   {
@@ -681,7 +681,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 24.1,
+   "secs": 28.2,
    "status": "PASS"
   },
   {
@@ -710,7 +710,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 27.4,
+   "secs": 31.5,
    "status": "PASS"
   },
   {
@@ -740,7 +740,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 26.7,
+   "secs": 30.2,
    "status": "PASS"
   },
   {
@@ -769,7 +769,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 24.2,
+   "secs": 26.9,
    "status": "PASS"
   },
   {
@@ -798,7 +798,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 19.5,
+   "secs": 21.0,
    "status": "PASS"
   },
   {
@@ -827,7 +827,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 22.9,
+   "secs": 41.7,
    "status": "PASS"
   },
   {
@@ -856,7 +856,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 20.1,
+   "secs": 44.5,
    "status": "PASS"
   },
   {
@@ -886,7 +886,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 19.6,
+   "secs": 45.5,
    "status": "PASS"
   },
   {
@@ -915,7 +915,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 11.4,
+   "secs": 28.8,
    "status": "PASS"
   },
   {
@@ -944,7 +944,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 32.4,
+   "secs": 61.1,
    "status": "PASS"
   },
   {
@@ -975,7 +975,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 55.3,
+   "secs": 108.6,
    "status": "PASS"
   },
   {
@@ -1005,7 +1005,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 39.2,
+   "secs": 87.7,
    "status": "PASS"
   },
   {
@@ -1034,7 +1034,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 36.6,
+   "secs": 82.0,
    "status": "PASS"
   },
   {
@@ -1063,7 +1063,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 46.1,
+   "secs": 82.9,
    "status": "PASS"
   },
   {
@@ -1092,7 +1092,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 38.9,
+   "secs": 75.3,
    "status": "PASS"
   },
   {
@@ -1121,7 +1121,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 41.0,
+   "secs": 68.0,
    "status": "PASS"
   },
   {
@@ -1150,7 +1150,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 89.7,
+   "secs": 83.5,
    "status": "PASS"
   },
   {
@@ -1182,7 +1182,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 49.2,
+   "secs": 50.4,
    "status": "PASS"
   },
   {
@@ -1216,7 +1216,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 45.5,
+   "secs": 45.3,
    "status": "PASS"
   },
   {
@@ -1245,7 +1245,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 37.2,
+   "secs": 38.8,
    "status": "PASS"
   },
   {
@@ -1276,7 +1276,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 79.1,
+   "secs": 74.7,
    "status": "PASS"
   },
   {
@@ -1305,7 +1305,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 28.4,
+   "secs": 30.2,
    "status": "PASS"
   },
   {
@@ -1334,7 +1334,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 37.4,
+   "secs": 36.5,
    "status": "PASS"
   },
   {
@@ -1363,7 +1363,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 68.4,
+   "secs": 78.8,
    "status": "PASS"
   },
   {
@@ -1392,7 +1392,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 20.0,
+   "secs": 21.6,
    "status": "PASS"
   },
   {
@@ -1421,7 +1421,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 45.7,
+   "secs": 57.1,
    "status": "PASS"
   },
   {
@@ -1453,7 +1453,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 41.6,
+   "secs": 44.7,
    "status": "PASS"
   },
   {
@@ -1482,7 +1482,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 18.1,
+   "secs": 18.8,
    "status": "PASS"
   },
   {
@@ -1511,7 +1511,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 30.3,
+   "secs": 32.0,
    "status": "PASS"
   },
   {
@@ -1540,7 +1540,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 28.2,
+   "secs": 29.1,
    "status": "PASS"
   },
   {
@@ -1569,7 +1569,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 17.3,
+   "secs": 15.7,
    "status": "PASS"
   },
   {
@@ -1598,7 +1598,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 19.3,
+   "secs": 17.9,
    "status": "PASS"
   },
   {
@@ -1627,7 +1627,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 21.3,
+   "secs": 17.9,
    "status": "PASS"
   },
   {
@@ -1656,7 +1656,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 17.3,
+   "secs": 16.3,
    "status": "PASS"
   },
   {
@@ -1667,8 +1667,8 @@
    "server_calls_without_trainlab": 2,
    "recorded": 2,
    "failed_recorded": [],
-   "input_truth": 11014,
-   "input_rec": 11014,
+   "input_truth": 11019,
+   "input_rec": 11019,
    "output_truth": 34,
    "output_rec": 34,
    "estimated": 0,
@@ -1687,7 +1687,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 32.1,
+   "secs": 27.0,
    "status": "PASS"
   },
   {
@@ -1716,7 +1716,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 38.9,
+   "secs": 34.1,
    "status": "PASS"
   },
   {
@@ -1745,7 +1745,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 26.8,
+   "secs": 28.2,
    "status": "PASS"
   },
   {
@@ -1774,7 +1774,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 66.1,
+   "secs": 109.1,
    "status": "PASS"
   },
   {
@@ -1803,7 +1803,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 64.5,
+   "secs": 106.0,
    "status": "PASS"
   },
   {
@@ -1832,7 +1832,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 31.4,
+   "secs": 32.6,
    "status": "PASS"
   },
   {
@@ -1861,7 +1861,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 32.5,
+   "secs": 48.6,
    "status": "PASS"
   },
   {
@@ -1890,7 +1890,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 112.1,
+   "secs": 189.9,
    "status": "PASS"
   },
   {
@@ -1919,7 +1919,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 34.8,
+   "secs": 31.7,
    "status": "PASS"
   },
   {
@@ -1948,7 +1948,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 14.8,
+   "secs": 10.2,
    "status": "PASS"
   },
   {
@@ -1977,7 +1977,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 55.9,
+   "secs": 86.2,
    "status": "PASS"
   },
   {
@@ -2006,7 +2006,7 @@
    ],
    "exit": 1,
    "exit_without_trainlab": 1,
-   "secs": 38.5,
+   "secs": 73.3,
    "status": "PASS"
   },
   {
@@ -2035,7 +2035,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 16.9,
+   "secs": 17.1,
    "status": "PASS"
   },
   {
@@ -2064,7 +2064,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 24.5,
+   "secs": 24.3,
    "status": "PASS"
   },
   {
@@ -2093,7 +2093,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 20.0,
+   "secs": 20.8,
    "status": "PASS"
   },
   {
@@ -2123,7 +2123,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 14.7,
+   "secs": 14.2,
    "status": "PASS"
   },
   {
@@ -2152,7 +2152,7 @@
    ],
    "exit": 0,
    "exit_without_trainlab": 0,
-   "secs": 7.1,
+   "secs": 15.9,
    "status": "PASS"
   }
  ]

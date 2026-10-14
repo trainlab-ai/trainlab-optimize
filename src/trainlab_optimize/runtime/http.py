@@ -97,34 +97,54 @@ def _json_body(content) -> dict | None:
 
 
 # ------------------------------------------------------------------ usage from any provider's JSON
-def _text_of(d: dict) -> int:
-    n = 0
+def _texts(d: dict) -> list[str]:
+    """Answer text pieces in one response or stream chunk, any supported provider."""
+    out: list[str] = []
     for ch in d.get("choices") or []:
         if isinstance(ch, dict):
-            delta = ch.get("delta") or {}
-            n += len(delta.get("content") or "") if isinstance(delta, dict) else 0
-            n += len(ch.get("text") or "") if isinstance(ch.get("text"), str) else 0
+            delta = ch.get("delta")
+            if isinstance(delta, dict) and isinstance(delta.get("content"), str):
+                out.append(delta["content"])
+            msg = ch.get("message")
+            if isinstance(msg, dict) and isinstance(msg.get("content"), str):
+                out.append(msg["content"])
+            if isinstance(ch.get("text"), str):
+                out.append(ch["text"])
     delta = d.get("delta")
     if isinstance(delta, dict):
         if isinstance(delta.get("text"), str):
-            n += len(delta["text"])
+            out.append(delta["text"])
         msg = delta.get("message")
         if isinstance(msg, dict) and isinstance(msg.get("content"), dict):
-            n += len(msg["content"].get("text") or "")
+            out.append(msg["content"].get("text") or "")
     if d.get("type") == "response.output_text.delta" and isinstance(d.get("delta"), str):
-        n += len(d["delta"])
+        out.append(d["delta"])
     msg = d.get("message")
-    if isinstance(msg, dict) and isinstance(msg.get("content"), str):
-        n += len(msg["content"])                       # Ollama chat chunks
+    if isinstance(msg, dict):
+        if isinstance(msg.get("content"), str):
+            out.append(msg["content"])                     # Ollama chat
+        elif isinstance(msg.get("content"), list) and "role" in msg and d.get("type") != "message_start":
+            out += [c.get("text") or "" for c in msg["content"] if isinstance(c, dict)]   # Cohere v2
+    if isinstance(d.get("content"), list) and d.get("type") == "message":
+        out += [c.get("text") or "" for c in d["content"] if isinstance(c, dict) and c.get("type") == "text"]
     if isinstance(d.get("response"), str):
-        n += len(d["response"])                        # Ollama generate chunks
+        out.append(d["response"])                          # Ollama generate
     for c in d.get("candidates") or []:
         for part in ((c or {}).get("content") or {}).get("parts") or []:
             if isinstance(part, dict) and isinstance(part.get("text"), str):
-                n += len(part["text"])
-    if d.get("event_type") == "text-generation" and isinstance(d.get("text"), str):
-        n += len(d["text"])
-    return n
+                out.append(part["text"])
+    if isinstance(d.get("text"), str) and d.get("event_type") in (None, "text-generation") and "meta" in d \
+            or d.get("event_type") == "text-generation":
+        out.append(d.get("text") or "")                    # Cohere v1
+    out_obj = d.get("output")
+    if isinstance(out_obj, dict):                          # DashScope
+        if isinstance(out_obj.get("text"), str):
+            out.append(out_obj["text"])
+        for ch in out_obj.get("choices") or []:
+            m = (ch or {}).get("message") or {}
+            if isinstance(m.get("content"), str):
+                out.append(m["content"])
+    return out
 
 
 def apply_json(d, ev: CallEvent, overwrite: bool) -> bool:
@@ -210,7 +230,11 @@ def apply_json(d, ev: CallEvent, overwrite: bool) -> bool:
                 setattr(ev, k, v)
                 mine.add(k)
     if overwrite:
-        ev._chars = getattr(ev, "_chars", 0) + _text_of(d)
+        parts = _texts(d)
+        ev._chars = getattr(ev, "_chars", 0) + sum(len(t) for t in parts)
+        cap = ev.__dict__.get("_cap_text")
+        if cap is not None:
+            cap.extend(parts)
     return llm
 
 
@@ -312,6 +336,9 @@ class _Call:
             self.ev = ev
             if isinstance(body, dict):
                 self.ev._req = body
+                cap = self.rec.capture
+                if cap is not None and cap.wants(ev):
+                    ev._cap_text, ev._cap_req = [], body
         else:
             self.ev, self.token = outer, None
 
@@ -347,6 +374,8 @@ class _Call:
         if not llm and error is None:
             return                         # not an LLM response after all: record nothing
         req = ev.__dict__.pop("_req", None)
+        from .core import _capture_stream
+        _capture_stream(self.rec, ev)
         if ev.input_tokens is None and isinstance(req, dict) and ev.op == "chat":
             from .patches import _text_chars
             n = sum(_text_chars(req.get(k)) for k in ("messages", "input", "system", "contents", "prompt", "message"))

@@ -21,6 +21,8 @@ def render_markdown(a: Analysis, max_findings: int = 15) -> str:
         if a.savings_high:
             out.append(f"**Potential saving:** {_money(a.savings_low)} – {_money(a.savings_high)}/month "
                        "(estimated, not yet tested)  ")
+        if a.validated_savings:
+            out.append(f"**Validated by experiment:** {_money(a.validated_savings)}/month  ")
         share = a.coverage.get("attributed_share")
         if share is not None:
             out.append(f"**Spend traced to code:** {share:.0%}  ")
@@ -44,7 +46,7 @@ def render_markdown(a: Analysis, max_findings: int = 15) -> str:
                 where += f" +{len(f.call_site_ids) - 2}"
             save = (f"{_money(f.savings_low_usd or 0)}–{_money(f.savings_high_usd)}"
                     if f.savings_high_usd else "")
-            title = f.title.replace("|", "\\|")
+            title = f.title.replace("|", "\\|") + (" ✅" if f.tier == "validated" and f.savings_high_usd else "")
             out.append(f"| {icon.get(f.severity, '')} {f.severity} | {title} | {where} | {save} |")
         if len(findings) > max_findings:
             out.append(f"\n_…and {len(findings) - max_findings} more in the full report._")

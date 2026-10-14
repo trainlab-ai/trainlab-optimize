@@ -31,7 +31,8 @@ def _ref():
 def instrument(path: str | os.PathLike | None = None, *, service: str | None = None,
                project_root: str | os.PathLike | None = None, tags: dict | None = None, otel: bool = False,
                sinks: list | None = None, sample_rate: float = 1.0, include_packages: tuple[str, ...] | list = (),
-               sdks: list[str] | None = None, http: bool = True, follow_threads: bool = True) -> Recorder | None:
+               sdks: list[str] | None = None, http: bool = True, follow_threads: bool = True,
+               capture=None) -> Recorder | None:
     """Start recording. Safe to call more than once (later calls replace the settings).
 
     path              where JSONL traces go (default <project_root>/.trainlab/traces); False = no file
@@ -45,6 +46,9 @@ def instrument(path: str | os.PathLike | None = None, *, service: str | None = N
     sdks              limit to these: openai, anthropic, litellm, bedrock, google-genai
     http              also record LLM calls made through httpx/requests/aiohttp by any other SDK
                       or by hand (Mistral, Cohere, Groq, Ollama, DashScope, raw HTTP, ...)
+    capture           opt-in: save real inputs and outputs of chosen call sites for `trainlab experiment`
+                      (True = all sites, 2% of calls; or {"sites": [...], "sample_rate", "max_per_site",
+                      "redact": True}). Local files only, redacted by default.
     follow_threads    attribute calls run on worker threads / asyncio tasks to the app line that
                       started them (costs ~5-12 us per task or thread-pool submit; False to skip)
     """
@@ -65,6 +69,8 @@ def instrument(path: str | os.PathLike | None = None, *, service: str | None = N
     out.extend(sinks or [])
     service = service or os.environ.get("TRAINLAB_SERVICE") or os.environ.get("OTEL_SERVICE_NAME")
     rec = Recorder(root, service, tags or {}, out, sample_rate, include_packages=tuple(include_packages))
+    from .capture import Capture
+    rec.capture = Capture.from_option(capture, root)
     if _recorder is not None:
         _recorder.flush()
     _recorder = rec
