@@ -55,6 +55,7 @@ class Analysis:
                 "by_api_key": {k: {"monthly_cost_usd": round(v, 2),
                                    "models": sorted(self.spend.key_models.get(k, ()))}
                                for k, v in sorted(self.spend.by_api_key.items(), key=lambda kv: -kv[1])},
+                "by_tag": {k: round(v, 2) for k, v in sorted(self.spend.by_tag.items(), key=lambda kv: -kv[1])},
             },
             "attribution": [a.to_dict() for a in self.attributions],
             "coverage": self.coverage,

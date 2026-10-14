@@ -99,7 +99,8 @@ def _import_api(args, provider: str) -> int:
 IMPORT_SOURCES = ("file", "openai", "anthropic", "openrouter", "csv", "langfuse", "otel", "aws", "azure", "gcp")
 KIND_NAMES = {"csv": "billing CSV", "aws": "AWS cost export", "azure": "Azure cost export", "gcp": "Google Cloud billing export",
               "langfuse": "Langfuse export", "otel": "OpenTelemetry traces", "openai-file": "OpenAI usage API file",
-              "anthropic-file": "Anthropic usage API file", "openrouter-file": "OpenRouter activity file"}
+              "anthropic-file": "Anthropic usage API file", "openrouter-file": "OpenRouter activity file",
+              "trainlab": "trainlab instrument() traces"}
 
 
 def _import_file_auto(args) -> int:
@@ -125,7 +126,7 @@ def cmd_import(args) -> int:
     args.file = getattr(args, "file_opt", None) or getattr(args, "path_arg", None) or getattr(args, "file", None)
     if args.source not in IMPORT_SOURCES:
         # `trainlab import billing.csv` -> detect the file type
-        if Path(args.source).is_file():
+        if Path(args.source).is_file() or Path(args.source).is_dir():
             args.file, args.source = args.source, "file"
         else:
             print(f"'{args.source}' is neither a file nor a source ({', '.join(IMPORT_SOURCES)}).", file=sys.stderr)
@@ -182,7 +183,7 @@ def cmd_import(args) -> int:
 
 def _print_summary(a) -> None:
     if a.spend.has_usage:
-        print(f"Monthly LLM spend: ${a.spend.monthly_total:,.0f} ({a.spend.days} days of data)")
+        print(f"Monthly LLM spend: ${a.spend.monthly_total:,.0f} ({a.spend.days} day{"s" if a.spend.days != 1 else ""} of data)")
         for o in a.spend.overlaps:
             print(f"  Note: {o}")
         if a.savings_high:

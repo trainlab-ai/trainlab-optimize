@@ -80,6 +80,7 @@ class UsageRecord:
     source: str = "unknown"
     code_path: str | None = None    # from traces that carry a source location (exact attribution)
     code_line: int | None = None
+    tags: dict[str, str] = field(default_factory=dict)   # feature/team/... from trainlab.tag()
 
     def to_dict(self) -> dict:
         return asdict(self)

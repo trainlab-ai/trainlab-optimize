@@ -76,7 +76,7 @@ are depends on how keys are set up:
 | Shared key, but each application uses different models | Exact: the code shows which application uses which model |
 | Shared key, same model in several scanned repos | Spend is split evenly between the call sites and flagged (R904), with the keys involved |
 | Shared key, but only one of the repos was scanned | The rest shows as spend with no matching code (R902), with the keys that carry it |
-| Any of the above with `trainlab.instrument()` (v0.2) | Exact per line, whatever the key setup |
+| Any of the above with `trainlab.instrument()` | Exact per line and per tag, whatever the key setup |
 
 **When sources overlap**, nothing is counted twice:
 
@@ -89,6 +89,79 @@ are depends on how keys are set up:
   are added to the total.
 - Each source is scaled to 30 days on its own period (30 days of billing plus 7 days of
   traces is not a 37-day window).
+
+## Exact cost per line: `instrument()`
+
+Billing tells you what each model cost. One line in your app tells you which line of code,
+feature and team spent it:
+
+```python
+import trainlab_optimize as trainlab
+trainlab.instrument(service="api")              # once, at startup
+
+with trainlab.tag(feature="invoice-extract", team="finance"):
+    client.messages.create(...)                 # recorded with file, line and tags
+
+@trainlab.tag(feature="support-bot")            # or as a decorator (sync or async)
+async def answer(q): ...
+```
+
+```bash
+trainlab scan . && trainlab import .trainlab/traces && trainlab report
+```
+
+The report then attributes spend to call sites as **exact** (traced), and adds "Spend by tag".
+When billing data is imported too, billing stays the authority on totals and traces decide
+where it went.
+
+**What it records**, one JSON line per call in `.trainlab/traces/` (git-ignored automatically):
+provider, model, input/output/cached/cache-write/reasoning tokens, latency, ok or the
+exception type, file, line, function, service, tags. **Never** prompt or completion text,
+keys, headers or error messages. Nothing is sent anywhere.
+
+**Covered SDKs** (sync, async and streaming):
+
+| SDK | Calls | Provider shown as |
+|---|---|---|
+| OpenAI Python | chat.completions create/parse, responses create/parse, embeddings | from `base_url`: openai, azure, openrouter, dashscope, deepseek, groq, together, ollama, ... |
+| Anthropic Python | messages create/stream, beta.messages | anthropic, or bedrock/vertex for those clients |
+| LiteLLM | completion, acompletion, embedding, aembedding | from the model prefix (`dashscope/qwen-max` → dashscope) |
+| AWS Bedrock (boto3) | converse, converse_stream, invoke_model(_with_response_stream) | bedrock; other AWS calls pass through untouched |
+| Google Gen AI | generate_content, generate_content_stream, embed_content | gemini or vertex |
+
+A call made through LiteLLM (which itself calls the OpenAI SDK) is recorded once. Streams are
+recorded when the app finishes or closes them; if a stream carries no usage (OpenAI without
+`stream_options={"include_usage": True}`), output tokens are estimated from text length and
+marked as estimated.
+
+**Safety.** The app's results and exceptions pass through unchanged. If anything inside
+trainlab fails (a sink can't write, a response has an unexpected shape), that piece is
+switched off with one warning and the app carries on. `instrument()` doesn't import any
+SDK: each one is patched when your app imports it, so startup stays around 0.1 s.
+Overhead is about 0.1 ms per call. `TRAINLAB_INSTRUMENT=0` turns it into a no-op without a
+code change; `trainlab.uninstrument()` restores every SDK.
+
+**Options:** `instrument(path=..., service=..., tags={"env": "prod"}, sample_rate=0.1,
+include_packages=("myapp",), otel=True, sinks=[...], sdks=["openai"])`. With
+`sample_rate`, recorded calls carry a weight and the report scales them back up.
+`include_packages` is for apps installed into site-packages, whose frames would otherwise
+be skipped as library code.
+
+**Already using OpenTelemetry** (OpenLLMetry, OpenInference, Langfuse, Logfire)? Keep it, and
+add the code location to its spans instead:
+
+```python
+from opentelemetry import trace
+from trainlab_optimize.runtime.otel import CodeLocationSpanProcessor
+trace.get_tracer_provider().add_span_processor(CodeLocationSpanProcessor())
+```
+
+Exported spans then carry `code.file.path`, `code.line.number` and `trainlab.tag.*`, and
+`trainlab import spans.json` attributes them per line. `instrument(otel=True)` instead emits
+one GenAI span per call itself, for apps with no LLM tracing yet.
+
+Try it offline: `python examples/instrument_demo/run_demo.py`, then in that folder
+`trainlab scan app && trainlab import .trainlab/traces && trainlab report`.
 
 ## What it finds
 
@@ -306,6 +379,9 @@ intended, `python bench/freeze.py save` makes the new results the baseline.
 - OpenRouter's activity API covers the last 30 days. BYOK inference (billed on your own
   provider keys through OpenRouter) is counted as spend; if you also import that provider's
   own billing, the same calls appear in both.
+- `instrument()` is Python only for now. Calls made with raw HTTP (`requests`/`httpx`
+  straight to an API) or SDKs not in the table are not recorded; scan and billing still
+  cover them.
 - Prices are list prices. Negotiated discounts aren't known unless the billing export
   carries the billed cost, which then takes precedence.
 
@@ -325,8 +401,8 @@ Price data comes from [BerriAI/litellm](https://github.com/BerriAI/litellm)'s
 
 ## Roadmap
 
-- **v0.2** `trainlab.instrument()`: one line in your app tags each LLM call with its code
-  location for exact attribution
+- **v0.2** (this release) `trainlab.instrument()`: exact cost per line, feature and team
+- JS/TypeScript `instrument()` for Node apps
 - **v0.3** `trainlab experiment`: replay real inputs against cheaper candidates with
   quality gates; `trainlab export` for a TrainLab optimization engagement
 

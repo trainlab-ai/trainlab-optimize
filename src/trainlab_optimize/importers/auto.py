@@ -11,11 +11,13 @@ from pathlib import Path
 from ..schema import UsageRecord
 
 KINDS = ("auto", "csv", "aws", "azure", "gcp", "langfuse", "otel", "openai-file", "anthropic-file",
-         "openrouter-file")
+         "openrouter-file", "trainlab")
 
 
 def detect_kind(path: str | Path) -> str:
     p = Path(path)
+    if p.is_dir():
+        return "trainlab"
     suffix = p.suffix.lower()
     if suffix not in (".json", ".jsonl", ".ndjson"):
         import csv
@@ -28,6 +30,9 @@ def detect_kind(path: str | Path) -> str:
         return detect(header) or "csv"
     with open(p, "rb") as fh:
         head = fh.read(20000).decode("utf-8", "replace")
+    from .runtime import is_events_file
+    if is_events_file(head):
+        return "trainlab"
     if "resourceSpans" in head or "gen_ai." in head:
         return "otel"
     if '"organization.usage' in head or '"num_model_requests"' in head:
@@ -59,6 +64,9 @@ def read_any(path: str | Path, kind: str = "auto", default_provider: str | None 
         records = read_langfuse(p)
     elif kind == "otel":
         records = read_otel(p)
+    elif kind == "trainlab":
+        from .runtime import read_events
+        records = read_events(p)
     elif kind == "openrouter-file":
         from .openrouter import parse_activity
         try:

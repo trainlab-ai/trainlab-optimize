@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "trainlab-optimize"
-version = "0.1.5"
-description = "Find and prove LLM cost savings in your codebase. Scan code, import usage, get a cost report."
+version = "0.2.0"
+description = "Find and prove LLM cost savings in your codebase. Scan code, import usage, record calls per line, get a cost report."
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
@@ -22,6 +22,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+otel = ["opentelemetry-api>=1.20", "opentelemetry-sdk>=1.20"]
 
 [project.scripts]
 trainlab = "trainlab_optimize.cli:main"

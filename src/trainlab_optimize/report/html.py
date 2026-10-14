@@ -140,7 +140,7 @@ def _bill(a: Analysis, sites: dict) -> str:
     <div class="amt">{money(after)}<span class="note">/mo</span></div></div>
   <div class="legend">{legend}<span><i style="background:repeating-linear-gradient(135deg,var(--save) 0 2px,var(--save-soft) 2px 6px)"></i>Potential saving</span></div>
   <div class="facts">
-    <div class="fact"><b>{money(total)}</b><span>Measured monthly run-rate ({a.spend.days} days of data)</span></div>
+    <div class="fact"><b>{money(total)}</b><span>Measured monthly run-rate ({a.spend.days} day{"s" if a.spend.days != 1 else ""} of data)</span></div>
     <div class="fact save"><b>{money(low)} – {money(high)}</b><span>Potential monthly saving, estimated, not yet tested</span></div>
     <div class="fact"><b>{(a.coverage.get('attributed_share') or 0):.0%}</b><span>Of spend traced to a line of code in this repo</span></div>
   </div>
@@ -250,6 +250,19 @@ if quality falls short, a custom model is the next step.</p>
                        f"used by several applications can't be split by billing; see the shared-spend notes "
                        f"below.</p><table><thead><tr><th>API key</th><th>Models</th><th class=r>Per month</th>"
                        f"</tr></thead><tbody>{krow}</tbody></table>")
+        if a.spend.by_tag:
+            groups: dict[str, list] = {}
+            for tg, v in a.spend.by_tag.items():
+                k, _, val = tg.partition("=")
+                groups.setdefault(k, []).append((val, v))
+            trow = "".join(
+                f"<tr><td>{e(k)}</td><td><code>{e(val)}</code></td><td class=r>{money(v)}</td></tr>"
+                for k in sorted(groups) for val, v in sorted(groups[k], key=lambda kv: -kv[1])[:15])
+            out.append(f"<h2>Spend by tag</h2><p class=note>From calls recorded by "
+                       f"<code>trainlab_optimize.instrument()</code> inside <code>trainlab.tag(...)</code>. Calls "
+                       f"outside any tag are not listed, so a key's values can add up to less than the total.</p>"
+                       f"<table><thead><tr><th>Tag</th><th>Value</th><th class=r>Per month</th></tr></thead>"
+                       f"<tbody>{trow}</tbody></table>")
 
     if a.scan.repos and a.spend.has_usage:
         by_repo: dict[str, float] = {}

@@ -15,7 +15,7 @@ def render_markdown(a: Analysis, max_findings: int = 15) -> str:
     findings = [f for f in a.findings if f.strategy != "coverage"]
     out = [f"## LLM cost report: {name}", ""]
     if a.spend.has_usage:
-        out.append(f"**Monthly LLM spend:** {_money(a.spend.monthly_total)} ({a.spend.days} days of data)  ")
+        out.append(f"**Monthly LLM spend:** {_money(a.spend.monthly_total)} ({a.spend.days} day{"s" if a.spend.days != 1 else ""} of data)  ")
         for o in a.spend.overlaps:
             out.append(f"_Overlap: {o}._  ")
         if a.savings_high:
@@ -28,6 +28,9 @@ def render_markdown(a: Analysis, max_findings: int = 15) -> str:
             top = sorted(a.spend.by_api_key.items(), key=lambda kv: -kv[1])[:5]
             out.append("**By API key:** " + ", ".join(f"`{k}` {_money(v)}" for k, v in top)
                        + (f" (+{len(a.spend.by_api_key) - 5} more)" if len(a.spend.by_api_key) > 5 else ""))
+        if a.spend.by_tag:
+            top = sorted(a.spend.by_tag.items(), key=lambda kv: -kv[1])[:6]
+            out.append("**By tag:** " + ", ".join(f"`{k}` {_money(v)}" for k, v in top))
     else:
         out.append("_No usage imported: findings come from code only and have no cost attached._")
     out += ["", f"{len(a.scan.call_sites)} LLM call sites in {a.scan.files_scanned} files, "

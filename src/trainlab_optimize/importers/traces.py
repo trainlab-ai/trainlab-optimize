@@ -55,8 +55,9 @@ class _Agg:
         self.rows: dict[tuple, dict] = defaultdict(lambda: {"in": 0, "out": 0, "cached": 0, "req": 0,
                                                              "cost": 0.0, "has_cost": True})
 
-    def add(self, day, provider, model, tin, tout, cached, cost, project, code_path, code_line):
-        key = (day, provider, model, project, code_path, code_line)
+    def add(self, day, provider, model, tin, tout, cached, cost, project, code_path, code_line, tags=None):
+        key = (day, provider, model, project, code_path, code_line,
+               json.dumps(tags, sort_keys=True) if tags else "")
         r = self.rows[key]
         r["in"] += int(tin)
         r["out"] += int(tout)
@@ -69,12 +70,12 @@ class _Agg:
 
     def records(self) -> list[UsageRecord]:
         out = []
-        for (day, provider, model, project, path, line), r in self.rows.items():
+        for (day, provider, model, project, path, line, tags), r in self.rows.items():
             out.append(UsageRecord(
                 date=day, provider=provider, model=model, input_tokens=r["in"], output_tokens=r["out"],
                 cached_input_tokens=r["cached"], requests=r["req"],
                 cost_usd=r["cost"] if r["has_cost"] else None, project=project, source=self.source,
-                code_path=path, code_line=line))
+                code_path=path, code_line=line, tags=json.loads(tags) if tags else {}))
         return out
 
 
@@ -213,7 +214,8 @@ def parse_otel(doc, source: str = "otel") -> list[UsageRecord]:
         agg.add(_day_from_nanos(span.get("startTimeUnixNano")), provider, str(model), tin, tout,
                 _num(_first(a, OTEL_CACHED)), None if cost is None else _num(cost),
                 _first(res, OTEL_PROJECT) or _first(a, OTEL_PROJECT),
-                _first(a, OTEL_FILE), int(line) if line is not None and str(line).isdigit() else None)
+                _first(a, OTEL_FILE), int(line) if line is not None and str(line).isdigit() else None,
+                {k[13:]: str(v) for k, v in a.items() if k.startswith("trainlab.tag.")})
     return agg.records()
 
 

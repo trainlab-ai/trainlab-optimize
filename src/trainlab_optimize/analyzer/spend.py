@@ -88,13 +88,15 @@ class SpendSummary:
     # API key (id or name, as the source reports it) -> monthly cost; and base models seen per key
     by_api_key: dict[str, float] = field(default_factory=dict)
     key_models: dict[str, set] = field(default_factory=dict)
+    # "feature=search" -> monthly cost, from traces tagged with trainlab.tag(); a share of billed spend
+    by_tag: dict[str, float] = field(default_factory=dict)
 
     @property
     def has_usage(self) -> bool:
         return bool(self.by_model)
 
 
-TRACE_SOURCES = ("langfuse", "otel")
+TRACE_SOURCES = ("langfuse", "otel", "trainlab")
 
 
 def _is_trace(source: str) -> bool:
@@ -244,6 +246,7 @@ def summarize(records: list[UsageRecord], catalog: PriceCatalog) -> SpendSummary
     trace_total: dict[str, float] = {}
     trace_req: dict[str, float] = {}
     loc_raw: dict[tuple, list] = {}
+    tag_raw: dict[tuple, float] = {}
     for r in traces:
         b = base_model(r.model) or r.model
         cost, _, _ = _record_cost(r, catalog)
@@ -254,6 +257,8 @@ def summarize(records: list[UsageRecord], catalog: PriceCatalog) -> SpendSummary
             loc = loc_raw.setdefault((r.code_path, r.code_line, b), [0.0, 0.0])
             loc[0] += cost * f
             loc[1] += r.requests * f
+        for k, v in (r.tags or {}).items():
+            tag_raw[(f"{k}={v}", b)] = tag_raw.get((f"{k}={v}", b), 0.0) + cost * f
     for (path, line, b), (cost, req) in loc_raw.items():
         ms = s.by_model.get(b)
         if not ms:
@@ -261,6 +266,10 @@ def summarize(records: list[UsageRecord], catalog: PriceCatalog) -> SpendSummary
         cost_share = cost / trace_total[b] if trace_total.get(b) else 0.0
         req_share = req / trace_req[b] if trace_req.get(b) else cost_share
         s.by_location[(path, line, b)] = [ms.monthly_cost * cost_share, ms.monthly_requests * req_share]
+    for (tg, b), cost in tag_raw.items():
+        ms = s.by_model.get(b)
+        if ms and trace_total.get(b):
+            s.by_tag[tg] = s.by_tag.get(tg, 0.0) + ms.monthly_cost * cost / trace_total[b]
 
     for b, ms in s.by_model.items():
         ms.model = max(spelling[b].items(), key=lambda kv: kv[1])[0]
