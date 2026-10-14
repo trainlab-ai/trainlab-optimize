@@ -1,0 +1,118 @@
+{
+ "repo": "twilio/twilio-python",
+ "category": "negative-traps",
+ "llm_repo": false,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "805 files, 0 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.8s, 992 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "skip",
+   "detail": "negative control"
+  },
+  "T05": {
+   "status": "pass",
+   "detail": "0 LLM call site(s) reported",
+   "examples": []
+  },
+  "T06": {
+   "status": "skip",
+   "detail": "0/0 calls name a specific provider",
+   "specific_pct": null,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $50.12 vs expected $50.12"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $50.12"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $15, key-prod $35"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $50"
+  },
+  "T14": {
+   "status": "skip",
+   "detail": "no cited lines",
+   "examples": []
+  }
+ },
+ "files": 805,
+ "scan_secs": 0.81,
+ "sites": 0,
+ "call_sites": 0,
+ "model_configs": 0,
+ "providers": [],
+ "parse_errors": 0,
+ "languages": [],
+ "resolved_model_pct": null,
+ "baseline": 1,
+ "baseline_found": 0,
+ "missed": [
+  [
+   "examples/basic_usage.py",
+   31,
+   "new_message = client.messages.create(to=\"XXXX\", from_=\"YYYY\", body=\"Twilio rocks!\")"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 50.1192,
+  "by_key": {
+   "key-prod": 34.7815,
+   "key-batch": 15.3377
+  },
+  "by_model": {
+   "gpt-4o-mini": 36.7095,
+   "gpt-4.1-nano": 13.4097
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpjecxl2kb/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R902": 1
+ },
+ "monthly_spend": 50.12,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 6.7
+}

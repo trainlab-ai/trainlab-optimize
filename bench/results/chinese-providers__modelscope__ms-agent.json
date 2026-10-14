@@ -1,0 +1,153 @@
+{
+ "repo": "modelscope/ms-agent",
+ "category": "chinese-providers",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "985 files, 21 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.6s, 372 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "21/26 = 81%",
+   "recall": 80.76923076923077
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "9/20 calls name a specific provider",
+   "specific_pct": 45,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $71.25 vs expected $71.25"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $71.25"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "1 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.6417792018619201
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $21, key-prod $50"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $71"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "6/6 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 985,
+ "scan_secs": 2.65,
+ "sites": 21,
+ "call_sites": 20,
+ "model_configs": 1,
+ "providers": [
+  "anthropic",
+  "dashscope",
+  "gemini",
+  "modelscope",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 5,
+ "baseline": 26,
+ "baseline_found": 21,
+ "missed": [
+  [
+   "ms_agent/llm/openai_llm.py",
+   33,
+   "``client.responses.create()`` hits the correct DashScope endpoint."
+  ],
+  [
+   "ms_agent/llm/openai_llm.py",
+   39,
+   "b'/v1/chat/completions')"
+  ],
+  [
+   "webui/backend/app/backends/ms_agent/config.py",
+   401,
+   "``/anthropic/chat/completions`` and take a 404, silently: extraction"
+  ],
+  [
+   "webui/backend/app/backends/ms_agent/titler.py",
+   10,
+   "``/chat/completions`` endpoint directly (httpx) \u2014 no agent runtime needed."
+  ],
+  [
+   "webui/backend/app/backends/ms_agent/titler.py",
+   61,
+   "``/chat/completions`` there 404s, which would silently disable titling.\"\"\""
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 71.2486,
+  "by_key": {
+   "key-prod": 49.9312,
+   "key-batch": 21.3174
+  },
+  "by_model": {
+   "Qwen/Qwen3-235B-A22B-Instruct-2507": 45.7259,
+   "gpt-4.1-nano": 25.5227
+  },
+  "code_models": [
+   "Qwen/Qwen3-235B-A22B-Instruct-2507"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmphl8cc2bj/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R105": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 71.25,
+ "savings_high": null,
+ "attributed_share": 0.6417792018619201,
+ "wall_secs": 6.9
+}

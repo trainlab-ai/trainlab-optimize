@@ -1,0 +1,123 @@
+{
+ "repo": "lss233/kirara-ai",
+ "category": "chinese-providers",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "305 files, 4 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.4s, 804 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "1/1 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "1/4 calls name a specific provider",
+   "specific_pct": 25,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $78.24 vs expected $78.24"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $78.24"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $23, key-prod $55"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $78"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "4/4 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 305,
+ "scan_secs": 0.38,
+ "sites": 4,
+ "call_sites": 4,
+ "model_configs": 0,
+ "providers": [
+  "gemini",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 1,
+ "baseline_found": 1,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 78.2426,
+  "by_key": {
+   "key-prod": 55.1658,
+   "key-batch": 23.0768
+  },
+  "by_model": {
+   "gpt-4o-mini": 59.2264,
+   "gpt-4.1-nano": 19.0162
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp845k_hwi/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 78.24,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 1.1
+}

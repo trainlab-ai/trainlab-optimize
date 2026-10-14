@@ -1,0 +1,134 @@
+{
+ "repo": "stanford-oval/storm",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "55 files, 58 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.3s, 188 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "8/8 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "9/11 calls name a specific provider",
+   "specific_pct": 82,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $1,022.60 vs expected $1,022.60"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $1,022.60"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9847996576086558
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $307, key-prod $715"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-2024-05-13: $242.32 vs $242.32"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $1,023"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "28/28 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 55,
+ "scan_secs": 0.29,
+ "sites": 58,
+ "call_sites": 11,
+ "model_configs": 47,
+ "providers": [
+  "anthropic",
+  "azure",
+  "deepseek",
+  "gemini",
+  "groq",
+  "litellm",
+  "openai",
+  "openai_compatible",
+  "together"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 79,
+ "baseline": 8,
+ "baseline_found": 8,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 1022.5983,
+  "by_key": {
+   "key-prod": 715.3876,
+   "key-batch": 307.2107
+  },
+  "by_model": {
+   "gpt-4o-2024-05-13": 440.4503,
+   "azure/gpt-4o": 72.5394,
+   "claude-3-opus-20240229": 51.9117,
+   "together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": 114.7624,
+   "llama3-70b-8192": 327.3906,
+   "gpt-4.1-nano": 15.5438
+  },
+  "code_models": [
+   "gpt-4o-2024-05-13",
+   "azure/gpt-4o",
+   "claude-3-opus-20240229",
+   "together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+   "llama3-70b-8192"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpn3x_vp1a/usage_tokens_only.csv",
+   "model": "gpt-4o-2024-05-13",
+   "expected": 242.325
+  }
+ },
+ "findings": {
+  "R102": 10,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 1022.6,
+ "savings_high": null,
+ "attributed_share": 0.9847996576086558,
+ "wall_secs": 1.0
+}

@@ -1,0 +1,133 @@
+{
+ "repo": "openai/swarm",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "269 files, 11 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.1s, 2080 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "9/10 = 90%",
+   "recall": 90.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "8/10 calls name a specific provider",
+   "specific_pct": 80,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 240 records, $1,289.00 vs expected $1,289.00"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $1,289.00"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "3 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9782118579204511
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $390, key-prod $899"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "text-embedding-3-large: $3.96 vs $3.96"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$66-$133 of $1,289"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "21/21 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 269,
+ "scan_secs": 0.13,
+ "sites": 11,
+ "call_sites": 10,
+ "model_configs": 1,
+ "providers": [
+  "openai",
+  "unknown"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 64,
+ "baseline": 10,
+ "baseline_found": 9,
+ "missed": [
+  [
+   "examples/customer_service_streaming/src/swarm/engines/assistants_engine.py",
+   141,
+   "self.client.beta.threads.messages.create("
+  ]
+ ],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 240,
+  "total_cost": 1288.9967,
+  "by_key": {
+   "key-prod": 898.8177,
+   "key-batch": 390.179
+  },
+  "by_model": {
+   "text-embedding-3-large": 20.0857,
+   "gpt-4-turbo-preview": 116.984,
+   "gpt-4o": 1123.8421,
+   "gpt-4.1-nano": 28.0848
+  },
+  "code_models": [
+   "text-embedding-3-large",
+   "gpt-4-turbo-preview",
+   "gpt-4o"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpc89iiim_/usage_tokens_only.csv",
+   "model": "text-embedding-3-large",
+   "expected": 3.9605
+  }
+ },
+ "findings": {
+  "R108": 4,
+  "R101": 6,
+  "R109": 2,
+  "R102": 1,
+  "R105": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 1289.0,
+ "savings_high": 132.91,
+ "attributed_share": 0.9782118579204511,
+ "wall_secs": 0.5
+}

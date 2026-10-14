@@ -1,0 +1,135 @@
+{
+ "repo": "ollama/ollama",
+ "category": "local-self-hosted",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "1054 files, 12 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "1.9s, 568 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "5/7 = 71%",
+   "recall": 71.42857142857143
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "5/12 calls name a specific provider",
+   "specific_pct": 42,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $58.93 vs expected $58.93"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $58.93"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $18, key-prod $41"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $59"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 1054,
+ "scan_secs": 1.86,
+ "sites": 12,
+ "call_sites": 12,
+ "model_configs": 0,
+ "providers": [
+  "anthropic",
+  "ollama",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "go"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 7,
+ "baseline_found": 5,
+ "missed": [
+  [
+   "server/routes.go",
+   2403,
+   "r.POST(\"/v1/chat/completions\", s.withInferenceRequestLogging(\"/v1/chat/completions\", cloudPassthroughMiddleware(cloudErrRemoteInferenceUnava"
+  ],
+  [
+   "server/routes.go",
+   2414,
+   "r.POST(\"/v1/messages\", s.withInferenceRequestLogging(\"/v1/messages\", cloudPassthroughMiddleware(cloudErrRemoteInferenceUnavailable), middlew"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 58.9259,
+  "by_key": {
+   "key-prod": 41.0651,
+   "key-batch": 17.8608
+  },
+  "by_model": {
+   "gpt-4o-mini": 34.246,
+   "gpt-4.1-nano": 24.68
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpkr01b3ql/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 58.93,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 5.8
+}

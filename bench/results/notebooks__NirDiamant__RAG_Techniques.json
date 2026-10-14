@@ -1,0 +1,139 @@
+{
+ "repo": "NirDiamant/RAG_Techniques",
+ "category": "notebooks",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "80 files, 122 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.6s, 136 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "9/9 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "9/9 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $2,143.67 vs expected $2,143.67"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $2,143.67"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9975003306855428
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $635, key-prod $1,509"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$15 of $2,144"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 80,
+ "scan_secs": 0.59,
+ "sites": 122,
+ "call_sites": 9,
+ "model_configs": 113,
+ "providers": [
+  "azure",
+  "bedrock",
+  "cohere",
+  "gemini",
+  "groq",
+  "huggingface",
+  "ollama",
+  "openai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 80,
+ "baseline": 9,
+ "baseline_found": 9,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 360,
+  "total_cost": 2143.668,
+  "by_key": {
+   "key-prod": 1509.0577,
+   "key-batch": 634.6103
+  },
+  "by_model": {
+   "gpt-4o-mini": 106.0652,
+   "gpt-4o": 483.7469,
+   "text-embedding-3-small": 4.9577,
+   "gpt-3.5-turbo": 89.212,
+   "gpt-4-turbo": 1454.3276,
+   "gpt-4.1-nano": 5.3585
+  },
+  "code_models": [
+   "gpt-4o-mini",
+   "gpt-4o",
+   "text-embedding-3-small",
+   "gpt-3.5-turbo",
+   "gpt-4-turbo"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpfavs7138/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R102": 9,
+  "R104": 1,
+  "R105": 3,
+  "R902": 1
+ },
+ "monthly_spend": 2143.67,
+ "savings_high": 15.15,
+ "attributed_share": 0.9975003306855428,
+ "wall_secs": 2.5
+}

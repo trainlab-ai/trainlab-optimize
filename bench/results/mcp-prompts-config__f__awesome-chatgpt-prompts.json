@@ -1,0 +1,123 @@
+{
+ "repo": "f/awesome-chatgpt-prompts",
+ "category": "mcp-prompts-config",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "574 files, 21 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.8s, 693 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "10/10 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "10/21 calls name a specific provider",
+   "specific_pct": 48,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $64.06 vs expected $64.06"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $64.06"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $19, key-prod $45"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $64"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 574,
+ "scan_secs": 0.83,
+ "sites": 21,
+ "call_sites": 21,
+ "model_configs": 0,
+ "providers": [
+  "openai",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 10,
+ "baseline_found": 10,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 64.0592,
+  "by_key": {
+   "key-prod": 45.0642,
+   "key-batch": 18.9949
+  },
+  "by_model": {
+   "gpt-4o-mini": 38.3002,
+   "gpt-4.1-nano": 25.759
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp9y4wrro2/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 64.06,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 3.6
+}

@@ -1,0 +1,151 @@
+{
+ "repo": "FlowiseAI/Flowise",
+ "category": "js-ts-apps",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "1974 files, 77 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.0s, 985 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "2/3 = 67%",
+   "recall": 66.66666666666667
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "9/41 calls name a specific provider",
+   "specific_pct": 22,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $68.50 vs expected $68.50"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $68.50"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $21, key-prod $48"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $69"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 1974,
+ "scan_secs": 2.0,
+ "sites": 77,
+ "call_sites": 41,
+ "model_configs": 36,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "cerebras",
+  "cohere",
+  "dashscope",
+  "deepseek",
+  "fireworks",
+  "gemini",
+  "groq",
+  "huggingface",
+  "mistral",
+  "nvidia",
+  "ollama",
+  "openai",
+  "openai_compatible",
+  "openrouter",
+  "perplexity",
+  "replicate",
+  "sambanova",
+  "together",
+  "vertex",
+  "voyage",
+  "xai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 3,
+ "baseline_found": 2,
+ "missed": [
+  [
+   "packages/components/nodes/agents/OpenAIAssistant/OpenAIAssistant.ts",
+   345,
+   "await openai.beta.threads.messages.create(threadId, {"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 68.5031,
+  "by_key": {
+   "key-prod": 47.9515,
+   "key-batch": 20.5516
+  },
+  "by_model": {
+   "gpt-4o-mini": 16.7614,
+   "gpt-4.1-nano": 51.7417
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp1l3u3vfv/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 68.5,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 7.6
+}

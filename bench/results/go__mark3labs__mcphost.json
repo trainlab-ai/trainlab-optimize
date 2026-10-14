@@ -1,0 +1,122 @@
+{
+ "repo": "mark3labs/mcphost",
+ "category": "go",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "102 files, 1 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.1s, 925 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "1/1 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "1/1 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $851.62 vs expected $851.62"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $851.62"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $260, key-prod $591"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $852"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "1/1 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 102,
+ "scan_secs": 0.11,
+ "sites": 1,
+ "call_sites": 1,
+ "model_configs": 0,
+ "providers": [
+  "anthropic"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "go"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 1,
+ "baseline_found": 1,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 851.6215,
+  "by_key": {
+   "key-prod": 591.3965,
+   "key-batch": 260.225
+  },
+  "by_model": {
+   "claude-haiku-4-5": 806.5387,
+   "gpt-4.1-nano": 45.0828
+  },
+  "code_models": [],
+  "fallback_models": [
+   "claude-haiku-4-5"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmprjsl4l6m/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 851.62,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 0.5
+}

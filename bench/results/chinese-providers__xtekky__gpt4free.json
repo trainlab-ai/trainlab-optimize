@@ -1,0 +1,184 @@
+{
+ "repo": "xtekky/gpt4free",
+ "category": "chinese-providers",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "411 files, 116 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.2s, 184 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "41/49 = 84%",
+   "recall": 83.6734693877551
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "8/45 calls name a specific provider",
+   "specific_pct": 18,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $603.54 vs expected $603.54"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $603.54"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.8695908512554248
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $179, key-prod $425"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $604"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "15/15 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 411,
+ "scan_secs": 2.23,
+ "sites": 116,
+ "call_sites": 45,
+ "model_configs": 71,
+ "providers": [
+  "anthropic",
+  "cohere",
+  "dashscope",
+  "deepseek",
+  "gemini",
+  "mistral",
+  "moonshot",
+  "openai",
+  "openai_compatible",
+  "perplexity",
+  "unknown",
+  "xai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "python"
+ ],
+ "resolved_model_pct": 73,
+ "baseline": 49,
+ "baseline_found": 41,
+ "missed": [
+  [
+   "g4f/Provider/AgentTools.py",
+   2,
+   "``/v1/chat/completions`` endpoint (model: ``agent-tools``)."
+  ],
+  [
+   "g4f/Provider/DeepInfra.py",
+   27,
+   "if (typeof url === 'string' && url.includes('/chat/completions')) {"
+  ],
+  [
+   "g4f/Provider/audio/ElevenLabs.py",
+   27,
+   "client.chat.completions.create("
+  ],
+  [
+   "g4f/Provider/github/GithubCopilot.py",
+   42,
+   ">>> response = client.chat.completions.create("
+  ],
+  [
+   "g4f/api/__init__.py",
+   1107,
+   "@self.app.post(\"/v1/chat/completions\", responses=responses)"
+  ],
+  [
+   "g4f/api/__init__.py",
+   1108,
+   "@self.app.post(\"/{mode}/{provider:path}/chat/completions\",  responses=responses)"
+  ],
+  [
+   "g4f/api/__init__.py",
+   1110,
+   "\"/api/{provider}/{model}/chat/completions\", responses=responses"
+  ],
+  [
+   "g4f/api/__init__.py",
+   1447,
+   "@self.app.post(\"/v1/messages\", responses=responses)"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 360,
+  "total_cost": 603.5427,
+  "by_key": {
+   "key-prod": 424.7088,
+   "key-batch": 178.8338
+  },
+  "by_model": {
+   "auto": 215.8526,
+   "gpt-4o-mini": 62.9251,
+   "openai-audio": 227.0849,
+   "gpt-3.5-turbo": 2.502,
+   "reka-core": 16.4705,
+   "claude-3-5-haiku": 78.7075
+  },
+  "code_models": [
+   "auto",
+   "gpt-4o-mini",
+   "openai-audio",
+   "gpt-3.5-turbo",
+   "reka-core"
+  ],
+  "fallback_models": [],
+  "decoy": "claude-3-5-haiku",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpq98or9fm/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R102": 10,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 603.54,
+ "savings_high": null,
+ "attributed_share": 0.8695908512554248,
+ "wall_secs": 5.6
+}

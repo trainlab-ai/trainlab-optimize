@@ -27,6 +27,11 @@ def quiet_parse(source: str, filename: str) -> ast.AST:
 
 # (suffix of dotted call chain, kind, default provider)
 CALL_SUFFIXES: list[tuple[str, str, str]] = [
+    # Assistants API: a run is the billed call (thread messages are just stored)
+    (".threads.runs.create_and_poll", "chat", "openai"),
+    (".threads.runs.create", "chat", "openai"),
+    (".threads.runs.stream", "chat", "openai"),
+    (".threads.create_and_run", "chat", "openai"),
     (".beta.chat.completions.parse", "chat", "openai"),
     (".chat.completions.create", "chat", "openai"),
     (".chat.completions.parse", "chat", "openai"),
@@ -120,6 +125,13 @@ SDK_CLASS_NAMES = {"Groq", "AsyncGroq", "Together", "AsyncTogether", "Fireworks"
                    "MistralClient", "MistralAsyncClient", "InferenceClient", "AsyncInferenceClient", "OpenRouter",
                    "Perplexity", "AsyncPerplexity", "SambaNova", "AI21Client", "AsyncAI21Client"}
 # Native (non-OpenAI-shaped) methods on a client of that provider: method path after the client -> kind
+_IN_PROGRESS = object()
+_EXIT = object()
+_FACT_TYPES = frozenset({ast.Constant, ast.Import, ast.ImportFrom, ast.With, ast.AsyncWith, ast.Assign, ast.AnnAssign})
+_FIELDS_CACHE: dict[type, tuple[str, ...]] = {}
+_FACTORY_RE = re.compile(r"_?(get_|create_|make_|build_)?(azure_)?(async_)?openai_client")
+_DISTINCT_METHODS = {"chat_completion", "text_generation", "feature_extraction", "contextualized_embed",
+                     "chat_stream"}
 CLIENT_METHODS = {
     "cohere": {"chat": "chat", "chat_stream": "chat", "embed": "embedding", "generate": "chat"},
     "ollama": {"chat": "chat", "generate": "chat", "embed": "embedding", "embeddings": "embedding"},
@@ -189,7 +201,7 @@ HINT_PATTERNS = [
 EXAMPLE_PATH_RE = re.compile(
     r"(^|/)(examples?|samples?|demos?|docs?|cookbooks?|notebooks?|benchmarks?|evals?|tutorials?|"
     r"playground|sandbox|scratch|quickstarts?)(/|$)", re.I)
-TEST_PATH_RE = re.compile(r"(^|/)(tests?|testing|e2e|__tests__|__mocks__|fixtures?|mocks?|"
+TEST_PATH_RE = re.compile(r"(^|/)(tests?|testing|unittests?|e2e|__tests__|__mocks__|fixtures?|mocks?|"
                           r"[\w.-]+[-_]tests?|tests?[-_][\w.-]+)(/|$)|(^|/)test_[^/]*\.py$|_test\.py$|(^|/)conftest\.py$")
 
 
@@ -297,6 +309,7 @@ class PythonFileScanner:
         self._stack: list[ast.AST] = []
         self._func_nodes: list[ast.AST] = []
         self._locals_cache: dict[int, dict[str, ast.AST]] = {}
+        self._const_memo: dict[str, object] = {}
         self.parse_error = False
         self._func_params: list[dict[str, ast.AST]] = []
         self.is_test = bool(TEST_PATH_RE.search(rel_path))
@@ -344,34 +357,64 @@ class PythonFileScanner:
 
     # ---- single pass: facts + candidate calls
     def _traverse(self, tree: ast.AST) -> list[tuple[ast.Call, tuple]]:
-        """Iterative DFS in source order (no recursion limit issues on deep expressions)."""
+        """Iterative DFS in source order (no recursion limit issues on deep expressions).
+
+        Hot path on big repos: dispatch on the node's type, collect facts only for the few node
+        types that carry them, and skip `ctx` (Load/Store markers carry nothing)."""
         self._ref_candidates: list[tuple[int, str]] = []
         self._seen_refs: set = set()
         candidates: list[tuple[ast.Call, tuple]] = []
         self._http_candidates: list[tuple[ast.Constant, tuple, tuple]] = []
         stack: list[ast.AST] = []
-        todo: list[tuple[ast.AST, bool]] = [(tree, False)]
-        iter_children = ast.iter_child_nodes
+        EXIT = _EXIT
+        todo: list = [tree]
+        pop, push = todo.pop, todo.append
+        fact_types, Call, Constant, AST = _FACT_TYPES, ast.Call, ast.Constant, ast.AST
+        fields_of = _FIELDS_CACHE
         while todo:
-            node, exiting = todo.pop()
-            if exiting:
+            node = pop()
+            if node is EXIT:
                 stack.pop()
                 continue
-            self._fact(node)
-            if isinstance(node, ast.Call) and (_is_candidate(node) or self._is_alias_candidate(node)):
-                candidates.append((node, tuple(stack)))
-            elif isinstance(node, ast.Constant) and isinstance(node.value, str) and \
-                    ("completions" in node.value or "messages" in node.value or "responses" in node.value
-                     or "embeddings" in node.value or "enerateContent" in node.value
-                     or "/services/" in node.value or ":11434/api" in node.value or "/v2/" in node.value):
-                ep = http_endpoint(node.value)
-                if ep and not _in_decorator(stack):
-                    self._http_candidates.append((node, ep, tuple(stack)))
+            t = type(node)
+            if t in fact_types:
+                self._fact(node)
+            if t is Call:
+                if _is_candidate(node) or self._is_alias_candidate(node):
+                    candidates.append((node, tuple(stack)))
+            elif t is Constant:
+                v = node.value
+                if type(v) is str and ("completions" in v or "messages" in v or "responses" in v
+                                       or "embeddings" in v or "enerateContent" in v or "/services/" in v
+                                       or ":11434/api" in v or "/v2/" in v):
+                    parent = stack[-1] if stack else None
+                    # f"{base_url}/api/v1/chat/completions": a URL built on a variable host is a client
+                    # call (a server route is never written that way)
+                    dyn = isinstance(parent, ast.JoinedStr) and any(
+                        x is node and i > 0 and isinstance(parent.values[i - 1], ast.FormattedValue)
+                        for i, x in enumerate(parent.values))
+                    ep = http_endpoint(v, dynamic_host=dyn)
+                    if ep and not _in_decorator(stack):
+                        self._http_candidates.append((node, ep, tuple(stack)))
+                continue                       # constants have no children
             stack.append(node)
-            todo.append((node, True))
-            children = list(iter_children(node))
+            push(EXIT)
+            fields = fields_of.get(t)
+            if fields is None:
+                fields = fields_of[t] = tuple(f for f in t._fields if f not in ("ctx", "type_comment"))
+            children = []
+            for name in fields:
+                val = getattr(node, name, None)
+                if val is None:
+                    continue
+                if type(val) is list:
+                    for item in val:
+                        if isinstance(item, AST):
+                            children.append(item)
+                elif isinstance(val, AST):
+                    children.append(val)
             for c in reversed(children):
-                todo.append((c, False))
+                push(c)
         return candidates
 
     def _is_alias_candidate(self, node: ast.Call) -> bool:
@@ -441,7 +484,7 @@ class PythonFileScanner:
         name = dotted(value.func) or ""
         last = name.split(".")[-1]
         # Client factories: AIProjectClient.get_openai_client(), get_azure_openai_client(), _openai_client()
-        if re.fullmatch(r"_?(get_|create_|make_|build_)?(azure_)?(async_)?openai_client", last):
+        if _FACTORY_RE.fullmatch(last):
             return ("azure" if "azure" in self.facts.imports or "azure" in last else "openai", None)
         base_url = None
         for kw in value.keywords:
@@ -524,17 +567,27 @@ class PythonFileScanner:
             client = self.facts.clients.get(root)
             # Client injected or built by a helper: client.chat.completions.create(model=..., messages=...)
             for suffix, k, needs in INJECTED_SUFFIXES:
-                specific = suffix.startswith((".chat.completions", ".responses"))
+                specific = suffix.startswith((".chat.completions", ".responses", ".embeddings"))
                 if chain.endswith(suffix) and (
                         (has_model and (not needs or any(kw.arg in needs for kw in node.keywords)))
                         or (specific and has_splat)
-                        or (client and any(kw.arg in needs for kw in node.keywords))):
+                        or (client and any(kw.arg in needs for kw in node.keywords))
+                        # OpenAI-shaped clients called positionally: create(messages, "model")
+                        or (suffix == ".chat.completions.create" and (len(node.args) >= 1 or "messages" in
+                                                                      {k.arg for k in node.keywords}))):
                     self._record(node, chain, k, client[0] if client else (self._file_hint() or "unknown"),
                                  confidence="heuristic")
                     return
-            if client and chain.endswith((".messages.create", ".messages.stream")) and has_model \
-                    and client[0] in ("anthropic", "bedrock"):
-                self._record(node, chain, "chat", client[0], confidence="heuristic")
+            if chain.endswith((".messages.create", ".messages.stream")) and ".beta.threads." not in chain and (
+                    (client and has_model and client[0] in ("anthropic", "bedrock")) or self._anthropic_shaped(node)):
+                self._record(node, chain, "chat", client[0] if client else "anthropic", confidence="heuristic")
+                return
+            if chain.endswith((".converse", ".converse_stream")) and self._converse_shaped(node):
+                self._record(node, chain, "chat", "bedrock", confidence="heuristic")
+                return
+            sdk = self._sdk_method(chain)
+            if sdk:
+                self._record(node, chain, sdk[0], sdk[1], confidence="heuristic")
                 return
             kw = self._wrapper_model_kwarg(node)
             if kw:
@@ -550,6 +603,8 @@ class PythonFileScanner:
             if chain.endswith(suffix) and chain != suffix.lstrip("."):
                 kind, provider = k, p
                 break
+        if kind and ".threads.messages." in chain:
+            return                       # Assistants: adding a message to a thread isn't a model call
 
         if kind:
             # Disambiguate with imports / client variables.
@@ -560,14 +615,16 @@ class PythonFileScanner:
                 client = (self._file_hint(), None)
             if client:
                 provider = client[0]
-            elif provider == "bedrock" and not self.facts.imports & {"boto3", "aioboto3", "aiobotocore", "botocore"}:
+            elif provider == "bedrock" and not self.facts.imports & {"boto3", "aioboto3", "aiobotocore", "botocore"} \
+                    and not self._converse_shaped(node):
                 return
             elif provider == "gemini" and "google" not in self.facts.imports:
                 return
             elif provider == "anthropic" and "anthropic" not in self.facts.imports:
-                # .messages.create also exists on Twilio/Slack clients: require an Anthropic import
-                # (or a resolved Anthropic client variable, handled above).
-                return
+                # .messages.create also exists on Twilio/Slack/Plivo clients: require an Anthropic import,
+                # a resolved Anthropic client variable (above), or Anthropic's own call signature.
+                if ".beta.threads." in chain or not self._anthropic_shaped(node):
+                    return
             elif provider == "openai" and "openai" not in self.facts.imports:
                 if chain.endswith(".completions.create") and not chain.endswith(".chat.completions.create"):
                     return  # too generic without an openai import
@@ -620,6 +677,29 @@ class PythonFileScanner:
                     return p
         return None
 
+    def _anthropic_shaped(self, node: ast.Call) -> bool:
+        """messages.create(model=..., max_tokens=...) is Anthropic's signature; Twilio/Slack/Plivo use to/body/text.
+        A **payload splat counts when the file itself talks about Anthropic/Claude."""
+        kws = {k.arg for k in node.keywords}
+        if "model" in kws and ("max_tokens" in kws or "messages" in kws or "system" in kws):
+            return True
+        low = self.source.lower()
+        return None in kws and ("anthropic" in low or "claude" in low)
+
+    def _converse_shaped(self, node: ast.Call) -> bool:
+        kws = {k.arg for k in node.keywords}
+        return bool(kws & {"modelId", "inferenceConfig"}) or (None in kws and "bedrock" in self.source.lower())
+
+    def _sdk_method(self, chain: str) -> tuple[str, str] | None:
+        """Vendor-specific method paths when the vendor SDK is imported: self.get_client().chat.complete(...)."""
+        for provider, methods in CLIENT_METHODS.items():
+            if not any(mod for mod, p in SDK_MODULES.items() if p == provider and mod in self.facts.imports):
+                continue
+            for m, kind in methods.items():
+                if ("." in m or m in _DISTINCT_METHODS) and chain.endswith("." + m):
+                    return kind, provider
+        return None
+
     def _file_hint(self) -> str | None:
         if not hasattr(self, "_hint_cache"):
             self._hint_cache = file_provider_hint(self.source)
@@ -633,6 +713,14 @@ class PythonFileScanner:
         if client and rest in CLIENT_METHODS.get(client[0], {}):
             return CLIENT_METHODS[client[0]][rest], client[0]
         spec = MODULE_FUNCS.get(chain)
+        if not spec and "." in chain:
+            # QWenService.dashscope.Generation.call(...): module reached through an attribute
+            for k, v in MODULE_FUNCS.items():
+                if "." in k and chain.endswith("." + k) and (v[2] in self.facts.imports or v[2] in chain):
+                    return v[0], v[1]
+        sdk = self._sdk_method(chain)
+        if sdk:
+            return sdk
         if not spec and "." not in chain:
             # from ollama import chat; chat(model=...)
             origin = self.facts.from_imports.get(chain, "")
@@ -763,7 +851,7 @@ class PythonFileScanner:
         return self._resolve_str(expr)
 
     def _resolve_str(self, expr: ast.AST, depth: int = 0) -> tuple[str | None, str | None, str]:
-        src = _unparse(expr)
+        src = _unparse(expr) if depth == 0 else None      # only the outermost expression is reported
         if depth > 4:
             return None, src, "unresolved"
         if isinstance(expr, ast.Constant) and isinstance(expr.value, str):
@@ -780,11 +868,19 @@ class PythonFileScanner:
                     if m:
                         return m, src, "param_default"
             values = self.facts.constants.get(expr.id, [])
-            pairs = {(m, s) for m, _, s in (self._resolve_str(v, depth + 1) for v in values) if m}
-            if len({m for m, _ in pairs}) == 1:
-                m = next(iter(pairs))[0]
-                env = any(s == "env_default" for _, s in pairs)
-                return m, src, "env_default" if env else "constant"
+            # Each file-level name is resolved once (memo + cycle guard): a name assigned hundreds
+            # of times in a big file would otherwise branch exponentially.
+            memo = self._const_memo.get(expr.id)
+            if memo is None:
+                self._const_memo[expr.id] = _IN_PROGRESS
+                pairs = {(m, s) for m, _, s in (self._resolve_str(v, depth + 1) for v in values[:50]) if m}
+                memo = (None, None)
+                if len({m for m, _ in pairs}) == 1:
+                    m = next(iter(pairs))[0]
+                    memo = (m, "env_default" if any(s == "env_default" for _, s in pairs) else "constant")
+                self._const_memo[expr.id] = memo
+            if memo is not _IN_PROGRESS and memo[0]:
+                return memo[0], src, memo[1]
             ext = self._external(expr.id) if not values else None
             if ext is not None:
                 m, _, s = self._resolve_str(ext, depth + 1)
@@ -799,10 +895,15 @@ class PythonFileScanner:
                     return m, src, "env_default" if s == "env_default" else "constant"
         if isinstance(expr, ast.Attribute):
             key = f"self.{expr.attr}" if isinstance(expr.value, ast.Name) and expr.value.id == "self" else expr.attr
-            values = self.facts.constants.get(key, []) or self.facts.constants.get(expr.attr, [])
-            resolved = {self._resolve_str(v, depth + 1)[0] for v in values} - {None}
-            if len(resolved) == 1:
-                return resolved.pop(), src, "constant"
+            memo = self._const_memo.get("." + key)
+            if memo is None:
+                self._const_memo["." + key] = _IN_PROGRESS
+                values = self.facts.constants.get(key, []) or self.facts.constants.get(expr.attr, [])
+                resolved = {self._resolve_str(v, depth + 1)[0] for v in values[:50]} - {None}
+                memo = (resolved.pop() if len(resolved) == 1 else None, None)
+                self._const_memo["." + key] = memo
+            if memo is not _IN_PROGRESS and memo[0]:
+                return memo[0], src, "constant"
             return None, src, "unresolved"
         if isinstance(expr, ast.Call):
             fn = dotted(expr.func) or ""
@@ -1087,7 +1188,7 @@ _PROVIDER_HOSTS = (("api.anthropic.com", "anthropic"), ("api.openai.com", "opena
                    ("openrouter.ai", "openai_compatible"), ("api.x.ai", "openai_compatible"))
 
 
-def http_endpoint(value: str) -> tuple[str, str, str] | None:
+def http_endpoint(value: str, dynamic_host: bool = False) -> tuple[str, str, str] | None:
     """Recognise a provider REST endpoint in a URL/path string: (kind, provider, path) or None.
 
     Server routes that merely *serve* an OpenAI-compatible API ("/api/chat/completions") are
@@ -1104,8 +1205,8 @@ def http_endpoint(value: str) -> tuple[str, str, str] | None:
         return None
     version, path = m.group(1), m.group(2)
     before = low[:m.start()]
-    if before.endswith("/api") and not host:
-        return None                     # own server route, e.g. /api/chat/completions
+    if before.endswith("/api") and not host and "://" not in before and not dynamic_host:
+        return None                     # own server route, e.g. /api/chat/completions (relative path)
     if path in ("/messages", "/responses") and not (version or host):
         return None                     # too generic without /v1 or a provider host
     if path in ("/api/chat", "/api/generate", "/v2/chat", "/v2/embed") and not host:

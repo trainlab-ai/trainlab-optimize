@@ -1,0 +1,146 @@
+{
+ "repo": "64bit/async-openai",
+ "category": "rust",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "372 files, 40 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.3s, 1416 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "8/11 = 73%",
+   "recall": 72.72727272727273
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "34/40 calls name a specific provider",
+   "specific_pct": 85,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $514.20 vs expected $514.20"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $514.20"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.918449169417632
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $154, key-prod $361"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4.1: $108.93 vs $108.93"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$6-$12 of $514"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "8/8 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 372,
+ "scan_secs": 0.26,
+ "sites": 40,
+ "call_sites": 40,
+ "model_configs": 0,
+ "providers": [
+  "azure",
+  "ollama",
+  "openai",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "rust"
+ ],
+ "resolved_model_pct": 58,
+ "baseline": 11,
+ "baseline_found": 8,
+ "missed": [
+  [
+   "async-openai/src/chat.rs",
+   55,
+   ".post(\"/chat/completions\", request, &self.request_options)"
+  ],
+  [
+   "async-openai/src/chat.rs",
+   99,
+   ".get(\"/chat/completions\", &self.request_options)"
+  ],
+  [
+   "async-openai/src/config.rs",
+   338,
+   "drop(client.chat().create(CreateChatCompletionRequest {"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 514.2038,
+  "by_key": {
+   "key-prod": 360.6256,
+   "key-batch": 153.5782
+  },
+  "by_model": {
+   "gpt-4.1": 143.9136,
+   "gpt-5-mini": 158.9786,
+   "gpt-4o-mini": 43.4861,
+   "text-embedding-ada-002": 14.7714,
+   "gpt-5": 111.1203,
+   "gpt-4.1-nano": 41.9337
+  },
+  "code_models": [
+   "gpt-4.1",
+   "gpt-5-mini",
+   "gpt-4o-mini",
+   "text-embedding-ada-002",
+   "gpt-5"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpm6blt_cn/usage_tokens_only.csv",
+   "model": "gpt-4.1",
+   "expected": 108.93
+  }
+ },
+ "findings": {
+  "R101": 2,
+  "R102": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 514.2,
+ "savings_high": 11.95,
+ "attributed_share": 0.918449169417632,
+ "wall_secs": 1.4
+}

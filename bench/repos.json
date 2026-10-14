@@ -1,0 +1,254 @@
+{
+ "seed": 20261014,
+ "categories": {
+  "python-agents-rag": {
+   "quota": 14,
+   "llm": true,
+   "draw": [
+    "griptape-ai/griptape",
+    "assafelovic/gpt-researcher",
+    "h2oai/h2ogpt",
+    "confident-ai/deepeval",
+    "ScrapeGraphAI/Scrapegraph-ai",
+    "geekan/MetaGPT",
+    "zylon-ai/private-gpt",
+    "openai/swarm",
+    "vanna-ai/vanna",
+    "stanford-oval/storm",
+    "SWE-agent/SWE-agent",
+    "pydantic/pydantic-ai",
+    "microsoft/TaskWeaver",
+    "agno-agi/agno",
+    "langchain-ai/langgraph",
+    "guidance-ai/guidance",
+    "Cinnamon/kotaemon",
+    "QuivrHQ/quivr",
+    "gptme/gptme",
+    "OpenBMB/ChatDev",
+    "567-labs/instructor",
+    "simonw/llm",
+    "langroid/langroid",
+    "letta-ai/letta",
+    "AgentOps-AI/agentops",
+    "stanfordnlp/dspy",
+    "openai/openai-agents-python",
+    "deepset-ai/haystack",
+    "unclecode/crawl4ai",
+    "TransformerOptimus/SuperAGI",
+    "huggingface/smolagents",
+    "yoheinakajima/babyagi",
+    "OpenInterpreter/open-interpreter",
+    "Pythagora-io/gpt-pilot",
+    "zilliztech/GPTCache",
+    "explodinggradients/ragas",
+    "Shubhamsaboo/awesome-llm-apps",
+    "PrefectHQ/marvin",
+    "SciPhi-AI/R2R"
+   ]
+  },
+  "js-ts-apps": {
+   "quota": 12,
+   "llm": true,
+   "draw": [
+    "CopilotKit/CopilotKit",
+    "Mintplex-Labs/anything-llm",
+    "promptfoo/promptfoo",
+    "BuilderIO/micro-agent",
+    "Nutlope/llamacoder",
+    "FlowiseAI/Flowise",
+    "mastra-ai/mastra",
+    "ChatGPTBox-dev/chatGPTBox",
+    "vercel/ai-chatbot",
+    "run-llama/LlamaIndexTS",
+    "stackblitz-labs/bolt.diy",
+    "reworkd/AgentGPT",
+    "RooCodeInc/Roo-Code",
+    "cline/cline",
+    "huggingface/chat-ui",
+    "transitive-bullshit/agentic",
+    "Nutlope/aicommits",
+    "langfuse/langfuse",
+    "openai/openai-realtime-console",
+    "di-sukharev/opencommit",
+    "e2b-dev/fragments",
+    "anse-app/anse",
+    "assistant-ui/assistant-ui"
+   ]
+  },
+  "go": {
+   "quota": 7,
+   "llm": true,
+   "draw": [
+    "mark3labs/mcphost",
+    "charmbracelet/mods",
+    "henomis/lingoose",
+    "danielmiessler/fabric",
+    "cloudwego/eino",
+    "appleboy/CodeGPT",
+    "envoyproxy/ai-gateway",
+    "sashabaranov/go-openai",
+    "anthropics/anthropic-sdk-go",
+    "openai/openai-go",
+    "k8sgpt-ai/k8sgpt"
+   ]
+  },
+  "jvm": {
+   "quota": 6,
+   "llm": true,
+   "draw": [
+    "tjake/Jlama",
+    "spring-projects/spring-ai",
+    "langchain4j/langchain4j-spring",
+    "Grt1228/chatgpt-java",
+    "anthropics/anthropic-sdk-java",
+    "JetBrains/koog",
+    "openai/openai-java",
+    "aallam/openai-kotlin",
+    "alibaba/spring-ai-alibaba"
+   ]
+  },
+  "dotnet": {
+   "quota": 5,
+   "llm": true,
+   "draw": [
+    "betalgo/openai",
+    "tryAGI/LangChain",
+    "openai/openai-dotnet",
+    "dotnet/eShop",
+    "dotnet/ai-samples",
+    "microsoft/kernel-memory",
+    "Azure-Samples/azure-search-openai-demo-csharp"
+   ]
+  },
+  "rust": {
+   "quota": 5,
+   "llm": true,
+   "draw": [
+    "rustformers/llm",
+    "64bit/async-openai",
+    "TabbyML/tabby",
+    "sigoden/aichat",
+    "Abraxas-365/langchain-rust",
+    "jeremychone/rust-genai"
+   ]
+  },
+  "ruby-php": {
+   "quota": 6,
+   "llm": true,
+   "draw": [
+    "openai-php/client",
+    "orhanerday/open-ai",
+    "symfony/ai",
+    "openai-php/laravel",
+    "crmne/ruby_llm",
+    "alexrudall/ruby-openai",
+    "discourse/discourse-ai",
+    "prism-php/prism"
+   ]
+  },
+  "notebooks": {
+   "quota": 7,
+   "llm": true,
+   "draw": [
+    "aws-samples/amazon-bedrock-workshop",
+    "google-gemini/cookbook",
+    "pinecone-io/examples",
+    "Azure-Samples/openai",
+    "huggingface/cookbook",
+    "NirDiamant/RAG_Techniques",
+    "mlabonne/llm-course",
+    "anthropics/courses",
+    "microsoft/generative-ai-for-beginners",
+    "NirDiamant/GenAI_Agents"
+   ]
+  },
+  "chinese-providers": {
+   "quota": 9,
+   "llm": true,
+   "draw": [
+    "binary-husky/gpt_academic",
+    "deepseek-ai/DeepSeek-V3",
+    "labring/FastGPT",
+    "THUDM/ChatGLM3",
+    "zhayujie/chatgpt-on-wechat",
+    "modelscope/ms-agent",
+    "1Panel-dev/MaxKB",
+    "xtekky/gpt4free",
+    "lss233/kirara-ai",
+    "AstrBotDevs/AstrBot",
+    "MoonshotAI/Kimi-K2",
+    "chatchat-space/Langchain-Chatchat",
+    "netease-youdao/QAnything"
+   ]
+  },
+  "local-self-hosted": {
+   "quota": 5,
+   "llm": true,
+   "draw": [
+    "mudler/LocalAI",
+    "lm-sys/FastChat",
+    "janhq/jan",
+    "oobabooga/text-generation-webui",
+    "ollama/ollama",
+    "nomic-ai/gpt4all",
+    "vllm-project/vllm"
+   ]
+  },
+  "gateways": {
+   "quota": 5,
+   "llm": true,
+   "draw": [
+    "QuantumNous/new-api",
+    "BerriAI/litellm",
+    "Portkey-AI/gateway",
+    "Helicone/helicone",
+    "maximhq/bifrost",
+    "songquanpeng/one-api"
+   ]
+  },
+  "mcp-prompts-config": {
+   "quota": 5,
+   "llm": true,
+   "draw": [
+    "modelcontextprotocol/servers",
+    "github/awesome-copilot",
+    "f/awesome-chatgpt-prompts",
+    "dair-ai/Prompt-Engineering-Guide",
+    "modelcontextprotocol/python-sdk",
+    "punkpeye/awesome-mcp-servers",
+    "x1xhlol/system-prompts-and-models-of-ai-tools"
+   ]
+  },
+  "negative-controls": {
+   "quota": 10,
+   "llm": false,
+   "draw": [
+    "tokio-rs/axum",
+    "laravel/laravel",
+    "spring-projects/spring-petclinic",
+    "psf/requests",
+    "pallets/flask",
+    "twbs/bootstrap",
+    "encode/httpx",
+    "gin-gonic/gin",
+    "jquery/jquery",
+    "fastapi/full-stack-fastapi-template",
+    "expressjs/express",
+    "BurntSushi/ripgrep",
+    "sinatra/sinatra"
+   ]
+  },
+  "negative-traps": {
+   "quota": 4,
+   "llm": false,
+   "draw": [
+    "stripe/stripe-python",
+    "slackapi/bolt-js",
+    "twilio/twilio-node",
+    "twilio/twilio-python",
+    "sendgrid/sendgrid-python",
+    "slackapi/python-slack-sdk"
+   ]
+  }
+ }
+}

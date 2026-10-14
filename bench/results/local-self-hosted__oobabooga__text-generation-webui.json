@@ -1,0 +1,128 @@
+{
+ "repo": "oobabooga/text-generation-webui",
+ "category": "local-self-hosted",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "145 files, 1 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.7s, 194 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "1/3 = 33%",
+   "recall": 33.333333333333336
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "1/1 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $614.86 vs expected $614.86"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $614.86"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $186, key-prod $428"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $615"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "1/1 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 145,
+ "scan_secs": 0.75,
+ "sites": 1,
+ "call_sites": 1,
+ "model_configs": 0,
+ "providers": [
+  "anthropic"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 3,
+ "baseline_found": 1,
+ "missed": [
+  [
+   "modules/api/script.py",
+   216,
+   "@app.post('/v1/chat/completions', response_model=ChatCompletionResponse, dependencies=check_key)"
+  ],
+  [
+   "modules/api/script.py",
+   258,
+   "@app.post('/v1/messages', dependencies=check_anthropic_key)"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 614.8586,
+  "by_key": {
+   "key-prod": 428.4832,
+   "key-batch": 186.3754
+  },
+  "by_model": {
+   "claude-haiku-4-5": 613.2779,
+   "gpt-4.1-nano": 1.5806
+  },
+  "code_models": [],
+  "fallback_models": [
+   "claude-haiku-4-5"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpqe_9f5hv/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 614.86,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 2.2
+}

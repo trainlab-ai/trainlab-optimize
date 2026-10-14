@@ -1,0 +1,134 @@
+{
+ "repo": "huggingface/cookbook",
+ "category": "notebooks",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "149 files, 105 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.2s, 67 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "10/10 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "53/60 calls name a specific provider",
+   "specific_pct": 88,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $1,789.80 vs expected $1,789.80"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $1,789.80"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9899242009664315
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $535, key-prod $1,255"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o: $136.16 vs $136.16"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $1,790"
+  },
+  "T14": {
+   "status": "skip",
+   "detail": "no cited lines",
+   "examples": []
+  }
+ },
+ "files": 149,
+ "scan_secs": 2.22,
+ "sites": 105,
+ "call_sites": 60,
+ "model_configs": 45,
+ "providers": [
+  "gemini",
+  "huggingface",
+  "ollama",
+  "openai",
+  "openai_compatible",
+  "perplexity",
+  "together"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 53,
+ "baseline": 10,
+ "baseline_found": 10,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 1789.8024,
+  "by_key": {
+   "key-prod": 1255.2392,
+   "key-batch": 534.5632
+  },
+  "by_model": {
+   "meta-llama/Meta-Llama-3-8B-Instruct": 87.8453,
+   "mistralai/Mixtral-8x7B-Instruct-v0.1": 493.7931,
+   "gpt-4o": 963.8377,
+   "tgi": 41.4309,
+   "meta-llama/Meta-Llama-3.1-70B-Instruct": 184.8618,
+   "gpt-4.1-nano": 18.0337
+  },
+  "code_models": [
+   "meta-llama/Meta-Llama-3-8B-Instruct",
+   "mistralai/Mixtral-8x7B-Instruct-v0.1",
+   "gpt-4o",
+   "tgi",
+   "meta-llama/Meta-Llama-3.1-70B-Instruct"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpa_q36p2q/usage_tokens_only.csv",
+   "model": "gpt-4o",
+   "expected": 136.1625
+  }
+ },
+ "findings": {
+  "R102": 9,
+  "R105": 18,
+  "R107": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 1789.8,
+ "savings_high": null,
+ "attributed_share": 0.9899242009664315,
+ "wall_secs": 26.4
+}

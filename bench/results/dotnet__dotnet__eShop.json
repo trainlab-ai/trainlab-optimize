@@ -1,0 +1,111 @@
+{
+ "repo": "dotnet/eShop",
+ "category": "dotnet",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "617 files, 0 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.2s, 3017 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "skip",
+   "detail": "no baseline matches"
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "skip",
+   "detail": "0/0 calls name a specific provider",
+   "specific_pct": null,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $118.23 vs expected $118.23"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $118.23"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $37, key-prod $81"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $118"
+  },
+  "T14": {
+   "status": "skip",
+   "detail": "no cited lines",
+   "examples": []
+  }
+ },
+ "files": 617,
+ "scan_secs": 0.2,
+ "sites": 0,
+ "call_sites": 0,
+ "model_configs": 0,
+ "providers": [],
+ "parse_errors": 0,
+ "languages": [],
+ "resolved_model_pct": null,
+ "baseline": 0,
+ "baseline_found": 0,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 118.2321,
+  "by_key": {
+   "key-prod": 81.443,
+   "key-batch": 36.789
+  },
+  "by_model": {
+   "gpt-4o-mini": 100.4004,
+   "gpt-4.1-nano": 17.8317
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpn2ozd_pw/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R902": 1
+ },
+ "monthly_spend": 118.23,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 0.9
+}

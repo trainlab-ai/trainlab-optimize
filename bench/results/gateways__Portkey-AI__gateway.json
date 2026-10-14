@@ -1,0 +1,171 @@
+{
+ "repo": "Portkey-AI/gateway",
+ "category": "gateways",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "679 files, 194 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.8s, 802 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "151/153 = 99%",
+   "recall": 98.69281045751634
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "99/179 calls name a specific provider",
+   "specific_pct": 55,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $1,107.54 vs expected $1,107.54"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $1,107.54"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9707494024775924
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $329, key-prod $778"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o: $136.16 vs $136.16"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$43-$85 of $1,108"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "4/4 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 679,
+ "scan_secs": 0.85,
+ "sites": 194,
+ "call_sites": 179,
+ "model_configs": 15,
+ "providers": [
+  "01ai",
+  "302ai",
+  "anthropic",
+  "azure",
+  "cerebras",
+  "dashscope",
+  "deepinfra",
+  "deepseek",
+  "fireworks",
+  "gemini",
+  "groq",
+  "huggingface",
+  "hyperbolic",
+  "lambda",
+  "mistral",
+  "moonshot",
+  "nebius",
+  "novita",
+  "nvidia",
+  "openai",
+  "openai_compatible",
+  "openrouter",
+  "perplexity",
+  "sambanova",
+  "siliconflow",
+  "together",
+  "upstage",
+  "vercel_ai",
+  "vertex",
+  "voyage",
+  "xai",
+  "zhipu"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "python"
+ ],
+ "resolved_model_pct": 48,
+ "baseline": 153,
+ "baseline_found": 151,
+ "missed": [
+  [
+   "src/index.ts",
+   147,
+   "app.post('/v1/chat/completions', requestValidator, chatCompletionsHandler);"
+  ],
+  [
+   "src/providers/lepton/api.ts",
+   21,
+   "return '/api/v1/chat/completions';"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 1107.5447,
+  "by_key": {
+   "key-prod": 778.0608,
+   "key-batch": 329.4839
+  },
+  "by_model": {
+   "gpt-4o": 724.8593,
+   "gpt-3.5-turbo": 29.5293,
+   "mistralai/Mixtral-8x22B": 198.3238,
+   "llama3-70b-8192": 113.0369,
+   "sutra-v2": 9.3991,
+   "gpt-4.1-nano": 32.3963
+  },
+  "code_models": [
+   "gpt-4o",
+   "gpt-3.5-turbo",
+   "mistralai/Mixtral-8x22B",
+   "llama3-70b-8192",
+   "sutra-v2"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpiz_d6xi3/usage_tokens_only.csv",
+   "model": "gpt-4o",
+   "expected": 136.1625
+  }
+ },
+ "findings": {
+  "R101": 5,
+  "R102": 19,
+  "R105": 28,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 1107.54,
+ "savings_high": 85.26,
+ "attributed_share": 0.9707494024775924,
+ "wall_secs": 6.7
+}

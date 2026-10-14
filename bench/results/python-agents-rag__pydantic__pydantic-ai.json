@@ -1,0 +1,158 @@
+{
+ "repo": "pydantic/pydantic-ai",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "3589 files, 81 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "30.5s, 118 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "17/21 = 81%",
+   "recall": 80.95238095238095
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "17/20 calls name a specific provider",
+   "specific_pct": 85,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $507.83 vs expected $507.83"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $507.83"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.8821423383719742
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $153, key-prod $355"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gemini-2.5-flash: $24.14 vs $24.14"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $508"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "24/24 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 3589,
+ "scan_secs": 30.48,
+ "sites": 81,
+ "call_sites": 20,
+ "model_configs": 61,
+ "providers": [
+  "anthropic",
+  "bedrock",
+  "gemini",
+  "groq",
+  "mistral",
+  "openai",
+  "openai_compatible",
+  "openrouter",
+  "unknown",
+  "xai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 44,
+ "baseline": 21,
+ "baseline_found": 17,
+ "missed": [
+  [
+   "pydantic_ai_slim/pydantic_ai/providers/bedrock_mantle.py",
+   28,
+   "- `'chat'`: Chat Completions at `/v1/chat/completions` (GPT-OSS Safeguard)."
+  ],
+  [
+   "pydantic_ai_slim/pydantic_ai/providers/github_copilot.py",
+   132,
+   "`https://api.githubcopilot.com/chat/completions`. Copilot serves Anthropic, OpenAI, Google, xAI and"
+  ],
+  [
+   "pydantic_ai_slim/pydantic_ai/providers/github_copilot.py",
+   133,
+   "MoonshotAI models under a subscription, but only the ids whose catalog entry lists `/chat/completions`"
+  ],
+  [
+   "pydantic_ai_slim/pydantic_ai/providers/snowflake.py",
+   52,
+   "`https://<account>.snowflakecomputing.com/api/v2/cortex/v1/chat/completions`, which serves"
+  ]
+ ],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 507.835,
+  "by_key": {
+   "key-prod": 354.7683,
+   "key-batch": 153.0667
+  },
+  "by_model": {
+   "openai:gpt-5.2": 342.9705,
+   "openai:gpt-5-mini": 66.432,
+   "gemini-2.5-flash": 13.4226,
+   "text-embedding-3-small": 0.7737,
+   "groq:llama-3.3-70b-versatile": 24.3839,
+   "gpt-4.1-nano": 59.8522
+  },
+  "code_models": [
+   "openai:gpt-5.2",
+   "openai:gpt-5-mini",
+   "gemini-2.5-flash",
+   "text-embedding-3-small",
+   "groq:llama-3.3-70b-versatile"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpw5km9gyg/usage_tokens_only.csv",
+   "model": "gemini-2.5-flash",
+   "expected": 24.1395
+  }
+ },
+ "findings": {
+  "R108": 6,
+  "R104": 1,
+  "R105": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 507.83,
+ "savings_high": null,
+ "attributed_share": 0.8821423383719742,
+ "wall_secs": 64.0
+}

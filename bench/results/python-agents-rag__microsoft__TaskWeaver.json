@@ -1,0 +1,126 @@
+{
+ "repo": "microsoft/TaskWeaver",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "266 files, 17 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.3s, 766 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "8/8 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "8/9 calls name a specific provider",
+   "specific_pct": 89,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $16.40 vs expected $16.40"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $16.40"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $5, key-prod $12"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $16"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "7/7 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 266,
+ "scan_secs": 0.35,
+ "sites": 17,
+ "call_sites": 9,
+ "model_configs": 8,
+ "providers": [
+  "anthropic",
+  "azure",
+  "dashscope",
+  "gemini",
+  "openai",
+  "openai_compatible",
+  "zhipu"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 8,
+ "baseline_found": 8,
+ "missed": [],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 16.3961,
+  "by_key": {
+   "key-prod": 11.5241,
+   "key-batch": 4.872
+  },
+  "by_model": {
+   "gpt-4o-mini": 3.151,
+   "gpt-4.1-nano": 13.2451
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmphdc6jb58/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R108": 2,
+  "R105": 1,
+  "R109": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 16.4,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 1.1
+}

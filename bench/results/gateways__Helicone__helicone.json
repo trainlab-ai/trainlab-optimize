@@ -1,0 +1,157 @@
+{
+ "repo": "Helicone/helicone",
+ "category": "gateways",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "2449 files, 132 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "3.5s, 697 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "118/120 = 98%",
+   "recall": 98.33333333333333
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "104/129 calls name a specific provider",
+   "specific_pct": 81,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $2,137.41 vs expected $2,137.41"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $2,137.41"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9904970218914005
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $643, key-prod $1,494"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-3.5-turbo: $24.23 vs $24.23"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $2,137"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "48/48 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 2449,
+ "scan_secs": 3.52,
+ "sites": 132,
+ "call_sites": 129,
+ "model_configs": 3,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "cerebras",
+  "deepinfra",
+  "deepseek",
+  "fireworks",
+  "gemini",
+  "groq",
+  "mistral",
+  "novita",
+  "openai",
+  "openai_compatible",
+  "openrouter",
+  "perplexity",
+  "together",
+  "vercel_ai",
+  "vertex",
+  "xai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "python"
+ ],
+ "resolved_model_pct": 37,
+ "baseline": 120,
+ "baseline_found": 118,
+ "missed": [
+  [
+   "packages/cost/unified/providers.ts",
+   77,
+   "defaultEndpoint: \"/api/v1/chat/completions\","
+  ],
+  [
+   "valhalla/jawn/src/lib/clients/LLMAsAJudge/LLMAsAJudge.ts",
+   94,
+   "const requestPath = `${OPENROUTER_WORKER_URL}/api/v1/chat/completions`;"
+  ]
+ ],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 2137.4142,
+  "by_key": {
+   "key-prod": 1494.4631,
+   "key-batch": 642.9511
+  },
+  "by_model": {
+   "gpt-3.5-turbo": 95.0229,
+   "gpt-4o-mini": 89.806,
+   "gpt-4": 802.0601,
+   "o3": 549.3416,
+   "claude-sonnet-4": 580.8718,
+   "gpt-4.1-nano": 20.3118
+  },
+  "code_models": [
+   "gpt-3.5-turbo",
+   "gpt-4o-mini",
+   "gpt-4",
+   "o3",
+   "claude-sonnet-4"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp2ubk0iu4/usage_tokens_only.csv",
+   "model": "gpt-3.5-turbo",
+   "expected": 24.2325
+  }
+ },
+ "findings": {
+  "R102": 11,
+  "R108": 6,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 2137.41,
+ "savings_high": null,
+ "attributed_share": 0.9904970218914005,
+ "wall_secs": 13.6
+}

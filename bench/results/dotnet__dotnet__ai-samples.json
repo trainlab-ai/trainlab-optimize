@@ -1,0 +1,124 @@
+{
+ "repo": "dotnet/ai-samples",
+ "category": "dotnet",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "207 files, 35 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.1s, 1462 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "8/8 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "10/23 calls name a specific provider",
+   "specific_pct": 43,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 180 records, $84.30 vs expected $84.30"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $84.30"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "2 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.7207071638743114
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $25, key-prod $59"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-3.5-turbo: $24.23 vs $24.23"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $84"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "11/11 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 207,
+ "scan_secs": 0.14,
+ "sites": 35,
+ "call_sites": 23,
+ "model_configs": 12,
+ "providers": [
+  "azure",
+  "ollama",
+  "openai",
+  "unknown"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "csharp"
+ ],
+ "resolved_model_pct": 11,
+ "baseline": 8,
+ "baseline_found": 8,
+ "missed": [],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 180,
+  "total_cost": 84.295,
+  "by_key": {
+   "key-prod": 58.9141,
+   "key-batch": 25.381
+  },
+  "by_model": {
+   "gpt-3.5-turbo": 5.4126,
+   "phi3": 55.3394,
+   "gpt-4.1-nano": 23.543
+  },
+  "code_models": [
+   "gpt-3.5-turbo",
+   "phi3"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp7i9ocnq7/usage_tokens_only.csv",
+   "model": "gpt-3.5-turbo",
+   "expected": 24.2325
+  }
+ },
+ "findings": {
+  "R108": 3,
+  "R102": 2,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 84.3,
+ "savings_high": null,
+ "attributed_share": 0.7207071638743114,
+ "wall_secs": 0.6
+}

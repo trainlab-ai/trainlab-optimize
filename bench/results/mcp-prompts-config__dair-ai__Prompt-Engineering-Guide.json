@@ -1,0 +1,133 @@
+{
+ "repo": "dair-ai/Prompt-Engineering-Guide",
+ "category": "mcp-prompts-config",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "193 files, 16 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.2s, 1044 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "7/7 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "14/14 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $760.12 vs expected $760.12"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $760.12"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.977583200918689
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $227, key-prod $533"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-3.5-turbo: $24.23 vs $24.23"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$14-$28 of $760"
+  },
+  "T14": {
+   "status": "skip",
+   "detail": "no cited lines",
+   "examples": []
+  }
+ },
+ "files": 193,
+ "scan_secs": 0.18,
+ "sites": 16,
+ "call_sites": 14,
+ "model_configs": 2,
+ "providers": [
+  "litellm",
+  "mistral",
+  "openai",
+  "together"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "python"
+ ],
+ "resolved_model_pct": 88,
+ "baseline": 7,
+ "baseline_found": 7,
+ "missed": [],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 760.1199,
+  "by_key": {
+   "key-prod": 533.1205,
+   "key-batch": 226.9993
+  },
+  "by_model": {
+   "gpt-3.5-turbo": 36.7735,
+   "mistral-small": 285.4613,
+   "codellama/CodeLlama-70b-Instruct-hf": 293.6412,
+   "togethercomputer/CodeLlama-34b-Instruct": 38.2142,
+   "gpt-3.5-turbo-1106": 88.9902,
+   "gpt-4.1-nano": 17.0395
+  },
+  "code_models": [
+   "gpt-3.5-turbo",
+   "mistral-small",
+   "codellama/CodeLlama-70b-Instruct-hf",
+   "togethercomputer/CodeLlama-34b-Instruct",
+   "gpt-3.5-turbo-1106"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpcjl0noag/usage_tokens_only.csv",
+   "model": "gpt-3.5-turbo",
+   "expected": 24.2325
+  }
+ },
+ "findings": {
+  "R108": 5,
+  "R101": 1,
+  "R102": 3,
+  "R105": 4,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 760.12,
+ "savings_high": 27.98,
+ "attributed_share": 0.977583200918689,
+ "wall_secs": 0.8
+}

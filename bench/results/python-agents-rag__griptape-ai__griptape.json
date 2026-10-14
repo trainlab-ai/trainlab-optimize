@@ -1,0 +1,140 @@
+{
+ "repo": "griptape-ai/griptape",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "1257 files, 104 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "1.0s, 1235 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "12/12 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "18/19 calls name a specific provider",
+   "specific_pct": 95,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $719.05 vs expected $719.05"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $719.05"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.919004249470695
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $212, key-prod $508"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4.1: $108.93 vs $108.93"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $719"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "47/47 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 1257,
+ "scan_secs": 1.02,
+ "sites": 104,
+ "call_sites": 19,
+ "model_configs": 85,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "cohere",
+  "gemini",
+  "groq",
+  "huggingface",
+  "ollama",
+  "openai",
+  "perplexity",
+  "unknown",
+  "voyage",
+  "xai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 82,
+ "baseline": 12,
+ "baseline_found": 12,
+ "missed": [],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 719.0451,
+  "by_key": {
+   "key-prod": 507.5056,
+   "key-batch": 211.5395
+  },
+  "by_model": {
+   "gpt-4.1": 19.7373,
+   "gpt-3.5-turbo": 136.0635,
+   "text-embedding-3-small": 1.6641,
+   "claude-3-7-sonnet-latest": 493.1487,
+   "embed-english-v3.0": 10.1918,
+   "gpt-4.1-nano": 58.2396
+  },
+  "code_models": [
+   "gpt-4.1",
+   "gpt-3.5-turbo",
+   "text-embedding-3-small",
+   "claude-3-7-sonnet-latest",
+   "embed-english-v3.0"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpi58w42bc/usage_tokens_only.csv",
+   "model": "gpt-4.1",
+   "expected": 108.93
+  }
+ },
+ "findings": {
+  "R102": 18,
+  "R108": 6,
+  "R105": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 719.05,
+ "savings_high": null,
+ "attributed_share": 0.919004249470695,
+ "wall_secs": 2.7
+}

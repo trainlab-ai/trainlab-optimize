@@ -198,6 +198,45 @@ NON_PYTHON_KERNELS = {"r", "julia", "scala", "javascript", "typescript", "sql", 
                       "matlab", "octave", "ruby", "sas", "stata", "wolfram language", "haskell"}
 
 
+# Kernel / cell language -> heuristic scanner language
+_NB_LANG = {"javascript": "javascript", "typescript": "javascript", "csharp": "csharp", "c#": "csharp",
+            ".net-csharp": "csharp", "java": "jvm", "kotlin": "jvm", "scala": "jvm", "go": "go", "rust": "rust",
+            "ruby": "ruby"}
+
+
+def _scan_notebook_heuristic(rel: str, nb: dict, kernel_lang: str):
+    """Non-Python notebooks (.NET Interactive / Polyglot, Deno, IJava, evcxr, ...): scan the code cells
+    with the matching pattern scanner and report cell + line."""
+    groups: dict[str, list[tuple[int, list[str]]]] = {}
+    code_cell = 0
+    for cell in nb.get("cells", []):
+        if cell.get("cell_type") != "code":
+            continue
+        code_cell += 1
+        meta = cell.get("metadata") or {}
+        cl = ((meta.get("dotnet_interactive") or {}).get("language")
+              or (meta.get("polyglot_notebook") or {}).get("kernelName") or kernel_lang)
+        hl = _NB_LANG.get(str(cl).lower())
+        if not hl:
+            continue
+        src = cell.get("source", "")
+        src = "".join(src) if isinstance(src, list) else str(src)
+        groups.setdefault(hl, []).append((code_cell, src.splitlines()))
+    sites = []
+    for hl, cells in groups.items():
+        lines, origin = [], []
+        for n, cell_lines in cells:
+            for i, ln in enumerate(cell_lines, 1):
+                lines.append(ln)
+                origin.append((n, i))
+        for s in scan_heuristic(rel, "\n".join(lines), hl):
+            if 1 <= s.line <= len(origin):
+                s.cell, s.line = origin[s.line - 1]
+                s.scope = "example"
+                sites.append(s)
+    return sites, []
+
+
 def _scan_notebook(rel: str, path: Path):
     """Scan the Python code cells of a Jupyter notebook as one program; report cell + line."""
     import json as _json
@@ -210,14 +249,21 @@ def _scan_notebook(rel: str, path: Path):
     # Kernel metadata is often wrong (e.g. "coconut" for plain Python), and cells that are not
     # Python are dropped individually below, so only skip clearly non-Python kernels.
     if str(lang).lower() in NON_PYTHON_KERNELS:
-        return [], []
+        return _scan_notebook_heuristic(rel, nb, str(lang).lower())
     import ast as _ast
+    # Cells can declare their own language (VS Code Polyglot / .NET Interactive) under a Python kernel
+    other_sites, _ = _scan_notebook_heuristic(rel, nb, "python")
     cells: list[tuple[int, list[str]]] = []
     code_cell = 0
     for cell in nb.get("cells", []):
         if cell.get("cell_type") != "code":
             continue
         code_cell += 1
+        meta = cell.get("metadata") or {}
+        cell_lang = ((meta.get("dotnet_interactive") or {}).get("language")
+                     or (meta.get("polyglot_notebook") or {}).get("kernelName"))
+        if cell_lang and str(cell_lang).lower() in _NB_LANG:
+            continue
         src = cell.get("source", "")
         src = "".join(src) if isinstance(src, list) else str(src)
         if src.lstrip().startswith("%%"):           # cell magics (%%bash, %%writefile, ...) are not Python
@@ -246,7 +292,7 @@ def _scan_notebook(rel: str, path: Path):
         origin.append((n, 0))
     text = "\n".join(lines)
     if not PY_TRIGGER.search(text):
-        return [], []
+        return other_sites, []
     scanner = PythonFileScanner(rel, text)
     sites = scanner.scan()
     for s in sites:
@@ -254,7 +300,7 @@ def _scan_notebook(rel: str, path: Path):
         s.cell, s.line, s.scope = cell, line, "example"
         s.id = hashlib.sha1(f"{rel}:{cell}:{line}:{s.kind}".encode()).hexdigest()[:12]
     refs = [(rel, origin[ln - 1][1] if 0 < ln <= len(origin) else ln, m) for ln, m in scanner.model_refs]
-    return sites, refs
+    return sites + other_sites, refs
 
 
 def _module_index(root: Path, files: list[Path]) -> dict[str, list[str]]:

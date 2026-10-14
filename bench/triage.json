@@ -1,0 +1,79 @@
+{
+ "_about": "Manual verdicts for missed baseline lines the automatic classifier in report.py can't place. Key: substring of the path or line. Each was checked against the source on 2026-10-14.",
+ "THUDM/ChatGLM3": {
+  "Processes chat completion requests": "docstring or prose"
+ },
+ "modelscope/ms-agent": {
+  "b'/v1/chat/completions'": "request-path rewrite, not a call"
+ },
+ "xtekky/gpt4free": {
+  "typeof url": "code shown inside a string",
+  "GithubCopilot.py": "docstring or prose",
+  "ElevenLabs.py": "docstring or prose",
+  "g4f/api/__init__.py": "server route"
+ },
+ "zhayujie/chatgpt-on-wechat": {
+  "without a trailing": "docstring or prose"
+ },
+ "openai/openai-dotnet": {
+  "OpenAI/src/Custom/Chat/ChatClient.cs": "SDK method definition"
+ },
+ "BerriAI/litellm": {
+  "auto_evals.py": "docstring or prose",
+  "litellm/main.py": "docstring or prose",
+  "verbose_router_logger": "log message string",
+  "slack_alerting.py": "code sample inside a message template",
+  "email_templates": "code sample inside a message template",
+  "agentops.py": "docstring or prose",
+  "arize_phoenix_prompt_manager.py": "docstring or prose",
+  "bitbucket_prompt_manager.py": "docstring or prose",
+  "dotprompt_manager.py": "docstring or prose",
+  "generic_prompt_manager.py": "docstring or prose",
+  "api_route_to_call_types.py": "docstring or prose",
+  "cli_token_utils.py": "docstring or prose",
+  "exception_mapping_utils.py": "docstring or prose",
+  "litellm_core_utils/rules.py": "docstring or prose",
+  "streaming_handler.py": "docstring or prose",
+  "azure_ai/chat/transformation.py": "docstring or prose",
+  "proxy/client/http_client.py": "docstring or prose",
+  "vertex_gemma_models/main.py": "docstring or prose",
+  "vertex_model_garden/main.py": "docstring or prose",
+  "litellm_skills/main.py": "docstring or prose",
+  "proxy_auth/credentials.py": "docstring or prose",
+  "sampling_handler.py": "docstring or prose",
+  "proxy/_types.py": "docstring or prose",
+  "Router passes caching": "docstring or prose",
+  "auth_utils.py": "docstring or prose",
+  "route_checks.py": "docstring or prose",
+  "benchmark_proxy_vs_provider.py": "docstring or prose",
+  "litellm-dashboard/src/components": "docstring or prose",
+  "proxy_cli.py": "code shown inside a string",
+  "/_next/static/": "generated build output",
+  "proxy/proxy_server.py:": "server route",
+  "\"/v1/chat/completions\",": "server route",
+  "\"/chat/completions\",": "server route",
+  "\"/engines/{model:path}/chat/completions\",": "server route",
+  "\"/openai/deployments/{model:path}/chat/completions\",": "server route",
+  "\"/queue/chat/completions\",": "server route",
+  "\"/v1/messages\",": "server route",
+  "\"/cursor/chat/completions\",": "server route",
+  ".route(\"": "server route"
+ },
+ "Grt1228/chatgpt-java": {
+  "OpenAiClient.java": "SDK method definition"
+ },
+ "crmne/ruby_llm": {
+  "benchmarks/requests.rb": "server route",
+  "response = client.converse(": "code shown inside a string"
+ },
+ "64bit/async-openai": {
+  "async-openai/src/config.rs": "SDK's own test module"
+ },
+ "maximhq/bifrost": {
+  "provider.chatCompletion(": "gateway's own provider method",
+  "emptyState.tsx": "code shown inside a string"
+ },
+ "janhq/jan": {
+  "createMessage(": "other API, same method name"
+ }
+}

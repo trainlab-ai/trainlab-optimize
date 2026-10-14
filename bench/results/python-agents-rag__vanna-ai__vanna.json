@@ -1,0 +1,145 @@
+{
+ "repo": "vanna-ai/vanna",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "338 files, 44 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.7s, 475 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "33/33 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "31/37 calls name a specific provider",
+   "specific_pct": 84,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $2,508.65 vs expected $2,508.65"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $2,508.65"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9897887882190856
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $754, key-prod $1,754"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gemini-2.5-pro: $98.08 vs $98.08"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $2,509"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "25/25 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 338,
+ "scan_secs": 0.71,
+ "sites": 44,
+ "call_sites": 37,
+ "model_configs": 7,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "cohere",
+  "deepseek",
+  "gemini",
+  "mistral",
+  "ollama",
+  "openai",
+  "openai_compatible",
+  "vertex",
+  "zhipu"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 43,
+ "baseline": 33,
+ "baseline_found": 33,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 360,
+  "total_cost": 2508.6506,
+  "by_key": {
+   "key-prod": 1754.3519,
+   "key-batch": 754.2987
+  },
+  "by_model": {
+   "gemini-2.5-pro": 313.226,
+   "gemini-1.5-pro": 334.7208,
+   "gpt-3.5-turbo": 24.2939,
+   "qwen-plus": 419.4245,
+   "claude-sonnet-4-5": 1391.3689,
+   "gpt-4.1-nano": 25.6164
+  },
+  "code_models": [
+   "gemini-2.5-pro",
+   "gemini-1.5-pro",
+   "gpt-3.5-turbo",
+   "qwen-plus",
+   "claude-sonnet-4-5"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpuvuymyzl/usage_tokens_only.csv",
+   "model": "gemini-2.5-pro",
+   "expected": 98.0812
+  }
+ },
+ "findings": {
+  "R102": 4,
+  "R101": 2,
+  "R105": 5,
+  "R109": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 2508.65,
+ "savings_high": null,
+ "attributed_share": 0.9897887882190856,
+ "wall_secs": 2.5
+}

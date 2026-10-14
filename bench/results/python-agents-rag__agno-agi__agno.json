@@ -1,0 +1,165 @@
+{
+ "repo": "agno-agi/agno",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "5216 files, 159 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "15.9s, 327 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "70/74 = 95%",
+   "recall": 94.5945945945946
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "81/87 calls name a specific provider",
+   "specific_pct": 93,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $3,096.09 vs expected $3,096.09"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $3,096.09"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9814517930858528
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $920, key-prod $2,176"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "claude-sonnet-5-5: $120.93 vs $120.93"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $3,096"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "24/24 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 5216,
+ "scan_secs": 15.95,
+ "sites": 159,
+ "call_sites": 87,
+ "model_configs": 72,
+ "providers": [
+  "anthropic",
+  "bedrock",
+  "cerebras",
+  "cohere",
+  "gemini",
+  "groq",
+  "huggingface",
+  "internlm",
+  "minimax",
+  "mistral",
+  "openai",
+  "openai_compatible",
+  "replicate",
+  "unknown",
+  "voyage"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 78,
+ "baseline": 74,
+ "baseline_found": 70,
+ "missed": [
+  [
+   "libs/agno/agno/models/ramp/router.py",
+   32,
+   "Anthropic, Fireworks, xAI). There is no `/v1/chat/completions` endpoint."
+  ],
+  [
+   "libs/agno/agno/tools/plivo.py",
+   104,
+   "response = self.client.messages.create(src=from_, dst=to, text=body)"
+  ],
+  [
+   "libs/agno/agno/tools/twilio.py",
+   125,
+   "message = self.client.messages.create(to=to, from_=from_, body=body)"
+  ],
+  [
+   "libs/agno/agno/tools/webex.py",
+   50,
+   "response = self.client.messages.create(roomId=room_id, text=text)"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 3096.0881,
+  "by_key": {
+   "key-prod": 2175.7939,
+   "key-batch": 920.2942
+  },
+  "by_model": {
+   "claude-sonnet-5-5": 1045.0693,
+   "gpt-5.6-luna": 80.7961,
+   "gpt-5.4": 1543.4057,
+   "claude-sonnet-4-5-20250929": 361.5136,
+   "cohere.embed-multilingual-v3": 7.8766,
+   "gpt-4.1-nano": 57.4269
+  },
+  "code_models": [
+   "claude-sonnet-5-5",
+   "gpt-5.6-luna",
+   "gpt-5.4",
+   "claude-sonnet-4-5-20250929",
+   "cohere.embed-multilingual-v3"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmplyd_b79i/usage_tokens_only.csv",
+   "model": "claude-sonnet-5-5",
+   "expected": 120.93
+  }
+ },
+ "findings": {
+  "R101": 2,
+  "R102": 2,
+  "R104": 2,
+  "R105": 2,
+  "R109": 5,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 3096.09,
+ "savings_high": null,
+ "attributed_share": 0.9814517930858528,
+ "wall_secs": 39.5
+}

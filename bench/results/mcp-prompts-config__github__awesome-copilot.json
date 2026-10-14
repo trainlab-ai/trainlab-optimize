@@ -1,0 +1,128 @@
+{
+ "repo": "github/awesome-copilot",
+ "category": "mcp-prompts-config",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "692 files, 10 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.2s, 315 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "1/1 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "1/1 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $1,307.28 vs expected $1,307.28"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $1,307.28"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.992483529049188
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $392, key-prod $915"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-5: $98.08 vs $98.08"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $1,307"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "3/3 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 692,
+ "scan_secs": 2.19,
+ "sites": 10,
+ "call_sites": 1,
+ "model_configs": 9,
+ "providers": [
+  "anthropic",
+  "openai",
+  "openrouter"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 100,
+ "baseline": 1,
+ "baseline_found": 1,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 1307.284,
+  "by_key": {
+   "key-prod": 914.9777,
+   "key-batch": 392.3063
+  },
+  "by_model": {
+   "gpt-5": 629.0563,
+   "claude-opus-4.6": 378.1909,
+   "claude-sonnet-4.5": 100.8397,
+   "gpt-5.1-codex-mini": 43.0786,
+   "google/gemini-3-pro-image-preview": 146.2922,
+   "gpt-4.1-nano": 9.8262
+  },
+  "code_models": [
+   "gpt-5",
+   "claude-opus-4.6",
+   "claude-sonnet-4.5",
+   "gpt-5.1-codex-mini",
+   "google/gemini-3-pro-image-preview"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpyoyvnnn1/usage_tokens_only.csv",
+   "model": "gpt-5",
+   "expected": 98.0812
+  }
+ },
+ "findings": {
+  "R102": 2,
+  "R105": 1,
+  "R902": 1
+ },
+ "monthly_spend": 1307.28,
+ "savings_high": null,
+ "attributed_share": 0.992483529049188,
+ "wall_secs": 7.3
+}

@@ -1,0 +1,133 @@
+{
+ "repo": "twilio/twilio-node",
+ "category": "negative-traps",
+ "llm_repo": false,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "814 files, 0 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "1.4s, 572 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "skip",
+   "detail": "negative control"
+  },
+  "T05": {
+   "status": "pass",
+   "detail": "0 LLM call site(s) reported",
+   "examples": []
+  },
+  "T06": {
+   "status": "skip",
+   "detail": "0/0 calls name a specific provider",
+   "specific_pct": null,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $10.00 vs expected $10.00"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $10.00"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $3, key-prod $7"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $10"
+  },
+  "T14": {
+   "status": "skip",
+   "detail": "no cited lines",
+   "examples": []
+  }
+ },
+ "files": 814,
+ "scan_secs": 1.42,
+ "sites": 0,
+ "call_sites": 0,
+ "model_configs": 0,
+ "providers": [],
+ "parse_errors": 0,
+ "languages": [],
+ "resolved_model_pct": null,
+ "baseline": 4,
+ "baseline_found": 0,
+ "missed": [
+  [
+   "examples/example.js",
+   39,
+   "twilio.messages.create("
+  ],
+  [
+   "examples/example.js",
+   62,
+   "var promise = twilio.messages.create({"
+  ],
+  [
+   "examples/typescript/example.ts",
+   39,
+   "client.messages.create(msgData, (err: Error, result: any) => {"
+  ],
+  [
+   "examples/typescript/example.ts",
+   45,
+   "const promise = client.messages.create({"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 9.9951,
+  "by_key": {
+   "key-prod": 6.9474,
+   "key-batch": 3.0477
+  },
+  "by_model": {
+   "gpt-4o-mini": 0.2847,
+   "gpt-4.1-nano": 9.7104
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpm8pwor3f/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R902": 1
+ },
+ "monthly_spend": 10.0,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 6.8
+}

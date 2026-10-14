@@ -423,3 +423,104 @@ def test_latin1_crlf_and_unreadable(tmp_path):
     paths = [s.path for s in r.call_sites]
     assert "latin.py" in paths and r.call_sites[0].line == 3
     bad.chmod(0o644)
+
+
+def test_client_post_to_provider_host_is_a_call():
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    rs = '''let res = client.post("https://api.anthropic.com/v1/messages").json(&body).send().await?;
+router.post("/v1/chat/completions", handler);'''
+    s = scan_heuristic("src/llm/claude.rs", rs, "rust")
+    assert [(x.line, x.provider) for x in s] == [(1, "anthropic")]
+
+
+def test_router_vendor_namespaces_match_code_names():
+    from trainlab_optimize.analyzer.spend import base_model
+    for billed, code in [("qwen/qwen-plus", "qwen-plus"), ("meta-llama/llama-3.3-70b-instruct", "llama-3.3-70b-instruct"),
+                         ("moonshotai/kimi-k2", "kimi-k2"), ("deepseek/deepseek-chat:free", "deepseek-chat")]:
+        assert base_model(billed) == base_model(code)
+
+
+def test_jvm_round1_gaps():
+    from trainlab_optimize.scanner.generic import OTHER_TEST, scan_heuristic
+    kt = '''import aws.sdk.kotlin.services.bedrockruntime.BedrockRuntimeClient
+val resp = client.converse(ConverseRequest { modelId = "anthropic.claude-haiku-4-5-20251001-v1:0" })'''
+    assert [(x.provider, x.model) for x in scan_heuristic("App.kt", kt, "jvm")] == [
+        ("bedrock", "anthropic.claude-haiku-4-5-20251001-v1:0")]
+    java = '''import com.anthropic.client.AnthropicClient;
+try (var s = client.messages().createStreaming(params)) { }'''
+    assert [x.provider for x in scan_heuristic("Ex.java", java, "jvm")] == ["anthropic"]
+    spring = '''import org.springframework.ai.openai.OpenAiChatModel;
+var chatModel = OpenAiChatModel.builder().defaultOptions(opts).build();'''
+    assert [(x.kind, x.provider) for x in scan_heuristic("Cfg.java", spring, "jvm")] == [("model_config", "openai")]
+    assert OTHER_TEST.search("lib/src/jvmTest/kotlin/ClientTestBase.kt")
+
+
+def test_dotnet_interactive_notebook(tmp_path):
+    import json as _json
+    nb = {"metadata": {"kernelspec": {"language": "C#", "name": ".net-csharp"}},
+          "cells": [{"cell_type": "markdown", "source": ["# Q&A"]},
+                    {"cell_type": "code", "metadata": {"dotnet_interactive": {"language": "csharp"}},
+                     "source": ["#r \"nuget: Azure.AI.OpenAI\"\n", "using Azure.AI.OpenAI;\n"]},
+                    {"cell_type": "code", "metadata": {},
+                     "source": ["var options = new ChatCompletionsOptions { DeploymentName = \"gpt-4o\" };\n",
+                                "var response = await client.GetChatCompletionsAsync(options);\n"]}]}
+    (tmp_path / "qa.ipynb").write_text(_json.dumps(nb))
+    s = scan(tmp_path).call_sites
+    assert [(x.provider, x.cell, x.line, x.scope) for x in s] == [("azure", 2, 2, "example")]
+
+
+def test_absolute_url_with_api_segment_is_an_endpoint():
+    from trainlab_optimize.scanner.python_ast import http_endpoint
+    assert http_endpoint("https://internlm-chat.intern-ai.org.cn/puyu/api/v1/chat/completions")[1] == "internlm"
+    assert http_endpoint("/api/chat/completions") is None
+
+
+def test_name_assigned_many_times_resolves_fast():
+    import time
+    lines = ["import litellm"]
+    for i in range(300):
+        lines += [f"model = m{i % 7}", f"m{i % 7} = model"]
+    lines.append("litellm.completion(model=model, messages=[])")
+    t0 = time.time()
+    assert len(sites_of("\n".join(lines))) == 1 and time.time() - t0 < 2
+
+
+def test_bench_round2_gaps():
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    go = 'func run(b string) {\n\turl := strings.TrimRight(b, "/") + "/chat/completions"\n}'
+    assert [(x.line, x.sdk_call) for x in scan_heuristic("cmd/bench/bench.go", go, "go")] == [(2, "HTTP /chat/completions")]
+    rb = 'resp = client.converse(\n  model_id: "anthropic.claude-haiku-4-5-20251001-v1:0",\n  messages: msgs)'
+    assert [x.provider for x in scan_heuristic("tools/snippets.rb", rb, "ruby")] == ["bedrock"]
+    assert [x.sdk_call for x in scan_heuristic("s.rb", 'r = client.responses.create(model: "gpt-5", input: h)', "ruby")] \
+        == ["responses.create"]
+    # OpenAI-shaped client called positionally (g4f style), without an openai import
+    assert [x.kind for x in sites_of("from g4f.client import Client\nc = Client()\nc.chat.completions.create(msgs, 'gpt-4o')\n")] \
+        == ["chat"]
+    from trainlab_optimize.scanner.python_ast import TEST_PATH_RE
+    assert TEST_PATH_RE.search("etc/unittest/client.py")
+
+
+def test_bench_round3_gaps(tmp_path):
+    import json as _json
+    from trainlab_optimize.scanner.generic import scan_heuristic
+    twilio = 'const twilio = require("twilio")(sid, token);\ntwilio.messages.create({ from, to, body: "hi" });'
+    assert scan_heuristic("examples/example.js", twilio, "javascript") == []
+    passed_client = 'export async function ask(client) {\n  return client.messages.create({ model: "claude-haiku-4-5", max_tokens: 50, messages });\n}'
+    assert [x.provider for x in scan_heuristic("src/ask.ts", passed_client, "javascript")] == ["anthropic"]
+    nb = {"metadata": {"kernelspec": {"language": "python", "name": "python3"}},
+          "cells": [{"cell_type": "code", "metadata": {"dotnet_interactive": {"language": "csharp"}},
+                     "source": ["#r \"nuget: Azure.AI.OpenAI\"\n",
+                                "var response = await client.GetChatCompletionsAsync(options);\n"]},
+                    {"cell_type": "code", "metadata": {}, "source": ["from openai import OpenAI\n",
+                     "OpenAI().chat.completions.create(model='gpt-4o', messages=[])\n"]}]}
+    (tmp_path / "mixed.ipynb").write_text(_json.dumps(nb))
+    got = sorted((x.provider, x.cell) for x in scan(tmp_path).call_sites)
+    assert got == [("azure", 1), ("openai", 2)]
+    assert [x.kind for x in sites_of("async def f(client):\n    await client.chat.completions.create(messages='hi', provider=p)\n")] == ["chat"]
+
+
+def test_fstring_on_variable_host_is_a_client_call():
+    src = 'import httpx\ndef f(endpoint):\n    url = f"{endpoint}/api/v1/chat/completions"\n    return httpx.post(url)\n'
+    assert [(x.kind, x.sdk_call) for x in sites_of(src)] == [("chat", "HTTP /v1/chat/completions")]
+    # a FastAPI route literal stays excluded
+    assert sites_of('from fastapi import FastAPI\napp = FastAPI()\n@app.post("/api/v1/chat/completions")\ndef h(): pass\n') == []

@@ -1,0 +1,160 @@
+{
+ "repo": "zhayujie/chatgpt-on-wechat",
+ "category": "chinese-providers",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "1063 files, 72 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.2s, 493 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "54/60 = 90%",
+   "recall": 90.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "28/72 calls name a specific provider",
+   "specific_pct": 39,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 240 records, $815.74 vs expected $815.74"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $815.74"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "3 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9894602646468798
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $248, key-prod $568"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $816"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "11/11 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 1063,
+ "scan_secs": 2.16,
+ "sites": 72,
+ "call_sites": 72,
+ "model_configs": 0,
+ "providers": [
+  "anthropic",
+  "dashscope",
+  "gemini",
+  "modelscope",
+  "openai_compatible",
+  "zhipu"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "python"
+ ],
+ "resolved_model_pct": 4,
+ "baseline": 60,
+ "baseline_found": 54,
+ "missed": [
+  [
+   "channel/web/static/js/views/config.js",
+   682,
+   "`const resp = await fetch(\"${base}/chat/completions\", {`,"
+  ],
+  [
+   "desktop/src/renderer/src/pages/settings/ChatApiCard.tsx",
+   30,
+   "`const resp = await fetch(\"${base}/chat/completions\", {`,"
+  ],
+  [
+   "models/openai_compatible_bot.py",
+   248,
+   "``/chat/completions`` path."
+  ],
+  [
+   "models/linkai/link_ai_bot.py",
+   44,
+   "that already carries a '/v1' suffix, yielding '.../v1/v1/chat/completions')."
+  ],
+  [
+   "models/linkai/link_ai_bot.py",
+   53,
+   "\"'https://api.link-ai.tech' (without a trailing '/v1' or '/chat/completions').\""
+  ],
+  [
+   "models/openai/responses_adapter.py",
+   15,
+   "consumes them exactly as it consumes ``/chat/completions`` output:"
+  ]
+ ],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 240,
+  "total_cost": 815.7376,
+  "by_key": {
+   "key-prod": 567.5193,
+   "key-batch": 248.2182
+  },
+  "by_model": {
+   "qwen-vl-max": 334.3918,
+   "qwen3-asr-flash": 240.666,
+   "qwen3-tts-flash": 232.082,
+   "gpt-4.1-nano": 8.5977
+  },
+  "code_models": [
+   "qwen-vl-max",
+   "qwen3-asr-flash",
+   "qwen3-tts-flash"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp4tybdt08/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R108": 4,
+  "R105": 2,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 815.74,
+ "savings_high": null,
+ "attributed_share": 0.9894602646468798,
+ "wall_secs": 8.0
+}

@@ -1,4 +1,4 @@
 """TrainLab Optimize: find and prove LLM cost savings in your codebase."""
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 SCHEMA_VERSION = "1"

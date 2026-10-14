@@ -1,0 +1,148 @@
+{
+ "repo": "Grt1228/chatgpt-java",
+ "category": "jvm",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "158 files, 4 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.1s, 1128 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "3/8 = 38%",
+   "recall": 37.5
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "0/4 calls name a specific provider",
+   "specific_pct": 0,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $51.29 vs expected $51.29"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $51.29"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $15, key-prod $36"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $51"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "4/4 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 158,
+ "scan_secs": 0.14,
+ "sites": 4,
+ "call_sites": 4,
+ "model_configs": 0,
+ "providers": [
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "jvm"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 8,
+ "baseline_found": 3,
+ "missed": [
+  [
+   "src/main/java/com/unfbx/chatgpt/OpenAiClient.java",
+   700,
+   "Single<ChatCompletionResponse> chatCompletionResponse = this.openAiApi.chatCompletion((ChatCompletion) chatCompletion);"
+  ],
+  [
+   "src/main/java/com/unfbx/chatgpt/OpenAiClient.java",
+   715,
+   "return this.chatCompletion(chatCompletion);"
+  ],
+  [
+   "src/main/java/com/unfbx/chatgpt/OpenAiClient.java",
+   731,
+   "return this.chatCompletion(chatCompletion);"
+  ],
+  [
+   "src/main/java/com/unfbx/chatgpt/OpenAiClient.java",
+   749,
+   "ChatCompletionResponse functionCallChatCompletionResponse = this.chatCompletion(chatCompletion);"
+  ],
+  [
+   "src/main/java/com/unfbx/chatgpt/OpenAiClient.java",
+   766,
+   "ChatCompletionResponse chatCompletionResponse = this.chatCompletion(chatCompletion);"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 51.2916,
+  "by_key": {
+   "key-prod": 36.0589,
+   "key-batch": 15.2327
+  },
+  "by_model": {
+   "gpt-4o-mini": 43.9572,
+   "gpt-4.1-nano": 7.3344
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpj7hu0v2r/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 51.29,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 0.4
+}

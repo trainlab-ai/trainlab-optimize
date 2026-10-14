@@ -1,0 +1,171 @@
+{
+ "repo": "maximhq/bifrost",
+ "category": "gateways",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "3824 files, 310 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "11.8s, 324 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "141/146 = 97%",
+   "recall": 96.57534246575342
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "176/309 calls name a specific provider",
+   "specific_pct": 57,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 240 records, $663.31 vs expected $663.31"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $663.31"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "3 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9937474639557952
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $202, key-prod $461"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o: $136.16 vs $136.16"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $663"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 3824,
+ "scan_secs": 11.79,
+ "sites": 310,
+ "call_sites": 309,
+ "model_configs": 1,
+ "providers": [
+  "anthropic",
+  "azure",
+  "cerebras",
+  "cloudflare",
+  "deepseek",
+  "fireworks",
+  "gemini",
+  "groq",
+  "huggingface",
+  "mistral",
+  "nebius",
+  "ollama",
+  "openai",
+  "openai_compatible",
+  "openrouter",
+  "perplexity",
+  "vertex",
+  "xai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "go",
+  "javascript",
+  "rust"
+ ],
+ "resolved_model_pct": 4,
+ "baseline": 146,
+ "baseline_found": 141,
+ "missed": [
+  [
+   "core/providers/deepseek/deepseek.go",
+   289,
+   "resp, bifrostErr := provider.chatCompletion(ctx, key, request)"
+  ],
+  [
+   "transports/bifrost-http/handlers/asyncinference.go",
+   75,
+   "r.POST(\"/v1/async/chat/completions\", lib.ChainMiddlewares(h.asyncChatCompletion, baseMiddlewares...))"
+  ],
+  [
+   "transports/bifrost-http/handlers/inference.go",
+   872,
+   "r.POST(\"/v1/chat/completions\", lib.ChainMiddlewares(h.chatCompletion, baseMiddlewares...))"
+  ],
+  [
+   "ui/app/workspace/logs/views/emptyState.tsx",
+   152,
+   "response = client.models.generate_content("
+  ],
+  [
+   "ui/app/workspace/logs/views/emptyState.tsx",
+   170,
+   "response = litellm.completion("
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 240,
+  "total_cost": 663.314,
+  "by_key": {
+   "key-prod": 461.2767,
+   "key-batch": 202.0373
+  },
+  "by_model": {
+   "gpt-4o": 423.8039,
+   "gpt-4o-mini": 43.8207,
+   "claude-3-sonnet-20240229": 191.5421,
+   "gpt-4.1-nano": 4.1474
+  },
+  "code_models": [
+   "gpt-4o",
+   "gpt-4o-mini",
+   "claude-3-sonnet-20240229"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp4yimemp7/usage_tokens_only.csv",
+   "model": "gpt-4o",
+   "expected": 136.1625
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 663.31,
+ "savings_high": null,
+ "attributed_share": 0.9937474639557952,
+ "wall_secs": 34.2
+}

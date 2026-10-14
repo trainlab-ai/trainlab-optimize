@@ -1,0 +1,131 @@
+{
+ "repo": "mastra-ai/mastra",
+ "category": "js-ts-apps",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "17863 files, 65 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "25.7s, 694 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "26/27 = 96%",
+   "recall": 96.29629629629629
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "37/65 calls name a specific provider",
+   "specific_pct": 57,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 180 records, $236.69 vs expected $236.69"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $236.69"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "2 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9719483314616117
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $70, key-prod $166"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gemini-2.5-flash: $24.14 vs $24.14"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $237"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 17863,
+ "scan_secs": 25.74,
+ "sites": 65,
+ "call_sites": 65,
+ "model_configs": 0,
+ "providers": [
+  "anthropic",
+  "azure",
+  "gemini",
+  "openai",
+  "openai_compatible",
+  "vercel_ai",
+  "voyage"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript"
+ ],
+ "resolved_model_pct": 3,
+ "baseline": 27,
+ "baseline_found": 26,
+ "missed": [
+  [
+   "mastracode/sdk/src/auth/providers/github-copilot.ts",
+   448,
+   "/** True when `supported_endpoints` includes `/v1/messages` (Anthropic-shaped Copilot model). */"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 180,
+  "total_cost": 236.6876,
+  "by_key": {
+   "key-prod": 166.4749,
+   "key-batch": 70.2128
+  },
+  "by_model": {
+   "gemini-2.5-flash": 82.3716,
+   "render-smoke": 147.6766,
+   "gpt-4.1-nano": 6.6395
+  },
+  "code_models": [
+   "gemini-2.5-flash",
+   "render-smoke"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpeivgcph3/usage_tokens_only.csv",
+   "model": "gemini-2.5-flash",
+   "expected": 24.1395
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 236.69,
+ "savings_high": null,
+ "attributed_share": 0.9719483314616117,
+ "wall_secs": 75.0
+}

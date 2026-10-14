@@ -1,0 +1,131 @@
+{
+ "repo": "google-gemini/cookbook",
+ "category": "notebooks",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "211 files, 272 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "3.2s, 66 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "182/182 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "255/257 calls name a specific provider",
+   "specific_pct": 99,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $637.77 vs expected $637.77"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $637.77"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9663860249125935
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $190, key-prod $447"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gemini-3.8-flash: $45.35 vs $45.35"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$20-$45 of $638"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "4/4 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 211,
+ "scan_secs": 3.2,
+ "sites": 272,
+ "call_sites": 257,
+ "model_configs": 15,
+ "providers": [
+  "gemini",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "python"
+ ],
+ "resolved_model_pct": 72,
+ "baseline": 182,
+ "baseline_found": 182,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 637.7686,
+  "by_key": {
+   "key-prod": 447.4844,
+   "key-batch": 190.2842
+  },
+  "by_model": {
+   "gemini-3.8-flash": 92.454,
+   "gemini-embedding-001": 8.3859,
+   "gemini-3.7-flash": 19.4922,
+   "gemini-embedding-2": 36.8602,
+   "gemini-2.5-flash-image": 459.1384,
+   "gpt-4.1-nano": 21.4379
+  },
+  "code_models": [
+   "gemini-3.8-flash",
+   "gemini-embedding-001",
+   "gemini-3.7-flash",
+   "gemini-embedding-2",
+   "gemini-2.5-flash-image"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp9x47he32/usage_tokens_only.csv",
+   "model": "gemini-3.8-flash",
+   "expected": 45.3487
+  }
+ },
+ "findings": {
+  "R101": 15,
+  "R104": 8,
+  "R109": 1,
+  "R105": 29,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 637.77,
+ "savings_high": 45.4,
+ "attributed_share": 0.9663860249125935,
+ "wall_secs": 33.8
+}

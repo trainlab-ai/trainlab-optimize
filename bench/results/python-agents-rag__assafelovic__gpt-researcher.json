@@ -1,0 +1,141 @@
+{
+ "repo": "assafelovic/gpt-researcher",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "534 files, 48 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.7s, 730 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "1/1 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "1/1 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 180 records, $9,568.64 vs expected $9,568.64"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $9,568.64"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "2 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9966966042767966
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $2,850, key-prod $6,719"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4-turbo: $484.65 vs $484.65"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $9,569"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "6/6 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 534,
+ "scan_secs": 0.73,
+ "sites": 48,
+ "call_sites": 1,
+ "model_configs": 47,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "cohere",
+  "dashscope",
+  "fireworks",
+  "gemini",
+  "groq",
+  "huggingface",
+  "litellm",
+  "mistral",
+  "ollama",
+  "openai",
+  "together",
+  "voyage",
+  "xai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 10,
+ "baseline": 1,
+ "baseline_found": 1,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 180,
+  "total_cost": 9568.6365,
+  "by_key": {
+   "key-prod": 6718.574,
+   "key-batch": 2850.0625
+  },
+  "by_model": {
+   "gpt-4-turbo": 3139.8836,
+   "gpt-4": 6397.1439,
+   "gpt-4.1-nano": 31.609
+  },
+  "code_models": [
+   "gpt-4-turbo",
+   "gpt-4"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpaubp8sut/usage_tokens_only.csv",
+   "model": "gpt-4-turbo",
+   "expected": 484.65
+  }
+ },
+ "findings": {
+  "R102": 5,
+  "R105": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 9568.64,
+ "savings_high": null,
+ "attributed_share": 0.9966966042767966,
+ "wall_secs": 2.3
+}

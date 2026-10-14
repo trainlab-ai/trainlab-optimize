@@ -55,7 +55,7 @@ HOSTS: list[tuple[str, str]] = [
     ("api.llama.com", "meta"), ("inference.do-ai.run", "digitalocean"), ("api.venice.ai", "venice"),
     ("api.githubcopilot.com", "github_copilot"), ("api.reka.ai", "reka"), ("api.302.ai", "302ai"),
     ("api.inceptionlabs.ai", "inception"), ("api.writer.com", "writer"), ("api.upstage.ai", "upstage"),
-    ("api.stepfun.com", "stepfun"), ("api.baichuan-ai.com", "baichuan"),
+    ("api.stepfun.com", "stepfun"), ("intern-ai.org.cn", "internlm"), ("api.baichuan-ai.com", "baichuan"),
     ("api.portkey.ai", "portkey"),
     ("cloud.databricks.com", "databricks"), ("azuredatabricks.net", "databricks"),
     ("ml.cloud.ibm.com", "watsonx"),

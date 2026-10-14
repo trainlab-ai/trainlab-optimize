@@ -1,0 +1,146 @@
+{
+ "repo": "Mintplex-Labs/anything-llm",
+ "category": "js-ts-apps",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "1348 files, 141 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.3s, 574 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "94/95 = 99%",
+   "recall": 98.94736842105263
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "99/102 calls name a specific provider",
+   "specific_pct": 97,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $51.05 vs expected $51.05"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $51.05"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "1 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9608221617266134
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $15, key-prod $36"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $51"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "7/7 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 1348,
+ "scan_secs": 2.35,
+ "sites": 141,
+ "call_sites": 102,
+ "model_configs": 39,
+ "providers": [
+  "anthropic",
+  "azure",
+  "cerebras",
+  "cohere",
+  "deepseek",
+  "fireworks",
+  "gemini",
+  "groq",
+  "minimax",
+  "mistral",
+  "moonshot",
+  "novita",
+  "ollama",
+  "openai",
+  "openai_compatible",
+  "openrouter",
+  "perplexity",
+  "sambanova",
+  "together",
+  "vertex",
+  "voyage",
+  "xai",
+  "zhipu"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript"
+ ],
+ "resolved_model_pct": 1,
+ "baseline": 95,
+ "baseline_found": 94,
+ "missed": [
+  [
+   "open-computer/services/interface-service/llm-proxy/index.js",
+   108,
+   "app.post(\"/llm-proxy/v1/chat/completions\", async (req, res) => {"
+  ]
+ ],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 51.0546,
+  "by_key": {
+   "key-prod": 35.6493,
+   "key-batch": 15.4053
+  },
+  "by_model": {
+   "anythingllm": 49.0544,
+   "gpt-4.1-nano": 2.0002
+  },
+  "code_models": [
+   "anythingllm"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpog_7jdow/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R108": 2,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 51.05,
+ "savings_high": null,
+ "attributed_share": 0.9608221617266134,
+ "wall_secs": 9.9
+}

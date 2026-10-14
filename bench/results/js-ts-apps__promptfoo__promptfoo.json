@@ -1,0 +1,139 @@
+{
+ "repo": "promptfoo/promptfoo",
+ "category": "js-ts-apps",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "4149 files, 48 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "8.7s, 477 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "28/28 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "35/40 calls name a specific provider",
+   "specific_pct": 88,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $1,574.23 vs expected $1,574.23"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $1,574.23"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9948899686787451
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $463, key-prod $1,111"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4.1-mini: $21.79 vs $21.79"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $1,574"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "7/7 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 4149,
+ "scan_secs": 8.71,
+ "sites": 48,
+ "call_sites": 40,
+ "model_configs": 8,
+ "providers": [
+  "ai21",
+  "anthropic",
+  "azure",
+  "bedrock",
+  "gemini",
+  "mistral",
+  "openai",
+  "openai_compatible",
+  "unknown",
+  "vercel_ai",
+  "watsonx"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "go",
+  "javascript",
+  "python",
+  "ruby"
+ ],
+ "resolved_model_pct": 29,
+ "baseline": 28,
+ "baseline_found": 28,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 1574.2281,
+  "by_key": {
+   "key-prod": 1111.1723,
+   "key-batch": 463.0559
+  },
+  "by_model": {
+   "gpt-4.1-mini": 75.6922,
+   "text-embedding-3-large": 4.4516,
+   "gpt-4o": 1400.1215,
+   "claude-haiku-4-5-20251001": 72.061,
+   "gpt-4o-2024-08-06": 13.8575,
+   "gpt-4.1-nano": 8.0444
+  },
+  "code_models": [
+   "gpt-4.1-mini",
+   "text-embedding-3-large",
+   "gpt-4o",
+   "claude-haiku-4-5-20251001",
+   "gpt-4o-2024-08-06"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpbxay1q5b/usage_tokens_only.csv",
+   "model": "gpt-4.1-mini",
+   "expected": 21.786
+  }
+ },
+ "findings": {
+  "R105": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 1574.23,
+ "savings_high": null,
+ "attributed_share": 0.9948899686787451,
+ "wall_secs": 22.3
+}

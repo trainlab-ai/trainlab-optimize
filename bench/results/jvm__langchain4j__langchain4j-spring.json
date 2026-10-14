@@ -1,0 +1,128 @@
+{
+ "repo": "langchain4j/langchain4j-spring",
+ "category": "jvm",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "529 files, 64 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.5s, 1094 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "32/32 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "skip",
+   "detail": "0/0 calls name a specific provider",
+   "specific_pct": null,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $36.23 vs expected $36.23"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $36.23"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $11, key-prod $25"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $36"
+  },
+  "T14": {
+   "status": "skip",
+   "detail": "no cited lines",
+   "examples": []
+  }
+ },
+ "files": 529,
+ "scan_secs": 0.48,
+ "sites": 64,
+ "call_sites": 0,
+ "model_configs": 64,
+ "providers": [
+  "anthropic",
+  "azure",
+  "gemini",
+  "mistral",
+  "ollama",
+  "openai",
+  "unknown",
+  "vertex"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "jvm"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 32,
+ "baseline_found": 32,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 36.2266,
+  "by_key": {
+   "key-prod": 25.3811,
+   "key-batch": 10.8455
+  },
+  "by_model": {
+   "gpt-4o-mini": 6.67,
+   "gpt-4.1-nano": 29.5565
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpufyfnnzg/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R902": 1
+ },
+ "monthly_spend": 36.23,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 1.6
+}

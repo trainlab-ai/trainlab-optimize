@@ -1,0 +1,159 @@
+{
+ "repo": "mudler/LocalAI",
+ "category": "local-self-hosted",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "3209 files, 50 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "5.8s, 554 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "32/38 = 84%",
+   "recall": 84.21052631578948
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "13/50 calls name a specific provider",
+   "specific_pct": 26,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $96.03 vs expected $96.03"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $96.03"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "1 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.8678231478873993
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $29, key-prod $67"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $96"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "6/6 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 3209,
+ "scan_secs": 5.8,
+ "sites": 50,
+ "call_sites": 50,
+ "model_configs": 0,
+ "providers": [
+  "anthropic",
+  "openai",
+  "openai_compatible",
+  "vercel_ai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "go",
+  "javascript",
+  "python"
+ ],
+ "resolved_model_pct": 2,
+ "baseline": 38,
+ "baseline_found": 32,
+ "missed": [
+  [
+   "core/http/routes/anthropic.go",
+   66,
+   "app.POST(\"/v1/messages\", messagesHandler, messagesMiddleware...)"
+  ],
+  [
+   "core/http/routes/localai.go",
+   522,
+   "router.POST(\"/v1/mcp/chat/completions\", mcpStreamHandler, mcpStreamMiddleware...)"
+  ],
+  [
+   "core/http/routes/localai.go",
+   523,
+   "router.POST(\"/mcp/v1/chat/completions\", mcpStreamHandler, mcpStreamMiddleware...)"
+  ],
+  [
+   "core/http/routes/localai.go",
+   524,
+   "router.POST(\"/mcp/chat/completions\", mcpStreamHandler, mcpStreamMiddleware...)"
+  ],
+  [
+   "core/http/routes/openai.go",
+   95,
+   "app.POST(\"/v1/chat/completions\", chatHandler, chatMiddleware...)"
+  ],
+  [
+   "core/http/routes/openai.go",
+   96,
+   "app.POST(\"/chat/completions\", chatHandler, chatMiddleware...)"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 96.034,
+  "by_key": {
+   "key-prod": 67.35,
+   "key-batch": 28.684
+  },
+  "by_model": {
+   "hermes-2-theta-llama-3-8b": 83.3405,
+   "gpt-4.1-nano": 12.6935
+  },
+  "code_models": [
+   "hermes-2-theta-llama-3-8b"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpbe9vwv8h/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R105": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 96.03,
+ "savings_high": null,
+ "attributed_share": 0.8678231478873993,
+ "wall_secs": 15.8
+}

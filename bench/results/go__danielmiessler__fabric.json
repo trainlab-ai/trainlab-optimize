@@ -1,0 +1,123 @@
+{
+ "repo": "danielmiessler/fabric",
+ "category": "go",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "374 files, 26 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.4s, 957 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "9/9 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "24/26 calls name a specific provider",
+   "specific_pct": 92,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $110.32 vs expected $110.32"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $110.32"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $34, key-prod $77"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $110"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 374,
+ "scan_secs": 0.39,
+ "sites": 26,
+ "call_sites": 26,
+ "model_configs": 0,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "gemini",
+  "lmstudio",
+  "openai",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "go"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 9,
+ "baseline_found": 9,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 110.3245,
+  "by_key": {
+   "key-prod": 76.5517,
+   "key-batch": 33.7728
+  },
+  "by_model": {
+   "gpt-4o-mini": 87.6022,
+   "gpt-4.1-nano": 22.7223
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpw80ntlfn/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 110.32,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 1.3
+}

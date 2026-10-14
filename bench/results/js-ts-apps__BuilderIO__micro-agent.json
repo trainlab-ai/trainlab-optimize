@@ -1,0 +1,120 @@
+{
+ "repo": "BuilderIO/micro-agent",
+ "category": "js-ts-apps",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "62 files, 5 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.0s, 1244 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "5/5 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "5/5 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $28.16 vs expected $28.16"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $28.16"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $8, key-prod $20"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $28"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 62,
+ "scan_secs": 0.05,
+ "sites": 5,
+ "call_sites": 5,
+ "model_configs": 0,
+ "providers": [
+  "azure",
+  "ollama",
+  "openai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 5,
+ "baseline_found": 5,
+ "missed": [],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 28.1584,
+  "by_key": {
+   "key-prod": 19.684,
+   "key-batch": 8.4744
+  },
+  "by_model": {
+   "gpt-4o-mini": 5.9469,
+   "gpt-4.1-nano": 22.2116
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpb9r_ny1a/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R108": 2,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 28.16,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 0.2
+}

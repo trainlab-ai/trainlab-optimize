@@ -1,0 +1,119 @@
+{
+ "repo": "sigoden/aichat",
+ "category": "rust",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "54 files, 7 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.1s, 391 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "4/4 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "3/7 calls name a specific provider",
+   "specific_pct": 43,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $33.02 vs expected $33.02"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $33.02"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $10, key-prod $23"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $33"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 54,
+ "scan_secs": 0.14,
+ "sites": 7,
+ "call_sites": 7,
+ "model_configs": 0,
+ "providers": [
+  "azure",
+  "openai",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "rust"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 4,
+ "baseline_found": 4,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 33.0151,
+  "by_key": {
+   "key-prod": 22.877,
+   "key-batch": 10.1381
+  },
+  "by_model": {
+   "gpt-4o-mini": 12.0649,
+   "gpt-4.1-nano": 20.9502
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmprbsenp2s/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 33.02,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 0.5
+}

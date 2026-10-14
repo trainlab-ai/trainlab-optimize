@@ -1,0 +1,126 @@
+{
+ "repo": "reworkd/AgentGPT",
+ "category": "js-ts-apps",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "460 files, 9 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.2s, 3034 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "4/4 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "6/6 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 180 records, $778.45 vs expected $778.45"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $778.45"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "2 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9974367445393651
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $233, key-prod $545"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-3.5-turbo-16k: $115.39 vs $115.39"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $778"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "12/12 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 460,
+ "scan_secs": 0.15,
+ "sites": 9,
+ "call_sites": 6,
+ "model_configs": 3,
+ "providers": [
+  "anthropic",
+  "openai",
+  "replicate",
+  "vercel_ai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "python"
+ ],
+ "resolved_model_pct": 33,
+ "baseline": 4,
+ "baseline_found": 4,
+ "missed": [],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 180,
+  "total_cost": 778.4476,
+  "by_key": {
+   "key-prod": 545.4879,
+   "key-batch": 232.9597
+  },
+  "by_model": {
+   "gpt-3.5-turbo-16k": 637.4953,
+   "gpt-3.5-turbo": 138.9569,
+   "gpt-4.1-nano": 1.9954
+  },
+  "code_models": [
+   "gpt-3.5-turbo-16k",
+   "gpt-3.5-turbo"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp2tocla79/usage_tokens_only.csv",
+   "model": "gpt-3.5-turbo-16k",
+   "expected": 115.395
+  }
+ },
+ "findings": {
+  "R102": 2,
+  "R108": 3,
+  "R105": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 778.45,
+ "savings_high": null,
+ "attributed_share": 0.9974367445393651,
+ "wall_secs": 0.6
+}

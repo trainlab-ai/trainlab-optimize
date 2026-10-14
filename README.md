@@ -263,6 +263,20 @@ framework's own internal helper methods, generated clients for the app's own API
 APIs with the same method names (Twilio and Plivo `messages.create`), and mocks in test
 files.
 
+### 100-repo test suite
+
+`bench/` holds a repeatable end-to-end suite: 100 repositories drawn at random (fixed seed)
+from 14 corner-case categories, including no-LLM control repos and false-positive traps
+(Twilio, Slack, Stripe SDKs). Every repo gets a mock usage CSV built from its own code, in
+one of three layouts, and 14 test cases covering scan, recall, false positives, import,
+attribution, API keys, pricing, reports and finding locations. See `bench/TESTS.md`.
+
+```bash
+python bench/sample.py            # draw the sample (bench/repos.json)
+python bench/run.py               # clone, scan, test; one result file per repo, resumable
+python bench/report.py            # results.csv, summary.json, triage of recall misses
+```
+
 ## Known limits
 
 - Pattern-based languages (everything except Python) find calls and literal model names

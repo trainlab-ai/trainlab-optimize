@@ -1,0 +1,171 @@
+{
+ "repo": "CopilotKit/CopilotKit",
+ "category": "js-ts-apps",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "17981 files, 337 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "17.2s, 1048 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "72/77 = 94%",
+   "recall": 93.50649350649351
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "108/117 calls name a specific provider",
+   "specific_pct": 92,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $2,117.43 vs expected $2,117.43"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $2,117.43"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9928324712173706
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $647, key-prod $1,470"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-5-mini: $19.62 vs $19.62"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$273-$545 of $2,117"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "96/96 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 17981,
+ "scan_secs": 17.15,
+ "sites": 337,
+ "call_sites": 117,
+ "model_configs": 220,
+ "providers": [
+  "anthropic",
+  "bedrock",
+  "gemini",
+  "litellm",
+  "openai",
+  "openai_compatible",
+  "unknown",
+  "vercel_ai",
+  "xai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "jvm",
+  "python"
+ ],
+ "resolved_model_pct": 66,
+ "baseline": 77,
+ "baseline_found": 72,
+ "missed": [
+  [
+   "examples/integrations/ms-agent-framework-python/agent/src/main.py",
+   34,
+   "Most compatible providers serve only ``{base}/chat/completions``, not the"
+  ],
+  [
+   "examples/integrations/pydantic-ai/agent/src/model.py",
+   49,
+   "Most compatible providers serve only ``{base}/chat/completions``, not the"
+  ],
+  [
+   "packages/runtime/src/v1-deprecated/service-adapters/openai/openai-assistant-adapter.ts",
+   285,
+   "await openai.beta.threads.messages.create(threadId, {"
+  ],
+  [
+   "showcase/integrations/langgraph-fastapi/src/agents/src/_header_forwarding_middleware.py",
+   11,
+   "friends) on every ``/v1/responses`` and ``/v1/chat/completions``"
+  ],
+  [
+   "showcase/integrations/langgraph-python/src/agents/_header_forwarding_middleware.py",
+   11,
+   "friends) on every ``/v1/responses`` and ``/v1/chat/completions``"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 360,
+  "total_cost": 2117.4269,
+  "by_key": {
+   "key-prod": 1470.0443,
+   "key-batch": 647.3826
+  },
+  "by_model": {
+   "gpt-5-mini": 156.7058,
+   "gpt-5.4": 657.1383,
+   "openai/gpt-5.4": 998.8763,
+   "gemini-3.8-flash": 269.3368,
+   "gpt-4o-mini": 20.1929,
+   "gpt-4.1-nano": 15.1767
+  },
+  "code_models": [
+   "gpt-5-mini",
+   "gpt-5.4",
+   "openai/gpt-5.4",
+   "gemini-3.8-flash",
+   "gpt-4o-mini"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpfz9ntz_k/usage_tokens_only.csv",
+   "model": "gpt-5-mini",
+   "expected": 19.6162
+  }
+ },
+ "findings": {
+  "R102": 5,
+  "R101": 22,
+  "R104": 1,
+  "R105": 51,
+  "R107": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 2117.43,
+ "savings_high": 545.19,
+ "attributed_share": 0.9928324712173706,
+ "wall_secs": 59.7
+}

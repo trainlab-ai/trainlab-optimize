@@ -1,0 +1,134 @@
+{
+ "repo": "aws-samples/amazon-bedrock-workshop",
+ "category": "notebooks",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "112 files, 50 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.8s, 142 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "44/44 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "48/48 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $946.51 vs expected $946.51"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $946.51"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.944418365604821
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $287, key-prod $659"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "moonshotai.kimi-k2.5: $36.28 vs $36.28"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $947"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "1/1 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 112,
+ "scan_secs": 0.79,
+ "sites": 50,
+ "call_sites": 48,
+ "model_configs": 2,
+ "providers": [
+  "bedrock",
+  "litellm",
+  "openai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 38,
+ "baseline": 44,
+ "baseline_found": 44,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 360,
+  "total_cost": 946.5081,
+  "by_key": {
+   "key-prod": 659.2784,
+   "key-batch": 287.2298
+  },
+  "by_model": {
+   "google.gemma-4-31b": 85.4541,
+   "moonshotai.kimi-k2.5": 143.3747,
+   "global.anthropic.claude-sonnet-4-6": 459.101,
+   "amazon.nova-micro-v1:0": 9.5933,
+   "global.anthropic.claude-haiku-4-5-20251001-v1:0": 196.3765,
+   "gpt-4.1-nano": 52.6085
+  },
+  "code_models": [
+   "google.gemma-4-31b",
+   "moonshotai.kimi-k2.5",
+   "global.anthropic.claude-sonnet-4-6",
+   "amazon.nova-micro-v1:0",
+   "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpbiwk5vj2/usage_tokens_only.csv",
+   "model": "moonshotai.kimi-k2.5",
+   "expected": 36.279
+  }
+ },
+ "findings": {
+  "R104": 3,
+  "R105": 2,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 946.51,
+ "savings_high": null,
+ "attributed_share": 0.944418365604821,
+ "wall_secs": 2.1
+}

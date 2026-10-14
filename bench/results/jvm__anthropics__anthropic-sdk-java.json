@@ -1,0 +1,122 @@
+{
+ "repo": "anthropics/anthropic-sdk-java",
+ "category": "jvm",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "4883 files, 25 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "5.4s, 911 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "25/25 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "25/25 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 240 records, $2,572.74 vs expected $2,572.74"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $2,572.74"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "3 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9928795493087104
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $780, key-prod $1,793"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "claude-sonnet-5-5: $120.93 vs $120.93"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $2,573"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "3/3 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 4883,
+ "scan_secs": 5.36,
+ "sites": 25,
+ "call_sites": 25,
+ "model_configs": 0,
+ "providers": [
+  "anthropic"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "jvm"
+ ],
+ "resolved_model_pct": 92,
+ "baseline": 25,
+ "baseline_found": 25,
+ "missed": [],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 240,
+  "total_cost": 2572.737,
+  "by_key": {
+   "key-prod": 1792.8569,
+   "key-batch": 779.8801
+  },
+  "by_model": {
+   "claude-sonnet-5-5": 289.2084,
+   "global.anthropic.claude-opus-5-5": 1771.4886,
+   "claude-sonnet-4-5": 493.721,
+   "gpt-4.1-nano": 18.319
+  },
+  "code_models": [
+   "claude-sonnet-5-5",
+   "global.anthropic.claude-opus-5-5",
+   "claude-sonnet-4-5"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmphzor7tcd/usage_tokens_only.csv",
+   "model": "claude-sonnet-5-5",
+   "expected": 120.93
+  }
+ },
+ "findings": {
+  "R102": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 2572.74,
+ "savings_high": null,
+ "attributed_share": 0.9928795493087104,
+ "wall_secs": 23.0
+}

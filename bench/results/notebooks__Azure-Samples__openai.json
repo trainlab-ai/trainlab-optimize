@@ -1,0 +1,141 @@
+{
+ "repo": "Azure-Samples/openai",
+ "category": "notebooks",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "835 files, 45 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.7s, 1127 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "37/40 = 92%",
+   "recall": 92.5
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "39/40 calls name a specific provider",
+   "specific_pct": 98,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 180 records, $188.23 vs expected $188.23"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $188.23"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "2 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9508442535217994
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $57, key-prod $131"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "text-embedding-ada-002: $3.05 vs $3.05"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$10-$19 of $188"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "1/1 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 835,
+ "scan_secs": 0.74,
+ "sites": 45,
+ "call_sites": 40,
+ "model_configs": 5,
+ "providers": [
+  "azure",
+  "openai_compatible",
+  "unknown"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "csharp",
+  "python"
+ ],
+ "resolved_model_pct": 4,
+ "baseline": 40,
+ "baseline_found": 37,
+ "missed": [
+  [
+   "Agent_Based_Samples/document_generator/src/common/agent_factory/agent_base.py",
+   522,
+   "await client.messages.create(thread_id=thread.id, role=MessageRole.USER, content=messages)"
+  ],
+  [
+   "Agent_Based_Samples/document_generator/src/solution_accelerators/document_generator/agents/sharepoint_agent.py",
+   123,
+   "message = await project_client.agents.messages.create(thread_id=thread_id, content=messages, role=\"user\")"
+  ],
+  [
+   "Agent_Based_Samples/market_research_analyst/src/common/agent_factory/agent_base.py",
+   522,
+   "await client.messages.create(thread_id=thread.id, role=MessageRole.USER, content=messages)"
+  ]
+ ],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 180,
+  "total_cost": 188.2252,
+  "by_key": {
+   "key-prod": 131.2993,
+   "key-batch": 56.9259
+  },
+  "by_model": {
+   "text-embedding-ada-002": 23.6047,
+   "davinci": 155.3681,
+   "gpt-4.1-nano": 9.2523
+  },
+  "code_models": [
+   "text-embedding-ada-002",
+   "davinci"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpa834yi0u/usage_tokens_only.csv",
+   "model": "text-embedding-ada-002",
+   "expected": 3.0465
+  }
+ },
+ "findings": {
+  "R108": 3,
+  "R101": 1,
+  "R105": 4,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 188.23,
+ "savings_high": 19.31,
+ "attributed_share": 0.9508442535217994,
+ "wall_secs": 4.2
+}

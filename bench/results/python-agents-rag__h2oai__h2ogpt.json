@@ -1,0 +1,134 @@
+{
+ "repo": "h2oai/h2ogpt",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "176 files, 15 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.4s, 74 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "11/13 = 85%",
+   "recall": 84.61538461538461
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "3/12 calls name a specific provider",
+   "specific_pct": 25,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 180 records, $177.91 vs expected $177.91"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $177.91"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "2 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9145246104524863
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $53, key-prod $125"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $178"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 176,
+ "scan_secs": 2.38,
+ "sites": 15,
+ "call_sites": 12,
+ "model_configs": 3,
+ "providers": [
+  "anthropic",
+  "gemini",
+  "groq",
+  "openai",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 20,
+ "baseline": 13,
+ "baseline_found": 11,
+ "missed": [
+  [
+   "openai_server/server.py",
+   601,
+   "@app.post('/v1/chat/completions', response_model=ChatResponse, dependencies=check_key)"
+  ],
+  [
+   "openai_server/cogvlm2_server/cogvlm2.py",
+   162,
+   "@app.post(\"/v1/chat/completions\", response_model=ChatCompletionResponse)"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 180,
+  "total_cost": 177.9054,
+  "by_key": {
+   "key-prod": 124.852,
+   "key-batch": 53.0533
+  },
+  "by_model": {
+   "llama": 34.122,
+   "h2oai/h2ogpt-oasst1-512-12b": 128.5768,
+   "gpt-4.1-nano": 15.2065
+  },
+  "code_models": [
+   "llama",
+   "h2oai/h2ogpt-oasst1-512-12b"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpvkfkwy_f/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 177.91,
+ "savings_high": null,
+ "attributed_share": 0.9145246104524863,
+ "wall_secs": 6.0
+}

@@ -1,0 +1,129 @@
+{
+ "repo": "modelcontextprotocol/python-sdk",
+ "category": "mcp-prompts-config",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "933 files, 5 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "1.7s, 549 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "3/3 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "3/3 calls name a specific provider",
+   "specific_pct": 100,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 240 records, $307.28 vs expected $307.28"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $307.28"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "3 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.8866556705504418
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $92, key-prod $216"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "text-embedding-3-small: $0.61 vs $0.61"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $307"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "3/3 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 933,
+ "scan_secs": 1.7,
+ "sites": 5,
+ "call_sites": 3,
+ "model_configs": 2,
+ "providers": [
+  "anthropic",
+  "groq",
+  "openai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 60,
+ "baseline": 3,
+ "baseline_found": 3,
+ "missed": [],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 240,
+  "total_cost": 307.2764,
+  "by_key": {
+   "key-prod": 215.7471,
+   "key-batch": 91.5293
+  },
+  "by_model": {
+   "openai:gpt-4o": 216.451,
+   "text-embedding-3-small": 0.229,
+   "gpt-3.5-turbo": 55.7684,
+   "gpt-4.1-nano": 34.828
+  },
+  "code_models": [
+   "openai:gpt-4o",
+   "text-embedding-3-small",
+   "gpt-3.5-turbo"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmppjj82rcw/usage_tokens_only.csv",
+   "model": "text-embedding-3-small",
+   "expected": 0.6093
+  }
+ },
+ "findings": {
+  "R102": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 307.28,
+ "savings_high": null,
+ "attributed_share": 0.8866556705504418,
+ "wall_secs": 4.2
+}

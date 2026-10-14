@@ -1,0 +1,135 @@
+{
+ "repo": "labring/FastGPT",
+ "category": "chinese-providers",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "5147 files, 7 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "5.7s, 896 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "7/9 = 78%",
+   "recall": 77.77777777777777
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "3/7 calls name a specific provider",
+   "specific_pct": 43,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $86.17 vs expected $86.17"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $86.17"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "1 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.6293024026615855
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $26, key-prod $61"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $86"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 5147,
+ "scan_secs": 5.74,
+ "sites": 7,
+ "call_sites": 7,
+ "model_configs": 0,
+ "providers": [
+  "openai",
+  "openai_compatible",
+  "siliconflow"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript"
+ ],
+ "resolved_model_pct": 14,
+ "baseline": 9,
+ "baseline_found": 7,
+ "missed": [
+  [
+   "projects/app/src/web/common/api/fetch.ts",
+   111,
+   "'/api/v2/chat/completions',"
+  ],
+  [
+   "projects/app/src/web/common/api/fetch.ts",
+   696,
+   "url = '/api/v2/chat/completions',"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 86.1682,
+  "by_key": {
+   "key-prod": 60.5334,
+   "key-batch": 25.6348
+  },
+  "by_model": {
+   "gpt-4o-mini": 54.2258,
+   "gpt-4.1-nano": 31.9423
+  },
+  "code_models": [
+   "gpt-4o-mini"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmppzt7_34x/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 86.17,
+ "savings_high": null,
+ "attributed_share": 0.6293024026615855,
+ "wall_secs": 18.9
+}

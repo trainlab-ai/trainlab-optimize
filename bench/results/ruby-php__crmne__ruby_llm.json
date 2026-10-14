@@ -1,0 +1,143 @@
+{
+ "repo": "crmne/ruby_llm",
+ "category": "ruby-php",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "1851 files, 53 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "3.9s, 472 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "16/18 = 89%",
+   "recall": 88.88888888888889
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "30/53 calls name a specific provider",
+   "specific_pct": 57,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $2,225.63 vs expected $2,225.63"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $2,225.63"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9918101745687692
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $659, key-prod $1,567"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-5.6: $241.86 vs $241.86"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $2,226"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "15/15 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 1851,
+ "scan_secs": 3.92,
+ "sites": 53,
+ "call_sites": 53,
+ "model_configs": 0,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "gemini",
+  "openai",
+  "openai_compatible",
+  "unknown"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "ruby"
+ ],
+ "resolved_model_pct": 30,
+ "baseline": 18,
+ "baseline_found": 16,
+ "missed": [
+  [
+   "benchmarks/requests.rb",
+   22,
+   "Canned.route(%r{/converse\\z}, json: Payloads.converse(ANSWER))"
+  ],
+  [
+   "media/tour/video/hyperframes/tools/snippets.rb",
+   334,
+   "response = client.converse("
+  ]
+ ],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 2225.6303,
+  "by_key": {
+   "key-prod": 1566.5915,
+   "key-batch": 659.0389
+  },
+  "by_model": {
+   "gpt-5.6": 1054.2932,
+   "gpt-4.1-mini": 157.2544,
+   "text-embedding-3-small": 2.6782,
+   "gemini-2.5-flash": 124.4603,
+   "claude-opus-5-5": 868.7168,
+   "gpt-4.1-nano": 18.2275
+  },
+  "code_models": [
+   "gpt-5.6",
+   "gpt-4.1-mini",
+   "text-embedding-3-small",
+   "gemini-2.5-flash",
+   "claude-opus-5-5"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpfbctmxhj/usage_tokens_only.csv",
+   "model": "gpt-5.6",
+   "expected": 241.86
+  }
+ },
+ "findings": {
+  "R108": 6,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 2225.63,
+ "savings_high": null,
+ "attributed_share": 0.9918101745687692,
+ "wall_secs": 9.5
+}

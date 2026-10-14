@@ -1,0 +1,138 @@
+{
+ "repo": "janhq/jan",
+ "category": "local-self-hosted",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "1842 files, 53 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "2.6s, 702 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "42/44 = 95%",
+   "recall": 95.45454545454545
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "13/53 calls name a specific provider",
+   "specific_pct": 25,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $129.44 vs expected $129.44"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $129.44"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $39, key-prod $91"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $129"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 1842,
+ "scan_secs": 2.63,
+ "sites": 53,
+ "call_sites": 53,
+ "model_configs": 0,
+ "providers": [
+  "anthropic",
+  "gemini",
+  "openai_compatible",
+  "unknown",
+  "vercel_ai"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "rust"
+ ],
+ "resolved_model_pct": 0,
+ "baseline": 44,
+ "baseline_found": 42,
+ "missed": [
+  [
+   "src-tauri/src/core/server/tests.rs",
+   26,
+   "let result = proxy::get_destination_path(\"/api/v1/messages\", \"/api/v1\");"
+  ],
+  [
+   "web-app/src/hooks/useMessages.ts",
+   46,
+   "getServiceHub().messages().createMessage(newMessage).then((createdMessage) => {"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 129.4441,
+  "by_key": {
+   "key-prod": 90.5605,
+   "key-batch": 38.8836
+  },
+  "by_model": {
+   "gpt-4o-mini": 89.956,
+   "gpt-4.1-nano": 39.4881
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpzpta_zdl/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 129.44,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 8.9
+}

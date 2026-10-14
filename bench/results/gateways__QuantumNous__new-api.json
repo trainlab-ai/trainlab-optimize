@@ -1,0 +1,141 @@
+{
+ "repo": "QuantumNous/new-api",
+ "category": "gateways",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "2509 files, 146 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "3.6s, 699 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "73/75 = 97%",
+   "recall": 97.33333333333333
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "57/146 calls name a specific provider",
+   "specific_pct": 39,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $143.08 vs expected $143.08"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $143.08"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "1 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.8758554963789611
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $43, key-prod $100"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4.1-mini: $21.79 vs $21.79"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $143"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 2509,
+ "scan_secs": 3.59,
+ "sites": 146,
+ "call_sites": 146,
+ "model_configs": 0,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "dashscope",
+  "gemini",
+  "openai",
+  "openai_compatible",
+  "vertex"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "go",
+  "javascript"
+ ],
+ "resolved_model_pct": 3,
+ "baseline": 75,
+ "baseline_found": 73,
+ "missed": [
+  [
+   "router/relay-router.go",
+   69,
+   "playgroundRouter.POST(\"/chat/completions\", controller.Playground)"
+  ],
+  [
+   "router/relay-router.go",
+   105,
+   "httpRouter.POST(\"/chat/completions\", func(c *gin.Context) {"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 143.0823,
+  "by_key": {
+   "key-prod": 100.2157,
+   "key-batch": 42.8666
+  },
+  "by_model": {
+   "gpt-4.1-mini": 125.3194,
+   "gpt-4.1-nano": 17.7629
+  },
+  "code_models": [
+   "gpt-4.1-mini"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpj7xdp_4v/usage_tokens_only.csv",
+   "model": "gpt-4.1-mini",
+   "expected": 21.786
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 143.08,
+ "savings_high": null,
+ "attributed_share": 0.8758554963789611,
+ "wall_secs": 11.5
+}

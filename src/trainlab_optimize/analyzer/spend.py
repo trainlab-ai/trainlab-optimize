@@ -21,6 +21,10 @@ def base_model(name: str | None) -> str | None:
     m = name.strip().lower()
     while _PREFIX.match(m):
         m = _PREFIX.sub("", m, count=1)
+    # Router vendor namespaces: qwen/qwen-plus, meta-llama/llama-3.3-70b, accounts/fireworks/models/x
+    if "/" in m:
+        m = m.rsplit("/", 1)[-1]
+    m = re.sub(r":(free|beta|nitro|floor|online|extended|thinking)$", "", m)
     m = _REGION.sub("", m)
     m = re.sub(r"-v\d+(:\d+)?$", "", m)       # bedrock -v1:0
     m = _DATE.sub("", m)

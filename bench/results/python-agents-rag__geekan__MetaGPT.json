@@ -1,0 +1,136 @@
+{
+ "repo": "geekan/MetaGPT",
+ "category": "python-agents-rag",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "1015 files, 18 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.9s, 1149 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "12/13 = 92%",
+   "recall": 92.3076923076923
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "13/15 calls name a specific provider",
+   "specific_pct": 87,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $9.16 vs expected $9.16"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $9.16"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "1 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.15646960509079952
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $3, key-prod $6"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "text-embedding-ada-002: $3.05 vs $3.05"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$1-$1 of $9"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "7/7 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 1015,
+ "scan_secs": 0.88,
+ "sites": 18,
+ "call_sites": 15,
+ "model_configs": 3,
+ "providers": [
+  "anthropic",
+  "bedrock",
+  "ollama",
+  "openai",
+  "openai_compatible",
+  "volcengine",
+  "zhipu"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 6,
+ "baseline": 13,
+ "baseline_found": 12,
+ "missed": [
+  [
+   "examples/stream_output_via_api.py",
+   59,
+   "@app.route(\"/v1/chat/completions\", methods=[\"POST\"])"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 120,
+  "total_cost": 9.1555,
+  "by_key": {
+   "key-prod": 6.404,
+   "key-batch": 2.7515
+  },
+  "by_model": {
+   "text-embedding-ada-002": 1.4326,
+   "gpt-4.1-nano": 7.7229
+  },
+  "code_models": [
+   "text-embedding-ada-002"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpw199thqi/usage_tokens_only.csv",
+   "model": "text-embedding-ada-002",
+   "expected": 3.0465
+  }
+ },
+ "findings": {
+  "R101": 1,
+  "R109": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 9.16,
+ "savings_high": 1.15,
+ "attributed_share": 0.15646960509079952,
+ "wall_secs": 2.9
+}

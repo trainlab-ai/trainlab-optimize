@@ -1,0 +1,138 @@
+{
+ "repo": "pinecone-io/examples",
+ "category": "notebooks",
+ "llm_repo": true,
+ "mock_format": "openrouter",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "247 files, 101 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "1.9s, 128 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "pass",
+   "detail": "18/18 = 100%",
+   "recall": 100.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "23/24 calls name a specific provider",
+   "specific_pct": 96,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $203.94 vs expected $203.94"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $203.94"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.8143807746418008
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $61, key-prod $143"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "text-embedding-ada-002: $3.05 vs $3.05"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$1-$2 of $204"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "1/1 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 247,
+ "scan_secs": 1.93,
+ "sites": 101,
+ "call_sites": 24,
+ "model_configs": 77,
+ "providers": [
+  "anthropic",
+  "azure",
+  "cohere",
+  "gemini",
+  "huggingface",
+  "ollama",
+  "openai",
+  "openai_compatible",
+  "voyage"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 81,
+ "baseline": 18,
+ "baseline_found": 18,
+ "missed": [],
+ "mock": {
+  "format": "openrouter",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 203.9431,
+  "by_key": {
+   "key-prod": 143.1442,
+   "key-batch": 60.7988
+  },
+  "by_model": {
+   "text-embedding-ada-002": 3.0537,
+   "gpt-4.1-mini": 30.0674,
+   "text-embedding-3-small": 1.3682,
+   "gpt-3.5-turbo": 120.7958,
+   "gpt-4o-mini": 10.8023,
+   "gpt-4.1-nano": 37.8558
+  },
+  "code_models": [
+   "text-embedding-ada-002",
+   "gpt-4.1-mini",
+   "text-embedding-3-small",
+   "gpt-3.5-turbo",
+   "gpt-4o-mini"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpxwm1iywv/usage_tokens_only.csv",
+   "model": "text-embedding-ada-002",
+   "expected": 3.0465
+  }
+ },
+ "findings": {
+  "R102": 9,
+  "R108": 6,
+  "R101": 4,
+  "R109": 2,
+  "R105": 4,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 203.94,
+ "savings_high": 2.44,
+ "attributed_share": 0.8143807746418008,
+ "wall_secs": 33.6
+}

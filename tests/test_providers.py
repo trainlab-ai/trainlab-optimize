@@ -222,3 +222,23 @@ async def run(prompt):
     return await client.responses.create(extra_body={}, input=prompt, store=False)
 '''
     assert [p for p, _, _ in py(src)] == ["openai"]
+
+
+def test_bench_round1_gaps():
+    # injected embeddings client with a payload splat
+    assert py("def f(client, a):\n    return client.embeddings.create(**a)\n") == [("unknown", None, "embedding")]
+    # Mistral through a getter
+    src = "from mistralai import Mistral\nclass M:\n    def run(self):\n        return self.get_client().chat.complete(model='mistral-small-latest', messages=[])\n"
+    assert py(src) == [("mistral", "mistral-small-latest", "chat")]
+    # Anthropic signature without a static import (dynamic import)
+    src = "import importlib\ndef f(chat_model):\n    return chat_model.messages.create(model='claude-sonnet-4-5', max_tokens=100, messages=[])\n"
+    assert py(src) == [("anthropic", "claude-sonnet-4-5", "chat")]
+    # Twilio stays excluded
+    assert py("from twilio.rest import Client\nc = Client()\nc.messages.create(to='1', from_='2', body='hi')\n") == []
+    # Assistants thread messages aren't billed calls
+    assert py("from openai import OpenAI\nc = OpenAI()\nc.beta.threads.messages.create(thread_id='t', role='user', content='x')\n") == []
+    # DashScope reached through an attribute
+    src = "import dashscope\nclass QWenService:\n    dashscope = dashscope\nQWenService.dashscope.Generation.call(model='qwen-max', messages=[])\n"
+    assert py(src) == [("dashscope", "qwen-max", "chat")]
+    # Bedrock converse with its own signature, no boto import in this file
+    assert py("async def f(client):\n    return await client.converse(modelId='anthropic.claude-haiku', messages=[])\n")[0][0] == "bedrock"

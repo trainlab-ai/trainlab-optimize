@@ -61,10 +61,14 @@ LANG_CALLS: dict[str, list[tuple[re.Pattern, str, str, str | None]]] = {
         (re.compile(r"\b(llms\.GenerateFromSinglePrompt)\("), "chat", "unknown", "langchaingo"),
     ],
     "jvm": [
-        (re.compile(r"\.(chat\(\)\s*\.completions\(\)\s*\.create)\("), "chat", "openai", "com.openai"),
-        (re.compile(r"\.(responses\(\)\s*\.create)\("), "chat", "openai", "com.openai"),
+        (re.compile(r"\.(chat\(\)\s*\.completions\(\)\s*\.create(?:Streaming)?)\("), "chat", "openai", "com.openai"),
+        (re.compile(r"\.(responses\(\)\s*\.create(?:Streaming)?)\("), "chat", "openai", "com.openai"),
         (re.compile(r"\.(embeddings\(\)\s*\.create)\("), "embedding", "openai", "com.openai"),
-        (re.compile(r"\.(messages\(\)\s*\.create)\("), "chat", "anthropic", "com.anthropic"),
+        (re.compile(r"\.(messages\(\)\s*\.create(?:Streaming)?)\("), "chat", "anthropic", "com.anthropic"),
+        # AWS SDK for Java / Kotlin: Bedrock Runtime
+        (re.compile(r"\.(converse(?:Stream)?|invokeModel(?:WithResponseStream)?)\("), "chat", "bedrock", "bedrockruntime"),
+        # Spring AI model builders: OpenAiChatModel.builder(), AnthropicChatModel.builder(), ...
+        (re.compile(r"\b([A-Z]\w*(?:Chat|Embedding)Model\.builder)\(\)"), "model_config", "unknown", "springframework.ai"),
         (re.compile(r"\.(getChatCompletions(?:Stream)?)\("), "chat", "azure", "com.azure.ai.openai"),
         (re.compile(r"\b([A-Z]\w*(?:Chat|Language|Embedding|Image|Scoring|Moderation)Model\.builder)\(\)"),
          "model_config", "unknown", "langchain4j"),
@@ -80,11 +84,13 @@ LANG_CALLS: dict[str, list[tuple[re.Pattern, str, str, str | None]]] = {
         (re.compile(r"\.(embeddings)\(\s*parameters:"), "embedding", "openai", None),
         (re.compile(r"\.(messages)\(\s*parameters:"), "chat", "anthropic", None),
         (re.compile(r"\.(chat\.completions\.create)\("), "chat", "openai", None),
+        (re.compile(r"\.(responses\.create)\("), "chat", "openai", None),
         (re.compile(r"\.(messages\.create)\("), "chat", "anthropic", "anthropic"),
         (re.compile(r"\b(RubyLLM\.(?:chat|embed))\b"), "chat", "unknown", None),
         (re.compile(r"\b(Langchain::LLM::\w+\.new)\b"), "model_config", "unknown", None),
         (re.compile(r"\.(invoke_model(?:_with_response_stream)?|converse(?:_stream)?)\("), "chat", "bedrock",
          "Aws::BedrockRuntime"),
+        (re.compile(r"\.(converse(?:_stream)?)\((?=\s*model_id:)"), "chat", "bedrock", None),
     ],
     "php": [
         # openai-php/client and Laravel facade, Prism, LLPhant
@@ -133,13 +139,14 @@ MODEL_PATTERNS = [
     re.compile(r"""\b(?:ChatModel|Model|EmbeddingModel)\.([A-Z][A-Z0-9_]{2,})\b"""),
 ]
 MODEL_EXPR = re.compile(r"""\b(?:model|modelId|Model|modelName)\s*[:=]\s*([^,\n}\)]+)""")
-STRING = re.compile(r"""(["'`])((?:(?!\1).){3,200}?)\1""")
+STRING = re.compile(r"""(["'`])((?:\\.|(?!\1)[^\\]){0,200}?)\1""")   # whole literals, incl. short/escaped ones
 ROUTE_DEF = re.compile(r"""\.(?:GET|POST|PUT|Handle|HandleFunc|Any|Group|get|post|put|route|all)\s*\(\s*["'`]|"""
                        r"""@(?:Post|Get|Request)Mapping|\[Http(?:Post|Get)|Map(?:Post|Get)\(|\brouter\.|"""
                        r"""Request\.Path|PathString|\.path\s*===?|\.url\s*===?|pathname\s*===?""")
 COMMENT = re.compile(r"^\s*(?://|#|\*|/\*|--)")
 QUOTED = re.compile(r"""['"]([A-Za-z0-9][\w.\-:/]{1,79})['"]|(?:=|:)\s*([A-Za-z0-9][\w.\-:/]{1,79})\s*$""")
-OTHER_TEST = re.compile(r"\.(test|spec|vitest|e2e|stories)\.[cm]?[jt]sx?$|(^|/)(locales?|i18n)/|_test\.go$|(^|/)src/test/|(^|/)[^/]*\.Tests?/|Tests?\.cs$|"
+OTHER_TEST = re.compile(r"\.(test|spec|vitest|e2e|stories)\.[cm]?[jt]sx?$|(^|/)(locales?|i18n)/|"
+                        r"(^|/)src/\w*[Tt]est\w*/|Test(?:Base|Utils?|Case)?\.(?:kt|java)$|(^|/)testutils?\.rs$|_test\.go$|(^|/)src/test/|(^|/)[^/]*\.Tests?/|Tests?\.cs$|"
                         r"_spec\.rb$|(^|/)spec/|Test\.php$|(^|/)benches/")
 
 
@@ -270,6 +277,7 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
     if per_line and lines is None:
         lines = text.splitlines()
     file_hint = file_provider_hint(text) if (per_line or "completions" in text or "/messages" in text) else None
+    anthropic_file = "anthropic" in text.lower() or "claude" in text.lower()
     for i in sorted(per_line):
         line = lines[i] if i < len(lines) else ""
         if len(line) > 400 or COMMENT.match(line):
@@ -285,10 +293,12 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
         if not model:
             mx = MODEL_EXPR.search(window)
             model_expr = mx.group(1).strip()[:80] if mx else None
-        if lang == "javascript" and provider == "anthropic" and "anthropic" not in text.lower():
-            provider = "openai_compatible"
+        if lang == "javascript" and provider == "anthropic" and not anthropic_file:
+            continue      # messages.create on Twilio/Slack/etc. clients: the file never mentions Anthropic/Claude
         if kind == "model_config" and provider == "unknown":
-            provider = _LC_CLASS_PROVIDER.get(hit.group(1), "unknown")
+            from .providers import provider_from_class_name
+            cls = hit.group(1).split(".")[0]
+            provider = _LC_CLASS_PROVIDER.get(cls) or provider_from_class_name(cls) or "unknown"
             if provider == "openai" and file_hint:
                 provider = file_hint            # new ChatOpenAI({ configuration: { baseURL: openrouter } })
         elif provider in ("openai", "openai_compatible", "vercel_ai") and file_hint:
@@ -327,7 +337,11 @@ def scan_heuristic(rel_path: str, text: str, lang: str) -> list[CallSite]:
             continue
         done.add(i)
         line = lines[i] if i < len(lines) else ""
-        if len(line) > 400 or COMMENT.match(line) or ROUTE_DEF.search(line):
+        if len(line) > 400 or COMMENT.match(line):
+            continue
+        # A route definition (.post("/v1/chat/completions", handler)) serves the API; a .post() to a
+        # provider host ("https://api.anthropic.com/v1/messages") calls it.
+        if ROUTE_DEF.search(line) and not re.search(r"https?://", line):
             continue
         for sm in STRING.finditer(line):
             ep = http_endpoint(sm.group(2))

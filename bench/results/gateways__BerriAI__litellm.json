@@ -1,0 +1,961 @@
+{
+ "repo": "BerriAI/litellm",
+ "category": "gateways",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "12015 files, 729 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "59.3s, 203 files/s"
+  },
+  "T03": {
+   "status": "skip",
+   "detail": "scan over 40s"
+  },
+  "T04": {
+   "status": "review",
+   "detail": "363/525 = 69%",
+   "recall": 69.14285714285714
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "428/696 calls name a specific provider",
+   "specific_pct": 61,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 360 records, $1,219.86 vs expected $1,219.86"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $1,219.86"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "5 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.990911436928022
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $363, key-prod $856"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-3.5-turbo: $24.23 vs $24.23"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$1-$2 of $1,220"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "43/43 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 12015,
+ "scan_secs": 59.29,
+ "sites": 729,
+ "call_sites": 696,
+ "model_configs": 33,
+ "providers": [
+  "anthropic",
+  "azure",
+  "bedrock",
+  "cohere",
+  "dashscope",
+  "databricks",
+  "deepseek",
+  "gemini",
+  "huggingface",
+  "litellm",
+  "minimax",
+  "openai",
+  "openai_compatible",
+  "openrouter",
+  "perplexity",
+  "tencent",
+  "unknown",
+  "vertex",
+  "voyage"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "javascript",
+  "python",
+  "rust"
+ ],
+ "resolved_model_pct": 26,
+ "baseline": 525,
+ "baseline_found": 363,
+ "missed": [
+  [
+   "cookbook/benchmark/eval_suites_mlflow_autoevals/auto_evals.py",
+   25,
+   "],  # response from litellm.completion()"
+  ],
+  [
+   "cookbook/codellama-server/main.py",
+   52,
+   "@app.route(\"/chat/completions\", methods=[\"POST\"])"
+  ],
+  [
+   "litellm/main.py",
+   480,
+   "Asynchronously executes a litellm.completion() call for any of litellm supported llms (example gpt-4, gpt-3.5-turbo, claude-2, command-night"
+  ],
+  [
+   "litellm/main.py",
+   6090,
+   "Executes a litellm.completion() with 3 retries"
+  ],
+  [
+   "litellm/main.py",
+   6117,
+   "Executes a litellm.completion() with 3 retries"
+  ],
+  [
+   "litellm/router.py",
+   2795,
+   "verbose_router_logger.info(\"litellm.completion(model=%s)\\x1b[31m Exception %s\\x1b[0m\", model_name, e)"
+  ],
+  [
+   "litellm/router.py",
+   3961,
+   "verbose_router_logger.info(\"litellm.acompletion(model=%s)\\x1b[32m 200 OK\\x1b[0m\", model_name)"
+  ],
+  [
+   "litellm/router.py",
+   3991,
+   "verbose_router_logger.info(\"litellm.acompletion(model=%s)\\x1b[31m Exception %s\\x1b[0m\", model_name, e)"
+  ],
+  [
+   "litellm/router.py",
+   11699,
+   ")  # USE THE MODEL SENT TO litellm.completion() - consistent with how global_router cache is written."
+  ],
+  [
+   "litellm/utils.py",
+   10477,
+   "This is currently in BETA, and tested for `/chat/completions` -> `litellm.completion` calls."
+  ],
+  [
+   "litellm/integrations/anthropic_cache_control_hook.py",
+   7,
+   "Supported for both `v1/chat/completions` (via the prompt-management hook) and"
+  ],
+  [
+   "litellm/integrations/custom_logger.py",
+   379,
+   "Translates the input params, from the provider's native format to the litellm.completion() format."
+  ],
+  [
+   "litellm/integrations/rubrik.py",
+   583,
+   "litellm normalizes Anthropic ``/v1/messages`` requests to OpenAI shape,"
+  ],
+  [
+   "litellm/integrations/rubrik.py",
+   626,
+   "``/v1/messages`` requests too. Optional fields are sent only when"
+  ],
+  [
+   "litellm/integrations/SlackAlerting/slack_alerting.py",
+   1074,
+   "response = client.chat.completions.create("
+  ],
+  [
+   "litellm/integrations/agentops/agentops.py",
+   42,
+   "response = litellm.completion("
+  ],
+  [
+   "litellm/integrations/arize/arize_phoenix_prompt_manager.py",
+   238,
+   "response = litellm.completion("
+  ],
+  [
+   "litellm/integrations/bitbucket/bitbucket_prompt_manager.py",
+   204,
+   "response = litellm.completion("
+  ],
+  [
+   "litellm/integrations/compression_interception/handler.py",
+   68,
+   "``/v1/messages`` requests carry proxy metadata under ``litellm_metadata``"
+  ],
+  [
+   "litellm/integrations/dotprompt/dotprompt_manager.py",
+   36,
+   "response = litellm.completion("
+  ],
+  [
+   "litellm/integrations/email_templates/key_created_email.py",
+   192,
+   "response = client.chat.completions.create(<br>"
+  ],
+  [
+   "litellm/integrations/email_templates/key_rotated_email.py",
+   193,
+   "response = client.chat.completions.create(<br>"
+  ],
+  [
+   "litellm/integrations/email_templates/templates.py",
+   30,
+   "response = client.chat.completions.create("
+  ],
+  [
+   "litellm/integrations/generic_prompt_management/generic_prompt_manager.py",
+   46,
+   "response = litellm.completion("
+  ],
+  [
+   "litellm/litellm_core_utils/api_route_to_call_types.py",
+   69,
+   "route: API route path (e.g., \"/chat/completions\" or \"/a2a/my-pydantic-agent/message/send\")"
+  ],
+  [
+   "litellm/litellm_core_utils/cli_token_utils.py",
+   335,
+   ">>>     response = litellm.completion("
+  ],
+  [
+   "litellm/litellm_core_utils/exception_mapping_utils.py",
+   145,
+   "'request': \"<Request('POST', 'https://api.openai.com/v1/chat/completions')>\","
+  ],
+  [
+   "litellm/litellm_core_utils/rules.py",
+   17,
+   "response = litellm.completion(model=\"gpt-3.5-turbo\", messages=[{\"role\": \"user\","
+  ],
+  [
+   "litellm/litellm_core_utils/streaming_handler.py",
+   1556,
+   "response = litellm.completion(.., stream=True)"
+  ],
+  [
+   "litellm/litellm_core_utils/llm_response_utils/get_api_base.py",
+   35,
+   "- model: str - the model passed to litellm.completion()"
+  ],
+  [
+   "litellm/llms/amazon_nova/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Amazon Nova's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/anthropic/common_utils.py",
+   1700,
+   "on the unified ``/v1/messages`` path.  ``/v1/chat/completions`` already"
+  ],
+  [
+   "litellm/llms/anthropic/wif.py",
+   401,
+   "slashes and chat-appended ``/v1/messages`` suffixes stripped, so the token URL, the cache key"
+  ],
+  [
+   "litellm/llms/anthropic/chat/handler.py",
+   2,
+   "Calling + translation logic for anthropic's `/v1/messages` endpoint"
+  ],
+  [
+   "litellm/llms/anthropic/count_tokens/transformation.py",
+   93,
+   "base already carrying ``/v1`` or ``/v1/messages``); the count-tokens path is"
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/stream_assembly.py",
+   453,
+   "``is_raw_sse_stream`` only says the chunks are unparsed bytes, and ``/v1/messages`` is not the"
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/adapters/handler.py",
+   96,
+   "for ``/v1/messages`` (see"
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/adapters/transformation.py",
+   329,
+   "(e.g. ``litellm.anthropic.messages.create(stream=True)`` via"
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/adapters/transformation.py",
+   1226,
+   "This is used by the beta Anthropic Adapter, for translating anthropic `/v1/messages` requests to the openai format."
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/context_management/errors.py",
+   7,
+   "The `/v1/messages` endpoint catches this in its exception handler and"
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/messages/handler.py",
+   120,
+   "The opt-in is ``model_info.supported_endpoints`` containing ``\"/v1/messages\"``,"
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/messages/handler.py",
+   496,
+   "Makes Anthropic `/v1/messages` API calls In the Anthropic API Spec"
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/messages/mcp_handler.py",
+   2,
+   "MCP gateway support for the Anthropic `/v1/messages` API."
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/messages/mcp_handler.py",
+   72,
+   "Expand litellm_proxy MCP references for `/v1/messages` and run the tool loop."
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/messages/streaming_iterator.py",
+   271,
+   "into a `/v1/messages` SSE byte stream would produce a malformed"
+  ],
+  [
+   "litellm/llms/anthropic/pass_through/messages/transformation.py",
+   186,
+   "``/v1/messages`` contract, which the first-party API, Bedrock Invoke,"
+  ],
+  [
+   "litellm/llms/azure/assistants.py",
+   218,
+   "thread_message: Final[OpenAIMessage] = await openai_client.beta.threads.messages.create("
+  ],
+  [
+   "litellm/llms/azure/assistants.py",
+   307,
+   "thread_message: Final[OpenAIMessage] = openai_client.beta.threads.messages.create("
+  ],
+  [
+   "litellm/llms/azure_ai/chat/transformation.py",
+   169,
+   "\"https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview\""
+  ],
+  [
+   "litellm/llms/azure_ai/chat/transformation.py",
+   176,
+   "\"https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview\""
+  ],
+  [
+   "litellm/llms/bedrock/common_utils.py",
+   886,
+   "gpt-oss never matches) whose price-map row lists ``/v1/chat/completions`` in ``supported_endpoints``."
+  ],
+  [
+   "litellm/llms/bedrock/chat/chat_completions/transformation.py",
+   5,
+   "``https://bedrock-runtime.{region}.amazonaws.com/openai/v1/chat/completions``"
+  ],
+  [
+   "litellm/llms/bedrock/messages/invoke_transformations/anthropic_claude3_transformation.py",
+   650,
+   "The shared ``/v1/messages`` effort gate rejects tiers a model does not"
+  ],
+  [
+   "litellm/llms/bedrock/messages/invoke_transformations/anthropic_claude3_transformation.py",
+   951,
+   "the Anthropic `/v1/messages` specification so callers receive a"
+  ],
+  [
+   "litellm/llms/cometapi/chat/transformation.py",
+   2,
+   "Support for CometAPI's `/v1/chat/completions` endpoint."
+  ],
+  [
+   "litellm/llms/dashscope/chat/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to DashScope's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/databricks/chat/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to Databricks' `/chat/completions`"
+  ],
+  [
+   "litellm/llms/datarobot/chat/transformation.py",
+   2,
+   "Support for OpenAI's `/v1/chat/completions` endpoint."
+  ],
+  [
+   "litellm/llms/deepseek/chat/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to DeepSeek's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/docker_model_runner/chat/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to Docker Model Runner's `/engines/{engine}/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/edenai/chat/transformation.py",
+   2,
+   "Support for OpenAI's `/v1/chat/completions` endpoint on Eden AI."
+  ],
+  [
+   "litellm/llms/edenai/messages/transformation.py",
+   2,
+   "Support for Anthropic's `/v1/messages` endpoint on Eden AI."
+  ],
+  [
+   "litellm/llms/edenai/messages/transformation.py",
+   4,
+   "Eden AI serves the Anthropic Messages API at `/v3/v1/messages` for every model in its catalog, so"
+  ],
+  [
+   "litellm/llms/empower/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Empower's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/fal_ai/chat/transformation.py",
+   2,
+   "Support for `/v1/chat/completions` on Fal AI model endpoints, e.g. fal-ai/moondream3-preview/query."
+  ],
+  [
+   "litellm/llms/friendliai/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Friendliai's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/galadriel/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Galadriel's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/github/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Github's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/groq/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Groq's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/hosted_vllm/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to VLLM's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/hyperbolic/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Hyperbolic's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/inception/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Inception's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/lambda_ai/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Lambda's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/lemonade/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Lemonade's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/litellm_proxy/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to VLLM's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/lm_studio/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to LM Studio's `/chat/completions`"
+  ],
+  [
+   "litellm/llms/modelscope/chat/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to ModelScope's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/moonshot/chat/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to Moonshot AI's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/novita/chat/transformation.py",
+   2,
+   "Support for OpenAI's `/v1/chat/completions` endpoint."
+  ],
+  [
+   "litellm/llms/ollama/completion/transformation.py",
+   448,
+   "else:  # handle `/chat/completions` requests"
+  ],
+  [
+   "litellm/llms/openai/openai.py",
+   2606,
+   "thread_message: Final[OpenAIMessage] = await openai_client.beta.threads.messages.create("
+  ],
+  [
+   "litellm/llms/openai/openai.py",
+   2685,
+   "thread_message: Final[OpenAIMessage] = openai_client.beta.threads.messages.create("
+  ],
+  [
+   "litellm/llms/openai_like/messages/transformation.py",
+   21,
+   "``\"/v1/messages\"``. The inbound Anthropic payload (system, cache_control,"
+  ],
+  [
+   "litellm/llms/openai_like/messages/transformation.py",
+   23,
+   "``{api_base}/v1/messages``, so Anthropic-only features that the"
+  ],
+  [
+   "litellm/llms/openai_like/messages/transformation.py",
+   117,
+   "includes ``\"/v1/messages\"``. Resolves the api key and api base from the"
+  ],
+  [
+   "litellm/llms/openrouter/chat/transformation.py",
+   2,
+   "Support for OpenAI's `/v1/chat/completions` endpoint."
+  ],
+  [
+   "litellm/llms/ovhcloud/chat/transformation.py",
+   2,
+   "Support for OVHCloud AI Endpoints `/v1/chat/completions` endpoint."
+  ],
+  [
+   "litellm/llms/perplexity/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Perplexity's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/sagemaker/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Sagemaker's `/invocations` API"
+  ],
+  [
+   "litellm/llms/sagemaker/completion/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to Sagemaker's `/invoke`"
+  ],
+  [
+   "litellm/llms/sagemaker/nova/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to SageMaker Nova Inference endpoints."
+  ],
+  [
+   "litellm/llms/sap/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to SAP Generative AI Hub's Orchestration Service`v2/completion`"
+  ],
+  [
+   "litellm/llms/tencent/chat/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to Tencent TokenHub's"
+  ],
+  [
+   "litellm/llms/together_ai/chat/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to Together AI's `/v1/chat/completions`."
+  ],
+  [
+   "litellm/llms/triton/completion/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` endpoint to Triton's `/generate` endpoint."
+  ],
+  [
+   "litellm/llms/v0/chat/transformation.py",
+   2,
+   "Translate from OpenAI's `/v1/chat/completions` to v0's `/v1/chat/completions`"
+  ],
+  [
+   "litellm/llms/vercel_ai_gateway/chat/transformation.py",
+   2,
+   "Support for OpenAI's `/v1/chat/completions` endpoint."
+  ],
+  [
+   "litellm/llms/vertex_ai/vertex_gemma_models/main.py",
+   9,
+   "response = litellm.completion("
+  ],
+  [
+   "litellm/llms/vertex_ai/vertex_model_garden/main.py",
+   8,
+   "response = litellm.completion("
+  ],
+  [
+   "litellm/llms/vllm/completion/transformation.py",
+   2,
+   "Translates from OpenAI's `/v1/chat/completions` to the VLLM sdk `llm.generate`."
+  ],
+  [
+   "litellm/llms/watsonx/chat/transformation.py",
+   2,
+   "Translation from OpenAI's `/chat/completions` endpoint to IBM WatsonX's `/text/chat` endpoint."
+  ],
+  [
+   "litellm/proxy/_types.py",
+   2187,
+   ")  # allow params not defined here, these fall in litellm.completion(**kwargs)"
+  ],
+  [
+   "litellm/proxy/litellm_pre_call_utils.py",
+   1998,
+   "Routes in ``LITELLM_METADATA_ROUTES`` (e.g. Bedrock, ``/v1/messages``,"
+  ],
+  [
+   "litellm/proxy/proxy_cli.py",
+   594,
+   "_endpoint_str: Final = f\"curl --location 'http://0.0.0.0:{port}/chat/completions' \\\\\""
+  ],
+  [
+   "litellm/proxy/proxy_server.py",
+   6227,
+   "Router passes caching=self.cache_responses to litellm.completion()"
+  ],
+  [
+   "litellm/proxy/proxy_server.py",
+   12294,
+   "\"/v1/chat/completions\","
+  ],
+  [
+   "litellm/proxy/proxy_server.py",
+   12299,
+   "\"/chat/completions\","
+  ],
+  [
+   "litellm/proxy/proxy_server.py",
+   12304,
+   "\"/engines/{model:path}/chat/completions\","
+  ],
+  [
+   "litellm/proxy/proxy_server.py",
+   12309,
+   "\"/openai/deployments/{model:path}/chat/completions\","
+  ],
+  [
+   "litellm/proxy/proxy_server.py",
+   17179,
+   "\"/queue/chat/completions\","
+  ],
+  [
+   "litellm/proxy/utils.py",
+   579,
+   "The route decides the bucket (``litellm_metadata`` for ``/v1/messages``,"
+  ],
+  [
+   "litellm/proxy/_experimental/mcp_server/sampling_handler.py",
+   81,
+   "A model string suitable for litellm.acompletion()."
+  ],
+  [
+   "litellm/proxy/_experimental/mcp_server/sampling_handler.py",
+   735,
+   "Runs the same authorization checks as ``/chat/completions``:"
+  ],
+  [
+   "litellm/proxy/_experimental/mcp_server/sampling_handler.py",
+   909,
+   "Runs the same ``common_checks`` path that ``/chat/completions`` uses,"
+  ],
+  [
+   "litellm/proxy/_experimental/out/_next/static/chunks/1yrn96ztx3yjc.js",
+   31,
+   "}' | jq`;else if(\"messages\"===x)return`curl -X POST '${f}/chat/completions' \\\\"
+  ],
+  [
+   "litellm/proxy/_experimental/out/_next/static/chunks/1yrn96ztx3yjc.js",
+   44,
+   "}' | jq`;else return`curl -X POST '${f}/chat/completions' \\\\"
+  ],
+  [
+   "litellm/proxy/anthropic_endpoints/endpoints.py",
+   124,
+   "\"/v1/messages\","
+  ],
+  [
+   "litellm/proxy/anthropic_endpoints/endpoints.py",
+   125,
+   "tags=[\"[beta] Anthropic `/v1/messages`\"],"
+  ],
+  [
+   "litellm/proxy/anthropic_endpoints/endpoints.py",
+   134,
+   "Use `{PROXY_BASE_URL}/anthropic/v1/messages` instead - [Docs](https://docs.litellm.ai/docs/pass_through/anthropic_completion)."
+  ],
+  [
+   "litellm/proxy/auth/auth_utils.py",
+   817,
+   "e.g. ``/genai/chat/completions`` -> ``/chat/completions``."
+  ],
+  [
+   "litellm/proxy/auth/auth_utils.py",
+   881,
+   ">>> normalize_request_route(\"/chat/completions\")"
+  ],
+  [
+   "litellm/proxy/auth/auth_utils.py",
+   882,
+   "'/chat/completions'"
+  ],
+  [
+   "litellm/proxy/auth/fallback_budget.py",
+   31,
+   "hand (for example `/queue/chat/completions`) fall through as unauthenticated."
+  ],
+  [
+   "litellm/proxy/auth/route_checks.py",
+   519,
+   "route='/openai/deployments/vertex_ai/gemini-1.5-flash/chat/completions'"
+  ],
+  [
+   "litellm/proxy/auth/route_checks.py",
+   598,
+   "route: \"/chat/completions\""
+  ],
+  [
+   "litellm/proxy/auth/route_checks.py",
+   623,
+   "- allowed_route=\"/fake-openai-proxy-6\", route=\"/fake-openai-proxy-6/v1/chat/completions\" -> True (prefix match)"
+  ],
+  [
+   "litellm/proxy/batches_endpoints/endpoints.py",
+   267,
+   "\"endpoint\": \"/v1/chat/completions\","
+  ],
+  [
+   "litellm/proxy/client/http_client.py",
+   63,
+   "\"api_base\": \"https://litellm8397336933.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21\","
+  ],
+  [
+   "litellm/proxy/common_utils/model_listing_utils.py",
+   164,
+   "`rewrite` are the maps `/chat/completions` rewrites its model through, in the order it"
+  ],
+  [
+   "litellm/proxy/common_utils/model_listing_utils.py",
+   204,
+   "\"\"\"The model group `/chat/completions` rewrites `model_id` to, else None. A `model_id`"
+  ],
+  [
+   "litellm/proxy/guardrails/anthropic_sse.py",
+   3,
+   "`/v1/messages` streams reach a guardrail's `async_post_call_streaming_iterator_hook` as raw SSE"
+  ],
+  [
+   "litellm/proxy/guardrails/guardrail_hooks/compresr/compresr.py",
+   349,
+   "are scanned (``/v1/messages`` and ``/v1/responses`` carry it under"
+  ],
+  [
+   "litellm/proxy/guardrails/guardrail_hooks/llm_shield_proxy/llm_shield_proxy.py",
+   480,
+   "walkers, with the same per-stream windows: Anthropic `/v1/messages` arrives as raw"
+  ],
+  [
+   "litellm/proxy/guardrails/guardrail_hooks/llm_shield_proxy/stream_restorers.py",
+   98,
+   "\"\"\"Restores an Anthropic `/v1/messages` stream, which reaches the hook as raw SSE."
+  ],
+  [
+   "litellm/proxy/guardrails/guardrail_hooks/unified_guardrail/unified_guardrail.py",
+   4,
+   "1. Implements a way to call /applyGuardrail endpoint for `/chat/completions` + `/v1/messages` requests on async_pre_call_hook"
+  ],
+  [
+   "litellm/proxy/guardrails/guardrail_hooks/unified_guardrail/unified_guardrail.py",
+   5,
+   "2. Implements a way to call /applyGuardrail endpoint for `/chat/completions` + `/v1/messages` requests on async_post_call_success_hook"
+  ],
+  [
+   "litellm/proxy/guardrails/guardrail_hooks/unified_guardrail/unified_guardrail.py",
+   6,
+   "3. Implements a way to call /applyGuardrail endpoint for `/chat/completions` + `/v1/messages` requests on async_post_call_streaming_iterator"
+  ],
+  [
+   "litellm/proxy/hooks/batch_rate_limiter.py",
+   1039,
+   "enforces on `/chat/completions` apply here."
+  ],
+  [
+   "litellm/proxy/hooks/litellm_skills/main.py",
+   19,
+   "response = await litellm.acompletion("
+  ],
+  [
+   "litellm/proxy/management_endpoints/key_management_endpoints.py",
+   2212,
+   "- allowed_routes: Optional[list] - List of allowed routes for the key. Store the actual route or store a wildcard pattern for a set of route"
+  ],
+  [
+   "litellm/proxy/management_endpoints/key_management_endpoints.py",
+   2419,
+   "- allowed_routes: Optional[list] - List of allowed routes for the key. Store the actual route or store a wildcard pattern for a set of route"
+  ],
+  [
+   "litellm/proxy/management_endpoints/key_management_endpoints.py",
+   3690,
+   "- allowed_routes: Optional[list] - List of allowed routes for the key. Store the actual route or store a wildcard pattern for a set of route"
+  ],
+  [
+   "litellm/proxy/pass_through_endpoints/llm_passthrough_endpoints.py",
+   4028,
+   "endpoint: The Gigachat endpoint path (e.g., \"/chat/completions\")"
+  ],
+  [
+   "litellm/proxy/pass_through_endpoints/llm_provider_handlers/openai_passthrough_logging_handler.py",
+   72,
+   "require a specific OpenAI path (e.g. `/v1/chat/completions`). When only the"
+  ],
+  [
+   "litellm/proxy/response_api_endpoints/endpoints.py",
+   493,
+   "\"/cursor/chat/completions\","
+  ],
+  [
+   "litellm/proxy_auth/credentials.py",
+   229,
+   "response = litellm.completion(model=\"gpt-4\", messages=[...])"
+  ],
+  [
+   "litellm/responses/mcp/chat_completions_handler.py",
+   1,
+   "\"\"\"Helpers for handling MCP-aware `/chat/completions` requests.\"\"\""
+  ],
+  [
+   "litellm/responses/mcp/request_context.py",
+   54,
+   "LITELLM_METADATA_ROUTES (``/v1/messages``, ``/responses``) carry it in"
+  ],
+  [
+   "litellm/responses/mcp/request_context.py",
+   55,
+   "``litellm_metadata`` while ``/chat/completions`` uses ``metadata``."
+  ],
+  [
+   "litellm-rust/crates/gateway-inference/src/lib.rs",
+   93,
+   ".route(\"/v1/messages\", post(messages::create))"
+  ],
+  [
+   "litellm-rust/crates/gateway-inference/src/lib.rs",
+   96,
+   ".route(\"/chat/completions\", post(chat_completions::create))"
+  ],
+  [
+   "litellm-rust/crates/gateway-inference/src/lib.rs",
+   97,
+   ".route(\"/v1/chat/completions\", post(chat_completions::create))"
+  ],
+  [
+   "scripts/benchmark_proxy_vs_provider.py",
+   10,
+   "export LITELLM_PROXY_URL='http://localhost:4000/chat/completions'"
+  ],
+  [
+   "scripts/benchmark_proxy_vs_provider.py",
+   11,
+   "export PROVIDER_URL='https://api.openai.com/v1/chat/completions'"
+  ],
+  [
+   "scripts/benchmark_proxy_vs_provider.py",
+   538,
+   "export LITELLM_PROXY_URL='http://localhost:4000/chat/completions'"
+  ],
+  [
+   "scripts/benchmark_proxy_vs_provider.py",
+   539,
+   "export PROVIDER_URL='https://api.openai.com/v1/chat/completions'"
+  ],
+  [
+   "scripts/benchmark_proxy_vs_provider.py",
+   614,
+   "\"   Example: export LITELLM_PROXY_URL='https://your-proxy.com/chat/completions'\""
+  ],
+  [
+   "scripts/benchmark_proxy_vs_provider.py",
+   621,
+   "\"   Example: export PROVIDER_URL='https://your-provider.com/v1/chat/completions'\""
+  ],
+  [
+   "scripts/classify-issue.ts",
+   319,
+   "const response = await fetch(`${apiBase.replace(/\\/+$/, \"\")}/v1/chat/completions`, {"
+  ],
+  [
+   "ui/litellm-dashboard/src/components/ModelInfoEditForm.tsx",
+   785,
+   "text=\"Optional litellm params used for making a litellm.completion() call. Some params are automatically added by LiteLLM.\""
+  ],
+  [
+   "ui/litellm-dashboard/src/components/add_model/advanced_settings.tsx",
+   471,
+   "\"Optional litellm params used for making a litellm.completion() call.\","
+  ],
+  [
+   "ui/litellm-dashboard/src/components/add_model/advanced_settings.tsx",
+   500,
+   "litellm.completion() call"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 360,
+  "total_cost": 1219.8576,
+  "by_key": {
+   "key-prod": 856.4442,
+   "key-batch": 363.4134
+  },
+  "by_model": {
+   "gpt-3.5-turbo": 41.5362,
+   "claude-2": 296.9077,
+   "command-nightly": 416.6982,
+   "vertex_ai/search_api": 223.973,
+   "azure/your-azure-deployment": 229.6557,
+   "gpt-4.1-nano": 11.0868
+  },
+  "code_models": [
+   "gpt-3.5-turbo",
+   "claude-2",
+   "command-nightly",
+   "vertex_ai/search_api",
+   "azure/your-azure-deployment"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpigy9dh3l/usage_tokens_only.csv",
+   "model": "gpt-3.5-turbo",
+   "expected": 24.2325
+  }
+ },
+ "findings": {
+  "R102": 32,
+  "R101": 4,
+  "R104": 1,
+  "R105": 42,
+  "R109": 1,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 1219.86,
+ "savings_high": 1.92,
+ "attributed_share": 0.990911436928022,
+ "wall_secs": 80.4
+}

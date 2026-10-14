@@ -1,0 +1,141 @@
+{
+ "repo": "THUDM/ChatGLM3",
+ "category": "chinese-providers",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "44 files, 8 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.1s, 339 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "8/12 = 67%",
+   "recall": 66.66666666666667
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "0/8 calls name a specific provider",
+   "specific_pct": 0,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 180 records, $323.04 vs expected $323.04"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $323.04"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "2 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.8992123527656063
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $98, key-prod $225"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $323"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 44,
+ "scan_secs": 0.13,
+ "sites": 8,
+ "call_sites": 8,
+ "model_configs": 0,
+ "providers": [
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "python"
+ ],
+ "resolved_model_pct": 62,
+ "baseline": 12,
+ "baseline_found": 8,
+ "missed": [
+  [
+   "Intel_device_demo/ipex_llm_cpu_demo/api_server.py",
+   12,
+   "- \"/v1/chat/completions\": Processes chat completion requests with options for streaming and regular responses."
+  ],
+  [
+   "Intel_device_demo/ipex_llm_cpu_demo/api_server.py",
+   220,
+   "@app.post(\"/v1/chat/completions\", response_model=ChatCompletionResponse)"
+  ],
+  [
+   "openai_api_demo/api_server.py",
+   12,
+   "- \"/v1/chat/completions\": Processes chat completion requests with options for streaming and regular responses."
+  ],
+  [
+   "openai_api_demo/api_server.py",
+   225,
+   "@app.post(\"/v1/chat/completions\", response_model=ChatCompletionResponse)"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 180,
+  "total_cost": 323.0384,
+  "by_key": {
+   "key-prod": 225.3857,
+   "key-batch": 97.6527
+  },
+  "by_model": {
+   "chatglm3-6b": 122.2889,
+   "bge-large-zh-1.5": 168.1912,
+   "gpt-4.1-nano": 32.5583
+  },
+  "code_models": [
+   "chatglm3-6b",
+   "bge-large-zh-1.5"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpn6iq3q12/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R105": 2,
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 323.04,
+ "savings_high": null,
+ "attributed_share": 0.8992123527656063,
+ "wall_secs": 0.4
+}

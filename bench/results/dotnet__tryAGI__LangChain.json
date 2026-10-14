@@ -1,0 +1,118 @@
+{
+ "repo": "tryAGI/LangChain",
+ "category": "dotnet",
+ "llm_repo": true,
+ "mock_format": "generic",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "338 files, 0 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "0.1s, 2843 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "0/1 = 0%",
+   "recall": 0.0
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "skip",
+   "detail": "0/0 calls name a specific provider",
+   "specific_pct": null,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 120 records, $40.19 vs expected $40.19"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $40.19"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "0 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.0
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $12, key-prod $28"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o-mini: $8.17 vs $8.17"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $40"
+  },
+  "T14": {
+   "status": "skip",
+   "detail": "no cited lines",
+   "examples": []
+  }
+ },
+ "files": 338,
+ "scan_secs": 0.12,
+ "sites": 0,
+ "call_sites": 0,
+ "model_configs": 0,
+ "providers": [],
+ "parse_errors": 0,
+ "languages": [],
+ "resolved_model_pct": null,
+ "baseline": 1,
+ "baseline_found": 0,
+ "missed": [
+  [
+   "src/Serve/OpenAI/ServeExtensions.cs",
+   28,
+   "app.MapPost(\"/v1/chat/completions\", async (CreateChatCompletionRequest request) =>"
+  ]
+ ],
+ "mock": {
+  "format": "generic",
+  "column_map": null,
+  "rows_written": 120,
+  "total_cost": 40.192,
+  "by_key": {
+   "key-prod": 28.275,
+   "key-batch": 11.917
+  },
+  "by_model": {
+   "gpt-4o-mini": 15.921,
+   "gpt-4.1-nano": 24.2711
+  },
+  "code_models": [],
+  "fallback_models": [
+   "gpt-4o-mini"
+  ],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmppnvtli07/usage_tokens_only.csv",
+   "model": "gpt-4o-mini",
+   "expected": 8.1698
+  }
+ },
+ "findings": {
+  "R902": 1
+ },
+ "monthly_spend": 40.19,
+ "savings_high": null,
+ "attributed_share": 0.0,
+ "wall_secs": 0.7
+}

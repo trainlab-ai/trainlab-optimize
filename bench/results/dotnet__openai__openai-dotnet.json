@@ -1,0 +1,518 @@
+{
+ "repo": "openai/openai-dotnet",
+ "category": "dotnet",
+ "llm_repo": true,
+ "mock_format": "unfamiliar",
+ "tests": {
+  "T01": {
+   "status": "pass",
+   "detail": "4200 files, 48 sites"
+  },
+  "T02": {
+   "status": "pass",
+   "detail": "3.3s, 1290 files/s"
+  },
+  "T03": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T04": {
+   "status": "review",
+   "detail": "30/108 = 28%",
+   "recall": 27.77777777777778
+  },
+  "T05": {
+   "status": "skip",
+   "detail": "LLM repo"
+  },
+  "T06": {
+   "status": "pass",
+   "detail": "39/48 calls name a specific provider",
+   "specific_pct": 81,
+   "examples": []
+  },
+  "T07": {
+   "status": "pass",
+   "detail": "csv: 240 records, $911.00 vs expected $911.00"
+  },
+  "T08": {
+   "status": "pass",
+   "detail": "after re-import $911.00"
+  },
+  "T09": {
+   "status": "pass",
+   "detail": "3 code model(s) attributed, decoy unattributed",
+   "attributed_share": 0.9219673158078063
+  },
+  "T10": {
+   "status": "pass",
+   "detail": "key-batch $276, key-prod $635"
+  },
+  "T11": {
+   "status": "pass",
+   "detail": "gpt-4o: $136.16 vs $136.16"
+  },
+  "T12": {
+   "status": "pass",
+   "detail": ""
+  },
+  "T13": {
+   "status": "pass",
+   "detail": "$0-$0 of $911"
+  },
+  "T14": {
+   "status": "pass",
+   "detail": "5/5 cited lines contain the call",
+   "examples": []
+  }
+ },
+ "files": 4200,
+ "scan_secs": 3.26,
+ "sites": 48,
+ "call_sites": 48,
+ "model_configs": 0,
+ "providers": [
+  "openai",
+  "openai_compatible"
+ ],
+ "parse_errors": 0,
+ "languages": [
+  "csharp"
+ ],
+ "resolved_model_pct": 17,
+ "baseline": 108,
+ "baseline_found": 30,
+ "missed": [
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   146,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null,"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   148,
+   "return CompleteChatAsync(messages, options, cancellationToken.ToRequestOptions() ?? new RequestOptions());"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   151,
+   "internal async Task<ClientResult<ChatCompletion>> CompleteChatAsync(IEnumerable<ChatMessage> messages, ChatCompletionOptions options, Reques"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   168,
+   "ClientResult result = await CompleteChatAsync(content, requestOptions).ConfigureAwait(false);"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   186,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null, Cancellati"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   197,
+   "ClientResult result = CompleteChat(content, cancellationToken.ToRequestOptions());"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   214,
+   "public virtual async Task<ClientResult<ChatCompletion>> CompleteChatAsync(params ChatMessage[] messages)"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   215,
+   "=> await CompleteChatAsync(messages, default(ChatCompletionOptions)).ConfigureAwait(false);"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   221,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(params ChatMessage[] messages)"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   222,
+   "=> CompleteChat(messages, default(ChatCompletionOptions));"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   256,
+   "async () => await CompleteChatAsync(content, requestOptions).ConfigureAwait(false),"
+  ],
+  [
+   "OpenAI/src/Custom/Chat/ChatClient.cs",
+   283,
+   "() => CompleteChat(content, cancellationToken.ToRequestOptions(streaming: true)),"
+  ],
+  [
+   "OpenAI/src/Generated/ChatClient.cs",
+   27,
+   "public virtual CollectionResult GetChatCompletions(string after, int? limit, string order, IDictionary<string, string> metadata, string mode"
+  ],
+  [
+   "OpenAI/src/Generated/ChatClient.cs",
+   40,
+   "public virtual AsyncCollectionResult GetChatCompletionsAsync(string after, int? limit, string order, IDictionary<string, string> metadata, s"
+  ],
+  [
+   "OpenAI/src/Generated/ChatClient.cs",
+   53,
+   "public virtual CollectionResult<ChatCompletion> GetChatCompletions(ChatCompletionCollectionOptions options = default, CancellationToken canc"
+  ],
+  [
+   "OpenAI/src/Generated/ChatClient.cs",
+   66,
+   "public virtual AsyncCollectionResult<ChatCompletion> GetChatCompletionsAsync(ChatCompletionCollectionOptions options = default, Cancellation"
+  ],
+  [
+   "OpenAI/src/Generated/ChatClient.cs",
+   78,
+   "public virtual ClientResult CompleteChat(BinaryContent content, RequestOptions options = null)"
+  ],
+  [
+   "OpenAI/src/Generated/ChatClient.cs",
+   86,
+   "public virtual async Task<ClientResult> CompleteChatAsync(BinaryContent content, RequestOptions options = null)"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   54,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(params ChatMessage[] messages);"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   55,
+   "public virtual ClientResult CompleteChat(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   56,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null, Cancellati"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   57,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(params ChatMessage[] messages);"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   58,
+   "public virtual Task<ClientResult> CompleteChatAsync(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   59,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null,"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   89,
+   "public virtual CollectionResult<ChatCompletion> GetChatCompletions(ChatCompletionCollectionOptions options = null, CancellationToken cancell"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   91,
+   "public virtual CollectionResult GetChatCompletions(string after, int? limit, string order, IDictionary<string, string> metadata, string mode"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   93,
+   "public virtual AsyncCollectionResult<ChatCompletion> GetChatCompletionsAsync(ChatCompletionCollectionOptions options = null, CancellationTok"
+  ],
+  [
+   "api/in-progress/net10.0/OpenAI.Chat.net10.0.cs",
+   95,
+   "public virtual AsyncCollectionResult GetChatCompletionsAsync(string after, int? limit, string order, IDictionary<string, string> metadata, s"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   54,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(params ChatMessage[] messages);"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   55,
+   "public virtual ClientResult CompleteChat(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   56,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null, Cancellati"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   57,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(params ChatMessage[] messages);"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   58,
+   "public virtual Task<ClientResult> CompleteChatAsync(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   59,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null,"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   89,
+   "public virtual CollectionResult<ChatCompletion> GetChatCompletions(ChatCompletionCollectionOptions options = null, CancellationToken cancell"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   91,
+   "public virtual CollectionResult GetChatCompletions(string after, int? limit, string order, IDictionary<string, string> metadata, string mode"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   93,
+   "public virtual AsyncCollectionResult<ChatCompletion> GetChatCompletionsAsync(ChatCompletionCollectionOptions options = null, CancellationTok"
+  ],
+  [
+   "api/in-progress/net8.0/OpenAI.Chat.net8.0.cs",
+   95,
+   "public virtual AsyncCollectionResult GetChatCompletionsAsync(string after, int? limit, string order, IDictionary<string, string> metadata, s"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   45,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(params ChatMessage[] messages);"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   46,
+   "public virtual ClientResult CompleteChat(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   47,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null, Cancellati"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   48,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(params ChatMessage[] messages);"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   49,
+   "public virtual Task<ClientResult> CompleteChatAsync(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   50,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null,"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   67,
+   "public virtual CollectionResult<ChatCompletion> GetChatCompletions(ChatCompletionCollectionOptions options = null, CancellationToken cancell"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   68,
+   "public virtual CollectionResult GetChatCompletions(string after, int? limit, string order, IDictionary<string, string> metadata, string mode"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   69,
+   "public virtual AsyncCollectionResult<ChatCompletion> GetChatCompletionsAsync(ChatCompletionCollectionOptions options = null, CancellationTok"
+  ],
+  [
+   "api/in-progress/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   70,
+   "public virtual AsyncCollectionResult GetChatCompletionsAsync(string after, int? limit, string order, IDictionary<string, string> metadata, s"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   54,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(params ChatMessage[] messages);"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   55,
+   "public virtual ClientResult CompleteChat(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   56,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null, Cancellati"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   57,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(params ChatMessage[] messages);"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   58,
+   "public virtual Task<ClientResult> CompleteChatAsync(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   59,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null,"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   89,
+   "public virtual CollectionResult<ChatCompletion> GetChatCompletions(ChatCompletionCollectionOptions options = null, CancellationToken cancell"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   91,
+   "public virtual CollectionResult GetChatCompletions(string after, int? limit, string order, IDictionary<string, string> metadata, string mode"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   93,
+   "public virtual AsyncCollectionResult<ChatCompletion> GetChatCompletionsAsync(ChatCompletionCollectionOptions options = null, CancellationTok"
+  ],
+  [
+   "api/released/net10.0/OpenAI.Chat.net10.0.cs",
+   95,
+   "public virtual AsyncCollectionResult GetChatCompletionsAsync(string after, int? limit, string order, IDictionary<string, string> metadata, s"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   54,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(params ChatMessage[] messages);"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   55,
+   "public virtual ClientResult CompleteChat(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   56,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null, Cancellati"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   57,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(params ChatMessage[] messages);"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   58,
+   "public virtual Task<ClientResult> CompleteChatAsync(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   59,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null,"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   89,
+   "public virtual CollectionResult<ChatCompletion> GetChatCompletions(ChatCompletionCollectionOptions options = null, CancellationToken cancell"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   91,
+   "public virtual CollectionResult GetChatCompletions(string after, int? limit, string order, IDictionary<string, string> metadata, string mode"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   93,
+   "public virtual AsyncCollectionResult<ChatCompletion> GetChatCompletionsAsync(ChatCompletionCollectionOptions options = null, CancellationTok"
+  ],
+  [
+   "api/released/net8.0/OpenAI.Chat.net8.0.cs",
+   95,
+   "public virtual AsyncCollectionResult GetChatCompletionsAsync(string after, int? limit, string order, IDictionary<string, string> metadata, s"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   45,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(params ChatMessage[] messages);"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   46,
+   "public virtual ClientResult CompleteChat(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   47,
+   "public virtual ClientResult<ChatCompletion> CompleteChat(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null, Cancellati"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   48,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(params ChatMessage[] messages);"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   49,
+   "public virtual Task<ClientResult> CompleteChatAsync(BinaryContent content, RequestOptions options = null);"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   50,
+   "public virtual Task<ClientResult<ChatCompletion>> CompleteChatAsync(IEnumerable<ChatMessage> messages, ChatCompletionOptions options = null,"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   67,
+   "public virtual CollectionResult<ChatCompletion> GetChatCompletions(ChatCompletionCollectionOptions options = null, CancellationToken cancell"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   68,
+   "public virtual CollectionResult GetChatCompletions(string after, int? limit, string order, IDictionary<string, string> metadata, string mode"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   69,
+   "public virtual AsyncCollectionResult<ChatCompletion> GetChatCompletionsAsync(ChatCompletionCollectionOptions options = null, CancellationTok"
+  ],
+  [
+   "api/released/netstandard2.0/OpenAI.Chat.netstandard2.0.cs",
+   70,
+   "public virtual AsyncCollectionResult GetChatCompletionsAsync(string after, int? limit, string order, IDictionary<string, string> metadata, s"
+  ]
+ ],
+ "mock": {
+  "format": "unfamiliar",
+  "column_map": {
+   "model": "Billing Item",
+   "cost_usd": "Pretax Amount (USD)",
+   "date": "Billing Date",
+   "api_key": "Key ID"
+  },
+  "rows_written": 240,
+  "total_cost": 911.0007,
+  "by_key": {
+   "key-prod": 634.9465,
+   "key-batch": 276.0542
+  },
+  "by_model": {
+   "gpt-4o": 286.2874,
+   "gpt-5": 548.7632,
+   "text-embedding-3-small": 4.8623,
+   "gpt-4.1-nano": 71.0878
+  },
+  "code_models": [
+   "gpt-4o",
+   "gpt-5",
+   "text-embedding-3-small"
+  ],
+  "fallback_models": [],
+  "decoy": "gpt-4.1-nano",
+  "tokens_only": {
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp0fzgo2lo/usage_tokens_only.csv",
+   "model": "gpt-4o",
+   "expected": 136.1625
+  }
+ },
+ "findings": {
+  "R901": 1,
+  "R902": 1
+ },
+ "monthly_spend": 911.0,
+ "savings_high": null,
+ "attributed_share": 0.9219673158078063,
+ "wall_secs": 11.3
+}
