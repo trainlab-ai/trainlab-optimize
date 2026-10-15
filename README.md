@@ -46,9 +46,20 @@ trainlab report                       # writes .trainlab/report/trainlab-report.
 Without usage data the report still lists every call site and code-level issues; it just
 can't put a price on them.
 
-**No terminal experience?** Run `trainlab ui`. A page opens in your browser with three
-steps: pick the code folder, drop in usage files (or paste an admin key), get the report.
-It only listens on 127.0.0.1 and keys are used once, never stored.
+**No terminal experience?** Run `trainlab ui` in your project folder. A local app opens in your
+browser with five screens:
+
+| Screen | What it shows |
+|---|---|
+| Overview | the answer in a sentence ("you spend $X; N tested changes would cut $Y"), then what to do next, in order |
+| Spend | your code with the monthly cost beside each line that calls a model; cost per 1,000 calls, findings per line, spend by tag |
+| Live | calls as they happen while `trainlab trace` runs in another terminal: calls per minute per line, p95 latency, errors, $/hour, the latest calls |
+| Experiments | every call site with captured samples; check the cost, run a test with a budget, watch it progress, then review each disagreement side by side |
+| Setup | pick the code folder, drop in usage files (or paste an admin key), get the report |
+
+It reads the same `.trainlab/` folder as the CLI, only listens on 127.0.0.1, needs the session
+link it prints, and never stores keys. Experiments use the API keys in the environment `trainlab ui`
+was started from.
 
 **One step:** `trainlab run . --usage billing.csv --usage traces.json`
 
@@ -594,7 +605,8 @@ Price data comes from [BerriAI/litellm](https://github.com/BerriAI/litellm)'s
 
 - **v0.2** `trainlab.instrument()`: exact cost per line, feature and team
 - **v0.3** `trainlab experiment`: prove a saving on real inputs before making it
-- **v0.4** (this release) one command per step: `trainlab trace -- <cmd>` (no code change) and
+- **v0.5** (this release) `trainlab ui` with Overview, Spend, Live and Experiments screens
+- **v0.4** one command per step: `trainlab trace -- <cmd>` (no code change) and
   `trainlab experiment run` across every captured call site; the support-desk sample app
 - Experiments on tool-calling calls (replay with tool definitions and results)
 - JS/TypeScript `instrument()` for Node apps
