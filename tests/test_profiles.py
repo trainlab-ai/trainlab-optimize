@@ -361,3 +361,26 @@ def test_plan_warns_when_samples_mix_prompt_versions(monkeypatch):
     assert any("2 different system prompts" in x for x in p["problems"])
     assert not any("system prompts" in x for x in plan(Config(baseline="gpt-4o", candidates=["gpt-4o-mini"],
                                                               max_cost=5), a + a)["problems"])
+
+
+@pytest.mark.parametrize("ab, ba, expected", [
+    ("A", "B", (False, "worse")),          # the reference wins in both orders
+    ("B", "A", (True, "not_worse")),       # the candidate wins in both
+    ("TIE", "TIE", (True, "not_worse")),
+    ("A", "TIE", (True, "not_worse")),     # one order prefers the reference, the other sees no difference
+    ("A", "A", (True, "position")),        # always the first answer: position bias, not a preference
+    ("B", "B", (True, "position")),
+    (None, "A", (None, "unclear")),
+])
+def test_judge_counts_a_candidate_worse_only_when_both_orders_agree(ab, ba, expected):
+    from trainlab_optimize.experiment.gates import judge_pair
+    assert judge_pair(ab, ba) == expected
+
+
+def test_sample_tickets_never_put_the_hardware_hub_in_software_complaints():
+    import importlib
+    sys.path.insert(0, str(DESK))
+    data = importlib.import_module("support_desk.data")
+    for t in data.tickets(300):
+        if t["label"] != "shipping":
+            assert "Desk Hub" not in t["body"], t

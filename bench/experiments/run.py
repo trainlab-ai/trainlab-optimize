@@ -42,6 +42,7 @@ import zoo  # noqa: E402
 from trainlab_optimize.analyzer.engine import analyze  # noqa: E402
 from trainlab_optimize.analyzer.rules import family, load_candidates  # noqa: E402
 from trainlab_optimize.experiment import candidates_for, eligible  # noqa: E402
+from trainlab_optimize.experiment import gates  # noqa: E402
 from trainlab_optimize.experiment.clients import COMPAT, resolve  # noqa: E402
 from trainlab_optimize.experiment.runner import Config, load_results, plan, run  # noqa: E402
 from trainlab_optimize.experiment.samples import load_samples  # noqa: E402
@@ -405,7 +406,7 @@ def check(r, res, runs, budgets, cfg, entries, zid, zoo_log, ws, samples, sample
                 ref_text = e["gold"] if mode == "gold" else ref
                 ab = zoo.judge(e, ref_text, cand, cfg.route(cfg.judge).model)
                 ba = zoo.judge(e, cand, ref_text, cfg.route(cfg.judge).model)
-                truth = ab in ("B", "TIE") and ba in ("A", "TIE")
+                truth = gates.judge_pair(ab, ba)[0]
         if truth is not None and bool(ps["pass"]) != truth:
             wrong.append(f"{ps['model']}:{ps['sample']}")
     C["X06"] = t("pass" if not wrong else "fail", f"{len(wrong)} sample verdicts differ from truth", examples=wrong[:5])

@@ -540,7 +540,7 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
                 ex.append({"sample": s_.id, "input": user[:300], "reference": _short(ref_v), "candidate": _short(cand_v),
                            **({"why": why} if why else {})})
         field_scores, lat, costs, base_for_same = [], [], [], []
-        judge_tally = {"not_worse": 0, "worse": 0, "unclear": 0}
+        judge_tally = {"not_worse": 0, "worse": 0, "position": 0, "unclear": 0}
         for s in samples:
             ref = refs.get(s.id)
             e = results.get((c, s.id))
@@ -560,8 +560,8 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
                         if prose_judged:
                             ab = gates.judge_choice((results.get((f"fjudge:{c}:{f}:ab", s.id)) or {}).get("text"))
                             ba = gates.judge_choice((results.get((f"fjudge:{c}:{f}:ba", s.id)) or {}).get("text"))
-                            ok = None if ab is None or ba is None else (ab in ("B", "TIE") and ba in ("A", "TIE"))
-                            judge_tally["unclear" if ok is None else "not_worse" if ok else "worse"] += 1
+                            ok, kind = gates.judge_pair(ab, ba)
+                            judge_tally[kind] += 1
                         else:
                             ok = False                # no judge: wording too different counts as a miss
                         verdicts[f] = ok
@@ -585,12 +585,8 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
                 else:
                     ab = gates.judge_choice((results.get((f"judge:{c}:ab", s.id)) or {}).get("text"))
                     ba = gates.judge_choice((results.get((f"judge:{c}:ba", s.id)) or {}).get("text"))
-                    if ab is None or ba is None:
-                        judge_tally["unclear"] += 1
-                        passed = None
-                    else:
-                        passed = ab in ("B", "TIE") and ba in ("A", "TIE")
-                        judge_tally["not_worse" if passed else "worse"] += 1
+                    passed, kind = gates.judge_pair(ab, ba)
+                    judge_tally[kind] += 1
                 sc["pass"] = passed
             if sc["pass"] is None:
                 per_sample.append({"sample": s.id, "model": c, **sc})

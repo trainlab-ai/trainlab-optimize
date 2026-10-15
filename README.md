@@ -299,7 +299,7 @@ the dataset has one, otherwise the production output (or a fresh call to the cur
 |---|---|
 | classification | same label (case, punctuation and "Label:" wrappers ignored) |
 | extraction | valid JSON whose facts are equal (numbers numerically, text case- and space-insensitive) and whose prose fields say the same thing (see below) |
-| generation | an LLM judge (`--judge`) finds it not worse than the reference in both A/B orders |
+| generation | an LLM judge (`--judge`) doesn't prefer the reference in both A/B orders (a verdict that flips with the order is position bias and counts as a tie) |
 
 A candidate is **validated (PASS)** only when the one-sided 95% lower confidence bound of its pass
 rate clears the bar (95%; 90% for free text). It **FAILS** when the upper bound is below the bar,

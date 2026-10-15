@@ -352,6 +352,22 @@ def judge_messages(request_messages: list[dict], a: str, b: str) -> list[dict]:
     return [{"role": "user", "content": JUDGE_PROMPT.format(request=req[:20000], a=a[:12000], b=b[:12000])}]
 
 
+def judge_pair(ab: str | None, ba: str | None) -> tuple[bool | None, str]:
+    """Combine the two judge calls: ab has the reference as A and the candidate as B, ba the reverse.
+
+    LLM judges lean towards whichever answer they read first, so one order alone is not a
+    preference. The candidate is worse only when the judge prefers the reference in BOTH orders.
+    A verdict that flips with the order (A both times, or B both times) is position bias and counts
+    as a tie, as in MT-Bench. Returns (passed, kind) with kind worse | not_worse | position | unclear."""
+    if ab is None or ba is None:
+        return None, "unclear"
+    if ab == "A" and ba == "B":
+        return False, "worse"
+    if (ab == "A" and ba == "A") or (ab == "B" and ba == "B"):
+        return True, "position"
+    return True, "not_worse"
+
+
 def judge_choice(text: str | None) -> str | None:
     if not text:
         return None

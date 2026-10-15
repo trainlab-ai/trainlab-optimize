@@ -376,6 +376,10 @@ def _print_result(res: dict) -> None:
         if c.get("fields"):
             for line in _field_lines(c["fields"], res.get("prose_scoring")):
                 print("      " + line)
+        j = c.get("judge") or {}
+        if j.get("position"):
+            print(f"      judge: {j.get('worse', 0)} worse in both orders; {j['position']} flipped with the order "
+                  "(position bias, counted as ties)")
     if res.get("recommended"):
         best = next(c for c in res["candidates"] if c["model"] == res["recommended"])
         ms = f", about ${best['monthly_savings_usd']:,.0f}/month" if best.get("monthly_savings_usd") else ""

@@ -10,6 +10,7 @@ import random
 QUEUES = ["billing", "bug", "account", "shipping", "feature_request"]
 
 PRODUCTS = ["Northwind Drive", "Northwind Sync for Teams", "Northwind Backup", "Northwind Mobile", "Northwind Desk Hub"]
+SOFTWARE = PRODUCTS[:4]          # the Desk Hub is hardware: it appears only in order and shipping tickets
 PLANS = ["Starter", "Pro", "Business", "Enterprise"]
 NAMES = ["Priya Nair", "Tom Becker", "Aisha Khan", "Luis Ortega", "Mei Lin", "Sam O'Neill", "Fatima Zahra",
          "Jonas Weber", "Ana Souza", "Kenji Sato", "Olivia Brown", "Ravi Iyer", "Chloe Martin", "Diego Ruiz"]
@@ -123,7 +124,7 @@ def tickets(n: int = 60, seed: int = 7) -> list[dict]:
         subject, body = rng.choice(TEMPLATES[queue])
         name, name2 = rng.sample(NAMES, 2)
         order = f"NW-{rng.randint(10000, 99999)}"
-        fields = {"plan": rng.choice(PLANS), "product": rng.choice(PRODUCTS), "email": _email(name, rng),
+        fields = {"plan": rng.choice(PLANS), "product": rng.choice(SOFTWARE), "email": _email(name, rng),
                   "phone": _phone(rng), "city": rng.choice(CITIES), "month": rng.choice(["July", "August", "September"]),
                   "order": order, "name2": name2}
         if queue == "shipping":

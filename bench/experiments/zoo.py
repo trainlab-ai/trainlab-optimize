@@ -86,6 +86,9 @@ def gen_correct(entry: dict, text: str) -> bool:
 def judge(entry: dict, a: str, b: str, judge_model: str) -> str:
     ca, cb = gen_correct(entry, a), gen_correct(entry, b)
     out = "TIE" if ca == cb else ("A" if ca else "B")
+    # Primacy bias, as real LLM judges have: on a tie it often picks whichever answer came first.
+    if out == "TIE" and h("judge-primacy", judge_model, entry["key"], a[:40], b[:40]) < 0.15:
+        out = "A"
     if h("judge-noise", judge_model, entry["key"], a[:40], b[:40]) < 0.01:
         out = ["A", "B", "TIE"][int(h("jn2", entry["key"], a[:20]) * 3)]
     return out
