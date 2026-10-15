@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: trainlab
-        uses: ethertech/trainlab-optimize@v0      # pin to a commit SHA in production
+        uses: trainlab-ai/trainlab-optimize@v0      # pin to a commit SHA in production
         with:
           exclude: examples,docs
           fail-on: none                            # or: high

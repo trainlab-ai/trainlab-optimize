@@ -35,6 +35,9 @@ otel = ["opentelemetry-api>=1.20", "opentelemetry-sdk>=1.20"]
 
 [project.urls]
 Homepage = "https://trainlab.ai"
+Repository = "https://github.com/trainlab-ai/trainlab-optimize"
+Issues = "https://github.com/trainlab-ai/trainlab-optimize/issues"
+Documentation = "https://docs.trainlab.ai"
 
 [project.scripts]
 trainlab = "trainlab_optimize.cli:main"
