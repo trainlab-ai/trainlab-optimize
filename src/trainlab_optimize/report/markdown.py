@@ -15,7 +15,7 @@ def render_markdown(a: Analysis, max_findings: int = 15) -> str:
     findings = [f for f in a.findings if f.strategy != "coverage"]
     out = [f"## LLM cost report: {name}", ""]
     if a.spend.has_usage:
-        out.append(f"**Monthly LLM spend:** {_money(a.spend.monthly_total)} ({a.spend.days} day{"s" if a.spend.days != 1 else ""} of data)  ")
+        out.append(f"**Monthly LLM spend:** {_money(a.spend.monthly_total)} ({a.spend.days} day{'s' if a.spend.days != 1 else ''} of data)  ")
         for o in a.spend.overlaps:
             out.append(f"_Overlap: {o}._  ")
         if a.savings_high:

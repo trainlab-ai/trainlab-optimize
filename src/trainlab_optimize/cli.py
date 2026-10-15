@@ -183,7 +183,7 @@ def cmd_import(args) -> int:
 
 def _print_summary(a) -> None:
     if a.spend.has_usage:
-        print(f"Monthly LLM spend: ${a.spend.monthly_total:,.0f} ({a.spend.days} day{"s" if a.spend.days != 1 else ""} of data)")
+        print(f"Monthly LLM spend: ${a.spend.monthly_total:,.0f} ({a.spend.days} day{'s' if a.spend.days != 1 else ''} of data)")
         for o in a.spend.overlaps:
             print(f"  Note: {o}")
         if a.savings_high:
