@@ -37,7 +37,7 @@ if [ -z "$UV" ]; then
     for c in "$HOME/.local/bin/uv" "$HOME/.cargo/bin/uv"; do
         [ -x "$c" ] && UV="$c" && break
     done
-    [ -n "$UV" ] || fail "uv was installed but can't be found. Open a new terminal and run this again."
+    [ -n "$UV" ] || fail "installing uv failed (see above). Check the internet connection or proxy, or open a new terminal, and run this again."
 fi
 
 say "Installing trainlab-optimize (Python $PY, isolated) ..."
@@ -45,7 +45,10 @@ say "Installing trainlab-optimize (Python $PY, isolated) ..."
 "$UV" tool update-shell >/dev/null 2>&1 || true
 
 BIN="$("$UV" tool dir --bin 2>/dev/null || printf '%s' "$HOME/.local/bin")"
+# Git Bash / MSYS on Windows: uv prints C:\Users\...; the shell's PATH uses /c/Users/...
+if command -v cygpath >/dev/null 2>&1; then BIN="$(cygpath -u "$BIN")"; fi
 TL="$BIN/trainlab"
+[ -x "$TL" ] || TL="$BIN/trainlab.exe"
 [ -x "$TL" ] || TL="$(command -v trainlab 2>/dev/null || true)"
 [ -n "$TL" ] || fail "installed, but the trainlab command can't be found in $BIN."
 
