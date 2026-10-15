@@ -3,7 +3,7 @@
 Off by default. When on, a sample of calls from the chosen call sites is written to
 .trainlab/samples/<site>.jsonl (git-ignored), with emails, phone numbers, card numbers and
 keys redacted unless redact=False. Nothing is sent anywhere; `trainlab experiment run`
-reads these files.
+reads these files. Calls that use tools or function calling are not captured (see uses_tools).
 
     trainlab.instrument(capture={"sites": ["app/support.py:42"], "sample_rate": 0.05, "max_per_site": 300})
     trainlab.instrument(capture=True)       # every call site, 2% of calls, 200 per site
@@ -64,8 +64,24 @@ class Capture:
         slug = re.sub(r"[^A-Za-z0-9._-]+", "_", key).strip("_")[:150]
         return self.dir / f"{slug}.jsonl"
 
+    @staticmethod
+    def uses_tools(request: dict) -> bool:
+        """Tool and function calls can't be replayed from captured text alone (the experiment would
+        need the tool definitions, the model's tool calls and the tool results), so they are not
+        captured."""
+        if request.get("tools") or request.get("functions") or request.get("toolConfig"):
+            return True
+        msgs = request.get("messages") or request.get("input") or []
+        return isinstance(msgs, list) and any(
+            isinstance(m, dict) and (m.get("role") in ("tool", "function") or m.get("tool_calls")
+                                     or m.get("type") in ("function_call", "function_call_output")
+                                     or (isinstance(m.get("content"), list) and any(
+                                         isinstance(c, dict) and c.get("type") in ("tool_use", "tool_result")
+                                         for c in m["content"])))
+            for m in msgs)
+
     def write(self, ev, request: dict, output: str | None) -> None:
-        if output is None or not isinstance(request, dict):
+        if output is None or not isinstance(request, dict) or self.uses_tools(request):
             return
         from ..experiment.samples import normalize_messages
         system = request.get("system") or request.get("instructions")
@@ -153,7 +169,8 @@ def result_text(result) -> str | None:
 
 def request_of(kwargs: dict) -> dict:
     """The parts of an SDK call's keyword arguments a sample needs."""
-    req = {k: kwargs.get(k) for k in ("messages", "system", "instructions", "input", "contents", "prompt") + PARAMS
+    req = {k: kwargs.get(k) for k in ("messages", "system", "instructions", "input", "contents", "prompt",
+                                      "tools", "functions", "toolConfig") + PARAMS
            if kwargs.get(k) is not None}
     cfg = kwargs.get("config")                           # google-genai GenerateContentConfig
     if cfg is not None:

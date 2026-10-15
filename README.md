@@ -10,7 +10,27 @@ savings.
 - **Runs locally.** Your code and usage data never leave your machine. The HTML report is a
   single file with no external requests.
 - **Zero dependencies.** Pure Python standard library (3.10+).
-- **Read-only.** It never executes your code and never calls an LLM. No LLM key is needed.
+- **Read-only by default.** Scanning and reports never execute your code or call an LLM. Only
+  `trainlab trace` (runs the command you give it) and `trainlab experiment run` (calls the models
+  you name, with your keys, within a budget you set) do, and only when you run them.
+
+## One command per step
+
+| Step | Command | You get |
+|---|---|---|
+| 1. Where the money goes | `trainlab run . --usage billing.csv` | spend per model, key and code line; estimated savings |
+| 2. Exact cost per line | `trainlab trace -- python app.py` | every call recorded with file, line, feature and team, no code change |
+| 3. Prove a saving | `trainlab experiment run --max-cost 2` | cheaper models tested on real inputs; savings validated or ruled out |
+
+Each writes `.trainlab/report/trainlab-report.html`; add `--open` to open it. Step 3 uses the
+samples step 2 captures with `--capture`:
+
+```bash
+trainlab trace --capture -- python app.py      # record calls and keep redacted samples
+trainlab experiment run --max-cost 2 --open    # test every call site that has samples
+```
+
+Try all three on a realistic app, offline and free: [examples/support_desk](examples/support_desk/).
 
 ## Quick start
 
@@ -109,6 +129,19 @@ async def answer(q): ...
 ```bash
 trainlab scan . && trainlab import .trainlab/traces && trainlab report
 ```
+
+**No code change: `trainlab trace`.** Runs any Python command with recording switched on (a
+generated `sitecustomize` on `PYTHONPATH`), then scans, imports and reports in one go:
+
+```bash
+trainlab trace -- python app.py
+trainlab trace --tag env=staging -- uvicorn app:app      # a server: use it, then Ctrl+C for the report
+trainlab trace --capture -- pytest tests/e2e             # also keep redacted samples for experiments
+```
+
+Child Python processes (workers, subprocesses) are recorded too. Your own `sitecustomize`
+still runs. The app's virtualenv doesn't need trainlab installed. Traces accumulate across runs;
+`--fresh` starts over. It records Python apps; for other languages use billing data or OpenTelemetry.
 
 The report then attributes spend to call sites as **exact** (traced), and adds "Spend by tag".
 When billing data is imported too, billing stays the authority on totals and traces decide
@@ -213,16 +246,24 @@ against the current model and cheaper candidates, **with your own API keys**, ev
 scored, and the finding becomes **validated** with the measured saving, or is closed as tested.
 
 ```bash
-trainlab experiment plan                                  # call sites worth testing, with candidates
+trainlab experiment run --max-cost 2                      # every call site with captured samples
+trainlab experiment plan                                  # or look first: call sites worth testing
 trainlab experiment run --site app/support.py:42 --max-cost 5
-trainlab report                                           # the finding now shows "validated by experiment"
 ```
 
+Every run updates the report: the finding shows "validated by experiment" with the measured
+saving. Without `--site`, the budget is shared across call sites, and a site is skipped before
+anything is spent when it can't produce a verdict: free-text answers with no `--judge`, or
+fewer than 20 samples. A model that passes but costs more per call (reasoning models can, through
+hidden reasoning tokens) is reported and never recommended.
+
 **Samples.** Real inputs, one call site at a time:
-- captured by `instrument()`, opt-in and local:
+- captured by `trainlab trace --capture` or `instrument()`, opt-in and local:
   `trainlab.instrument(capture={"sites": ["app/support.py:42"], "sample_rate": 0.05})` writes
   inputs and production outputs to `.trainlab/samples/` (git-ignored). Emails, phone numbers,
-  card numbers and keys are redacted unless `"redact": False`. Off by default;
+  card numbers and keys are redacted unless `"redact": False`. Off by default. Calls that use
+  tools or function calling are not captured: replaying them faithfully needs the tool
+  definitions and results;
 - or a file you have: JSONL (chat messages, prompt/completion, input/expected), CSV
   (`--input-column`, `--expected-column`, `--system`), a Langfuse export, OpenTelemetry spans
   with prompt content.
@@ -233,7 +274,7 @@ the dataset has one, otherwise the production output (or a fresh call to the cur
 | Task (detected, or `--task`) | A sample passes when |
 |---|---|
 | classification | same label (case, punctuation and "Label:" wrappers ignored) |
-| extraction | valid JSON with every field equal (numbers numerically, text case- and space-insensitive) |
+| extraction | valid JSON with every field equal (numbers numerically, text case- and space-insensitive; prose fields such as `summary` or `reason` by ROUGE-L ≥ 0.5) |
 | generation | an LLM judge (`--judge`) finds it not worse than the reference in both A/B orders |
 
 A candidate is **validated (PASS)** only when the one-sided 95% lower confidence bound of its pass
@@ -402,12 +443,13 @@ trainlab import FILE [--map FIELD=COLUMN,...]          # type detected
 trainlab import {csv,aws,azure,gcp,langfuse,otel} FILE # force a type
 trainlab import {openai,anthropic,openrouter} [--days 30] [--key KEY | --file saved.json]
 trainlab report [--out DIR] [--format html,json,md,pdf] [--fail-on high|medium|low]
-trainlab run [PATH ...] [--usage FILE ...] [--exclude GLOB] [--format ...] [--fail-on ...]
+trainlab run [PATH ...] [--usage FILE ...] [--exclude GLOB] [--format ...] [--fail-on ...] [--open]
+trainlab trace [--path DIR] [--capture [PATH:LINE ...]] [--tag K=V] [--fresh] [--open] -- COMMAND ...
 trainlab ui [--port N] [--no-browser]
 trainlab prices show MODEL | prices info | prices update
 trainlab experiment plan [--site PATH:LINE] [--samples FILE] [--candidates M1,M2]
-trainlab experiment run --site PATH:LINE | --samples FILE --baseline M [--candidates M1,M2] [--max-cost USD]
-                        [--judge MODEL] [--task ...] [--n 100] [--calibrate] [--yes]
+trainlab experiment run [--site PATH:LINE | --samples FILE --baseline M] [--candidates M1,M2] [--max-cost USD]
+                        [--judge MODEL] [--task ...] [--n 100] [--calibrate] [--yes] [--open]
 trainlab experiment list | show ID
 ```
 
@@ -418,6 +460,7 @@ Prices ship with the package. `trainlab prices update` downloads the latest list
 `~/.cache/trainlab/prices.json` (or `$TRAINLAB_PRICES`), including OpenRouter's public
 model list. That, the usage API imports and `trainlab experiment run` (which calls the models
 you name, with your keys) are the only network calls the tool makes, each only when you run it.
+`trainlab trace` runs your command; the calls are your app's own.
 
 ## Benchmark
 
@@ -526,9 +569,12 @@ Price data comes from [BerriAI/litellm](https://github.com/BerriAI/litellm)'s
 ## Roadmap
 
 - **v0.2** `trainlab.instrument()`: exact cost per line, feature and team
-- **v0.3** (this release) `trainlab experiment`: prove a saving on real inputs before making it
+- **v0.3** `trainlab experiment`: prove a saving on real inputs before making it
+- **v0.4** (this release) one command per step: `trainlab trace -- <cmd>` (no code change) and
+  `trainlab experiment run` across every captured call site; the support-desk sample app
+- Experiments on tool-calling calls (replay with tool definitions and results)
 - JS/TypeScript `instrument()` for Node apps
-- **v0.4** `trainlab export`: hand a validated workload to TrainLab for a fine-tuned model
+- `trainlab export`: hand a validated workload to TrainLab for a fine-tuned model
 
 ## License
 

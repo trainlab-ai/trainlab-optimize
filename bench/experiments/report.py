@@ -16,7 +16,8 @@ NAMES = {"X01": "Run completes", "X02": "Cost = zoo token log x catalog price", 
          "X06": "Every sample's pass/fail = truth", "X07": "Data only to configured endpoints, no key on disk",
          "X08": "Injected 429/500 all recovered", "X09": "Free text without a judge never validates",
          "X10": "Saving % = measured cost per call", "X11": "Resume never pays twice",
-         "X12": "Budget never exceeded"}
+         "X12": "Budget never exceeded",
+         "X13": "CLI refuses runs that can't give a verdict, before spending"}
 cnt = C()
 for r in rows:
     for k, c in r.get("checks", {}).items():

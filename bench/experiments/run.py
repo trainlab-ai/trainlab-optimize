@@ -10,11 +10,12 @@ Per repo, one or two experiments:
 Each varies how the reference is obtained (production outputs, fresh baseline calls, expected
 answers), whether a judge is used, and whether the run is cut by its budget and resumed.
 
-Checks (X01-X12): run completes; cost equals the zoo's token log x catalog prices; no false
+Checks (X01-X13): run completes; cost equals the zoo's token log x catalog prices; no false
 PASS / no false FAIL against each candidate's designed accuracy; per-sample pass/fail equals
 the truth; nothing sent anywhere but the zoo and no key on disk; retries recovered every 429/500;
 report shows the finding as validated with the measured saving; saving % matches the log;
-generation without a judge never validates; budget never exceeded; resume never pays twice.
+generation without a judge never validates; budget never exceeded; resume never pays twice;
+the CLI refuses exactly the runs that can't give a verdict, before spending.
 """
 from __future__ import annotations
 
@@ -251,7 +252,13 @@ def run_spec(repo: str, ws: Workspace, spec: dict, idx: int, zoo_base: str, zoo_
         cfg.max_cost = b
         cfg.concurrency = stress_concurrency if stress and i_b == 0 else 6
         if use_cli:
-            res = _run_cli(ws, cfg, sfile)
+            try:
+                res = _run_cli(ws, cfg, sfile)
+            except Refused as exc:
+                # The CLI refuses, before spending anything, runs that can't produce a verdict.
+                # Record that (X13) and run through the API so the other checks still apply.
+                r["cli_refused"] = str(exc)
+                res = run(cfg, samples, ws.path, CAT)
         else:
             res = run(cfg, samples, ws.path, CAT)
         runs.append(res)
@@ -262,7 +269,22 @@ def run_spec(repo: str, ws: Workspace, spec: dict, idx: int, zoo_base: str, zoo_
                                                       "savings_pct", "stopped_early", "errors", "samples_needed")}
                               for c in res["candidates"]]
     check(r, res, runs, budgets, cfg, entries, zid, zoo_log, ws, samples, sample_lines, mode, task, pb)
+    # X13 the CLI refuses exactly the runs that can't give a verdict (free text without a judge,
+    # fewer than 20 samples), before any call
+    if use_cli:
+        cant = (res.get("task") == "generation" and not cfg.judge) or len(samples) < 20
+        # refused up front, or (no production outputs to detect free text from) stopped after the
+        # baseline calls with no candidate called
+        cand_calls = sum((res.get("models", {}).get(m) or {}).get("calls", 0) for m in cfg.candidates)
+        refused = "cli_refused" in r or (cant and cand_calls == 0)
+        r["checks"]["X13"] = t("pass" if refused == cant else "fail",
+                               r.get("cli_refused", "ran") + f" (task {res.get('task')}, judge {cfg.judge}, "
+                                                             f"{len(samples)} samples)")
     return r
+
+
+class Refused(Exception):
+    pass
 
 
 def _run_cli(ws, cfg, sfile) -> dict:
@@ -280,6 +302,9 @@ def _run_cli(ws, cfg, sfile) -> dict:
         cmd += ["--judge", cfg.judge]
     p = subprocess.run(cmd, capture_output=True, text=True, timeout=900, env=os.environ.copy())
     rf = ws.path / "experiments" / cfg.name / "result.json"
+    if p.returncode == 2 and not rf.exists() and ("--judge MODEL" in p.stdout or "are needed for a verdict" in p.stdout):
+        raise Refused(next(ln.strip(" !") for ln in p.stdout.splitlines()
+                           if "--judge MODEL" in ln or "needed for a verdict" in ln))
     if p.returncode != 0 or not rf.exists():
         raise RuntimeError(f"cli exit {p.returncode}: {p.stderr[-800:]} {p.stdout[-400:]}")
     return json.loads(rf.read_text())

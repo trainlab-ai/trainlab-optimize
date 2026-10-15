@@ -14,13 +14,17 @@ _PATTERNS: list[tuple[re.Pattern, str]] = [
 ]
 
 
-def redact(text: str | None, max_len: int | None = None) -> str | None:
+def redact(text: str | None, max_len: int | None = None, one_line: bool | None = None) -> str | None:
+    """Replace secrets and PII with placeholders. Whitespace is kept (prompts are replayed in
+    experiments, and their layout matters to the model) unless one_line, which is the default
+    when max_len is given, for previews in reports."""
     if text is None:
         return None
     out = text
     for pat, repl in _PATTERNS:
         out = pat.sub(repl, out)
-    out = " ".join(out.split())
+    if one_line if one_line is not None else max_len is not None:
+        out = " ".join(out.split())
     if max_len and len(out) > max_len:
         out = out[: max_len - 1] + "…"
     return out

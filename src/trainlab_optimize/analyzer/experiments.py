@@ -76,7 +76,8 @@ def apply(findings: list[Finding], sites: list, attribution: dict, experiments: 
         covered.add(sid)
         _update(f, x, attribution.get(sid), site_by_id[sid])
     for sid, x in by_site.items():
-        if sid in covered or not x.get("recommended"):
+        rec = next((c for c in x.get("candidates", []) if c["model"] == x.get("recommended")), None)
+        if sid in covered or not rec or (rec.get("savings_pct") is not None and rec["savings_pct"] <= 0):
             continue
         s = site_by_id[sid]
         f = Finding(id="", rule="R110", title="", severity="medium", strategy="model", call_site_ids=[sid],
@@ -91,6 +92,8 @@ def _update(f: Finding, x: dict, att, site) -> None:
     spend = att.monthly_spend_usd if att else x.get("monthly_spend_usd")
     cands = x.get("candidates", [])
     best = next((c for c in cands if c["model"] == x.get("recommended")), None)
+    if best and best.get("savings_pct") is not None and best["savings_pct"] <= 0:
+        best = None
     if best:
         sav = best.get("savings_pct") or 0.0
         f.tier = "validated"

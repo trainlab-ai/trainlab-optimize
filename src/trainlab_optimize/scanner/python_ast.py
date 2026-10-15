@@ -803,7 +803,7 @@ class PythonFileScanner:
         params = self._params(node)
         prompt = self._prompt(node)
         func = self._enclosing_function()
-        loop_kind = self._loop_kind()
+        loop_kind = self._loop_kind(node)
         in_loop = loop_kind is not None
         has_retry, unbounded = self._retry_info()
 
@@ -1123,13 +1123,16 @@ class PythonFileScanner:
                 return n
         return None
 
-    def _loop_kind(self) -> str | None:
-        """Innermost loop around the call within the same function: for | comprehension | while."""
+    def _loop_kind(self, call: ast.AST | None = None) -> str | None:
+        """Innermost loop around the call within the same function: for | comprehension | while | agent.
+
+        "agent" is a for loop whose body feeds each answer into the next call (an agent or tool loop,
+        `for _ in range(max_turns): ... messages.append(...)`): those calls can't be batched."""
         for n in reversed(self._stack):
             if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda, ast.ClassDef)):
                 return None
             if isinstance(n, (ast.For, ast.AsyncFor)):
-                return "for"
+                return "agent" if call is not None and _feeds_back(n, call) else "for"
             if isinstance(n, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
                 return "comprehension"
             if isinstance(n, ast.While):
@@ -1320,3 +1323,27 @@ def _unparse(node: ast.AST) -> str:
 
 
 _init_candidate_names()
+
+
+_MUTATORS = ("append", "extend", "insert", "update", "add", "appendleft")
+
+
+def _feeds_back(loop: ast.For | ast.AsyncFor, call: ast.AST) -> bool:
+    """True when the loop body grows a value the call reads (messages.append(...), history += ...),
+    i.e. each call depends on earlier iterations. A name rebuilt by plain assignment in the body is
+    per-item data, not a feedback channel."""
+    targets = {t.id for t in ast.walk(loop.target) if isinstance(t, ast.Name)}
+    used = {n.id for n in ast.walk(call) if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)} - targets
+    if not used:
+        return False
+    body = [x for stmt in loop.body for x in ast.walk(stmt)]
+    rebuilt = {t.id for x in body if isinstance(x, (ast.Assign, ast.AnnAssign))
+               for tgt in (x.targets if isinstance(x, ast.Assign) else [x.target])
+               for t in ast.walk(tgt) if isinstance(t, ast.Name)}
+    for x in body:
+        if isinstance(x, ast.Call) and isinstance(x.func, ast.Attribute) and x.func.attr in _MUTATORS \
+                and isinstance(x.func.value, ast.Name) and x.func.value.id in used - rebuilt:
+            return True
+        if isinstance(x, ast.AugAssign) and isinstance(x.target, ast.Name) and x.target.id in used - rebuilt:
+            return True
+    return False

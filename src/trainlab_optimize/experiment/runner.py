@@ -203,7 +203,18 @@ def plan(cfg: Config, samples: list[Sample], catalog: PriceCatalog | None = None
     if worst > cfg.max_cost:
         problems.append(f"the budget (${cfg.max_cost:g}) is below the worst case of a single call (${worst:.4f}); "
                         "raise --max-cost or set max_tokens in the samples")
-    return {"samples": len(samples), "with_reference": sum(1 for s in samples if s.reference),
+    blocking = []
+    refs = [s.expected or s.reference or "" for s in samples]
+    task = cfg.task or (gates.detect_task(refs, cfg.hints, json_mode=any(s.json_mode for s in samples))
+                        if sum(1 for r in refs if r) >= 0.9 * len(samples) else None)
+    if task == "generation" and not cfg.judge:
+        blocking.append("the answers are free text: add --judge MODEL (e.g. gpt-4.1) to score them; "
+                        "without a judge nothing can be validated")
+    if len(samples) < 20:
+        blocking.append(f"only {len(samples)} sample(s); at least 20 are needed for a verdict")
+    problems.extend(blocking)
+    return {"samples": len(samples), "task": task, "blocking": blocking,
+            "with_reference": sum(1 for s in samples if s.reference),
             "with_expected": sum(1 for s in samples if s.expected), "models": rows,
             "est_cost_usd": round(total, 4), "max_cost_usd": round(upper, 4), "budget_usd": cfg.max_cost,
             "worst_single_call_usd": round(worst, 6),
@@ -355,12 +366,17 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
     threshold = cfg.threshold if cfg.threshold is not None else gates.DEFAULT_THRESHOLD[task]
     refs = gold if use_gold else {k: v for k, v in ref_text.items() if v is not None}
     task_holder.update(task=task, refs=refs, thr=threshold)
+    # Free text without a judge can't be validated: once the references show that, stop before
+    # paying for any candidate call (the plan catches it earlier when production outputs exist).
+    no_verdict = task == "generation" and not cfg.judge
+    if no_verdict and not stop_reason:
+        stop_reason.append("free-text answers need --judge to be scored; no candidate was called")
 
     # ---- candidates, round robin over samples
     cand_jobs = []
     for s in samples:
         for c in cfg.candidates:
-            if refs.get(s.id) is None:
+            if refs.get(s.id) is None or no_verdict:
                 continue
             cap = _out_cap(s, ref_text.get(s.id), c)
             cand_jobs.append((c, c, s, s.messages, _with_cap(s, cap), cap, c))
@@ -480,7 +496,12 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
             "latency_p50_ms": lat_s[len(lat_s) // 2] if lat_s else None,
             "latency_p95_ms": lat_s[min(len(lat_s) - 1, int(len(lat_s) * 0.95))] if lat_s else None,
         })
-    passing = sorted([c for c in cands if c["verdict"] == "PASS"], key=lambda c: c["cost_per_call_usd"] or 0)
+    for c in cands:
+        c["costs_more"] = bool(c["savings_pct"] is not None and c["savings_pct"] <= 0)
+    # Quality alone is not a saving: a model that passes but costs as much or more per call (hidden
+    # reasoning tokens, longer answers) is reported, never recommended.
+    passing = sorted([c for c in cands if c["verdict"] == "PASS" and not c["costs_more"]],
+                     key=lambda c: c["cost_per_call_usd"] or 0)
     models = {}
     for m in {cfg.baseline, *cfg.candidates, *([cfg.judge] if cfg.judge else [])}:
         es = [e for (pur, _), e in results.items() if e["model"] == m]

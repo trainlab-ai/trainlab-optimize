@@ -186,8 +186,12 @@ def _print_summary(a) -> None:
         print(f"Monthly LLM spend: ${a.spend.monthly_total:,.0f} ({a.spend.days} day{'s' if a.spend.days != 1 else ''} of data)")
         for o in a.spend.overlaps:
             print(f"  Note: {o}")
+        v = a.validated_savings
+        if v:
+            print(f"Validated saving (tested on real inputs): ${v:,.0f}/month")
         if a.savings_high:
-            print(f"Potential saving (estimated, untested): ${a.savings_low:,.0f} – ${a.savings_high:,.0f}/month")
+            label = "Potential saving, all findings" if v else "Potential saving (estimated, untested)"
+            print(f"{label}: ${a.savings_low:,.0f} – ${a.savings_high:,.0f}/month")
     else:
         print("No usage imported: findings are from code only. Run `trainlab import ...` to price them.")
     shown = [f for f in a.findings if f.strategy != "coverage"][:8]
@@ -237,7 +241,11 @@ def cmd_run(args) -> int:
     for f in args.usage_csv or []:
         args.source, args.file, args.provider = "file", f, None
         _import_file_auto(args)
-    return cmd_report(args)
+    rc = cmd_report(args)
+    if rc == 0 and getattr(args, "open", False):
+        from .trace_cmd import open_report
+        open_report(args)
+    return rc
 
 
 def cmd_ui(args) -> int:
@@ -321,7 +329,7 @@ def build_parser() -> argparse.ArgumentParser:
                    help="exit with code 3 if findings at or above this severity exist (for CI)")
     r.set_defaults(fn=cmd_report)
 
-    run = sub.add_parser("run", parents=[common], help="scan + import CSVs + report in one step")
+    run = sub.add_parser("run", parents=[common], help="scan code + import billing files + report, in one step")
     run.add_argument("path", nargs="*", default=["."])
     run.add_argument("--usage", "--usage-csv", dest="usage_csv", action="append", metavar="FILE",
                      help="usage/billing file to import (any supported type; repeatable)")
@@ -330,7 +338,11 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--out")
     run.add_argument("--format", default="html,json")
     run.add_argument("--fail-on", choices=["none", "high", "medium", "low"], default="none")
+    run.add_argument("--open", action="store_true", help="open the HTML report when done")
     run.set_defaults(fn=cmd_run)
+
+    from .trace_cmd import add_parser as add_trace
+    add_trace(sub, common)
 
     u = sub.add_parser("ui", parents=[common], help="open the local web interface")
     u.add_argument("--port", type=int, default=0, help="port on 127.0.0.1 (default: random free port)")

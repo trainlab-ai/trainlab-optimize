@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "17.0s, 1058 files/s"
+   "detail": "10.6s, 1696 files/s"
   },
   "T03": {
    "status": "pass",
@@ -62,12 +62,12 @@
   },
   "T14": {
    "status": "pass",
-   "detail": "96/96 cited lines contain the call",
+   "detail": "95/95 cited lines contain the call",
    "examples": []
   }
  },
  "files": 17984,
- "scan_secs": 16.99,
+ "scan_secs": 10.6,
  "sites": 337,
  "call_sites": 117,
  "model_configs": 220,
@@ -489,7 +489,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpqfqm2sn_/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpbitaeyfw/usage_tokens_only.csv",
    "model": "gpt-5-mini",
    "expected": 19.6162
   }
@@ -497,7 +497,6 @@
  "findings": {
   "R102": 5,
   "R101": 22,
-  "R104": 1,
   "R105": 51,
   "R107": 1,
   "R901": 1,
@@ -506,6 +505,6 @@
  "monthly_spend": 2117.43,
  "savings_high": 545.19,
  "attributed_share": 0.9928324712173706,
- "wall_secs": 55.1,
+ "wall_secs": 32.4,
  "sha": "9bf2dcecc4f1e133c42ac14c72e89c371355df6e"
 }

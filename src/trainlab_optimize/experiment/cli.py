@@ -33,9 +33,13 @@ def add_parser(sub, common) -> None:
     run_args(pl)
     pl.set_defaults(fn=cmd_plan)
 
-    r = xs.add_parser("run", help="run an experiment")
+    r = xs.add_parser("run", help="run experiments and update the report (no --site: every call site with "
+                                  "captured samples)")
     run_args(r)
-    r.add_argument("--max-cost", type=float, default=2.0, help="hard budget in USD for this run (default 2)")
+    r.add_argument("--max-cost", type=float, default=2.0,
+                   help="hard budget in USD for this run, shared across call sites (default 2)")
+    r.add_argument("--open", action="store_true", help="open the HTML report when done")
+    r.add_argument("--out", help="report folder (default .trainlab/report)")
     r.add_argument("--concurrency", type=int, default=4)
     r.add_argument("--calibrate", action="store_true",
                    help="also run the current model twice to measure how often it agrees with itself")
@@ -169,10 +173,13 @@ def _print_plan(cfg, p) -> None:
         print(f"  ! {pr}")
 
 
-def cmd_run(args) -> int:
+def _slug(site: str) -> str:
+    return "".join(ch if ch.isalnum() or ch in "._-" else "_" for ch in site).strip("_")
+
+
+def _run_one(args, ws, catalog, row, *, compact: bool = False):
+    """Plan and run one experiment. Returns the result dict, or an exit code when it can't run."""
     from .runner import plan, run
-    ws, catalog = _ws(args), PriceCatalog.load()
-    row, _ = _site_info(args, ws, catalog)
     samples, src = _samples(args, ws, row)
     cfg = _config(args, row)
     if not cfg.baseline or not cfg.candidates:
@@ -182,8 +189,12 @@ def cmd_run(args) -> int:
         print(f"No samples in {src}.", file=sys.stderr)
         return 2
     p = plan(cfg, samples, catalog)
+    if compact and p.get("blocking"):
+        print("  skipped: " + "; ".join(p["blocking"]))
+        return 2
     _print_plan(cfg, p)
-    blocking = [x for x in p["problems"] if "no API key" in x or ("no price" in x and not cfg.allow_unpriced)]
+    blocking = [x for x in p["problems"] if "no API key" in x or ("no price" in x and not cfg.allow_unpriced)
+                or x in p.get("blocking", [])]
     if blocking:
         print("Fix the problems above first.", file=sys.stderr)
         return 2
@@ -208,7 +219,73 @@ def cmd_run(args) -> int:
         print(f"Experiment failed: {exc}", file=sys.stderr)
         return 1
     _print_result(res)
-    return 0
+    return res
+
+
+def _write_report(args) -> int:
+    from argparse import Namespace
+    from ..cli import cmd_report
+    rargs = Namespace(workspace=args.workspace, out=getattr(args, "out", None),
+                      format=getattr(args, "format", None) or "html,json", fail_on="none")
+    if _ws(args).load_scan() is None:
+        return 0
+    print()
+    rc = cmd_report(rargs)
+    if rc == 0 and getattr(args, "open", False):
+        from ..trace_cmd import open_report
+        open_report(rargs)
+    return rc
+
+
+def _run_all(args, ws, catalog) -> int:
+    """Every call site that has captured samples and a cheaper model, under one total budget."""
+    import copy
+    from . import eligible
+    a = _analysis(ws)
+    if a is None:
+        print("No scan found. Run `trainlab trace --capture -- <your app>` (or `trainlab scan .`) first.",
+              file=sys.stderr)
+        return 2
+    cap = ws.path / "samples"
+    have = {p.stem for p in cap.glob("*.jsonl")} if cap.exists() else set()
+    rows = [r for r in eligible(a, catalog) if _slug(r["site"]) in have and r["candidates"]]
+    if not rows:
+        if not have:
+            print("No captured samples yet. Record some with:\n  trainlab trace --capture -- python app.py\n"
+                  "or bring your own: trainlab experiment run --site path:line --samples FILE", file=sys.stderr)
+        else:
+            print("The call sites with samples already use the cheapest listed model; nothing to test.")
+        return 2
+    total = args.max_cost
+    print(f"Testing {len(rows)} call site(s) with captured samples; budget ${total:.2f} in total.")
+    remaining, ran, failed = total, 0, 0
+    for i, row in enumerate(rows):
+        share = remaining / (len(rows) - i)
+        print(f"\n[{i + 1}/{len(rows)}] {row['site']}  {row['model']} -> {', '.join(row['candidates'])}"
+              f"  (budget ${share:.2f})")
+        sub = copy.copy(args)
+        sub.site, sub.max_cost = row["site"], share
+        res = _run_one(sub, ws, catalog, row, compact=True)
+        if isinstance(res, dict):
+            ran += 1
+            remaining = max(0.0, remaining - (res.get("spent_this_run_usd") or 0.0))
+        else:
+            failed += 1
+    print(f"\nRan {ran} experiment(s)" + (f", skipped {failed}" if failed else "")
+          + f"; spent ${total - remaining:.4f} of ${total:.2f}.")
+    rc = _write_report(args)
+    return rc if ran else 1
+
+
+def cmd_run(args) -> int:
+    ws, catalog = _ws(args), PriceCatalog.load()
+    if not args.site and not args.samples:
+        return _run_all(args, ws, catalog)
+    row, _ = _site_info(args, ws, catalog)
+    res = _run_one(args, ws, catalog, row)
+    if not isinstance(res, dict):
+        return res
+    return _write_report(args)
 
 
 def _print_result(res: dict) -> None:
@@ -221,9 +298,11 @@ def _print_result(res: dict) -> None:
     print(f"  {'Model':40} {'Verdict':13} {'Pass':>9} {'95% low':>8} {'Cost/call':>11} {'Saving':>7}")
     for c in res["candidates"]:
         pr = f"{c['passed']}/{c['scored']}"
-        sav = f"{c['savings_pct']:.0%}" if c.get("savings_pct") is not None else "—"
+        sav = "—" if c.get("savings_pct") is None else (f"{c['savings_pct']:.0%}" if c["savings_pct"] > 0
+                                                         else f"+{-c['savings_pct']:.0%} cost")
         extra = f"  (~{c['samples_needed']} samples to settle)" if c.get("samples_needed") else ""
         extra += "  stopped early" if c.get("stopped_early") else ""
+        extra += "  costs more per call: not recommended" if c.get("costs_more") else ""
         print(f"  {c['model'][:40]:40} {c['verdict']:13} {pr:>9} {c['lower_95']:>8.1%} "
               f"{_money(c.get('cost_per_call_usd')):>11} {sav:>7}{extra}")
     if res.get("recommended"):
@@ -233,7 +312,6 @@ def _print_result(res: dict) -> None:
     print(f"  Spent {_money(res['spent_this_run_usd'])} this run ({res['calls']['new_calls']} calls, "
           f"{res['calls']['cached']} reused); budget {_money(res['budget_usd'])}"
           + (f"; stopped: {res['stopped']}" if res.get("stopped") else ""))
-    print("  `trainlab report` now shows this result.")
 
 
 def cmd_list(args) -> int:

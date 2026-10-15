@@ -5,7 +5,8 @@ dataset has one, otherwise the current (baseline) model's output.
 
   classification  same label (normalised: case, punctuation, surrounding text)
   extraction      valid JSON with every field equal to the reference (numbers numerically,
-                  strings case/space-normalised); field-level agreement is reported too
+                  strings case/space-normalised; prose fields such as "summary" by ROUGE-L >= 0.5);
+                  field-level agreement is reported too
   generation      an LLM judge compares the two answers in both orders; the candidate passes
                   if it is not judged worse in either. Without a judge, generation results
                   are reported but never validated: similarity to the baseline is not quality.
@@ -121,13 +122,32 @@ def _same_value(a, b) -> bool:
     return norm_text(str(a)) == norm_text(str(b))
 
 
+# Prose fields inside structured output ("summary": "...") are never worded the same way twice,
+# not even by the same model. They are compared by overlap (ROUGE-L >= 0.5) instead of equality;
+# every other field must match exactly.
+PROSE_KEY = re.compile(r"(^|[._\]])(summary|description|reason|rationale|explanation|justification|notes?|"
+                       r"comments?|message|reply|answer|details)$")
+
+
+def _is_prose(key: str, a, b) -> bool:
+    return bool(PROSE_KEY.search(key)) and isinstance(a, str) and isinstance(b, str) \
+        and max(len(a.split()), len(b.split())) >= 4
+
+
 def json_agreement(ref, cand) -> tuple[bool, float]:
     fr, fc = _flatten(ref), _flatten(cand)
     keys = set(fr) | set(fc)
     if not keys:
         return True, 1.0
-    same = sum(1 for k in keys if k in fr and k in fc and _same_value(fr[k], fc[k]))
-    return same == len(keys), same / len(keys)
+
+    def same(k):
+        if k not in fr or k not in fc:
+            return False
+        if _is_prose(k, fr[k], fc[k]):
+            return rouge_l(fr[k], fc[k]) >= 0.5
+        return _same_value(fr[k], fc[k])
+    n = sum(1 for k in keys if same(k))
+    return n == len(keys), n / len(keys)
 
 
 def rouge_l(ref: str, cand: str) -> float:
