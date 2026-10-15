@@ -12,11 +12,31 @@
 #                      a URL, or git+https://... for pre-releases)
 #   TRAINLAB_PYTHON    Python version for trainlab's environment (default 3.12)
 
-$ErrorActionPreference = "Stop"
+# Native programs (uv) report progress and notes on stderr. Windows PowerShell 5.1 turns
+# redirected stderr into error records, which "Stop" would make fatal, so this script checks
+# exit codes instead of relying on $ErrorActionPreference.
+$ErrorActionPreference = "Continue"
 $Pkg = if ($env:TRAINLAB_PACKAGE) { $env:TRAINLAB_PACKAGE } else { "trainlab-optimize" }
 $Py = if ($env:TRAINLAB_PYTHON) { $env:TRAINLAB_PYTHON } else { "3.12" }
 
-function Fail($msg) { Write-Host "trainlab install: $msg" -ForegroundColor Red; exit 1 }
+function Fail($msg) {
+    Write-Host "trainlab install: $msg" -ForegroundColor Red
+    # exit would close the window when run through "irm ... | iex"; throw stops only the script.
+    throw "trainlab install failed"
+}
+
+# Runs a native command, hides all its output, and returns its exit code.
+function Invoke-Quiet([scriptblock]$Cmd) {
+    $null = & $Cmd 2>&1
+    return $LASTEXITCODE
+}
+
+# Runs a native command and returns its stdout as one trimmed string (stderr discarded).
+function Get-Output([scriptblock]$Cmd) {
+    $out = & $Cmd 2>&1 | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] }
+    if ($LASTEXITCODE -ne 0) { return $null }
+    return (($out | Out-String).Trim())
+}
 
 function Find-Uv {
     $cmd = Get-Command uv -ErrorAction SilentlyContinue
@@ -39,15 +59,16 @@ if (-not $Uv) {
 Write-Host "Installing trainlab-optimize (Python $Py, isolated) ..."
 & $Uv tool install --python $Py --force $Pkg
 if ($LASTEXITCODE -ne 0) { Fail "the install failed (see above)." }
-& $Uv tool update-shell *> $null
+$null = Invoke-Quiet { & $Uv tool update-shell }          # adds uv's bin folder to PATH if needed
 
-$Bin = (& $Uv tool dir --bin 2>$null)
+$Bin = Get-Output { & $Uv tool dir --bin }
 if (-not $Bin) { $Bin = "$env:USERPROFILE\.local\bin" }
 $Tl = Join-Path $Bin "trainlab.exe"
 if (-not (Test-Path $Tl)) { Fail "installed, but trainlab.exe can't be found in $Bin." }
 
+$Version = Get-Output { & $Tl --version }
 Write-Host ""
-Write-Host ("Installed " + (& $Tl --version) + ".")
+Write-Host "Installed $Version." -ForegroundColor Green
 if (-not (($env:Path -split ";") -contains $Bin)) {
     $env:Path = "$Bin;$env:Path"          # this window; new terminals get it from update-shell
     Write-Host "Open a new terminal if 'trainlab' isn't found there."
