@@ -125,6 +125,91 @@ pre.box{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.6;backgr
 .wtabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.wtabs button{background:transparent;border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}.wtabs button[aria-selected=true]{border-color:var(--ink);font-weight:600}
 #mapfields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 14px}
 iframe{width:100%;height:70vh;border:1px solid var(--line);border-radius:8px;margin-top:12px;background:#fff}
+/* ================================================================ skins
+   Each skin redefines the tokens and adds a few structural rules. html[data-skin=x] outranks
+   :root (also inside the dark-mode media query), so a skin wins over the system theme. */
+.skinpick{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.skinpick select{min-height:32px;padding:3px 8px;border:1px solid var(--line);border-radius:6px;background:var(--sheet)}
+
+/* ---- Ledger: an accountant's ledger book. Ruled paper, red margin line, double-ruled totals */
+html[data-skin=ledger]{--bg:#ECF1E8;--sheet:#F9FBF6;--well:#EEF2E9;--ink:#1B2A22;--body:#33443A;--muted:#5C6D62;--line:#C5D1C2;--soft:#E1E8DC;
+ --save:#1E5B3A;--save-soft:#D9EADB;--warn:#865400;--warn-soft:#F2E5C6;--bad:#A1281E;--bad-soft:#F3DCD7;--act:#1F3A93;--hot:#A1281E;
+ --code-hl:rgba(31,58,147,.07);--focus:#1F3A93;--serif:Georgia,"Iowan Old Style","Times New Roman",serif;color-scheme:light}
+html[data-skin=ledger] body{background-color:var(--bg);background-image:repeating-linear-gradient(to bottom,transparent 0 27px,rgba(31,58,147,.07) 27px 28px)}
+html[data-skin=ledger] header.top{background:var(--sheet);border-bottom:3px double var(--ink)}
+html[data-skin=ledger] .brand{font-family:var(--serif);font-size:17px;letter-spacing:.01em}
+html[data-skin=ledger] nav.tabs a{font-family:var(--serif);font-size:15px}
+html[data-skin=ledger] .panel,html[data-skin=ledger] .step,html[data-skin=ledger] .card,html[data-skin=ledger] aside.tree,html[data-skin=ledger] .wstep{border-radius:2px;border-color:var(--line);box-shadow:inset 3px 0 0 -1px rgba(161,40,30,.55),inset 6px 0 0 -2px rgba(161,40,30,.35)}
+html[data-skin=ledger] .panel h2,html[data-skin=ledger] .wiz h2{font-family:var(--serif);font-size:17px}
+html[data-skin=ledger] td{border-top:1px solid rgba(31,58,147,.16)}
+html[data-skin=ledger] th{font-family:var(--serif);font-style:italic;font-size:13px}
+html[data-skin=ledger] .amt .money,html[data-skin=ledger] .three .n,html[data-skin=ledger] .stat .v{display:inline-block;border-bottom:3px double currentColor;padding-bottom:1px}
+html[data-skin=ledger] .step .i{font-family:var(--serif);font-style:italic;color:var(--bad)}
+html[data-skin=ledger] .btn{border-radius:2px}html[data-skin=ledger] .btn:not(.ghost){background:var(--act);border-color:var(--act);color:#fff}
+html[data-skin=ledger] .chip{border-radius:2px}
+html[data-skin=ledger] .code{background:#F3F6F0;border:1px solid var(--line)}
+
+/* ---- Profiler: a performance profiler / flame graph. Dark, monospace, cost as heat */
+html[data-skin=profiler]{--bg:#101317;--sheet:#161A20;--well:#0C0F13;--ink:#DDE3EA;--body:#B9C2CD;--muted:#8691A0;--line:#252B34;--soft:#1D232B;
+ --save:#4FD1A5;--save-soft:#13302A;--warn:#FFB547;--warn-soft:#3A2A10;--bad:#FF6B5E;--bad-soft:#3B1D1B;--act:#6CB4FF;--hot:#FF8A3D;
+ --code-hl:rgba(255,138,61,.13);--focus:#6CB4FF;--sans:ui-monospace,"SFMono-Regular","Cascadia Mono",Menlo,Consolas,monospace;
+ --serif:var(--sans);color-scheme:dark}
+html[data-skin=profiler] body{font-size:13.5px}
+html[data-skin=profiler] header.top{background:#0C0F13;border-bottom:2px solid transparent;border-image:linear-gradient(90deg,#FFD166,#FF8A3D 40%,#E63946 75%,#7A1F2B) 1}
+html[data-skin=profiler] nav.tabs a[aria-current=page]{border-bottom-color:var(--hot);color:var(--hot)}
+html[data-skin=profiler] .brief h1{font-size:30px;font-weight:600;letter-spacing:-.02em}
+html[data-skin=profiler] .lede{font-size:15px}
+html[data-skin=profiler] .panel,html[data-skin=profiler] .step,html[data-skin=profiler] .card,html[data-skin=profiler] aside.tree,html[data-skin=profiler] .wstep{border-radius:3px}
+html[data-skin=profiler] .code .hl{background:linear-gradient(90deg,rgba(255,138,61,.30),rgba(230,57,70,.10) 45%,transparent 75%)}
+html[data-skin=profiler] .code .g{color:#FFD166}
+html[data-skin=profiler] .tree .hot{color:#FF8A3D;text-shadow:0 0 8px rgba(255,138,61,.45)}
+html[data-skin=profiler] .step{border-left:3px solid #FF8A3D}
+html[data-skin=profiler] .btn:not(.ghost){background:var(--hot);border-color:var(--hot);color:#140A02}
+html[data-skin=profiler] .btn.ghost{background:transparent}
+html[data-skin=profiler] .v-PASS{background:var(--save);color:#0C0F13}
+html[data-skin=profiler] .dot.on{box-shadow:0 0 8px var(--save)}
+
+/* ---- Highlighter: a statement marked up with a highlighter pen. Black ink, yellow swipes on savings */
+html[data-skin=highlighter]{--bg:#F6F7F9;--sheet:#FFFFFF;--well:#F3F4F7;--ink:#101217;--body:#2D3139;--muted:#666C78;--line:#E2E4E9;--soft:#EEF0F3;
+ --save:#101217;--save-soft:#FFF1A0;--warn:#7A4E00;--warn-soft:#FFE6BF;--bad:#B42318;--bad-soft:#FFE0DC;--act:#101217;--hot:#101217;
+ --code-hl:rgba(255,222,51,.38);--focus:#2F6BFF;--mark:#FFDE33;--serif:var(--sans);color-scheme:light}
+html[data-skin=highlighter] .brief h1{font-weight:800;letter-spacing:-.025em;font-size:40px}
+html[data-skin=highlighter] .brief h2,html[data-skin=highlighter] .panel h2{font-weight:800;letter-spacing:-.01em}
+html[data-skin=highlighter] .three .n{display:inline-block}
+html[data-skin=highlighter] .amt .money,html[data-skin=highlighter] .n.save,html[data-skin=highlighter] .chip.ok,
+html[data-skin=highlighter] .code .g,html[data-skin=highlighter] .tree .hot{background:linear-gradient(transparent 48%,var(--mark) 48%,var(--mark) 90%,transparent 90%);color:var(--ink);padding:0 3px}
+html[data-skin=highlighter] .chip.ok{border:0;border-radius:0}
+html[data-skin=highlighter] .step{border:0;border-bottom:1px dashed var(--line);border-radius:0;background:transparent;padding:18px 0}
+html[data-skin=highlighter] .step .i{font-weight:800;font-family:var(--sans);color:var(--ink)}
+html[data-skin=highlighter] .panel,html[data-skin=highlighter] .card,html[data-skin=highlighter] aside.tree,html[data-skin=highlighter] .wstep{border-radius:12px;border-color:transparent;box-shadow:0 1px 0 var(--line)}
+html[data-skin=highlighter] .btn{border-radius:999px}
+html[data-skin=highlighter] .v-PASS{background:var(--mark);color:var(--ink)}
+html[data-skin=highlighter] nav.tabs a[aria-current=page]{border-bottom:3px solid var(--mark);color:var(--ink)}
+@media (prefers-color-scheme:dark){html[data-skin=highlighter]{--bg:#121318;--sheet:#1A1C22;--well:#15171C;--ink:#ECEDEF;--body:#C9CCD3;--muted:#949AA6;--line:#2C2F37;
+ --soft:#23262D;--save:#ECEDEF;--save-soft:#3A3412;--bad:#FF8A80;--bad-soft:#3B1D1B;--warn:#FFC266;--warn-soft:#3A2A10;--act:#ECEDEF;--hot:#ECEDEF;--mark:#7A6A00;
+ --code-hl:rgba(255,222,51,.16);color-scheme:dark}}
+
+/* ---- Signal: high contrast for projecting and screen-sharing. Hard rules, square corners */
+html[data-skin=signal]{--bg:#FFFFFF;--sheet:#FFFFFF;--well:#F1F3FF;--ink:#000000;--body:#14161C;--muted:#454A57;--line:#000000;--soft:#EDF0FF;
+ --save:#007A45;--save-soft:#D6F5E5;--warn:#8F4D00;--warn-soft:#FFE9C7;--bad:#C4000F;--bad-soft:#FFE1E3;--act:#0039E6;--hot:#0039E6;
+ --code-hl:rgba(0,57,230,.10);--focus:#FF3D00;--serif:var(--sans);color-scheme:light}
+html[data-skin=signal] body{font-size:15.5px}
+html[data-skin=signal] header.top{border-bottom:3px solid var(--ink)}
+html[data-skin=signal] .brand{font-weight:900;letter-spacing:-.02em}
+html[data-skin=signal] nav.tabs a{color:var(--ink);font-weight:600;border-bottom:0;padding:15px 14px}
+html[data-skin=signal] nav.tabs a[aria-current=page]{background:var(--ink);color:var(--bg)}
+html[data-skin=signal] .brief h1{font-weight:900;letter-spacing:-.03em;font-size:44px;line-height:1.05}
+html[data-skin=signal] .panel,html[data-skin=signal] .step,html[data-skin=signal] .card,html[data-skin=signal] aside.tree,html[data-skin=signal] .wstep,
+html[data-skin=signal] .code,html[data-skin=signal] .tail,html[data-skin=signal] .planbox,html[data-skin=signal] pre.box{border:2px solid var(--ink);border-radius:0}
+html[data-skin=signal] .step .i{font-family:var(--sans);font-weight:900;color:var(--ink)}
+html[data-skin=signal] .amt,html[data-skin=signal] .three .n,html[data-skin=signal] .stat .v,html[data-skin=signal] .card .big{font-weight:800}
+html[data-skin=signal] .btn{border-radius:0;border-width:2px;font-weight:700}html[data-skin=signal] .btn:not(.ghost){background:var(--act);border-color:var(--act)}
+html[data-skin=signal] .btn.ghost{border-color:var(--ink)}
+html[data-skin=signal] .chip,html[data-skin=signal] .verdict{border-radius:0;font-weight:700}
+html[data-skin=signal] td{border-top:1px solid #C7CBD6}html[data-skin=signal] th{color:var(--ink);font-weight:700}
+@media (prefers-color-scheme:dark){html[data-skin=signal]{--bg:#000000;--sheet:#000000;--well:#0D1430;--ink:#FFFFFF;--body:#EDEFF5;--muted:#B5BAC7;--line:#FFFFFF;
+ --soft:#141C3D;--save:#3DDC97;--save-soft:#0B3324;--warn:#FFB547;--warn-soft:#3A2A10;--bad:#FF5C6A;--bad-soft:#3B1218;--act:#5C85FF;--hot:#5C85FF;--code-hl:rgba(92,133,255,.18);color-scheme:dark}
+ html[data-skin=signal] td{border-top-color:#343A4D}}
 </style></head><body>
 <header class="top"><div class="top-in">
   <div class="brand">TrainLab Optimize</div>
@@ -133,6 +218,7 @@ iframe{width:100%;height:70vh;border:1px solid var(--line);border-radius:8px;mar
     <a href="#live" data-v="live">Live</a><a href="#experiments" data-v="experiments">Experiments</a>
     <a href="#setup" data-v="setup">Setup</a></nav>
   <div class="ws" id="wsname"></div>
+  <label class="skinpick" for="skin">Look<select id="skin"><option value="">Default</option><option value="ledger">Ledger</option><option value="profiler">Profiler</option><option value="highlighter">Highlighter</option><option value="signal">Signal</option></select></label>
 </div></header>
 <main>
 
@@ -214,7 +300,7 @@ async function loadOverview(){const el=$("brief");let o;try{o=await api("/api/ov
  if(o.has_usage&&o.days<=2)lede+=` <span class="muted">Based on ${o.days} day${o.days===1?"":"s"} of data, scaled to a month.</span>`;
  let steps=[],i=0;
  for(const t of o.tested){const e=t.evidence||{};steps.push(`<li class="step"><span class="i">${++i}</span><div><div class="t">Switch ${esc(t.function||t.site)} to ${esc(e.tested_model||"the tested model")}</div>
-   <div class="d"><span class="mono">${esc(t.site)}</span>. Matched the current model on ${e.pass_rate!=null?pct(e.pass_rate):"—"} of ${e.samples||"—"} real inputs, ${pct(e.measured_cost_reduction)} cheaper per call.</div></div><div class="amt">${money(t.high)}<small>a month</small></div></li>`)}
+   <div class="d"><span class="mono">${esc(t.site)}</span>. Matched the current model on ${e.pass_rate!=null?pct(e.pass_rate):"—"} of ${e.samples||"—"} real inputs, ${pct(e.measured_cost_reduction)} cheaper per call.</div></div><div class="amt"><span class="money">${money(t.high)}</span><small>a month</small></div></li>`)}
  for(const j of o.running){steps.push(`<li class="step"><span class="i">${++i}</span><div><div class="t">Wait for the test on ${esc(fn(j.site))}</div><div class="d">Running: ${j.calls} of about ${j.total} calls, ${money(j.spent)} spent.</div><div class="prog"><i style="width:${Math.min(100,100*j.calls/Math.max(1,j.total))}%"></i></div></div><div class="amt m">…</div></li>`)}
  for(const u of o.untested){steps.push(`<li class="step"><span class="i">${++i}</span><div><div class="t">Test a cheaper model for ${esc(u.function||u.site)}</div><div class="d">${esc(u.title)}. Estimated from price differences; quality not tested yet.</div>
    <div class="acts"><a class="btn ghost" href="#experiments?site=${encodeURIComponent(u.site)}">Set up the test</a></div></div><div class="amt m">up to ${money(u.high)}<small>if it holds</small></div></li>`)}
@@ -364,5 +450,11 @@ $("report").onclick=async e=>{e.target.disabled=true;msg("m3","Analysing…");
   `<iframe title="Report" src="/report/trainlab-report.html?t=${T}&v=${Date.now()}"></iframe><p class="note"><a target="_blank" href="/report/trainlab-report.html?t=${T}">Open report in a new tab</a></p>`;$("s3").classList.add("done")}
  catch(err){msg("m3",err.message,"err")}finally{e.target.disabled=false}};
 api("/api/state").then(st=>{if(st.scan)$("wsname").textContent=st.scan.repos.join(", ")}).catch(()=>{});
+// ---------------------------------------------------------------- skin: ?skin= in the link, else the viewer's last choice
+const SKINS=["","ledger","profiler","highlighter","signal"];
+function setSkin(v,save){if(!SKINS.includes(v))v="";if(v)document.documentElement.setAttribute("data-skin",v);else document.documentElement.removeAttribute("data-skin");
+ $("skin").value=v;if(save){try{localStorage.setItem("trainlab-skin",v)}catch(e){}}}
+(function(){let v=new URLSearchParams(location.search).get("skin");if(v==null){try{v=localStorage.getItem("trainlab-skin")||""}catch(e){v=""}}setSkin(v||"",false)})();
+$("skin").onchange=e=>setSkin(e.target.value,true);
 route();
 </script></body></html>"""
