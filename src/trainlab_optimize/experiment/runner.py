@@ -68,23 +68,39 @@ def _upper_cost(price, prompt_chars: int, out_cap: int) -> float:
 _CAP_KEYS = ("max_tokens", "max_completion_tokens", "max_output_tokens")
 
 
+# Models that spend hidden reasoning tokens inside their output limit.
+REASONING_MODEL = re.compile(r"^(.*/)?(o\d|gpt-5|gemini-(2\.5|[3-9])|deepseek-(r\d|reasoner)|qwq|magistral)"
+                             r"|(-thinking|-reasoning|-reasoner)\b", re.I)
+# Extra room for that reasoning on top of the visible answer production allowed. Without it a
+# limit like max_tokens=5 (a one-word label) is used up by reasoning and the answer comes back
+# empty, which would read as a quality failure.
+REASONING_ALLOWANCE = 4096
+
+
+def is_reasoning(model: str) -> bool:
+    return bool(REASONING_MODEL.search(model or ""))
+
+
 def _out_cap(s: Sample, ref_text: str | None = None, model: str = "") -> int:
-    """The output limit a call runs with. Production's own limit when it set one; otherwise a
-    generous one (4x the reference answer + 256, at least 512; 2048 when there is no reference;
-    8192 for reasoning models) so the budget reservation is a true worst case."""
+    """The output limit a call runs with. Production's own limit when it set one (plus room for
+    hidden reasoning on reasoning models); otherwise a generous one (4x the reference answer + 256,
+    at least 512; 2048 when there is no reference; 8192 for reasoning models) so the budget
+    reservation is a true worst case."""
+    reasoning = is_reasoning(model)
     for k in _CAP_KEYS:
         if isinstance(s.params.get(k), int):
-            return s.params[k]
+            return s.params[k] + (REASONING_ALLOWANCE if reasoning else 0)
     ref = ref_text or s.reference or s.expected
     cap = max(512, 4 * math.ceil(len(ref) / 3) + 256) if ref else 2048
-    if re.match(r"^(.*/)?(o\d|gpt-5)", model or ""):
+    if reasoning:
         cap = max(cap, 8192)
     return min(cap, 32768)
 
 
 def _with_cap(s: Sample, cap: int) -> dict:
-    if any(isinstance(s.params.get(k), int) for k in _CAP_KEYS):
-        return s.params
+    for k in _CAP_KEYS:
+        if isinstance(s.params.get(k), int):
+            return s.params if s.params[k] == cap else {**s.params, k: cap}
     return {**s.params, "max_tokens": cap}
 
 
@@ -294,7 +310,12 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
         r = call_fn(route, messages, params)
         cost, est = entry_cost(model, r, chars, r.text)
         budget.settle(reserve, cost)
-        e = {"key": key, "model": model, "purpose": purpose, "sample": s.id, "text": r.text, "error": r.error,
+        error = r.error
+        if not error and not (r.text or "").strip():
+            # An empty answer is a failed call, not a quality verdict: usually the output limit was
+            # used up (reasoning models) or the request was malformed for this model.
+            error = f"empty answer ({r.output_tokens or 0} output tokens; output limit {out_cap})"
+        e = {"key": key, "model": model, "purpose": purpose, "sample": s.id, "text": r.text, "error": error,
              "input_tokens": r.input_tokens, "output_tokens": r.output_tokens, "cached_input_tokens": r.cached_input_tokens,
              "cost_usd": cost, "cost_estimated": est, "latency_ms": r.latency_ms, "attempts": r.attempts,
              "served_model": r.served_model, "ts": time.time()}
@@ -437,6 +458,8 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
     cands = []
     for c in cfg.candidates:
         k = n = errors = 0
+        first_error = None
+        field_miss: dict[str, int] = {}
         field_scores, lat, costs, base_for_same = [], [], [], []
         judge_tally = {"not_worse": 0, "worse": 0, "unclear": 0}
         for s in samples:
@@ -446,7 +469,11 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
                 continue
             if e.get("error"):
                 errors += 1
+                first_error = first_error or str(e["error"])[:200]
             sc = gates.score(task, ref, e.get("text"))
+            if task == "extraction" and sc.get("pass") is False and not e.get("error"):
+                for f in gates.json_diff_fields(gates.parse_json(ref), gates.parse_json(e.get("text"))):
+                    field_miss[f] = field_miss.get(f, 0) + 1
             if task == "generation":
                 if not judged or sc["pass"] is False:
                     passed = sc["pass"]
@@ -487,6 +514,8 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
         cands.append({
             "model": c, "verdict": v, "pass_rate": round(k / n, 4) if n else None, "passed": k, "scored": n,
             "lower_95": round(lo, 4), "upper_95": round(hi, 4), "samples_needed": need, "errors": errors,
+            "first_error": first_error,
+            "field_mismatch": dict(sorted(field_miss.items(), key=lambda kv: -kv[1])[:8]) or None,
             "stopped_early": c in stopped,
             "field_agreement": round(sum(field_scores) / len(field_scores), 4) if field_scores else None,
             "judge": judge_tally if task == "generation" and judged else None,

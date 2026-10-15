@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.5s, 2395 files/s"
+   "detail": "0.4s, 3004 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 1257,
- "scan_secs": 0.52,
+ "scan_secs": 0.42,
  "sites": 104,
  "call_sites": 19,
  "model_configs": 85,
@@ -227,7 +227,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpwhsr59s_/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp2rqh0bwf/usage_tokens_only.csv",
    "model": "gpt-4.1",
    "expected": 108.93
   }
@@ -242,6 +242,6 @@
  "monthly_spend": 719.05,
  "savings_high": null,
  "attributed_share": 0.919004249470695,
- "wall_secs": 1.4,
+ "wall_secs": 1.3,
  "sha": "aa95c59934c7d8ff691cd7112034f9cc016b9a0c"
 }

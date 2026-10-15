@@ -88,6 +88,9 @@ def apply(findings: list[Finding], sites: list, attribution: dict, experiments: 
 
 
 def _update(f: Finding, x: dict, att, site) -> None:
+    # The static finding's guess (cheapest listed model, its price ratio) is replaced by what was tested.
+    for k in ("candidate_model", "price_ratio", "candidate_per_1m_in"):
+        f.evidence.pop(k, None)
     _model_note(f, x, site)
     spend = att.monthly_spend_usd if att else x.get("monthly_spend_usd")
     cands = x.get("candidates", [])
@@ -115,13 +118,23 @@ def _update(f: Finding, x: dict, att, site) -> None:
         f.title = f"Tested: no cheaper model kept quality for `{x['baseline']}`"
         f.summary = "; ".join(f"`{c['model']}` {c['passed']}/{c['scored']}" for c in cands) + \
             f" against a {x['threshold']:.0%} threshold."
+        miss: dict[str, int] = {}
+        for c in cands:
+            for k, v in (c.get("field_mismatch") or {}).items():
+                miss[k] = miss.get(k, 0) + v
+        if miss:
+            top = sorted(miss.items(), key=lambda kv: -kv[1])[:3]
+            f.summary += " Fields that differed most: " + ", ".join(f"`{k}` ({v})" for k, v in top) + "."
+            f.evidence["field_mismatch"] = dict(top)
         f.recommendation = ("Keep the current model here. A fine-tuned small model trained on this call's data is "
                             "the remaining way to cut its cost.")
         f.trainlab_candidate = True
         f.evidence = {**f.evidence, **_summary(x, None)}
     else:
         need = [c.get("samples_needed") for c in cands if c.get("samples_needed")]
+        err = next((c.get("first_error") for c in cands if c["verdict"] == "ERROR" and c.get("first_error")), None)
         why = ("needs an LLM judge (--judge) for free-text answers" if any(c["verdict"] == "NEEDS-JUDGE" for c in cands)
+               else f"calls failed ({err}); fix that and re-run" if err
                else f"run about {min(need)} samples to settle it" if need else "results were inconclusive")
         f.recommendation += f" An experiment ran ({x['id']}): {why}."
         f.evidence = {**f.evidence, **_summary(x, None)}

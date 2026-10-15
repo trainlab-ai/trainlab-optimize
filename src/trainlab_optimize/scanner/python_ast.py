@@ -394,7 +394,7 @@ class PythonFileScanner:
                         x is node and i > 0 and isinstance(parent.values[i - 1], ast.FormattedValue)
                         for i, x in enumerate(parent.values))
                     ep = http_endpoint(v, dynamic_host=dyn)
-                    if ep and not _in_decorator(stack):
+                    if ep and not _in_decorator(stack) and not _is_route_match(node, stack):
                         self._http_candidates.append((node, ep, tuple(stack)))
                 continue                       # constants have no children
             stack.append(node)
@@ -1347,3 +1347,33 @@ def _feeds_back(loop: ast.For | ast.AsyncFor, call: ast.AST) -> bool:
         if isinstance(x, ast.AugAssign) and isinstance(x.target, ast.Name) and x.target.id in used - rebuilt:
             return True
     return False
+
+
+_ROUTE_MATCHERS = {"endswith", "startswith", "match", "fullmatch", "search"}
+_ROUTE_REGISTRARS = {"add_url_rule", "add_api_route", "add_route", "add_api_websocket_route"}
+# Names a server gives the path of an incoming request. A client normalising its own endpoint
+# (`if url.endswith("/chat/completions")`, `base_url.rstrip("/").endswith(...)`) is not matched.
+_REQUEST_PATH = re.compile(r"(^|\.)(path|p|route|request_path|req_path|url_path|pathname|raw_path|path_info)$"
+                           r"|(^|\.)request\b|^self\.path$")
+
+
+def _is_route_match(node: ast.AST, stack) -> bool:
+    """A server matching an incoming path (`if self.path.endswith("/chat/completions")`,
+    `p in ("/v1/chat", "/v2/chat")`, `request.url.path.startswith("/v1/messages")`,
+    `app.add_url_rule("/v1/messages", ...)`) is not a call to an LLM. Only a bare path ("/...")
+    can be a route; a full URL (https://api.openai.com/...) is always the client's."""
+    if not stack or not isinstance(node.value, str) or not node.value.startswith("/"):
+        return False
+    parent = stack[-1]
+    if isinstance(parent, (ast.Tuple, ast.List, ast.Set)) and len(stack) > 1:
+        parent = stack[-2]
+    subject = None
+    if isinstance(parent, ast.Compare):
+        subject = parent.left
+    elif isinstance(parent, ast.Call) and isinstance(parent.func, ast.Attribute):
+        if parent.func.attr in _ROUTE_REGISTRARS:
+            return True
+        if parent.func.attr in _ROUTE_MATCHERS:
+            subject = parent.func.value
+    name = dotted(subject) if subject is not None else None
+    return bool(name and _REQUEST_PATH.search(name))

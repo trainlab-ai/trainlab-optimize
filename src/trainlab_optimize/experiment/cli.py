@@ -305,6 +305,11 @@ def _print_result(res: dict) -> None:
         extra += "  costs more per call: not recommended" if c.get("costs_more") else ""
         print(f"  {c['model'][:40]:40} {c['verdict']:13} {pr:>9} {c['lower_95']:>8.1%} "
               f"{_money(c.get('cost_per_call_usd')):>11} {sav:>7}{extra}")
+        if c.get("errors") and c.get("first_error"):
+            print(f"      {c['errors']} failed call(s), e.g. {c['first_error']}")
+        if c.get("field_mismatch") and c["verdict"] != "PASS":
+            fm = ", ".join(f"{k} {v}" for k, v in c["field_mismatch"].items())
+            print(f"      fields that differ (samples): {fm}")
     if res.get("recommended"):
         best = next(c for c in res["candidates"] if c["model"] == res["recommended"])
         ms = f", about ${best['monthly_savings_usd']:,.0f}/month" if best.get("monthly_savings_usd") else ""

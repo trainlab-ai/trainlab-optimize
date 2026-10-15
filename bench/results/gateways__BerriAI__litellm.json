@@ -6,11 +6,11 @@
  "tests": {
   "T01": {
    "status": "pass",
-   "detail": "12015 files, 729 sites"
+   "detail": "12015 files, 722 sites"
   },
   "T02": {
    "status": "pass",
-   "detail": "35.8s, 335 files/s"
+   "detail": "33.8s, 356 files/s"
   },
   "T03": {
    "status": "pass",
@@ -18,8 +18,8 @@
   },
   "T04": {
    "status": "review",
-   "detail": "363/525 = 69%",
-   "recall": 69.14285714285714
+   "detail": "359/525 = 68%",
+   "recall": 68.38095238095238
   },
   "T05": {
    "status": "skip",
@@ -27,7 +27,7 @@
   },
   "T06": {
    "status": "pass",
-   "detail": "428/696 calls name a specific provider",
+   "detail": "423/689 calls name a specific provider",
    "specific_pct": 61,
    "examples": []
   },
@@ -67,9 +67,9 @@
   }
  },
  "files": 12015,
- "scan_secs": 35.83,
- "sites": 729,
- "call_sites": 696,
+ "scan_secs": 33.77,
+ "sites": 722,
+ "call_sites": 689,
  "model_configs": 33,
  "providers": [
   "anthropic",
@@ -363,7 +363,6 @@
   "litellm/llms/anthropic/batches/transformation.py||111|chat|anthropic|",
   "litellm/llms/anthropic/batches/transformation.py||163|chat|anthropic|",
   "litellm/llms/anthropic/batches/transformation.py||258|chat|anthropic|",
-  "litellm/llms/anthropic/cache_aware_routing.py||80|chat|anthropic|",
   "litellm/llms/anthropic/common_utils.py||119|chat|anthropic|",
   "litellm/llms/anthropic/count_tokens/transformation.py||101|chat|anthropic|",
   "litellm/llms/anthropic/files/handler.py||87|chat|anthropic|",
@@ -381,7 +380,6 @@
   "litellm/llms/anthropic/pass_through/responses_adapters/handler.py||290|chat|litellm|",
   "litellm/llms/anthropic/pass_through/responses_adapters/handler.py||373|chat|litellm|",
   "litellm/llms/anthropic/prompt_cache_prediction.py||690|chat|anthropic|",
-  "litellm/llms/anthropic/prompt_cache_prediction.py||739|chat|anthropic|",
   "litellm/llms/anthropic/wif.py||53|chat|anthropic|",
   "litellm/llms/azure/assistants.py||693|chat|azure|",
   "litellm/llms/azure/assistants.py||895|chat|azure|",
@@ -529,7 +527,6 @@
   "litellm/llms/tencent/messages/transformation.py||85|chat|anthropic|",
   "litellm/llms/vercel_ai_gateway/embedding/transformation.py||85|embedding|openai_compatible|",
   "litellm/llms/vertex_ai/audio_transcription/gemini_transcribe_transformation.py||135|chat|gemini|",
-  "litellm/llms/vertex_ai/files/transformation.py||550|embedding|openai_compatible|",
   "litellm/llms/vertex_ai/image_edit/vertex_gemini_transformation.py||156|chat|gemini|",
   "litellm/llms/vertex_ai/image_generation/vertex_gemini_transformation.py||180|chat|gemini|",
   "litellm/llms/vertex_ai/vector_stores/search_api/transformation.py||269|model_config|vertex|vertex_ai/search_api",
@@ -629,7 +626,6 @@
   "litellm/proxy/_types.py||514|chat|gemini|",
   "litellm/proxy/_types.py||516|chat|gemini|",
   "litellm/proxy/_types.py||517|chat|gemini|",
-  "litellm/proxy/agent_endpoints/auth/managed_authorization.py||125|embedding|openai_compatible|",
   "litellm/proxy/agent_endpoints/auth/managed_authorization.py||40|chat|openai_compatible|",
   "litellm/proxy/agent_endpoints/auth/managed_authorization.py||42|chat|anthropic|",
   "litellm/proxy/agent_endpoints/auth/managed_authorization.py||43|chat|anthropic|",
@@ -641,8 +637,6 @@
   "litellm/proxy/agent_endpoints/auth/managed_authorization.py||58|chat|gemini|",
   "litellm/proxy/agent_endpoints/auth/managed_authorization.py||60|chat|gemini|",
   "litellm/proxy/agent_endpoints/auth/managed_authorization.py||61|chat|gemini|",
-  "litellm/proxy/anthropic_endpoints/gateway_endpoints.py||162|chat|anthropic|",
-  "litellm/proxy/anthropic_endpoints/gateway_endpoints.py||169|chat|anthropic|",
   "litellm/proxy/batches_endpoints/litellm_executed_batches.py||44|chat|openai_compatible|",
   "litellm/proxy/batches_endpoints/litellm_executed_batches.py||60|chat|openai_compatible|",
   "litellm/proxy/batches_endpoints/litellm_executed_batches.py||62|embedding|openai_compatible|",
@@ -661,7 +655,6 @@
   "litellm/proxy/example_config_yaml/custom_handler.py||10|chat|litellm|gpt-3.5-turbo",
   "litellm/proxy/example_config_yaml/custom_handler.py||17|chat|litellm|gpt-3.5-turbo",
   "litellm/proxy/guardrails/guardrail_hooks/akto/akto.py||80|chat|openai_compatible|",
-  "litellm/proxy/guardrails/guardrail_hooks/panw_prisma_airs/panw_prisma_airs.py||1609|chat|anthropic|",
   "litellm/proxy/health_endpoints/_health_endpoints.py||377|chat|litellm|openai/litellm-mock-response-model",
   "litellm/proxy/health_endpoints/_health_endpoints.py||440|chat|litellm|openai/litellm-mock-response-model",
   "litellm/proxy/hooks/responses_id_security.py||33|chat|openai_compatible|",
@@ -831,7 +824,7 @@
   "vscode-extension/src/stream.ts||1|chat|openai_compatible|"
  ],
  "baseline": 525,
- "baseline_found": 363,
+ "baseline_found": 359,
  "missed": [
   [
    "cookbook/benchmark/eval_suites_mlflow_autoevals/auto_evals.py",
@@ -989,9 +982,19 @@
    "Translate from OpenAI's `/v1/chat/completions` to Amazon Nova's `/v1/chat/completions`"
   ],
   [
+   "litellm/llms/anthropic/cache_aware_routing.py",
+   80,
+   "if not urlparse(url).path.endswith(\"/v1/messages\") or not supported_prediction_headers(headers):"
+  ],
+  [
    "litellm/llms/anthropic/common_utils.py",
    1700,
    "on the unified ``/v1/messages`` path.  ``/v1/chat/completions`` already"
+  ],
+  [
+   "litellm/llms/anthropic/prompt_cache_prediction.py",
+   739,
+   "or wire.url.path != \"/v1/messages\""
   ],
   [
    "litellm/llms/anthropic/wif.py",
@@ -1429,6 +1432,11 @@
    "Use `{PROXY_BASE_URL}/anthropic/v1/messages` instead - [Docs](https://docs.litellm.ai/docs/pass_through/anthropic_completion)."
   ],
   [
+   "litellm/proxy/anthropic_endpoints/gateway_endpoints.py",
+   162,
+   "\"/v1/messages\","
+  ],
+  [
    "litellm/proxy/auth/auth_utils.py",
    817,
    "e.g. ``/genai/chat/completions`` -> ``/chat/completions``."
@@ -1502,6 +1510,11 @@
    "litellm/proxy/guardrails/guardrail_hooks/llm_shield_proxy/stream_restorers.py",
    98,
    "\"\"\"Restores an Anthropic `/v1/messages` stream, which reaches the hook as raw SSE."
+  ],
+  [
+   "litellm/proxy/guardrails/guardrail_hooks/panw_prisma_airs/panw_prisma_airs.py",
+   1609,
+   "if path.endswith(\"/v1/messages\"):"
   ],
   [
    "litellm/proxy/guardrails/guardrail_hooks/unified_guardrail/unified_guardrail.py",
@@ -1671,7 +1684,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpllesx74u/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpymb_0t9s/usage_tokens_only.csv",
    "model": "gpt-3.5-turbo",
    "expected": 24.2325
   }
@@ -1688,6 +1701,6 @@
  "monthly_spend": 1219.86,
  "savings_high": 1.92,
  "attributed_share": 0.990911436928022,
- "wall_secs": 80.4,
+ "wall_secs": 79.4,
  "sha": "ccc656873d846e0883b25bce897721bd0e55648c"
 }

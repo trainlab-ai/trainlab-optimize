@@ -6,11 +6,11 @@
  "tests": {
   "T01": {
    "status": "pass",
-   "detail": "411 files, 116 sites"
+   "detail": "411 files, 113 sites"
   },
   "T02": {
    "status": "pass",
-   "detail": "1.0s, 391 files/s"
+   "detail": "1.2s, 355 files/s"
   },
   "T03": {
    "status": "pass",
@@ -18,8 +18,8 @@
   },
   "T04": {
    "status": "review",
-   "detail": "41/49 = 84%",
-   "recall": 83.6734693877551
+   "detail": "39/49 = 80%",
+   "recall": 79.59183673469387
   },
   "T05": {
    "status": "skip",
@@ -27,8 +27,8 @@
   },
   "T06": {
    "status": "pass",
-   "detail": "8/45 calls name a specific provider",
-   "specific_pct": 18,
+   "detail": "7/42 calls name a specific provider",
+   "specific_pct": 17,
    "examples": []
   },
   "T07": {
@@ -67,12 +67,11 @@
   }
  },
  "files": 411,
- "scan_secs": 1.05,
- "sites": 116,
- "call_sites": 45,
+ "scan_secs": 1.16,
+ "sites": 113,
+ "call_sites": 42,
  "model_configs": 71,
  "providers": [
-  "anthropic",
   "cohere",
   "dashscope",
   "deepseek",
@@ -90,7 +89,7 @@
   "javascript",
   "python"
  ],
- "resolved_model_pct": 73,
+ "resolved_model_pct": 75,
  "site_keys": [
   "etc/examples/aibadgr.py||22|chat|openai|gpt-4o-mini",
   "etc/examples/aibadgr.py||37|chat|openai|gpt-4o-mini",
@@ -204,13 +203,10 @@
   "projects/browser-extension/lib/g4f-client.js||123|chat|openai_compatible|",
   "projects/discord-bot/bot.py||218|chat|unknown|auto",
   "projects/discord-bot/bot.py||255|chat|unknown|",
-  "projects/discord-bot/bot.py||842|chat|unknown|auto",
-  "projects/discord-bot/live_feed.py||79|chat|openai_compatible|",
-  "projects/discord-bot/live_feed.py||83|chat|openai_compatible|",
-  "projects/discord-bot/live_feed.py||87|chat|anthropic|"
+  "projects/discord-bot/bot.py||842|chat|unknown|auto"
  ],
  "baseline": 49,
- "baseline_found": 41,
+ "baseline_found": 39,
  "missed": [
   [
    "g4f/Provider/AgentTools.py",
@@ -251,6 +247,16 @@
    "g4f/api/__init__.py",
    1447,
    "@self.app.post(\"/v1/messages\", responses=responses)"
+  ],
+  [
+   "projects/discord-bot/live_feed.py",
+   79,
+   "return path == \"/v1/chat/completions\" or path.endswith(\"/chat/completions\")"
+  ],
+  [
+   "projects/discord-bot/live_feed.py",
+   87,
+   "return path == \"/v1/messages\" or path.endswith(\"/messages\")"
   ]
  ],
  "mock": {
@@ -285,7 +291,7 @@
   "fallback_models": [],
   "decoy": "claude-3-5-haiku",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpebgt56hv/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmplxxt3su4/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
@@ -298,6 +304,6 @@
  "monthly_spend": 603.54,
  "savings_high": null,
  "attributed_share": 0.8695908512554248,
- "wall_secs": 2.7,
+ "wall_secs": 2.9,
  "sha": "74661d164023bb3d4830fe51aa6e76749c781bc2"
 }

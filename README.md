@@ -257,6 +257,12 @@ anything is spent when it can't produce a verdict: free-text answers with no `--
 fewer than 20 samples. A model that passes but costs more per call (reasoning models can, through
 hidden reasoning tokens) is reported and never recommended.
 
+Reasoning models (o-series, gpt-5, Gemini 2.5+, DeepSeek R1 and others) spend hidden tokens inside
+their output limit, so they get 4,096 tokens on top of the limit production set: a `max_tokens=5`
+label call would otherwise come back empty. An empty answer counts as a failed call, never as a
+quality failure, and the output shows the first error. For extraction, the output lists which JSON
+fields disagreed, e.g. `urgency 6`: a judgment field that even the current model isn't "right" about.
+
 **Samples.** Real inputs, one call site at a time:
 - captured by `trainlab trace --capture` or `instrument()`, opt-in and local:
   `trainlab.instrument(capture={"sites": ["app/support.py:42"], "sample_rate": 0.05})` writes

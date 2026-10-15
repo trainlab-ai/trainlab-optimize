@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.0s, 2054 files/s"
+   "detail": "0.0s, 2657 files/s"
   },
   "T03": {
    "status": "pass",
@@ -67,7 +67,7 @@
   }
  },
  "files": 77,
- "scan_secs": 0.04,
+ "scan_secs": 0.03,
  "sites": 12,
  "call_sites": 12,
  "model_configs": 0,
@@ -116,7 +116,7 @@
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpztrh1ibs/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpk5o3f_jx/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }

@@ -10,7 +10,7 @@
   },
   "T02": {
    "status": "pass",
-   "detail": "0.1s, 478 files/s"
+   "detail": "0.1s, 467 files/s"
   },
   "T03": {
    "status": "pass",
@@ -177,7 +177,7 @@
   "fallback_models": [],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmph3o5rra0/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpph96dass/usage_tokens_only.csv",
    "model": "gpt-4o-2024-05-13",
    "expected": 242.325
   }
@@ -190,6 +190,6 @@
  "monthly_spend": 1022.6,
  "savings_high": null,
  "attributed_share": 0.9847996576086558,
- "wall_secs": 0.4,
+ "wall_secs": 0.5,
  "sha": "fb951af7744dab086e34962e9bc6fe878e145f83"
 }

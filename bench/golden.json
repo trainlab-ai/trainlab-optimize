@@ -386,13 +386,10 @@
     "projects/browser-extension/lib/g4f-client.js||123|chat|openai_compatible|",
     "projects/discord-bot/bot.py||218|chat|unknown|auto",
     "projects/discord-bot/bot.py||255|chat|unknown|",
-    "projects/discord-bot/bot.py||842|chat|unknown|auto",
-    "projects/discord-bot/live_feed.py||79|chat|openai_compatible|",
-    "projects/discord-bot/live_feed.py||83|chat|openai_compatible|",
-    "projects/discord-bot/live_feed.py||87|chat|anthropic|"
+    "projects/discord-bot/bot.py||842|chat|unknown|auto"
    ],
    "baseline": 49,
-   "baseline_found": 41,
+   "baseline_found": 39,
    "adjusted_recall_pct": 100,
    "mock_spend": 603.54
   },
@@ -991,7 +988,6 @@
     "litellm/llms/anthropic/batches/transformation.py||111|chat|anthropic|",
     "litellm/llms/anthropic/batches/transformation.py||163|chat|anthropic|",
     "litellm/llms/anthropic/batches/transformation.py||258|chat|anthropic|",
-    "litellm/llms/anthropic/cache_aware_routing.py||80|chat|anthropic|",
     "litellm/llms/anthropic/common_utils.py||119|chat|anthropic|",
     "litellm/llms/anthropic/count_tokens/transformation.py||101|chat|anthropic|",
     "litellm/llms/anthropic/files/handler.py||87|chat|anthropic|",
@@ -1009,7 +1005,6 @@
     "litellm/llms/anthropic/pass_through/responses_adapters/handler.py||290|chat|litellm|",
     "litellm/llms/anthropic/pass_through/responses_adapters/handler.py||373|chat|litellm|",
     "litellm/llms/anthropic/prompt_cache_prediction.py||690|chat|anthropic|",
-    "litellm/llms/anthropic/prompt_cache_prediction.py||739|chat|anthropic|",
     "litellm/llms/anthropic/wif.py||53|chat|anthropic|",
     "litellm/llms/azure/assistants.py||693|chat|azure|",
     "litellm/llms/azure/assistants.py||895|chat|azure|",
@@ -1157,7 +1152,6 @@
     "litellm/llms/tencent/messages/transformation.py||85|chat|anthropic|",
     "litellm/llms/vercel_ai_gateway/embedding/transformation.py||85|embedding|openai_compatible|",
     "litellm/llms/vertex_ai/audio_transcription/gemini_transcribe_transformation.py||135|chat|gemini|",
-    "litellm/llms/vertex_ai/files/transformation.py||550|embedding|openai_compatible|",
     "litellm/llms/vertex_ai/image_edit/vertex_gemini_transformation.py||156|chat|gemini|",
     "litellm/llms/vertex_ai/image_generation/vertex_gemini_transformation.py||180|chat|gemini|",
     "litellm/llms/vertex_ai/vector_stores/search_api/transformation.py||269|model_config|vertex|vertex_ai/search_api",
@@ -1257,7 +1251,6 @@
     "litellm/proxy/_types.py||514|chat|gemini|",
     "litellm/proxy/_types.py||516|chat|gemini|",
     "litellm/proxy/_types.py||517|chat|gemini|",
-    "litellm/proxy/agent_endpoints/auth/managed_authorization.py||125|embedding|openai_compatible|",
     "litellm/proxy/agent_endpoints/auth/managed_authorization.py||40|chat|openai_compatible|",
     "litellm/proxy/agent_endpoints/auth/managed_authorization.py||42|chat|anthropic|",
     "litellm/proxy/agent_endpoints/auth/managed_authorization.py||43|chat|anthropic|",
@@ -1269,8 +1262,6 @@
     "litellm/proxy/agent_endpoints/auth/managed_authorization.py||58|chat|gemini|",
     "litellm/proxy/agent_endpoints/auth/managed_authorization.py||60|chat|gemini|",
     "litellm/proxy/agent_endpoints/auth/managed_authorization.py||61|chat|gemini|",
-    "litellm/proxy/anthropic_endpoints/gateway_endpoints.py||162|chat|anthropic|",
-    "litellm/proxy/anthropic_endpoints/gateway_endpoints.py||169|chat|anthropic|",
     "litellm/proxy/batches_endpoints/litellm_executed_batches.py||44|chat|openai_compatible|",
     "litellm/proxy/batches_endpoints/litellm_executed_batches.py||60|chat|openai_compatible|",
     "litellm/proxy/batches_endpoints/litellm_executed_batches.py||62|embedding|openai_compatible|",
@@ -1289,7 +1280,6 @@
     "litellm/proxy/example_config_yaml/custom_handler.py||10|chat|litellm|gpt-3.5-turbo",
     "litellm/proxy/example_config_yaml/custom_handler.py||17|chat|litellm|gpt-3.5-turbo",
     "litellm/proxy/guardrails/guardrail_hooks/akto/akto.py||80|chat|openai_compatible|",
-    "litellm/proxy/guardrails/guardrail_hooks/panw_prisma_airs/panw_prisma_airs.py||1609|chat|anthropic|",
     "litellm/proxy/health_endpoints/_health_endpoints.py||377|chat|litellm|openai/litellm-mock-response-model",
     "litellm/proxy/health_endpoints/_health_endpoints.py||440|chat|litellm|openai/litellm-mock-response-model",
     "litellm/proxy/hooks/responses_id_security.py||33|chat|openai_compatible|",
@@ -1459,7 +1449,7 @@
     "vscode-extension/src/stream.ts||1|chat|openai_compatible|"
    ],
    "baseline": 525,
-   "baseline_found": 363,
+   "baseline_found": 359,
    "adjusted_recall_pct": 100,
    "mock_spend": 1219.86
   },
@@ -4265,13 +4255,11 @@
     "T13": "pass",
     "T14": "pass"
    },
-   "sites": [
-    "modules/api/script.py||137|chat|anthropic|"
-   ],
+   "sites": [],
    "baseline": 3,
-   "baseline_found": 1,
+   "baseline_found": 0,
    "adjusted_recall_pct": 100,
-   "mock_spend": 614.86
+   "mock_spend": 78.0
   },
   "dair-ai/Prompt-Engineering-Guide": {
    "category": "mcp-prompts-config",

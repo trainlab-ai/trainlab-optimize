@@ -177,10 +177,86 @@ def test_experiment_run_without_site_tests_every_captured_site(desk_run):
     assert "costs more per call: not recommended" in r.stdout        # gpt-5-nano on sentiment (reasoning tokens)
     rep = json.loads((work / "ws" / "report" / "trainlab-report.json").read_text())
     titles = [f["title"] for f in rep["findings"]]
-    assert sum(1 for t in titles if t.startswith("Validated: switch `gpt-4o` to `gpt-4o-mini`")) == 2
+    # routing: gpt-4o-mini agrees on every ticket; extraction: small models judge `urgency` differently
+    # on a few tickets (as real ones do), and the output names that field
+    assert sum(1 for t in titles if t.startswith("Validated: switch `gpt-4o` to `gpt-4o-mini`")) == 1
+    assert "fields that differ (samples): urgency" in r.stdout
     assert not any("gpt-5-nano" in t and t.startswith("Validated") for t in titles)
+    assert "empty answer" not in r.stdout          # reasoning models get room to answer
 
 
 def test_trace_without_command_explains_usage(tmp_path):
     r = _cli("trace", cwd=tmp_path)
     assert r.returncode == 2 and "trainlab trace -- python app.py" in r.stderr
+
+
+# ------------------------------------------------------------------ fixes from the first real OpenAI run
+def test_reasoning_models_get_room_above_the_production_output_cap():
+    from trainlab_optimize.experiment.runner import REASONING_ALLOWANCE, _out_cap, _with_cap, is_reasoning
+    s = make_sample([{"role": "user", "content": "route this"}], params={"max_tokens": 5}, reference="billing")
+    assert _out_cap(s, model="gpt-4o-mini") == 5
+    assert _out_cap(s, model="gpt-5-mini") == 5 + REASONING_ALLOWANCE
+    assert _with_cap(s, _out_cap(s, model="gpt-5-mini"))["max_tokens"] == 5 + REASONING_ALLOWANCE
+    assert all(is_reasoning(m) for m in ("o4-mini", "gpt-5-nano", "openai/gpt-5", "gemini-2.5-flash",
+                                         "deepseek-reasoner", "claude-3-7-sonnet-thinking"))
+    assert not any(is_reasoning(m) for m in ("gpt-4o", "gpt-4.1-mini", "claude-haiku-4-5", "gemini-2.0-flash"))
+
+
+def test_empty_answers_are_errors_not_quality_failures(tmp_path, monkeypatch):
+    from trainlab_optimize.experiment.clients import Result
+    from trainlab_optimize.experiment.runner import run
+    monkeypatch.setenv("OPENAI_API_KEY", "x")
+    samples = _samples(40, lambda i: ["billing", "bug", "account"][i % 3])
+
+    def call_fn(route, messages, params):
+        return Result(text="", input_tokens=20, output_tokens=params.get("max_tokens") or 0, latency_ms=1.0)
+    res = run(Config(baseline="gpt-4o", candidates=["gpt-4o-mini"], max_cost=5), samples, tmp_path, call_fn=call_fn)
+    c = res["candidates"][0]
+    assert c["verdict"] == "ERROR" and c["errors"] == c["scored"] and "empty answer" in c["first_error"]
+
+
+def test_extraction_reports_which_fields_differ(tmp_path, monkeypatch):
+    from trainlab_optimize.experiment.clients import Result
+    from trainlab_optimize.experiment.gates import json_diff_fields
+    from trainlab_optimize.experiment.runner import run
+    assert json_diff_fields({"a": 1, "u": "high"}, {"a": 1, "u": "normal"}) == ["u"]
+    assert json_diff_fields({"a": 1}, None) == ["(invalid JSON)"]
+    monkeypatch.setenv("OPENAI_API_KEY", "x")
+    samples = _samples(40, lambda i: json.dumps({"order_id": f"NW-{i}", "urgency": "high"}))
+
+    def call_fn(route, messages, params):
+        i = int(messages[-1]["content"].split()[-1])
+        return Result(text=json.dumps({"order_id": f"NW-{i}", "urgency": "normal" if i % 4 == 0 else "high"}),
+                      input_tokens=20, output_tokens=10, latency_ms=1.0)
+    res = run(Config(baseline="gpt-4o", candidates=["gpt-4o-mini"], max_cost=5, early_stop=False), samples, tmp_path,
+              call_fn=call_fn)
+    assert res["candidates"][0]["field_mismatch"] == {"urgency": 10}
+
+
+def test_server_route_matching_is_not_a_call_site(tmp_path):
+    (tmp_path / "srv.py").write_text(textwrap.dedent('''
+        import requests
+        def handle(path):
+            if path.endswith("/chat/completions"):
+                return 1
+            if path in ("/v2/chat", "/v1/messages"):
+                return 2
+        def client(base):
+            return requests.post(f"{base}/v1/chat/completions", json={"model": "gpt-4o"})
+    '''))
+    sites = scan(str(tmp_path)).call_sites
+    assert [s.line for s in sites] == [9]
+
+
+def test_validated_finding_shows_the_tested_model_not_the_static_guess():
+    from trainlab_optimize.analyzer import experiments as ax
+    from trainlab_optimize.schema import CallSite, Finding
+    site = CallSite(id="s1", path="a.py", line=3, kind="chat", provider="openai", sdk_call="x", model="gpt-4o")
+    f = Finding(id="", rule="R101", title="t", severity="medium", strategy="model", call_site_ids=["s1"],
+                summary="", recommendation="", evidence={"candidate_model": "gpt-5-nano", "price_ratio": 31.8})
+    x = {"id": "x-1", "site": "a.py:3", "site_id": "s1", "baseline": "gpt-4o", "threshold": 0.95,
+         "recommended": "gpt-4o-mini", "created": "2026-10-15",
+         "candidates": [{"model": "gpt-4o-mini", "verdict": "PASS", "passed": 97, "scored": 97, "pass_rate": 1.0,
+                         "lower_95": 0.973, "savings_pct": 0.94}]}
+    ax.apply([f], [site], {}, [x])
+    assert "candidate_model" not in f.evidence and f.evidence["tested_model"] == "gpt-4o-mini"

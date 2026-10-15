@@ -134,6 +134,23 @@ def _is_prose(key: str, a, b) -> bool:
         and max(len(a.split()), len(b.split())) >= 4
 
 
+def json_diff_fields(ref, cand) -> list[str]:
+    """The fields (flattened keys) on which cand disagrees with ref; ["(invalid JSON)"] if unparsable."""
+    if cand is None or ref is None:
+        return ["(invalid JSON)"]
+    fr, fc = _flatten(ref), _flatten(cand)
+    out = []
+    for k in sorted(set(fr) | set(fc)):
+        if k not in fr or k not in fc:
+            out.append(k)
+        elif _is_prose(k, fr[k], fc[k]):
+            if rouge_l(fr[k], fc[k]) < 0.5:
+                out.append(k)
+        elif not _same_value(fr[k], fc[k]):
+            out.append(k)
+    return out
+
+
 def json_agreement(ref, cand) -> tuple[bool, float]:
     fr, fc = _flatten(ref), _flatten(cand)
     keys = set(fr) | set(fc)

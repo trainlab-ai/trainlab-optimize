@@ -6,11 +6,11 @@
  "tests": {
   "T01": {
    "status": "pass",
-   "detail": "145 files, 1 sites"
+   "detail": "145 files, 0 sites"
   },
   "T02": {
    "status": "pass",
-   "detail": "0.3s, 480 files/s"
+   "detail": "0.3s, 455 files/s"
   },
   "T03": {
    "status": "pass",
@@ -18,26 +18,26 @@
   },
   "T04": {
    "status": "review",
-   "detail": "1/3 = 33%",
-   "recall": 33.333333333333336
+   "detail": "0/3 = 0%",
+   "recall": 0.0
   },
   "T05": {
    "status": "skip",
    "detail": "LLM repo"
   },
   "T06": {
-   "status": "pass",
-   "detail": "1/1 calls name a specific provider",
-   "specific_pct": 100,
+   "status": "skip",
+   "detail": "0/0 calls name a specific provider",
+   "specific_pct": null,
    "examples": []
   },
   "T07": {
    "status": "pass",
-   "detail": "csv: 120 records, $614.86 vs expected $614.86"
+   "detail": "csv: 120 records, $78.00 vs expected $78.00"
   },
   "T08": {
    "status": "pass",
-   "detail": "after re-import $614.86"
+   "detail": "after re-import $78.00"
   },
   "T09": {
    "status": "pass",
@@ -46,7 +46,7 @@
   },
   "T10": {
    "status": "pass",
-   "detail": "key-batch $186, key-prod $428"
+   "detail": "key-batch $24, key-prod $54"
   },
   "T11": {
    "status": "pass",
@@ -58,33 +58,32 @@
   },
   "T13": {
    "status": "pass",
-   "detail": "$0-$0 of $615"
+   "detail": "$0-$0 of $78"
   },
   "T14": {
-   "status": "pass",
-   "detail": "1/1 cited lines contain the call",
+   "status": "skip",
+   "detail": "no cited lines",
    "examples": []
   }
  },
  "files": 145,
- "scan_secs": 0.3,
- "sites": 1,
- "call_sites": 1,
+ "scan_secs": 0.32,
+ "sites": 0,
+ "call_sites": 0,
  "model_configs": 0,
- "providers": [
-  "anthropic"
- ],
+ "providers": [],
  "parse_errors": 0,
- "languages": [
-  "python"
- ],
- "resolved_model_pct": 0,
- "site_keys": [
-  "modules/api/script.py||137|chat|anthropic|"
- ],
+ "languages": [],
+ "resolved_model_pct": null,
+ "site_keys": [],
  "baseline": 3,
- "baseline_found": 1,
+ "baseline_found": 0,
  "missed": [
+  [
+   "modules/api/script.py",
+   137,
+   "if request.url.path.startswith(\"/v1/messages\"):"
+  ],
   [
    "modules/api/script.py",
    216,
@@ -100,31 +99,30 @@
   "format": "generic",
   "column_map": null,
   "rows_written": 120,
-  "total_cost": 614.8586,
+  "total_cost": 77.9989,
   "by_key": {
-   "key-prod": 428.4832,
-   "key-batch": 186.3754
+   "key-prod": 54.3624,
+   "key-batch": 23.6365
   },
   "by_model": {
-   "claude-haiku-4-5": 613.2779,
+   "gpt-4o-mini": 76.4183,
    "gpt-4.1-nano": 1.5806
   },
   "code_models": [],
   "fallback_models": [
-   "claude-haiku-4-5"
+   "gpt-4o-mini"
   ],
   "decoy": "gpt-4.1-nano",
   "tokens_only": {
-   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmpk_uv51b5/usage_tokens_only.csv",
+   "path": "/tmp/claude-0/-home-claude/a0e93dc0-daed-5d83-b814-845176893697/scratchpad/bench/tmp8t31gpeg/usage_tokens_only.csv",
    "model": "gpt-4o-mini",
    "expected": 8.1698
   }
  },
  "findings": {
-  "R901": 1,
   "R902": 1
  },
- "monthly_spend": 614.86,
+ "monthly_spend": 78.0,
  "savings_high": null,
  "attributed_share": 0.0,
  "wall_secs": 0.8,

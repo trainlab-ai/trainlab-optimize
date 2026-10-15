@@ -33,6 +33,9 @@ QUEUES = list(QUEUE_WORDS)
 # Chance (percent) that a model routes a ticket to the wrong queue.
 ROUTING_ERROR = {"gpt-4o": 0, "gpt-4o-mini": 0, "gpt-4.1": 0, "gpt-4.1-mini": 3, "gpt-4.1-nano": 12,
                  "gpt-5-mini": 22, "gpt-5-nano": 35}
+# Chance (percent) that a model judges a ticket's urgency differently from gpt-4o: a judgment
+# call, so smaller models disagree on it more often, as real ones do.
+URGENCY_FLIP = {"gpt-4o-mini": 12, "gpt-4.1-mini": 6, "gpt-4.1-nano": 20, "gpt-5-mini": 8, "gpt-5-nano": 15}
 REASONING = re.compile(r"^(gpt-5|o\d)")
 _log_lock = threading.Lock()
 
@@ -64,15 +67,18 @@ def route_ticket(text: str, model: str) -> str:
     return best
 
 
-def extract(text: str) -> dict:
+def extract(text: str, model: str = "gpt-4o") -> dict:
     low = text.lower()
     order = re.search(r"NW-\d{5}", text)
     product = next((p for p in ["Northwind Sync for Teams", "Northwind Drive", "Northwind Backup",
                                 "Northwind Mobile", "Northwind Desk Hub"] if p.lower() in low), None)
     urgent = any(w in low for w in ["locked out", "crash", "declined", "by friday", "hundreds", "two days"])
     subject = re.search(r"Subject: (.+)", text)
+    urgency = "high" if urgent else "normal"
+    if _h("urgency", model, text) % 100 < URGENCY_FLIP.get(model, 0):
+        urgency = "normal" if urgent else "high"
     return {"product": product, "order_id": order.group(0) if order else None,
-            "urgency": "high" if urgent else "normal", "wants_refund": "refund" in low,
+            "urgency": urgency, "wants_refund": "refund" in low,
             "summary": (subject.group(1) if subject else text[:60]).strip()}
 
 
@@ -166,7 +172,7 @@ class Handler(BaseHTTPRequestHandler):
         elif "Categories:" in system:
             content = route_ticket(user, model)
         elif "return JSON" in system or (b.get("response_format") or {}).get("type") == "json_object":
-            content = json.dumps(extract(user))
+            content = json.dumps(extract(user, model))
         elif "customer's mood" in system:
             content = mood(user)
         else:
@@ -174,9 +180,12 @@ class Handler(BaseHTTPRequestHandler):
         out_text = content if content is not None else json.dumps(tool_calls)
         pout = tokens(out_text)
         finish = "tool_calls" if tool_calls else "stop"
-        if content is not None and pout > cap:
-            content, pout, finish = content[: cap * 4], cap, "length"
-        reasoning = (64 + _h(user) % 128) if REASONING.match(model) else 0
+        # Reasoning models think first, inside the same limit (max_completion_tokens), as OpenAI's do:
+        # a small limit is used up by reasoning and the visible answer comes back empty.
+        reasoning = min((64 + _h(user) % 128) if REASONING.match(model) else 0, cap)
+        room = cap - reasoning
+        if content is not None and pout > room:
+            content, pout, finish = content[: room * 4], room, "length"
         usage = {"prompt_tokens": pin, "completion_tokens": pout + reasoning, "total_tokens": pin + pout + reasoning,
                  "prompt_tokens_details": {"cached_tokens": 0, "audio_tokens": 0},
                  "completion_tokens_details": {"reasoning_tokens": reasoning, "audio_tokens": 0,
