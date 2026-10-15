@@ -1,21 +1,29 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "trainlab-optimize"
-version = "0.5.1"
+version = "0.5.2"
 description = "Find and prove LLM cost savings in your codebase. Scan code, import usage, record calls per line, test cheaper models on real inputs."
 readme = "README.md"
-license = { text = "Apache-2.0" }
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
 authors = [{ name = "EtherTech Innovations / TrainLab.ai" }]
 keywords = ["llm", "cost", "finops", "openai", "anthropic", "observability"]
 classifiers = [
-  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Operating System :: OS Independent",
+  "Environment :: Console",
+  "Environment :: Web Environment",
   "Intended Audience :: Developers",
   "Topic :: Software Development :: Quality Assurance",
+  "Topic :: System :: Monitoring",
 ]
 # Base install has ZERO runtime dependencies (stdlib only) by design.
 dependencies = []
@@ -23,6 +31,9 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 otel = ["opentelemetry-api>=1.20", "opentelemetry-sdk>=1.20"]
+
+[project.urls]
+Homepage = "https://trainlab.ai"
 
 [project.scripts]
 trainlab = "trainlab_optimize.cli:main"

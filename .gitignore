@@ -1,8 +1,8 @@
-__pycache__/
 *.egg-info/
-.trainlab/
 .pytest_cache/
-dist/
-build/
+.trainlab/
+__pycache__/
 bench/sandbox/out/
+build/
+dist/
 pandasai.log

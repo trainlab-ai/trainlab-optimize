@@ -164,7 +164,7 @@ def cmd_trace(args) -> int:
             capture["sites"] = args.capture
     service = args.service or roots[0].name
 
-    print(f"trainlab trace: recording LLM calls from `{' '.join(cmd)}`" + (" (Ctrl+C to stop)" if sys.stdin.isatty() else ""))
+    print(f"trainlab trace: recording LLM calls from `{' '.join(cmd)}`" + (" (Ctrl+C to stop)" if sys.stdin.isatty() else ""), flush=True)
     t0 = time.time()
     rc, n, interrupted = run_traced(cmd, workspace=ws.path.resolve(), root=roots[0], service=service, tags=tags,
                                     capture=capture)

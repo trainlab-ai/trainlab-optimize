@@ -287,7 +287,7 @@ def serve(workspace: Workspace, port: int = 0, open_browser: bool = True, start_
 
 def run(workspace: Workspace, port: int = 0, open_browser: bool = True) -> None:
     httpd, _, url = serve(workspace, port)
-    print(f"TrainLab Optimize is running at:\n  {url}\nKeep this window open. Press Ctrl+C to stop.")
+    print(f"TrainLab Optimize is running at:\n  {url}\nKeep this window open. Press Ctrl+C to stop.", flush=True)
     if open_browser:
         threading.Timer(0.5, lambda: webbrowser.open(url)).start()
     try:

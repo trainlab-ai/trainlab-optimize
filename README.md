@@ -32,10 +32,34 @@ trainlab experiment run --max-cost 2 --open    # test every call site that has s
 
 Try all three on a realistic app, offline and free: [examples/support_desk](examples/support_desk/).
 
+## Install
+
+**macOS and Linux**
+
+```bash
+curl -LsSf https://trainlab.ai/install.sh | sh
+```
+
+**Windows** (PowerShell)
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://trainlab.ai/install.ps1 | iex"
+```
+
+The script installs [uv](https://docs.astral.sh/uv/) if it's missing, then installs trainlab
+into its own isolated environment with its own Python: nothing else on the machine changes, no
+admin rights are needed, and your projects' environments are untouched. To remove it:
+`uv tool uninstall trainlab-optimize`.
+
+Already have Python 3.10+? `pipx install trainlab-optimize`, `uv tool install trainlab-optimize`
+or `pip install trainlab-optimize` work too. There are no dependencies.
+
+Your app doesn't need trainlab installed in its own environment: `trainlab trace -- python app.py`
+records it from outside, whatever Python and virtualenv the app uses.
+
 ## Quick start
 
 ```bash
-pip install -e .                      # PyPI release pending
 
 cd your-repo
 trainlab scan .                       # find LLM call sites
