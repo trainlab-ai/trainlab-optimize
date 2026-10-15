@@ -19,6 +19,12 @@ def md(s: str) -> str:
     return re.sub(r"`([^`]+)`", r"<code>\1</code>", e(s))
 
 
+def money_range(lo, hi) -> str:
+    """'$3.00' when both ends print the same, else '$1.00 – $3.00'."""
+    a, b = money(lo), money(hi)
+    return b if a == b else f"{a} – {b}"
+
+
 def money(v, dash="—") -> str:
     if v is None:
         return dash
@@ -130,6 +136,14 @@ def _bill(a: Analysis, sites: dict) -> str:
     high = a.savings_high or 0.0
     low = a.savings_low or 0.0
     after = max(total - high, 0.0)
+    validated = a.validated_savings or 0.0
+    if validated and abs(validated - high) < 0.005:
+        save_val, save_label = money(validated), "Monthly saving, tested on real inputs"
+    elif validated:
+        save_val = money_range(low, high)
+        save_label = f"Potential monthly saving; {money(validated)} of it tested on real inputs"
+    else:
+        save_val, save_label = money_range(low, high), "Potential monthly saving, estimated, not yet tested"
     after_bar = (f'<span style="width:{100 * after / total:.2f}%;background:var(--ink)"></span>'
                  f'<span class="cut" style="width:{100 * high / total:.2f}%" title="Potential saving"></span>')
     return f"""
@@ -141,7 +155,7 @@ def _bill(a: Analysis, sites: dict) -> str:
   <div class="legend">{legend}<span><i style="background:repeating-linear-gradient(135deg,var(--save) 0 2px,var(--save-soft) 2px 6px)"></i>Potential saving</span></div>
   <div class="facts">
     <div class="fact"><b>{money(total)}</b><span>Measured monthly run-rate ({a.spend.days} day{"s" if a.spend.days != 1 else ""} of data)</span></div>
-    <div class="fact save"><b>{money(low)} – {money(high)}</b><span>Potential monthly saving, estimated, not yet tested</span></div>
+    <div class="fact save"><b>{save_val}</b><span>{save_label}</span></div>
     <div class="fact"><b>{(a.coverage.get('attributed_share') or 0):.0%}</b><span>Of spend traced to a line of code in this repo</span></div>
   </div>
 </div>"""
@@ -159,7 +173,7 @@ def _finding(f, sites: dict) -> str:
     save = ""
     if f.savings_high_usd:
         if f.savings_low_usd:
-            save = f'<span class="fsave">save {money(f.savings_low_usd)}–{money(f.savings_high_usd)}/mo</span>'
+            save = f'<span class="fsave">save {money_range(f.savings_low_usd, f.savings_high_usd)}/mo</span>'
         else:
             save = f'<span class="fsave">save up to {money(f.savings_high_usd)}/mo</span>'
     elif f.monthly_spend_usd:

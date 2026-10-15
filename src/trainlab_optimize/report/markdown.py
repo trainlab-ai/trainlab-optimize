@@ -18,8 +18,10 @@ def render_markdown(a: Analysis, max_findings: int = 15) -> str:
         out.append(f"**Monthly LLM spend:** {_money(a.spend.monthly_total)} ({a.spend.days} day{'s' if a.spend.days != 1 else ''} of data)  ")
         for o in a.spend.overlaps:
             out.append(f"_Overlap: {o}._  ")
-        if a.savings_high:
-            out.append(f"**Potential saving:** {_money(a.savings_low)} – {_money(a.savings_high)}/month "
+        all_tested = a.validated_savings and abs(a.validated_savings - (a.savings_high or 0)) < 0.005
+        if a.savings_high and not all_tested:
+            lo, hi = _money(a.savings_low), _money(a.savings_high)
+            out.append(f"**Potential saving:** {hi if lo == hi else lo + ' – ' + hi}/month "
                        "(estimated, not yet tested)  ")
         if a.validated_savings:
             out.append(f"**Validated by experiment:** {_money(a.validated_savings)}/month  ")

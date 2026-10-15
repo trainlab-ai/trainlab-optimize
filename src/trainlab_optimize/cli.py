@@ -189,9 +189,10 @@ def _print_summary(a) -> None:
         v = a.validated_savings
         if v:
             print(f"Validated saving (tested on real inputs): ${v:,.0f}/month")
-        if a.savings_high:
+        if a.savings_high and not (v and abs(v - a.savings_high) < 0.005):
             label = "Potential saving, all findings" if v else "Potential saving (estimated, untested)"
-            print(f"{label}: ${a.savings_low:,.0f} – ${a.savings_high:,.0f}/month")
+            lo, hi = f"${a.savings_low:,.0f}", f"${a.savings_high:,.0f}"
+            print(f"{label}: {hi if lo == hi else lo + ' – ' + hi}/month")
     else:
         print("No usage imported: findings are from code only. Run `trainlab import ...` to price them.")
     shown = [f for f in a.findings if f.strategy != "coverage"][:8]
