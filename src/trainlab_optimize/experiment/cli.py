@@ -60,6 +60,8 @@ def add_parser(sub, common) -> None:
     ls.set_defaults(fn=cmd_list)
     sh = xs.add_parser("show", help="results of one experiment")
     sh.add_argument("id")
+    sh.add_argument("--examples", action="store_true",
+                    help="also print the stored disagreements: input, current model's answer, candidate's answer")
     sh.set_defaults(fn=cmd_show)
 
 
@@ -249,6 +251,15 @@ def _write_report(args) -> int:
     return rc
 
 
+def budget_share(remaining: float, ests: list[float], floors: list[float], i: int) -> float:
+    """Site i's part of what's left: by its estimated cost, with headroom (estimates are rough),
+    and never below what its calls reserve in flight (floors[i]: worst single call x 2 x concurrency),
+    or it would stop part-way however cheap it really is."""
+    rest = sum(ests[i:])
+    share = remaining * (ests[i] / rest) if rest > 0 else remaining / max(1, len(ests) - i)
+    return min(remaining, max(share, 2 * ests[i] + floors[i]))
+
+
 def _run_all(args, ws, catalog) -> int:
     """Every call site that has captured samples and a cheaper model, under one total budget."""
     import copy
@@ -273,26 +284,32 @@ def _run_all(args, ws, catalog) -> int:
     # Share the budget by what each site is expected to cost (a judged extraction costs far more
     # than a one-word classification); what a site doesn't use rolls on to the next.
     from .runner import plan as _plan
-    ests = []
+    ests, floors = [], []
     for row in rows:
         sub = copy.copy(args)
         sub.site = row["site"]
         try:
             smp, _ = _samples(sub, ws, row)
             p = _plan(_config(sub, row), smp, catalog) if smp else None
-            ests.append(0.0 if not p or p.get("blocking") else max(p["est_cost_usd"], 1e-6))
+            blocked = not p or p.get("blocking")
+            ests.append(0.0 if blocked else max(p["est_cost_usd"], 1e-6))
+            # Calls reserve their worst case before they're sent (reasoning models: thousands of
+            # tokens), several at a time; a share below that stops a cheap site part-way.
+            floors.append(0.0 if blocked else p["worst_single_call_usd"] * 2 * max(1, args.concurrency))
         except Exception:      # noqa: BLE001 - the run itself reports the problem
             ests.append(1e-6)
+            floors.append(0.0)
     remaining, ran, failed = total, 0, 0
     for i, row in enumerate(rows):
-        rest = sum(ests[i:])
-        share = remaining * (ests[i] / rest) if rest > 0 else remaining / (len(rows) - i)
-        share = min(remaining, max(share, 2 * ests[i]))          # estimates are rough: leave headroom
+        share = budget_share(remaining, ests, floors, i)
         print(f"\n[{i + 1}/{len(rows)}] {row['site']}  {row['model']} -> {', '.join(row['candidates'])}"
               f"  (budget ${share:.2f})")
         sub = copy.copy(args)
         sub.site, sub.max_cost = row["site"], share
         res = _run_one(sub, ws, catalog, row, compact=True)
+        if isinstance(res, dict) and res.get("stopped") == "budget":
+            print(f"  This site ran out of its share. Re-run with a higher --max-cost to finish it; "
+                  f"calls already made are reused, not paid again.")
         if isinstance(res, dict):
             ran += 1
             remaining = max(0.0, remaining - (res.get("spent_this_run_usd") or 0.0))
@@ -361,6 +378,8 @@ def _print_result(res: dict) -> None:
         best = next(c for c in res["candidates"] if c["model"] == res["recommended"])
         ms = f", about ${best['monthly_savings_usd']:,.0f}/month" if best.get("monthly_savings_usd") else ""
         print(f"\n  Validated: `{res['recommended']}` keeps quality at {best['savings_pct']:.0%} lower cost{ms}.")
+    if any(c.get("examples") for c in res["candidates"]):
+        print(f"  Where they disagreed: trainlab experiment show {res['id']} --examples")
     print(f"  Spent {_money(res['spent_this_run_usd'])} this run ({res['calls']['new_calls']} calls, "
           f"{res['calls']['cached']} reused); budget {_money(res['budget_usd'])}"
           + (f"; stopped: {res['stopped']}" if res.get("stopped") else ""))
@@ -383,5 +402,28 @@ def cmd_show(args) -> int:
     if not p.exists():
         print(f"No experiment {args.id}.", file=sys.stderr)
         return 2
-    _print_result(json.loads(p.read_text()))
+    res = json.loads(p.read_text())
+    _print_result(res)
+    if getattr(args, "examples", False):
+        _print_examples(res)
     return 0
+
+
+def _print_examples(res: dict, per_field: int | None = None, models: list | None = None) -> None:
+    for c in res["candidates"]:
+        if models is not None and c["model"] not in models:
+            continue
+        ex = c.get("examples") or {}
+        if not ex:
+            continue
+        ref_name = "expected" if res.get("reference") == "expected answers" else "current"
+        print(f"\n  {c['model']}: where it disagreed with "
+              + ("the expected answers" if ref_name == "expected" else f"{res['baseline']} (current)"))
+        for field, items in ex.items():
+            role = ((c.get("fields") or {}).get(field) or {}).get("role")
+            print(f"    {field}" + (f" ({role})" if role else ""))
+            for it in items[:per_field]:
+                inp = " ".join(it["input"].split())[:140]
+                print(f"      input:     {inp}")
+                print(f"      {ref_name:9}: {it['reference']}")
+                print(f"      candidate: {it['candidate']}" + (f"   [{it['why']}]" if it.get("why") else ""))

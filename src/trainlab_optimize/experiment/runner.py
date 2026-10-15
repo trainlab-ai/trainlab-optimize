@@ -83,6 +83,14 @@ def is_reasoning(model: str) -> bool:
     return bool(REASONING_MODEL.search(model or ""))
 
 
+EXAMPLES_PER_FIELD = 5
+
+
+def _short(v, n: int = 240):
+    v = v if isinstance(v, str) else json.dumps(v, ensure_ascii=False)
+    return v if len(v) <= n else v[: n - 1] + "…"
+
+
 def _out_cap(s: Sample, ref_text: str | None = None, model: str = "") -> int:
     """The output limit a call runs with. Production's own limit when it set one (plus room for
     hidden reasoning on reasoning models); otherwise a generous one (4x the reference answer + 256,
@@ -501,6 +509,14 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
         first_error = None
         field_miss: dict[str, int] = {}
         field_stats: dict[str, dict] = {}
+        examples: dict[str, list] = {}
+
+        def note(key, s_, ref_v, cand_v, why=None):
+            ex = examples.setdefault(key, [])
+            if len(ex) < EXAMPLES_PER_FIELD:
+                user = next((m["content"] for m in reversed(s_.messages) if m["role"] == "user"), "")
+                ex.append({"sample": s_.id, "input": user[:300], "reference": _short(ref_v), "candidate": _short(cand_v),
+                           **({"why": why} if why else {})})
         field_scores, lat, costs, base_for_same = [], [], [], []
         judge_tally = {"not_worse": 0, "worse": 0, "unclear": 0}
         for s in samples:
@@ -529,8 +545,12 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
                     if ok is not None:
                         fs["n"] += 1
                         fs["agree"] += 1 if ok else 0
-                    if ok is False and role in ("fact", "prose"):
-                        field_miss[f] = field_miss.get(f, 0) + 1
+                    if ok is False and role in ("fact", "prose", "judgment"):
+                        if role != "judgment":
+                            field_miss[f] = field_miss.get(f, 0) + 1
+                        rj, cj = gates._flatten(gates.parse_json(ref)), gates._flatten(gates.parse_json(e.get("text")))
+                        note(f, s, rj.get(f, "(missing)"), cj.get(f, "(missing)"),
+                             "judged worse" if role == "prose" and prose_judged else None)
                 sc["pass"] = gates.extraction_verdict({f: tuple(v) for f, v in sc["fields"].items()}, verdicts)
                 if sc["pass"] is not None:
                     sc["reason"] = None if sc["pass"] else "fields differ"
@@ -550,6 +570,11 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
             if sc["pass"] is None:
                 per_sample.append({"sample": s.id, "model": c, **sc})
                 continue
+            if sc["pass"] is False and task != "extraction":
+                note("label" if task == "classification" else "answer", s, ref, e.get("text") or e.get("error"),
+                     sc.get("reason") or ("judged worse" if task == "generation" else None))
+            elif sc["pass"] is False and task == "extraction" and not sc.get("fields"):
+                note("(whole answer)", s, ref, e.get("text") or e.get("error"), sc.get("reason"))
             n += 1
             k += 1 if sc["pass"] else 0
             if "field_score" in sc:
@@ -575,6 +600,7 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
             "model": c, "verdict": v, "pass_rate": round(k / n, 4) if n else None, "passed": k, "scored": n,
             "lower_95": round(lo, 4), "upper_95": round(hi, 4), "samples_needed": need, "errors": errors,
             "first_error": first_error,
+            "examples": examples or None,
             "field_mismatch": dict(sorted(field_miss.items(), key=lambda kv: -kv[1])[:8]) or None,
             "stopped_early": c in stopped,
             "field_agreement": round(sum(field_scores) / len(field_scores), 4) if field_scores else None,

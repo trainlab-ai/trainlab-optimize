@@ -285,3 +285,43 @@ def test_validated_finding_shows_the_tested_model_not_the_static_guess():
                          "lower_95": 0.973, "savings_pct": 0.94}]}
     ax.apply([f], [site], {}, [x])
     assert "candidate_model" not in f.evidence and f.evidence["tested_model"] == "gpt-4o-mini"
+
+
+def test_run_all_with_judge_does_not_starve_cheap_sites(desk_run):
+    """A judged extraction is estimated far above a one-word classification. Sharing the budget by
+    estimate alone once left triage too little for gpt-5-mini's worst-case reservations (4,096
+    reasoning tokens a call, 4 in flight), and it stopped part-way. Each share now covers that."""
+    import shutil
+    work, _, _ = desk_run
+    ws = work / "ws-judge"
+    shutil.copytree(work / "ws", ws, ignore=shutil.ignore_patterns("experiments", "report"))
+    srv = subprocess.Popen([sys.executable, str(DESK / "mock_openai.py"), "--port", "0"],
+                           stdout=subprocess.PIPE, text=True)
+    try:
+        url = srv.stdout.readline().split()[4]
+        r = _cli("--workspace", str(ws), "experiment", "run", "--max-cost", "0.5", "--judge", "gpt-4.1",
+                 cwd=work, env={"OPENAI_BASE_URL": url, "OPENAI_API_KEY": "mock"})
+        show = _cli("--workspace", str(ws), "experiment", "list", cwd=work)
+    finally:
+        srv.terminate()
+        srv.wait()
+    assert r.returncode == 0, r.stdout + r.stderr
+    assert "stopped: budget" not in r.stdout and "ran out of its share" not in r.stdout
+    assert r.stdout.count("Validated: `gpt-4o-mini`") == 2            # triage and extraction
+    xid = next(ln.split()[0] for ln in show.stdout.splitlines() if "triage.py" in ln)
+    ex = _cli("--workspace", str(ws), "experiment", "show", xid, "--examples", cwd=work)
+    assert "where it disagreed with gpt-4o (current)" in ex.stdout and "candidate:" in ex.stdout
+
+
+def test_budget_share_covers_worst_case_reservations():
+    """The numbers from the real run that starved triage: estimates triage $0.0118, judged extraction
+    $0.2356, judged replies $0.168, a skipped digest, sentiment $0.0003; gpt-5-mini reserves $0.0083
+    a call, 4 at a time."""
+    from trainlab_optimize.experiment.cli import budget_share
+    ests = [0.0118, 0.2356, 0.168, 0.0, 0.0003]
+    floors = [0.0083 * 2 * 4, 0.0092 * 2 * 4, 0.0019 * 2 * 4, 0.0, 0.0018 * 2 * 4]
+    triage = budget_share(1.0, ests, floors, 0)
+    assert triage >= 0.0083 * 2 * 4 > 0.0284                 # 0.0284 is what it got, and it stopped
+    assert budget_share(1.0, ests, floors, 1) > 0.5           # the judged site still gets the most
+    assert budget_share(0.05, ests, floors, 0) == 0.05         # never more than what's left
+    assert budget_share(1.0, [0, 0], [0, 0], 0) == 0.5         # no estimates: even split

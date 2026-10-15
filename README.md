@@ -273,7 +273,9 @@ answers, never from how candidates did:
 | judgment | `urgency`, `priority`, `severity`, `sentiment`, `confidence`, `rating`... | no: agreement with the current model is measured and shown, because the current model's rating is an opinion, not the truth |
 | ignored | `--ignore-fields internal_note` | not compared |
 
-`--strict-fields urgency` makes any field a fact. The output and the report show agreement per
+`trainlab experiment show ID --examples` prints the disagreements behind a verdict: the input,
+the current model's answer and the candidate's, a few per field, so you can tell a real mistake
+from a naming difference before deciding. `--strict-fields urgency` makes any field a fact. The output and the report show agreement per
 field, for example `facts (must match): order_id 97/97, product 95/97 · prose (judged): summary
 94/97 · judgment, not scored: urgency 61/97`, and a validated finding says what it didn't score.
 To score a judgment field for real, give expected answers (`--expected-column`) and every model,
@@ -472,7 +474,7 @@ trainlab prices show MODEL | prices info | prices update
 trainlab experiment plan [--site PATH:LINE] [--samples FILE] [--candidates M1,M2]
 trainlab experiment run [--site PATH:LINE | --samples FILE --baseline M] [--candidates M1,M2] [--max-cost USD]
                         [--judge MODEL] [--task ...] [--n 100] [--calibrate] [--yes] [--open]
-trainlab experiment list | show ID
+trainlab experiment list | show ID [--examples]
 ```
 
 All state lives in `.trainlab/` (git-ignored automatically). Use `--workspace DIR` to
