@@ -177,10 +177,10 @@ def test_experiment_run_without_site_tests_every_captured_site(desk_run):
     assert "costs more per call: not recommended" in r.stdout        # gpt-5-nano on sentiment (reasoning tokens)
     rep = json.loads((work / "ws" / "report" / "trainlab-report.json").read_text())
     titles = [f["title"] for f in rep["findings"]]
-    # routing: gpt-4o-mini agrees on every ticket; extraction: small models judge `urgency` differently
-    # on a few tickets (as real ones do), and the output names that field
-    assert sum(1 for t in titles if t.startswith("Validated: switch `gpt-4o` to `gpt-4o-mini`")) == 1
-    assert "fields that differ (samples): urgency" in r.stdout
+    # routing and extraction both validate: the small models disagree with gpt-4o on `urgency` now
+    # and then, a judgment field that is measured and shown but not scored
+    assert sum(1 for t in titles if t.startswith("Validated: switch `gpt-4o` to `gpt-4o-mini`")) == 2
+    assert "judgment, not scored: urgency" in r.stdout and "facts (must match): order_id" in r.stdout
     assert not any("gpt-5-nano" in t and t.startswith("Validated") for t in titles)
     assert "empty answer" not in r.stdout          # reasoning models get room to answer
 
@@ -215,22 +215,47 @@ def test_empty_answers_are_errors_not_quality_failures(tmp_path, monkeypatch):
     assert c["verdict"] == "ERROR" and c["errors"] == c["scored"] and "empty answer" in c["first_error"]
 
 
-def test_extraction_reports_which_fields_differ(tmp_path, monkeypatch):
+def test_extraction_scores_fields_by_role(tmp_path, monkeypatch):
+    """Facts decide, `urgency` is measured but not scored, prose differing in wording goes to the judge."""
     from trainlab_optimize.experiment.clients import Result
-    from trainlab_optimize.experiment.gates import json_diff_fields
+    from trainlab_optimize.experiment.gates import field_roles, json_diff_fields
     from trainlab_optimize.experiment.runner import run
+    assert field_roles([{"order_id": "NW-1", "urgency": "high", "summary": "a b c", "notes": "x",
+                         "address": "221B Baker Street London NW1 6XE United Kingdom"}], ignore=["notes"]) == {
+        "order_id": "fact", "urgency": "judgment", "summary": "prose", "notes": "ignore", "address": "fact"}
+    assert field_roles([{"urgency": "high"}], strict=["urgency"]) == {"urgency": "fact"}
     assert json_diff_fields({"a": 1, "u": "high"}, {"a": 1, "u": "normal"}) == ["u"]
     assert json_diff_fields({"a": 1}, None) == ["(invalid JSON)"]
     monkeypatch.setenv("OPENAI_API_KEY", "x")
-    samples = _samples(40, lambda i: json.dumps({"order_id": f"NW-{i}", "urgency": "high"}))
+    ref = lambda i: json.dumps({"order_id": f"NW-{i}", "urgency": "high",
+                                "summary": f"Customer {i} was charged twice and asks for a refund"})
+    samples = _samples(40, ref)
 
     def call_fn(route, messages, params):
-        i = int(messages[-1]["content"].split()[-1])
-        return Result(text=json.dumps({"order_id": f"NW-{i}", "urgency": "normal" if i % 4 == 0 else "high"}),
-                      input_tokens=20, output_tokens=10, latency_ms=1.0)
-    res = run(Config(baseline="gpt-4o", candidates=["gpt-4o-mini"], max_cost=5, early_stop=False), samples, tmp_path,
-              call_fn=call_fn)
-    assert res["candidates"][0]["field_mismatch"] == {"urgency": 10}
+        text = messages[-1]["content"]
+        if "field_a" in text:                                   # the judge: wording differs, same meaning
+            return Result(text="TIE", input_tokens=50, output_tokens=1, latency_ms=1.0)
+        i = int(text.split()[-1])
+        out = {"order_id": f"NW-{i}" if i % 10 else "NW-0000", "urgency": "normal" if i % 4 == 0 else "high",
+               "summary": f"Duplicate billing on account {i}; refund requested" if i % 2 else
+                          f"Customer {i} was charged twice and asks for a refund"}
+        return Result(text=json.dumps(out), input_tokens=20, output_tokens=10, latency_ms=1.0)
+
+    cfg = Config(baseline="gpt-4o", candidates=["gpt-4o-mini"], max_cost=5, early_stop=False)
+    c = run(cfg, samples, tmp_path / "a", call_fn=call_fn)["candidates"][0]
+    assert c["fields"]["urgency"] == {"role": "judgment", "agree": 30, "n": 40, "rate": 0.75}
+    assert c["fields"]["order_id"]["agree"] == 36 and c["field_mismatch"] == {"summary": 20, "order_id": 4}
+    assert c["passed"] == 16          # no judge: the 20 reworded summaries count as misses, and 4 wrong order ids
+
+    cfg = Config(baseline="gpt-4o", candidates=["gpt-4o-mini"], max_cost=5, early_stop=False, judge="gpt-4.1")
+    res = run(cfg, samples, tmp_path / "b", call_fn=call_fn)
+    c = res["candidates"][0]
+    assert res["prose_scoring"] == "judge" and c["fields"]["summary"]["agree"] == 40
+    assert c["passed"] == 36 and c["field_mismatch"] == {"order_id": 4}    # only the wrong order ids fail
+
+    cfg = Config(baseline="gpt-4o", candidates=["gpt-4o-mini"], max_cost=5, early_stop=False, judge="gpt-4.1",
+                 strict_fields=["urgency"])
+    assert run(cfg, samples, tmp_path / "c", call_fn=call_fn)["candidates"][0]["passed"] == 28   # 8 more: urgency
 
 
 def test_server_route_matching_is_not_a_call_site(tmp_path):

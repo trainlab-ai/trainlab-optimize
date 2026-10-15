@@ -1,5 +1,5 @@
 {
- "seconds": 74,
+ "seconds": 78,
  "rows": [
   {
    "repo": "1Panel-dev/MaxKB",
@@ -14,7 +14,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.955
+    "gpt-5-nano": 0.98
    },
    "plan_max": 0.2103,
    "cli": false,
@@ -25,11 +25,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.004466 vs zoo log $0.004466"
+     "detail": "engine $0.004468 vs zoo log $0.004468"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.002293, 0.002174] of [0.00246262, 0.27339]; stopped=None"
+     "detail": "spent [0.002293, 0.002175] of [0.00246278, 0.27339]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -37,7 +37,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -50,12 +50,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.975 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.975 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -63,24 +63,24 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.4249 vs log 0.4249"
     },
     "X03": {
      "status": "pass",
-     "detail": "inconclusive: estimate kept"
+     "detail": "finding R110 tier validated saving None vs None"
     }
    },
-   "exact_cost": 0.004466199999999998,
+   "exact_cost": 0.004467799999999998,
    "worst_call": 0.00192,
    "result": {
     "id": "1Panel-dev__MaxKB-0",
     "task": "extraction",
     "threshold": 0.95,
     "reference": "baseline model",
-    "recommended": null,
-    "spent_usd": 0.004466,
-    "spent_this_run_usd": 0.002174,
+    "recommended": "gpt-5-nano",
+    "spent_usd": 0.004468,
+    "spent_this_run_usd": 0.002175,
     "stopped": null,
     "calls": {
      "new_calls": 119,
@@ -88,21 +88,21 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
-     "verdict": "INCONCLUSIVE",
-     "passed": 97,
+     "verdict": "PASS",
+     "passed": 99,
      "scored": 100,
-     "lower_95": 0.9273,
-     "upper_95": 0.9879,
-     "savings_pct": 0.4255,
+     "lower_95": 0.9564,
+     "upper_95": 0.9978,
+     "savings_pct": 0.4249,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": 280
+     "samples_needed": null
     }
    ]
   },
@@ -146,7 +146,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -197,7 +197,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -279,7 +279,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -330,7 +330,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -385,7 +385,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.98
+    "gpt-5-nano": 0.955
    },
    "plan_max": 0.4976,
    "cli": false,
@@ -396,11 +396,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.004462 vs zoo log $0.004462"
+     "detail": "engine $0.003509 vs zoo log $0.003509"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.004462] of [0.64688]; stopped=None"
+     "detail": "spent [0.003509] of [0.64688]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -408,11 +408,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "11 injected 429/500, 0 unrecovered"
+     "detail": "8 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -421,12 +421,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.975 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.975 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -442,7 +442,7 @@
      "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.0044616000000000005,
+   "exact_cost": 0.0044540000000000005,
    "worst_call": 0.003609,
    "result": {
     "id": "Abraxas-365__langchain-rust-0",
@@ -450,28 +450,28 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.004462,
-    "spent_this_run_usd": 0.004462,
+    "spent_usd": 0.003509,
+    "spent_this_run_usd": 0.003509,
     "stopped": null,
     "calls": {
-     "new_calls": 200,
+     "new_calls": 142,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
      "verdict": "INCONCLUSIVE",
-     "passed": 95,
-     "scored": 100,
-     "lower_95": 0.9008,
-     "upper_95": 0.9755,
-     "savings_pct": 0.4248,
-     "stopped_early": false,
+     "passed": 38,
+     "scored": 42,
+     "lower_95": 0.804,
+     "upper_95": 0.9565,
+     "savings_pct": 0.4276,
+     "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     }
@@ -513,7 +513,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -568,7 +568,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -626,7 +626,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -677,7 +677,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -734,9 +734,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-4.1-mini": 0.999,
-    "gpt-5-mini": 0.98,
-    "gpt-4o-mini": 0.955
+    "gpt-4.1-mini": 0.9,
+    "gpt-5-mini": 0.8,
+    "gpt-4o-mini": 0.3
    },
    "plan_max": 2.8424,
    "cli": false,
@@ -747,11 +747,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.079659 vs zoo log $0.079659"
+     "detail": "engine $0.122438 vs zoo log $0.122438"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.079659] of [3.69512]; stopped=None"
+     "detail": "spent [0.122438] of [3.69512]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -759,7 +759,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -772,12 +772,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.999 -> PASS; gpt-5-mini true 0.980 -> PASS; gpt-4o-mini true 0.956 -> PASS",
+     "detail": "gpt-4.1-mini true 0.902 -> PASS; gpt-5-mini true 0.804 -> FAIL; gpt-4o-mini true 0.314 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.999 -> PASS; gpt-5-mini true 0.980 -> PASS; gpt-4o-mini true 0.956 -> PASS",
+     "detail": "gpt-4.1-mini true 0.902 -> PASS; gpt-5-mini true 0.804 -> FAIL; gpt-4o-mini true 0.314 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -786,66 +786,66 @@
     },
     "X10": {
      "status": "pass",
-     "detail": "engine 0.6521 vs log 0.6521"
+     "detail": "engine 0.0590 vs log 0.059"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving 0.9028592730466667 vs 0.9028592730466667"
+     "detail": "finding R110 tier validated saving 0.08168792686666666 vs 0.08168792686666666"
     }
    },
-   "exact_cost": 0.009236600000000017,
+   "exact_cost": 0.009485800000000011,
    "worst_call": 0.018157,
    "result": {
     "id": "BerriAI__litellm-1",
     "task": "generation",
     "threshold": 0.9,
     "reference": "baseline model",
-    "recommended": "gpt-4o-mini",
-    "spent_usd": 0.079659,
-    "spent_this_run_usd": 0.079659,
+    "recommended": "gpt-4.1-mini",
+    "spent_usd": 0.122438,
+    "spent_this_run_usd": 0.122438,
     "stopped": null,
     "calls": {
-     "new_calls": 655,
-     "cached": 345,
+     "new_calls": 806,
+     "cached": 194,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-4.1-mini",
      "verdict": "PASS",
-     "passed": 100,
+     "passed": 95,
      "scored": 100,
-     "lower_95": 0.9737,
-     "upper_95": 1.0,
-     "savings_pct": 0.0679,
+     "lower_95": 0.9008,
+     "upper_95": 0.9755,
+     "savings_pct": 0.059,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-5-mini",
-     "verdict": "PASS",
-     "passed": 99,
+     "verdict": "FAIL",
+     "passed": 76,
      "scored": 100,
-     "lower_95": 0.9564,
-     "upper_95": 0.9978,
-     "savings_pct": 0.095,
+     "lower_95": 0.6835,
+     "upper_95": 0.8228,
+     "savings_pct": 0.0564,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-4o-mini",
-     "verdict": "PASS",
-     "passed": 97,
+     "verdict": "FAIL",
+     "passed": 28,
      "scored": 100,
-     "lower_95": 0.9273,
-     "upper_95": 0.9879,
-     "savings_pct": 0.6521,
+     "lower_95": 0.2127,
+     "upper_95": 0.3589,
+     "savings_pct": 0.6136,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -888,7 +888,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -939,7 +939,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -993,7 +993,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -1044,7 +1044,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -1077,9 +1077,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-4.1-mini": 0.9,
-    "gpt-5-mini": 0.8,
-    "gpt-4o-mini": 0.3
+    "gpt-4.1-mini": 0.999,
+    "gpt-5-mini": 0.98,
+    "gpt-4o-mini": 0.955
    },
    "plan_max": 15.8468,
    "cli": false,
@@ -1090,11 +1090,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.069064 vs zoo log $0.069064"
+     "detail": "engine $0.079435 vs zoo log $0.079435"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.069064] of [20.60084]; stopped=None"
+     "detail": "spent [0.079435] of [20.60084]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -1102,11 +1102,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "9 injected 429/500, 0 unrecovered"
+     "detail": "16 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -1115,12 +1115,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.895 -> FAIL; gpt-5-mini true 0.796 -> FAIL; gpt-4o-mini true 0.298 -> FAIL",
+     "detail": "gpt-4.1-mini true 0.994 -> INCONCLUSIVE; gpt-5-mini true 0.975 -> INCONCLUSIVE; gpt-4o-mini true 0.950 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.895 -> FAIL; gpt-5-mini true 0.796 -> FAIL; gpt-4o-mini true 0.298 -> FAIL",
+     "detail": "gpt-4.1-mini true 0.994 -> INCONCLUSIVE; gpt-5-mini true 0.975 -> INCONCLUSIVE; gpt-4o-mini true 0.950 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -1133,10 +1133,10 @@
     },
     "X03": {
      "status": "pass",
-     "detail": "all failed; finding Tested: no cheaper model kept quality for `openai/gpt-5.4`"
+     "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.08050330000000001,
+   "exact_cost": 0.08130410000000005,
    "worst_call": 0.135416,
    "result": {
     "id": "CopilotKit__CopilotKit-0",
@@ -1144,51 +1144,51 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.069064,
-    "spent_this_run_usd": 0.069064,
+    "spent_usd": 0.079435,
+    "spent_this_run_usd": 0.079435,
     "stopped": null,
     "calls": {
-     "new_calls": 204,
+     "new_calls": 333,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-4.1-mini",
-     "verdict": "FAIL",
-     "passed": 29,
-     "scored": 37,
-     "lower_95": 0.6552,
-     "upper_95": 0.8736,
+     "verdict": "INCONCLUSIVE",
+     "passed": 98,
+     "scored": 100,
+     "lower_95": 0.9413,
+     "upper_95": 0.9934,
      "savings_pct": 0.8797,
-     "stopped_early": true,
+     "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 118
     },
     {
      "model": "gpt-5-mini",
-     "verdict": "FAIL",
-     "passed": 25,
-     "scored": 34,
-     "lower_95": 0.5969,
-     "upper_95": 0.839,
-     "savings_pct": 0.8772,
-     "stopped_early": true,
+     "verdict": "INCONCLUSIVE",
+     "passed": 98,
+     "scored": 100,
+     "lower_95": 0.9413,
+     "upper_95": 0.9934,
+     "savings_pct": 0.8713,
+     "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 118
     },
     {
      "model": "gpt-4o-mini",
      "verdict": "FAIL",
-     "passed": 11,
+     "passed": 28,
      "scored": 33,
-     "lower_95": 0.2156,
-     "upper_95": 0.4764,
-     "savings_pct": 0.9599,
+     "lower_95": 0.7199,
+     "upper_95": 0.9243,
+     "savings_pct": 0.955,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -1210,9 +1210,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-4.1-mini": 0.8,
-    "gpt-5-mini": 0.3,
-    "gpt-4o-mini": 0.999
+    "gpt-4.1-mini": 0.3,
+    "gpt-5-mini": 0.999,
+    "gpt-4o-mini": 0.98
    },
    "plan_max": 15.8546,
    "cli": false,
@@ -1223,11 +1223,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.077902 vs zoo log $0.077902"
+     "detail": "engine $0.083470 vs zoo log $0.083470"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.077902] of [20.61098]; stopped=None"
+     "detail": "spent [0.08347] of [20.61098]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -1235,11 +1235,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "16 injected 429/500, 0 unrecovered"
+     "detail": "19 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -1248,12 +1248,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.796 -> FAIL; gpt-5-mini true 0.298 -> FAIL; gpt-4o-mini true 0.994 -> PASS",
+     "detail": "gpt-4.1-mini true 0.298 -> FAIL; gpt-5-mini true 0.994 -> PASS; gpt-4o-mini true 0.975 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.796 -> FAIL; gpt-5-mini true 0.298 -> FAIL; gpt-4o-mini true 0.994 -> PASS",
+     "detail": "gpt-4.1-mini true 0.298 -> FAIL; gpt-5-mini true 0.994 -> PASS; gpt-4o-mini true 0.975 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -1269,7 +1269,7 @@
      "detail": "finding R101 tier validated saving 43.96718983364997 vs 43.96718983364997"
     }
    },
-   "exact_cost": 0.08775690000000011,
+   "exact_cost": 0.08839090000000016,
    "worst_call": 0.135476,
    "result": {
     "id": "CopilotKit__CopilotKit-1",
@@ -1277,50 +1277,50 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": "gpt-4o-mini",
-    "spent_usd": 0.077902,
-    "spent_this_run_usd": 0.077902,
+    "spent_usd": 0.08347,
+    "spent_this_run_usd": 0.08347,
     "stopped": null,
     "calls": {
-     "new_calls": 273,
+     "new_calls": 332,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-4.1-mini",
      "verdict": "FAIL",
-     "passed": 33,
-     "scored": 38,
-     "lower_95": 0.7534,
-     "upper_95": 0.9345,
-     "savings_pct": 0.8836,
+     "passed": 11,
+     "scored": 32,
+     "lower_95": 0.2228,
+     "upper_95": 0.4891,
+     "savings_pct": 0.8876,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-5-mini",
-     "verdict": "FAIL",
-     "passed": 13,
-     "scored": 35,
-     "lower_95": 0.2509,
-     "upper_95": 0.5104,
-     "savings_pct": 0.8988,
-     "stopped_early": true,
+     "verdict": "PASS",
+     "passed": 100,
+     "scored": 100,
+     "lower_95": 0.9737,
+     "upper_95": 1.0,
+     "savings_pct": 0.8759,
+     "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-4o-mini",
      "verdict": "PASS",
-     "passed": 100,
+     "passed": 99,
      "scored": 100,
-     "lower_95": 0.9737,
-     "upper_95": 1.0,
+     "lower_95": 0.9564,
+     "upper_95": 0.9978,
      "savings_pct": 0.9558,
      "stopped_early": false,
      "errors": 0,
@@ -1364,7 +1364,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -1415,7 +1415,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -1446,7 +1446,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.98
+    "gpt-5-nano": 0.8
    },
    "plan_max": 0.2103,
    "cli": false,
@@ -1457,11 +1457,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.002298 vs zoo log $0.002298"
+     "detail": "engine $0.002271 vs zoo log $0.002271"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.002298] of [0.00246066]; stopped=budget"
+     "detail": "spent [0.002271] of [0.0024535]; stopped=budget"
     },
     "X11": {
      "status": "pass",
@@ -1469,7 +1469,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -1482,12 +1482,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.980 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.800 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.980 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.800 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -1503,7 +1503,7 @@
      "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.0044466,
+   "exact_cost": 0.004374999999999999,
    "worst_call": 0.00192,
    "result": {
     "id": "Grt1228__chatgpt-java-0",
@@ -1511,16 +1511,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.002298,
-    "spent_this_run_usd": 0.002298,
+    "spent_usd": 0.002271,
+    "spent_this_run_usd": 0.002271,
     "stopped": "budget",
     "calls": {
-     "new_calls": 81,
+     "new_calls": 80,
      "cached": 0,
      "skipped_budget": 2
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -1552,8 +1552,8 @@
     "claude-haiku-5-5"
    ],
    "design": {
-    "claude-haiku-4-5": 0.3,
-    "claude-haiku-5-5": 0.999
+    "claude-haiku-4-5": 0.955,
+    "claude-haiku-5-5": 0.9
    },
    "plan_max": 0.6173,
    "cli": false,
@@ -1568,7 +1568,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.009462] of [0.01354348]; stopped=budget"
+     "detail": "spent [0.009462] of [0.01387098]; stopped=budget"
     },
     "X11": {
      "status": "pass",
@@ -1576,7 +1576,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -1589,12 +1589,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.298 -> INCONCLUSIVE; claude-haiku-5-5 true 0.994 -> INCONCLUSIVE",
+     "detail": "claude-haiku-4-5 true 0.950 -> INCONCLUSIVE; claude-haiku-5-5 true 0.895 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.298 -> INCONCLUSIVE; claude-haiku-5-5 true 0.994 -> INCONCLUSIVE",
+     "detail": "claude-haiku-4-5 true 0.950 -> INCONCLUSIVE; claude-haiku-5-5 true 0.895 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -1610,7 +1610,7 @@
      "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.08796430000000001,
+   "exact_cost": 0.09123929999999998,
    "worst_call": 0.004521,
    "result": {
     "id": "Helicone__helicone-0",
@@ -1627,7 +1627,7 @@
      "skipped_budget": 2
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -1671,8 +1671,8 @@
     "claude-haiku-5-5"
    ],
    "design": {
-    "claude-haiku-4-5": 0.98,
-    "claude-haiku-5-5": 0.955
+    "claude-haiku-4-5": 0.8,
+    "claude-haiku-5-5": 0.3
    },
    "plan_max": 3.7266,
    "cli": false,
@@ -1683,11 +1683,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.097955 vs zoo log $0.097955"
+     "detail": "engine $0.121373 vs zoo log $0.121374"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.097955] of [4.84458]; stopped=None"
+     "detail": "spent [0.121374] of [4.84458]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -1695,7 +1695,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -1708,12 +1708,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.980 -> PASS; claude-haiku-5-5 true 0.956 -> PASS",
+     "detail": "claude-haiku-4-5 true 0.804 -> FAIL; claude-haiku-5-5 true 0.314 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.980 -> PASS; claude-haiku-5-5 true 0.956 -> PASS",
+     "detail": "claude-haiku-4-5 true 0.804 -> FAIL; claude-haiku-5-5 true 0.314 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -1721,55 +1721,55 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.9658 vs log 0.9658"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving 280.50298159619996 vs 280.50298159619996"
+     "detail": "all failed; finding none (no R101)"
     }
    },
-   "exact_cost": 0.03173300000000006,
+   "exact_cost": 0.03215950000000008,
    "worst_call": 0.033993,
    "result": {
     "id": "Helicone__helicone-1",
     "task": "generation",
     "threshold": 0.9,
     "reference": "baseline model",
-    "recommended": "claude-haiku-5-5",
-    "spent_usd": 0.097955,
-    "spent_this_run_usd": 0.097955,
+    "recommended": null,
+    "spent_usd": 0.121373,
+    "spent_this_run_usd": 0.121374,
     "stopped": null,
     "calls": {
-     "new_calls": 539,
-     "cached": 161,
+     "new_calls": 619,
+     "cached": 81,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "claude-haiku-4-5",
-     "verdict": "PASS",
-     "passed": 98,
+     "verdict": "FAIL",
+     "passed": 73,
      "scored": 100,
-     "lower_95": 0.9413,
-     "upper_95": 0.9934,
-     "savings_pct": 0.6667,
+     "lower_95": 0.6516,
+     "upper_95": 0.7963,
+     "savings_pct": 0.6516,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "claude-haiku-5-5",
-     "verdict": "PASS",
-     "passed": 95,
+     "verdict": "FAIL",
+     "passed": 26,
      "scored": 100,
-     "lower_95": 0.9008,
-     "upper_95": 0.9755,
-     "savings_pct": 0.9658,
+     "lower_95": 0.1948,
+     "upper_95": 0.3378,
+     "savings_pct": 0.9625,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -1791,9 +1791,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-5-mini": 0.955,
-    "gpt-4.1-mini": 0.9,
-    "gpt-4o-mini": 0.8
+    "gpt-5-mini": 0.999,
+    "gpt-4.1-mini": 0.98,
+    "gpt-4o-mini": 0.955
    },
    "plan_max": 3.4418,
    "cli": true,
@@ -1804,11 +1804,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.031740 vs zoo log $0.031740"
+     "detail": "engine $0.040471 vs zoo log $0.040471"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.03174] of [4.47434]; stopped=None"
+     "detail": "spent [0.040471] of [4.47434]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -1816,11 +1816,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "13 injected 429/500, 0 unrecovered"
+     "detail": "19 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -1829,12 +1829,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-mini true 0.950 -> INCONCLUSIVE; gpt-4.1-mini true 0.895 -> FAIL; gpt-4o-mini true 0.796 -> FAIL",
+     "detail": "gpt-5-mini true 0.994 -> INCONCLUSIVE; gpt-4.1-mini true 0.975 -> INCONCLUSIVE; gpt-4o-mini true 0.950 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-mini true 0.950 -> INCONCLUSIVE; gpt-4.1-mini true 0.895 -> FAIL; gpt-4o-mini true 0.796 -> FAIL",
+     "detail": "gpt-5-mini true 0.994 -> INCONCLUSIVE; gpt-4.1-mini true 0.975 -> INCONCLUSIVE; gpt-4o-mini true 0.950 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -1854,7 +1854,7 @@
      "detail": "ran (task extraction, judge None, 100 samples)"
     }
    },
-   "exact_cost": 0.040186399999999955,
+   "exact_cost": 0.04047099999999995,
    "worst_call": 0.018047,
    "result": {
     "id": "JetBrains__koog-0",
@@ -1862,52 +1862,52 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.03174,
-    "spent_this_run_usd": 0.03174,
+    "spent_usd": 0.040471,
+    "spent_this_run_usd": 0.040471,
     "stopped": null,
     "calls": {
-     "new_calls": 248,
+     "new_calls": 400,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-mini",
      "verdict": "INCONCLUSIVE",
-     "passed": 37,
-     "scored": 41,
-     "lower_95": 0.7996,
-     "upper_95": 0.9554,
-     "savings_pct": 0.6426,
-     "stopped_early": true,
+     "passed": 97,
+     "scored": 100,
+     "lower_95": 0.9273,
+     "upper_95": 0.9879,
+     "savings_pct": 0.6357,
+     "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 280
     },
     {
      "model": "gpt-4.1-mini",
-     "verdict": "FAIL",
-     "passed": 67,
-     "scored": 74,
-     "lower_95": 0.8343,
-     "upper_95": 0.9479,
-     "savings_pct": 0.6601,
-     "stopped_early": true,
+     "verdict": "INCONCLUSIVE",
+     "passed": 97,
+     "scored": 100,
+     "lower_95": 0.9273,
+     "upper_95": 0.9879,
+     "savings_pct": 0.6566,
+     "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 280
     },
     {
      "model": "gpt-4o-mini",
-     "verdict": "FAIL",
-     "passed": 28,
-     "scored": 33,
-     "lower_95": 0.7199,
-     "upper_95": 0.9243,
-     "savings_pct": 0.877,
-     "stopped_early": true,
+     "verdict": "INCONCLUSIVE",
+     "passed": 93,
+     "scored": 100,
+     "lower_95": 0.8757,
+     "upper_95": 0.9616,
+     "savings_pct": 0.8711,
+     "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     }
@@ -1928,7 +1928,7 @@
    "design": {
     "gpt-5-nano": 0.9
    },
-   "plan_max": 0.4527,
+   "plan_max": 0.2038,
    "cli": false,
    "checks": {
     "X01": {
@@ -1941,15 +1941,15 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.000711, 0.040149] of [0.00262614, 0.58851]; stopped=None"
+     "detail": "spent [0.000672, 0.040188] of [0.00213369, 0.26494]; stopped=None"
     },
     "X11": {
      "status": "pass",
-     "detail": "0 duplicate paid requests; first run stopped=budget, resumed run reused 164 cached; resume not testable: one worst-case call costs more than the whole run"
+     "detail": "0 duplicate paid requests; first run stopped=budget, resumed run reused 156 cached; resume not testable: one worst-case call costs more than the whole run"
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -1984,7 +1984,7 @@
     }
    },
    "exact_cost": 0.0011979000000000002,
-   "worst_call": 0.002387,
+   "worst_call": 0.001918,
    "result": {
     "id": "Mintplex-Labs__anything-llm-0",
     "task": "generation",
@@ -1992,15 +1992,15 @@
     "reference": "expected answers",
     "recommended": null,
     "spent_usd": 0.04086,
-    "spent_this_run_usd": 0.040149,
+    "spent_this_run_usd": 0.040188,
     "stopped": null,
     "calls": {
-     "new_calls": 236,
-     "cached": 164,
+     "new_calls": 244,
+     "cached": 156,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -2042,11 +2042,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.003119 vs zoo log $0.003119"
+     "detail": "engine $0.003112 vs zoo log $0.003112"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.003119] of [0.22204]; stopped=None"
+     "detail": "spent [0.003112] of [0.22204]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -2054,11 +2054,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "9 injected 429/500, 0 unrecovered"
+     "detail": "8 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -2096,27 +2096,27 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.003119,
-    "spent_this_run_usd": 0.003119,
+    "spent_usd": 0.003112,
+    "spent_this_run_usd": 0.003112,
     "stopped": null,
     "calls": {
-     "new_calls": 142,
+     "new_calls": 141,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "command-r7b-12-2024",
      "verdict": "FAIL",
-     "passed": 34,
-     "scored": 42,
-     "lower_95": 0.6924,
-     "upper_95": 0.8892,
-     "savings_pct": 0.7591,
+     "passed": 33,
+     "scored": 41,
+     "lower_95": 0.6856,
+     "upper_95": 0.8864,
+     "savings_pct": 0.7597,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -2159,7 +2159,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -2210,7 +2210,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -2252,11 +2252,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.000948 vs zoo log $0.000948"
+     "detail": "engine $0.000955 vs zoo log $0.000955"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.000948] of [0.44226]; stopped=None"
+     "detail": "spent [0.000955] of [0.44226]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -2264,11 +2264,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "5 injected 429/500, 0 unrecovered"
+     "detail": "6 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -2306,16 +2306,16 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.000948,
-    "spent_this_run_usd": 0.000948,
+    "spent_usd": 0.000955,
+    "spent_this_run_usd": 0.000955,
     "stopped": null,
     "calls": {
-     "new_calls": 140,
+     "new_calls": 142,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -2323,10 +2323,10 @@
      "model": "gpt-5-nano",
      "verdict": "FAIL",
      "passed": 15,
-     "scored": 40,
-     "lower_95": 0.2608,
-     "upper_95": 0.505,
-     "savings_pct": 0.5995,
+     "scored": 42,
+     "lower_95": 0.2476,
+     "upper_95": 0.484,
+     "savings_pct": 0.599,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -2348,9 +2348,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-4.1-mini": 0.999,
-    "gpt-5-mini": 0.98,
-    "gpt-4o-mini": 0.955
+    "gpt-4.1-mini": 0.98,
+    "gpt-5-mini": 0.955,
+    "gpt-4o-mini": 0.9
    },
    "plan_max": 4.5905,
    "cli": false,
@@ -2361,11 +2361,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.070144 vs zoo log $0.070144"
+     "detail": "engine $0.068658 vs zoo log $0.068658"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.070144] of [5.96765]; stopped=None"
+     "detail": "spent [0.068658] of [5.96765]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -2373,11 +2373,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "25 injected 429/500, 0 unrecovered"
+     "detail": "22 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -2386,12 +2386,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.994 -> PASS; gpt-5-mini true 0.975 -> PASS; gpt-4o-mini true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-4.1-mini true 0.975 -> INCONCLUSIVE; gpt-5-mini true 0.950 -> INCONCLUSIVE; gpt-4o-mini true 0.895 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.994 -> PASS; gpt-5-mini true 0.975 -> PASS; gpt-4o-mini true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-4.1-mini true 0.975 -> INCONCLUSIVE; gpt-5-mini true 0.950 -> INCONCLUSIVE; gpt-4o-mini true 0.895 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -2399,68 +2399,68 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.8401 vs log 0.8401"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R101 tier validated saving 24.358170741059997 vs 24.358170741059997"
+     "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.07014369999999998,
+   "exact_cost": 0.07006069999999996,
    "worst_call": 0.022836,
    "result": {
     "id": "Portkey-AI__gateway-0",
     "task": "extraction",
     "threshold": 0.95,
     "reference": "baseline model",
-    "recommended": "gpt-4.1-mini",
-    "spent_usd": 0.070144,
-    "spent_this_run_usd": 0.070144,
+    "recommended": null,
+    "spent_usd": 0.068658,
+    "spent_this_run_usd": 0.068658,
     "stopped": null,
     "calls": {
-     "new_calls": 400,
+     "new_calls": 353,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-4.1-mini",
-     "verdict": "PASS",
-     "passed": 99,
+     "verdict": "INCONCLUSIVE",
+     "passed": 98,
      "scored": 100,
-     "lower_95": 0.9564,
-     "upper_95": 0.9978,
+     "lower_95": 0.9413,
+     "upper_95": 0.9934,
      "savings_pct": 0.8401,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 118
     },
     {
      "model": "gpt-5-mini",
-     "verdict": "PASS",
-     "passed": 99,
+     "verdict": "INCONCLUSIVE",
+     "passed": 96,
      "scored": 100,
-     "lower_95": 0.9564,
-     "upper_95": 0.9978,
-     "savings_pct": 0.8326,
+     "lower_95": 0.9138,
+     "upper_95": 0.9819,
+     "savings_pct": 0.8339,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 1210
     },
     {
      "model": "gpt-4o-mini",
-     "verdict": "INCONCLUSIVE",
-     "passed": 92,
-     "scored": 100,
-     "lower_95": 0.8635,
-     "upper_95": 0.9543,
-     "savings_pct": 0.9405,
-     "stopped_early": false,
+     "verdict": "FAIL",
+     "passed": 47,
+     "scored": 53,
+     "lower_95": 0.7957,
+     "upper_95": 0.9403,
+     "savings_pct": 0.9404,
+     "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     }
@@ -2494,11 +2494,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.056813 vs zoo log $0.056813"
+     "detail": "engine $0.056889 vs zoo log $0.056889"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.056813] of [5.94958]; stopped=None"
+     "detail": "spent [0.056889] of [5.94958]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -2506,7 +2506,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -2548,16 +2548,16 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.056813,
-    "spent_this_run_usd": 0.056813,
+    "spent_usd": 0.056889,
+    "spent_this_run_usd": 0.056889,
     "stopped": null,
     "calls": {
-     "new_calls": 299,
+     "new_calls": 300,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -2576,11 +2576,11 @@
     {
      "model": "gpt-5-mini",
      "verdict": "INCONCLUSIVE",
-     "passed": 59,
-     "scored": 65,
-     "lower_95": 0.8313,
-     "upper_95": 0.9515,
-     "savings_pct": 0.8266,
+     "passed": 60,
+     "scored": 66,
+     "lower_95": 0.8337,
+     "upper_95": 0.9523,
+     "savings_pct": 0.8264,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -2614,11 +2614,11 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-mini": 0.9,
-    "gpt-4o-mini": 0.8,
-    "gpt-5-nano": 0.3
+    "gpt-5-mini": 0.8,
+    "gpt-4o-mini": 0.3,
+    "gpt-5-nano": 0.999
    },
-   "plan_max": 2.6636,
+   "plan_max": 1.9169,
    "cli": false,
    "checks": {
     "X01": {
@@ -2627,11 +2627,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.117589 vs zoo log $0.117589"
+     "detail": "engine $0.115345 vs zoo log $0.115346"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.117589] of [3.46268]; stopped=None"
+     "detail": "spent [0.115346] of [2.49197]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -2639,7 +2639,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -2652,12 +2652,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-mini true 0.900 -> INCONCLUSIVE; gpt-4o-mini true 0.800 -> FAIL; gpt-5-nano true 0.300 -> FAIL",
+     "detail": "gpt-5-mini true 0.800 -> FAIL; gpt-4o-mini true 0.300 -> FAIL; gpt-5-nano true 0.999 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-mini true 0.900 -> INCONCLUSIVE; gpt-4o-mini true 0.800 -> FAIL; gpt-5-nano true 0.300 -> FAIL",
+     "detail": "gpt-5-mini true 0.800 -> FAIL; gpt-4o-mini true 0.300 -> FAIL; gpt-5-nano true 0.999 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -2665,67 +2665,67 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.8063 vs log 0.8063"
     },
     "X03": {
      "status": "pass",
-     "detail": "inconclusive: estimate kept"
+     "detail": "finding R110 tier validated saving 101.0450354452 vs 101.0450354452"
     }
    },
-   "exact_cost": 0.007027300000000002,
+   "exact_cost": 0.007069500000000011,
    "worst_call": 0.018039,
    "result": {
     "id": "QuantumNous__new-api-0",
     "task": "generation",
     "threshold": 0.9,
     "reference": "expected answers",
-    "recommended": null,
-    "spent_usd": 0.117589,
-    "spent_this_run_usd": 0.117589,
+    "recommended": "gpt-5-nano",
+    "spent_usd": 0.115345,
+    "spent_this_run_usd": 0.115346,
     "stopped": null,
     "calls": {
-     "new_calls": 799,
-     "cached": 201,
+     "new_calls": 791,
+     "cached": 209,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-mini",
-     "verdict": "INCONCLUSIVE",
-     "passed": 94,
+     "verdict": "FAIL",
+     "passed": 85,
      "scored": 100,
-     "lower_95": 0.8882,
-     "upper_95": 0.9687,
-     "savings_pct": 0.044,
+     "lower_95": 0.7821,
+     "upper_95": 0.8995,
+     "savings_pct": 0.0309,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": 138
+     "samples_needed": null
     },
     {
      "model": "gpt-4o-mini",
      "verdict": "FAIL",
-     "passed": 78,
+     "passed": 31,
      "scored": 100,
-     "lower_95": 0.705,
-     "upper_95": 0.8403,
-     "savings_pct": 0.6167,
+     "lower_95": 0.2398,
+     "upper_95": 0.3902,
+     "savings_pct": 0.5916,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-5-nano",
-     "verdict": "FAIL",
-     "passed": 27,
+     "verdict": "PASS",
+     "passed": 100,
      "scored": 100,
-     "lower_95": 0.2037,
-     "upper_95": 0.3484,
-     "savings_pct": 0.7835,
+     "lower_95": 0.9737,
+     "upper_95": 1.0,
+     "savings_pct": 0.8063,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -2768,7 +2768,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -2819,7 +2819,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -2861,11 +2861,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.000966 vs zoo log $0.000966"
+     "detail": "engine $0.000962 vs zoo log $0.000962"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.000966] of [0.37635]; stopped=None"
+     "detail": "spent [0.000962] of [0.37635]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -2873,7 +2873,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -2915,16 +2915,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.000966,
-    "spent_this_run_usd": 0.000966,
+    "spent_usd": 0.000962,
+    "spent_this_run_usd": 0.000962,
     "stopped": null,
     "calls": {
-     "new_calls": 141,
+     "new_calls": 140,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -2932,10 +2932,10 @@
      "model": "gpt-5-nano",
      "verdict": "FAIL",
      "passed": 16,
-     "scored": 41,
-     "lower_95": 0.2755,
-     "upper_95": 0.5186,
-     "savings_pct": 0.5887,
+     "scored": 40,
+     "lower_95": 0.2829,
+     "upper_95": 0.5298,
+     "savings_pct": 0.5886,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -2978,7 +2978,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -3033,7 +3033,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -3087,7 +3087,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -3138,7 +3138,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -3184,11 +3184,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.011231 vs zoo log $0.011231"
+     "detail": "engine $0.011287 vs zoo log $0.011287"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.011231] of [0.69966]; stopped=None"
+     "detail": "spent [0.011287] of [0.69966]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -3196,11 +3196,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "15 injected 429/500, 0 unrecovered"
+     "detail": "14 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -3209,12 +3209,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "mistral/mistral-small-latest true 0.950 -> INCONCLUSIVE; mistral/ministral-8b-latest true 0.895 -> FAIL; mistral/ministral-3b-latest true 0.796 -> FAIL",
+     "detail": "mistral/mistral-small-latest true 0.950 -> INCONCLUSIVE; mistral/ministral-8b-latest true 0.895 -> INCONCLUSIVE; mistral/ministral-3b-latest true 0.796 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "mistral/mistral-small-latest true 0.950 -> INCONCLUSIVE; mistral/ministral-8b-latest true 0.895 -> FAIL; mistral/ministral-3b-latest true 0.796 -> FAIL",
+     "detail": "mistral/mistral-small-latest true 0.950 -> INCONCLUSIVE; mistral/ministral-8b-latest true 0.895 -> INCONCLUSIVE; mistral/ministral-3b-latest true 0.796 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -3238,16 +3238,16 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.011231,
-    "spent_this_run_usd": 0.011231,
+    "spent_usd": 0.011287,
+    "spent_this_run_usd": 0.011287,
     "stopped": null,
     "calls": {
-     "new_calls": 268,
+     "new_calls": 272,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -3265,12 +3265,12 @@
     },
     {
      "model": "mistral/ministral-8b-latest",
-     "verdict": "FAIL",
-     "passed": 30,
-     "scored": 34,
-     "lower_95": 0.7623,
-     "upper_95": 0.9461,
-     "savings_pct": 0.8379,
+     "verdict": "INCONCLUSIVE",
+     "passed": 35,
+     "scored": 39,
+     "lower_95": 0.7902,
+     "upper_95": 0.9531,
+     "savings_pct": 0.8365,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -3278,10 +3278,10 @@
     {
      "model": "mistral/ministral-3b-latest",
      "verdict": "FAIL",
-     "passed": 25,
-     "scored": 34,
-     "lower_95": 0.5969,
-     "upper_95": 0.839,
+     "passed": 24,
+     "scored": 33,
+     "lower_95": 0.5862,
+     "upper_95": 0.8339,
      "savings_pct": 0.8919,
      "stopped_early": true,
      "errors": 0,
@@ -3317,11 +3317,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.012081 vs zoo log $0.012081"
+     "detail": "engine $0.012065 vs zoo log $0.012065"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.012081] of [0.18343]; stopped=None"
+     "detail": "spent [0.012065] of [0.18343]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -3329,7 +3329,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -3371,16 +3371,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": "mistral/mistral-small-latest",
-    "spent_usd": 0.012081,
-    "spent_this_run_usd": 0.012081,
+    "spent_usd": 0.012065,
+    "spent_this_run_usd": 0.012065,
     "stopped": null,
     "calls": {
-     "new_calls": 334,
+     "new_calls": 332,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -3411,11 +3411,11 @@
     {
      "model": "mistral/ministral-3b-latest",
      "verdict": "FAIL",
-     "passed": 29,
-     "scored": 34,
-     "lower_95": 0.7273,
-     "upper_95": 0.9265,
-     "savings_pct": 0.8893,
+     "passed": 28,
+     "scored": 32,
+     "lower_95": 0.7489,
+     "upper_95": 0.9426,
+     "savings_pct": 0.8891,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -3458,7 +3458,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -3509,7 +3509,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -3567,7 +3567,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -3618,7 +3618,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -3674,8 +3674,8 @@
     "claude-haiku-5-5"
    ],
    "design": {
-    "claude-haiku-4-5": 0.9,
-    "claude-haiku-5-5": 0.8
+    "claude-haiku-4-5": 0.8,
+    "claude-haiku-5-5": 0.3
    },
    "plan_max": 1.1945,
    "cli": false,
@@ -3686,11 +3686,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.089810 vs zoo log $0.089810"
+     "detail": "engine $0.076890 vs zoo log $0.076890"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.08981] of [1.55285]; stopped=None"
+     "detail": "spent [0.07689] of [1.55285]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -3698,7 +3698,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -3711,12 +3711,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.900 -> INCONCLUSIVE; claude-haiku-5-5 true 0.800 -> FAIL",
+     "detail": "claude-haiku-4-5 true 0.800 -> INCONCLUSIVE; claude-haiku-5-5 true 0.300 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.900 -> INCONCLUSIVE; claude-haiku-5-5 true 0.800 -> FAIL",
+     "detail": "claude-haiku-4-5 true 0.800 -> INCONCLUSIVE; claude-haiku-5-5 true 0.300 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -3732,7 +3732,7 @@
      "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.0911992,
+   "exact_cost": 0.09060020000000002,
    "worst_call": 0.008745,
    "result": {
     "id": "anthropics__anthropic-sdk-java-1",
@@ -3740,39 +3740,39 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.08981,
-    "spent_this_run_usd": 0.08981,
+    "spent_usd": 0.07689,
+    "spent_this_run_usd": 0.07689,
     "stopped": null,
     "calls": {
-     "new_calls": 236,
+     "new_calls": 178,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "claude-haiku-4-5",
      "verdict": "INCONCLUSIVE",
-     "passed": 95,
-     "scored": 100,
-     "lower_95": 0.9008,
-     "upper_95": 0.9755,
-     "savings_pct": 0.6725,
-     "stopped_early": false,
+     "passed": 38,
+     "scored": 42,
+     "lower_95": 0.804,
+     "upper_95": 0.9565,
+     "savings_pct": 0.677,
+     "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "claude-haiku-5-5",
      "verdict": "FAIL",
-     "passed": 31,
+     "passed": 8,
      "scored": 36,
-     "lower_95": 0.741,
-     "upper_95": 0.9307,
-     "savings_pct": 0.9689,
+     "lower_95": 0.13,
+     "upper_95": 0.3533,
+     "savings_pct": 0.9709,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -3815,7 +3815,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -3866,7 +3866,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -3912,11 +3912,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.002124 vs zoo log $0.002124"
+     "detail": "engine $0.002141 vs zoo log $0.002141"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.002124] of [1.84951]; stopped=None"
+     "detail": "spent [0.002141] of [1.84951]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -3924,7 +3924,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -3966,26 +3966,26 @@
     "threshold": 0.95,
     "reference": "production outputs",
     "recommended": "gpt-4o-mini",
-    "spent_usd": 0.002124,
-    "spent_this_run_usd": 0.002124,
+    "spent_usd": 0.002141,
+    "spent_this_run_usd": 0.002141,
     "stopped": null,
     "calls": {
-     "new_calls": 168,
+     "new_calls": 169,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-mini",
      "verdict": "FAIL",
-     "passed": 27,
-     "scored": 32,
-     "lower_95": 0.7121,
-     "upper_95": 0.9218,
+     "passed": 28,
+     "scored": 33,
+     "lower_95": 0.7199,
+     "upper_95": 0.9243,
      "savings_pct": 0.9882,
      "stopped_early": true,
      "errors": 0,
@@ -4031,8 +4031,8 @@
     "amazon.nova-micro-v1:0"
    ],
    "design": {
-    "amazon.nova-lite-v1:0": 0.3,
-    "amazon.nova-micro-v1:0": 0.999
+    "amazon.nova-lite-v1:0": 0.8,
+    "amazon.nova-micro-v1:0": 0.3
    },
    "plan_max": 0.6525,
    "cli": false,
@@ -4043,11 +4043,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.088302 vs zoo log $0.088302"
+     "detail": "engine $0.085171 vs zoo log $0.085171"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.088302] of [0.84825]; stopped=None"
+     "detail": "spent [0.085171] of [0.84825]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -4055,7 +4055,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4068,12 +4068,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "amazon.nova-lite-v1:0 true 0.314 -> FAIL; amazon.nova-micro-v1:0 true 0.999 -> PASS",
+     "detail": "amazon.nova-lite-v1:0 true 0.804 -> FAIL; amazon.nova-micro-v1:0 true 0.314 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "amazon.nova-lite-v1:0 true 0.314 -> FAIL; amazon.nova-micro-v1:0 true 0.999 -> PASS",
+     "detail": "amazon.nova-lite-v1:0 true 0.804 -> FAIL; amazon.nova-micro-v1:0 true 0.314 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -4081,55 +4081,55 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.7657 vs log 0.7657"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving None vs None"
+     "detail": "all failed; finding none (no R101)"
     }
    },
-   "exact_cost": 0.0017117100000000008,
+   "exact_cost": 0.001698550000000002,
    "worst_call": 0.018157,
    "result": {
     "id": "aws-samples__amazon-bedrock-workshop-0",
     "task": "generation",
     "threshold": 0.9,
     "reference": "baseline model",
-    "recommended": "amazon.nova-micro-v1:0",
-    "spent_usd": 0.088302,
-    "spent_this_run_usd": 0.088302,
+    "recommended": null,
+    "spent_usd": 0.085171,
+    "spent_this_run_usd": 0.085171,
     "stopped": null,
     "calls": {
-     "new_calls": 610,
-     "cached": 90,
+     "new_calls": 599,
+     "cached": 101,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "amazon.nova-lite-v1:0",
      "verdict": "FAIL",
-     "passed": 30,
+     "passed": 83,
      "scored": 100,
-     "lower_95": 0.2307,
-     "upper_95": 0.3798,
-     "savings_pct": 0.5606,
+     "lower_95": 0.7597,
+     "upper_95": 0.8829,
+     "savings_pct": 0.5934,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "amazon.nova-micro-v1:0",
-     "verdict": "PASS",
-     "passed": 98,
+     "verdict": "FAIL",
+     "passed": 35,
      "scored": 100,
-     "lower_95": 0.9413,
-     "upper_95": 0.9934,
-     "savings_pct": 0.7657,
+     "lower_95": 0.2764,
+     "upper_95": 0.4315,
+     "savings_pct": 0.7457,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -4151,9 +4151,9 @@
     "amazon.nova-micro-v1:0"
    ],
    "design": {
-    "anthropic.claude-haiku-4-5-20251001-v1:0": 0.9,
-    "amazon.nova-lite-v1:0": 0.8,
-    "amazon.nova-micro-v1:0": 0.3
+    "anthropic.claude-haiku-4-5-20251001-v1:0": 0.3,
+    "amazon.nova-lite-v1:0": 0.999,
+    "amazon.nova-micro-v1:0": 0.98
    },
    "plan_max": 4.0298,
    "cli": false,
@@ -4164,11 +4164,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.174453 vs zoo log $0.174453"
+     "detail": "engine $0.172188 vs zoo log $0.172188"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.174453] of [5.23874]; stopped=None"
+     "detail": "spent [0.172188] of [5.23874]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -4176,7 +4176,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4189,12 +4189,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "anthropic.claude-haiku-4-5-20251001-v1:0 true 0.902 -> INCONCLUSIVE; amazon.nova-lite-v1:0 true 0.804 -> FAIL; amazon.nova-micro-v1:0 true 0.314 -> FAIL",
+     "detail": "anthropic.claude-haiku-4-5-20251001-v1:0 true 0.314 -> FAIL; amazon.nova-lite-v1:0 true 0.999 -> PASS; amazon.nova-micro-v1:0 true 0.980 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "anthropic.claude-haiku-4-5-20251001-v1:0 true 0.902 -> INCONCLUSIVE; amazon.nova-lite-v1:0 true 0.804 -> FAIL; amazon.nova-micro-v1:0 true 0.314 -> FAIL",
+     "detail": "anthropic.claude-haiku-4-5-20251001-v1:0 true 0.314 -> FAIL; amazon.nova-lite-v1:0 true 0.999 -> PASS; amazon.nova-micro-v1:0 true 0.980 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -4202,67 +4202,67 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.9894 vs log 0.9894"
     },
     "X03": {
      "status": "pass",
-     "detail": "inconclusive: estimate kept"
+     "detail": "finding R110 tier validated saving 227.1172518377999 vs 227.1172518377999"
     }
    },
-   "exact_cost": 0.04400134999999999,
+   "exact_cost": 0.044763549999999964,
    "worst_call": 0.034122,
    "result": {
     "id": "aws-samples__amazon-bedrock-workshop-1",
     "task": "generation",
     "threshold": 0.9,
     "reference": "baseline model",
-    "recommended": null,
-    "spent_usd": 0.174453,
-    "spent_this_run_usd": 0.174453,
+    "recommended": "amazon.nova-micro-v1:0",
+    "spent_usd": 0.172188,
+    "spent_this_run_usd": 0.172188,
     "stopped": null,
     "calls": {
-     "new_calls": 787,
-     "cached": 213,
+     "new_calls": 778,
+     "cached": 222,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "anthropic.claude-haiku-4-5-20251001-v1:0",
-     "verdict": "INCONCLUSIVE",
-     "passed": 92,
+     "verdict": "FAIL",
+     "passed": 30,
      "scored": 100,
-     "lower_95": 0.8635,
-     "upper_95": 0.9543,
-     "savings_pct": 0.667,
+     "lower_95": 0.2307,
+     "upper_95": 0.3798,
+     "savings_pct": 0.6425,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": 568
+     "samples_needed": null
     },
     {
      "model": "amazon.nova-lite-v1:0",
-     "verdict": "FAIL",
-     "passed": 83,
+     "verdict": "PASS",
+     "passed": 99,
      "scored": 100,
-     "lower_95": 0.7597,
-     "upper_95": 0.8829,
-     "savings_pct": 0.9817,
+     "lower_95": 0.9564,
+     "upper_95": 0.9978,
+     "savings_pct": 0.982,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "amazon.nova-micro-v1:0",
-     "verdict": "FAIL",
-     "passed": 37,
+     "verdict": "PASS",
+     "passed": 98,
      "scored": 100,
-     "lower_95": 0.295,
-     "upper_95": 0.4519,
-     "savings_pct": 0.9888,
+     "lower_95": 0.9413,
+     "upper_95": 0.9934,
+     "savings_pct": 0.9894,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -4282,9 +4282,9 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.8
+    "gpt-5-nano": 0.999
    },
-   "plan_max": 0.4586,
+   "plan_max": 0.2097,
    "cli": true,
    "checks": {
     "X01": {
@@ -4293,19 +4293,19 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.046082 vs zoo log $0.046082"
+     "detail": "engine $0.043729 vs zoo log $0.043729"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.001017, 0.045065] of [0.00266297, 0.59618]; stopped=None"
+     "detail": "spent [0.001017, 0.042711] of [0.00216876, 0.27261]; stopped=None"
     },
     "X11": {
      "status": "pass",
-     "detail": "0 duplicate paid requests; first run stopped=budget, resumed run reused 139 cached; resume not testable: one worst-case call costs more than the whole run"
+     "detail": "0 duplicate paid requests; first run stopped=budget, resumed run reused 147 cached; resume not testable: one worst-case call costs more than the whole run"
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4318,12 +4318,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.800 -> FAIL",
+     "detail": "gpt-5-nano true 0.999 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.800 -> FAIL",
+     "detail": "gpt-5-nano true 0.999 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -4331,47 +4331,47 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.4777 vs log 0.4777"
     },
     "X03": {
      "status": "pass",
-     "detail": "all failed; finding none (no R101)"
+     "detail": "finding R110 tier validated saving None vs None"
     },
     "X13": {
      "status": "pass",
      "detail": "ran (task generation, judge gpt-4.1, 100 samples)"
     }
    },
-   "exact_cost": 0.0015662000000000007,
-   "worst_call": 0.002387,
+   "exact_cost": 0.0015486000000000002,
+   "worst_call": 0.001918,
    "result": {
     "id": "betalgo__openai-0",
     "task": "generation",
     "threshold": 0.9,
     "reference": "expected answers",
-    "recommended": null,
-    "spent_usd": 0.046082,
-    "spent_this_run_usd": 0.045065,
+    "recommended": "gpt-5-nano",
+    "spent_usd": 0.043729,
+    "spent_this_run_usd": 0.042711,
     "stopped": null,
     "calls": {
-     "new_calls": 261,
-     "cached": 139,
+     "new_calls": 253,
+     "cached": 147,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
-     "verdict": "FAIL",
-     "passed": 79,
+     "verdict": "PASS",
+     "passed": 99,
      "scored": 100,
-     "lower_95": 0.7158,
-     "upper_95": 0.8489,
-     "savings_pct": 0.4604,
+     "lower_95": 0.9564,
+     "upper_95": 0.9978,
+     "savings_pct": 0.4777,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -4414,7 +4414,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4465,7 +4465,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -4519,7 +4519,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4570,7 +4570,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -4601,7 +4601,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.3
+    "gpt-5-nano": 0.9
    },
    "plan_max": 0.3242,
    "cli": false,
@@ -4612,11 +4612,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.002272 vs zoo log $0.002273"
+     "detail": "engine $0.002191 vs zoo log $0.002191"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.002273] of [0.0025662]; stopped=budget"
+     "detail": "spent [0.002191] of [0.00255968]; stopped=budget"
     },
     "X11": {
      "status": "pass",
@@ -4624,7 +4624,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4637,12 +4637,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.314 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.902 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.314 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.902 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -4658,7 +4658,7 @@
      "detail": "no call site"
     }
    },
-   "exact_cost": 0.0005985000000000004,
+   "exact_cost": 0.0005332999999999997,
    "worst_call": 0.002387,
    "result": {
     "id": "cloudwego__eino-0",
@@ -4666,8 +4666,8 @@
     "threshold": 0.9,
     "reference": "production outputs",
     "recommended": null,
-    "spent_usd": 0.002272,
-    "spent_this_run_usd": 0.002273,
+    "spent_usd": 0.002191,
+    "spent_this_run_usd": 0.002191,
     "stopped": "budget",
     "calls": {
      "new_calls": 106,
@@ -4675,18 +4675,18 @@
      "skipped_budget": 2
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
      "verdict": "INCONCLUSIVE",
-     "passed": 2,
+     "passed": 3,
      "scored": 4,
-     "lower_95": 0.1824,
-     "upper_95": 0.8176,
-     "savings_pct": 0.1384,
+     "lower_95": 0.3561,
+     "upper_95": 0.9421,
+     "savings_pct": 0.2122,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -4733,7 +4733,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4784,7 +4784,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -4852,7 +4852,7 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.002603 vs zoo log $0.002604"
+     "detail": "engine $0.002603 vs zoo log $0.002603"
     },
     "X12": {
      "status": "pass",
@@ -4864,7 +4864,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4915,7 +4915,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -4959,8 +4959,8 @@
     "claude-haiku-5-5"
    ],
    "design": {
-    "claude-haiku-4-5": 0.999,
-    "claude-haiku-5-5": 0.98
+    "claude-haiku-4-5": 0.9,
+    "claude-haiku-5-5": 0.8
    },
    "plan_max": 4.5142,
    "cli": false,
@@ -4971,11 +4971,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.103681 vs zoo log $0.103682"
+     "detail": "engine $0.112918 vs zoo log $0.112919"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.103682] of [5.86846]; stopped=None"
+     "detail": "spent [0.112919] of [5.86846]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -4983,7 +4983,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -4996,12 +4996,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.999 -> PASS; claude-haiku-5-5 true 0.980 -> PASS",
+     "detail": "claude-haiku-4-5 true 0.902 -> INCONCLUSIVE; claude-haiku-5-5 true 0.804 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.999 -> PASS; claude-haiku-5-5 true 0.980 -> PASS",
+     "detail": "claude-haiku-4-5 true 0.902 -> INCONCLUSIVE; claude-haiku-5-5 true 0.804 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -5009,55 +5009,55 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.9753 vs log 0.9753"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving 847.2595028423999 vs 847.2595028423999"
+     "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.04013749999999999,
+   "exact_cost": 0.040268499999999985,
    "worst_call": 0.045324,
    "result": {
     "id": "crmne__ruby_llm-0",
     "task": "generation",
     "threshold": 0.9,
     "reference": "baseline model",
-    "recommended": "claude-haiku-5-5",
-    "spent_usd": 0.103681,
-    "spent_this_run_usd": 0.103682,
+    "recommended": null,
+    "spent_usd": 0.112918,
+    "spent_this_run_usd": 0.112919,
     "stopped": null,
     "calls": {
-     "new_calls": 529,
-     "cached": 171,
+     "new_calls": 561,
+     "cached": 139,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "claude-haiku-4-5",
-     "verdict": "PASS",
-     "passed": 100,
+     "verdict": "INCONCLUSIVE",
+     "passed": 89,
      "scored": 100,
-     "lower_95": 0.9737,
-     "upper_95": 1.0,
-     "savings_pct": 0.7489,
+     "lower_95": 0.8279,
+     "upper_95": 0.9315,
+     "savings_pct": 0.7452,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "claude-haiku-5-5",
-     "verdict": "PASS",
-     "passed": 98,
+     "verdict": "INCONCLUSIVE",
+     "passed": 86,
      "scored": 100,
-     "lower_95": 0.9413,
-     "upper_95": 0.9934,
-     "savings_pct": 0.9753,
+     "lower_95": 0.7934,
+     "upper_95": 0.9076,
+     "savings_pct": 0.9748,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -5079,9 +5079,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-4.1-mini": 0.8,
-    "gpt-5-mini": 0.3,
-    "gpt-4o-mini": 0.999
+    "gpt-4.1-mini": 0.9,
+    "gpt-5-mini": 0.8,
+    "gpt-4o-mini": 0.3
    },
    "plan_max": 1.9339,
    "cli": false,
@@ -5092,11 +5092,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.007547 vs zoo log $0.007547"
+     "detail": "engine $0.009387 vs zoo log $0.009387"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.007547] of [2.51407]; stopped=None"
+     "detail": "spent [0.009387] of [2.51407]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -5104,11 +5104,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "6 injected 429/500, 0 unrecovered"
+     "detail": "4 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -5117,12 +5117,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.796 -> FAIL; gpt-5-mini true 0.298 -> FAIL; gpt-4o-mini true 0.994 -> PASS",
+     "detail": "gpt-4.1-mini true 0.895 -> INCONCLUSIVE; gpt-5-mini true 0.796 -> INCONCLUSIVE; gpt-4o-mini true 0.298 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.796 -> FAIL; gpt-5-mini true 0.298 -> FAIL; gpt-4o-mini true 0.994 -> PASS",
+     "detail": "gpt-4.1-mini true 0.895 -> INCONCLUSIVE; gpt-5-mini true 0.796 -> INCONCLUSIVE; gpt-4o-mini true 0.298 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -5130,68 +5130,68 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.9684 vs log 0.9684"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving 127.62218653380003 vs 127.62218653380003"
+     "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.01693399999999999,
+   "exact_cost": 0.017734999999999987,
    "worst_call": 0.018047,
    "result": {
     "id": "crmne__ruby_llm-1",
     "task": "extraction",
     "threshold": 0.95,
     "reference": "production outputs",
-    "recommended": "gpt-4o-mini",
-    "spent_usd": 0.007547,
-    "spent_this_run_usd": 0.007547,
+    "recommended": null,
+    "spent_usd": 0.009387,
+    "spent_this_run_usd": 0.009387,
     "stopped": null,
     "calls": {
-     "new_calls": 167,
+     "new_calls": 145,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-4.1-mini",
-     "verdict": "FAIL",
-     "passed": 27,
-     "scored": 32,
-     "lower_95": 0.7121,
-     "upper_95": 0.9218,
-     "savings_pct": 0.9174,
+     "verdict": "INCONCLUSIVE",
+     "passed": 67,
+     "scored": 73,
+     "lower_95": 0.8488,
+     "upper_95": 0.9569,
+     "savings_pct": 0.9163,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-5-mini",
-     "verdict": "FAIL",
-     "passed": 12,
-     "scored": 35,
-     "lower_95": 0.2265,
-     "upper_95": 0.4818,
-     "savings_pct": 0.9238,
+     "verdict": "INCONCLUSIVE",
+     "passed": 35,
+     "scored": 39,
+     "lower_95": 0.7902,
+     "upper_95": 0.9531,
+     "savings_pct": 0.9101,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-4o-mini",
-     "verdict": "PASS",
-     "passed": 99,
-     "scored": 100,
-     "lower_95": 0.9564,
-     "upper_95": 0.9978,
-     "savings_pct": 0.9684,
-     "stopped_early": false,
+     "verdict": "FAIL",
+     "passed": 9,
+     "scored": 33,
+     "lower_95": 0.1661,
+     "upper_95": 0.4138,
+     "savings_pct": 0.9716,
+     "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     }
@@ -5225,11 +5225,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.018145 vs zoo log $0.018145"
+     "detail": "engine $0.017885 vs zoo log $0.017885"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.018145] of [3.5958]; stopped=None"
+     "detail": "spent [0.017885] of [3.5958]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -5237,11 +5237,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "9 injected 429/500, 0 unrecovered"
+     "detail": "8 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -5279,16 +5279,16 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.018145,
-    "spent_this_run_usd": 0.018145,
+    "spent_usd": 0.017885,
+    "spent_this_run_usd": 0.017885,
     "stopped": null,
     "calls": {
-     "new_calls": 202,
+     "new_calls": 198,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -5307,11 +5307,11 @@
     {
      "model": "gpt-5-mini",
      "verdict": "FAIL",
-     "passed": 29,
-     "scored": 36,
-     "lower_95": 0.6774,
-     "upper_95": 0.891,
-     "savings_pct": 0.3619,
+     "passed": 27,
+     "scored": 33,
+     "lower_95": 0.6852,
+     "upper_95": 0.903,
+     "savings_pct": 0.3621,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -5320,10 +5320,10 @@
      "model": "gpt-4o-mini",
      "verdict": "FAIL",
      "passed": 22,
-     "scored": 33,
-     "lower_95": 0.5236,
-     "upper_95": 0.7844,
-     "savings_pct": 0.7668,
+     "scored": 32,
+     "lower_95": 0.5426,
+     "upper_95": 0.8031,
+     "savings_pct": 0.7661,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -5343,7 +5343,7 @@
     "mistral/ministral-3b-latest"
    ],
    "design": {
-    "mistral/ministral-3b-latest": 0.98
+    "mistral/ministral-3b-latest": 0.955
    },
    "plan_max": 0.047,
    "cli": false,
@@ -5366,7 +5366,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -5379,12 +5379,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "mistral/ministral-3b-latest true 0.975 -> INCONCLUSIVE",
+     "detail": "mistral/ministral-3b-latest true 0.950 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "mistral/ministral-3b-latest true 0.975 -> INCONCLUSIVE",
+     "detail": "mistral/ministral-3b-latest true 0.950 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -5400,7 +5400,7 @@
      "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.000973199999999999,
+   "exact_cost": 0.0009734999999999991,
    "worst_call": 0.000685,
    "result": {
     "id": "dair-ai__Prompt-Engineering-Guide-1",
@@ -5417,21 +5417,21 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "mistral/ministral-3b-latest",
      "verdict": "INCONCLUSIVE",
-     "passed": 97,
+     "passed": 96,
      "scored": 100,
-     "lower_95": 0.9273,
-     "upper_95": 0.9879,
-     "savings_pct": 0.1198,
+     "lower_95": 0.9138,
+     "upper_95": 0.9819,
+     "savings_pct": 0.1192,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": 280
+     "samples_needed": 1210
     }
    ]
   },
@@ -5448,7 +5448,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.955
+    "gpt-5-nano": 0.98
    },
    "plan_max": 0.2101,
    "cli": false,
@@ -5471,7 +5471,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -5484,12 +5484,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.955 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.980 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.955 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.980 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -5522,7 +5522,7 @@
      "skipped_budget": 1
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -5553,7 +5553,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.9
+    "gpt-5-nano": 0.999
    },
    "plan_max": 0.2895,
    "cli": true,
@@ -5564,11 +5564,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.000985 vs zoo log $0.000985"
+     "detail": "engine $0.001166 vs zoo log $0.001166"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.000985] of [0.37635]; stopped=None"
+     "detail": "spent [0.001166] of [0.37635]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -5576,11 +5576,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "12 injected 429/500, 0 unrecovered"
+     "detail": "15 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -5589,12 +5589,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.900 -> FAIL",
+     "detail": "gpt-5-nano true 0.999 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.900 -> FAIL",
+     "detail": "gpt-5-nano true 0.999 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -5602,8 +5602,8 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.5976 vs log 0.5976"
     },
     "X03": {
      "status": "n/a",
@@ -5614,36 +5614,36 @@
      "detail": "ran (task classification, judge None, 100 samples)"
     }
    },
-   "exact_cost": 0.0011662000000000003,
+   "exact_cost": 0.0011658000000000003,
    "worst_call": 0.003609,
    "result": {
     "id": "deepseek-ai__DeepSeek-V3-0",
     "task": "classification",
     "threshold": 0.95,
     "reference": "expected answers",
-    "recommended": null,
-    "spent_usd": 0.000985,
-    "spent_this_run_usd": 0.000985,
+    "recommended": "gpt-5-nano",
+    "spent_usd": 0.001166,
+    "spent_this_run_usd": 0.001166,
     "stopped": null,
     "calls": {
-     "new_calls": 145,
+     "new_calls": 200,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
-     "verdict": "FAIL",
-     "passed": 40,
-     "scored": 45,
-     "lower_95": 0.7888,
-     "upper_95": 0.9449,
-     "savings_pct": 0.5874,
-     "stopped_early": true,
+     "verdict": "PASS",
+     "passed": 99,
+     "scored": 100,
+     "lower_95": 0.9564,
+     "upper_95": 0.9978,
+     "savings_pct": 0.5976,
+     "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     }
@@ -5685,7 +5685,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -5736,7 +5736,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -5790,7 +5790,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -5841,7 +5841,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -5889,11 +5889,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.021344 vs zoo log $0.021345"
+     "detail": "engine $0.021353 vs zoo log $0.021353"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.021345] of [2.06869]; stopped=None"
+     "detail": "spent [0.021353] of [2.06869]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -5901,7 +5901,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -5947,16 +5947,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": "mistral/mistral-small-latest",
-    "spent_usd": 0.021344,
-    "spent_this_run_usd": 0.021345,
+    "spent_usd": 0.021353,
+    "spent_this_run_usd": 0.021353,
     "stopped": null,
     "calls": {
-     "new_calls": 305,
+     "new_calls": 306,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -5976,10 +5976,10 @@
      "model": "azure/gpt-4o-mini",
      "verdict": "FAIL",
      "passed": 25,
-     "scored": 32,
-     "lower_95": 0.6418,
-     "upper_95": 0.8768,
-     "savings_pct": 0.9539,
+     "scored": 33,
+     "lower_95": 0.6185,
+     "upper_95": 0.8576,
+     "savings_pct": 0.954,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -6046,7 +6046,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -6097,7 +6097,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -6151,7 +6151,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -6202,7 +6202,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -6250,11 +6250,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.020720 vs zoo log $0.020720"
+     "detail": "engine $0.020724 vs zoo log $0.020724"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.02072] of [2.06882]; stopped=None"
+     "detail": "spent [0.020724] of [2.06882]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -6262,7 +6262,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -6308,8 +6308,8 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": "mistral/mistral-small-latest",
-    "spent_usd": 0.02072,
-    "spent_this_run_usd": 0.02072,
+    "spent_usd": 0.020724,
+    "spent_this_run_usd": 0.020724,
     "stopped": null,
     "calls": {
      "new_calls": 299,
@@ -6317,7 +6317,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -6336,11 +6336,11 @@
     {
      "model": "azure/gpt-4o-mini",
      "verdict": "FAIL",
-     "passed": 24,
-     "scored": 32,
-     "lower_95": 0.608,
-     "upper_95": 0.853,
-     "savings_pct": 0.9517,
+     "passed": 25,
+     "scored": 33,
+     "lower_95": 0.6185,
+     "upper_95": 0.8576,
+     "savings_pct": 0.9516,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -6349,9 +6349,9 @@
      "model": "gemini/gemini-2.5-flash-lite",
      "verdict": "FAIL",
      "passed": 8,
-     "scored": 32,
-     "lower_95": 0.147,
-     "upper_95": 0.392,
+     "scored": 31,
+     "lower_95": 0.152,
+     "upper_95": 0.403,
      "savings_pct": 0.9691,
      "stopped_early": true,
      "errors": 0,
@@ -6386,7 +6386,7 @@
    "design": {
     "gpt-5-nano": 0.98
    },
-   "plan_max": 0.5699,
+   "plan_max": 0.321,
    "cli": false,
    "checks": {
     "X01": {
@@ -6399,7 +6399,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.041412] of [0.74087]; stopped=None"
+     "detail": "spent [0.041412] of [0.4173]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -6407,7 +6407,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -6442,7 +6442,7 @@
     }
    },
    "exact_cost": 0.0012119,
-   "worst_call": 0.00464,
+   "worst_call": 0.003608,
    "result": {
     "id": "geekan__MetaGPT-0",
     "task": "generation",
@@ -6458,7 +6458,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -6506,11 +6506,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.020412 vs zoo log $0.020412"
+     "detail": "engine $0.020326 vs zoo log $0.020326"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.020412] of [2.06882]; stopped=None"
+     "detail": "spent [0.020326] of [2.06882]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -6518,7 +6518,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -6564,27 +6564,27 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.020412,
-    "spent_this_run_usd": 0.020412,
+    "spent_usd": 0.020326,
+    "spent_this_run_usd": 0.020326,
     "stopped": null,
     "calls": {
-     "new_calls": 301,
+     "new_calls": 296,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "claude-haiku-4-5",
      "verdict": "FAIL",
-     "passed": 31,
-     "scored": 36,
-     "lower_95": 0.741,
-     "upper_95": 0.9307,
-     "savings_pct": 0.6659,
+     "passed": 30,
+     "scored": 35,
+     "lower_95": 0.7343,
+     "upper_95": 0.9287,
+     "savings_pct": 0.6658,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -6592,11 +6592,11 @@
     {
      "model": "azure/gpt-4o-mini",
      "verdict": "FAIL",
-     "passed": 91,
-     "scored": 100,
-     "lower_95": 0.8515,
-     "upper_95": 0.9469,
-     "savings_pct": 0.9525,
+     "passed": 87,
+     "scored": 96,
+     "lower_95": 0.8456,
+     "upper_95": 0.9446,
+     "savings_pct": 0.9526,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -6667,7 +6667,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -6718,7 +6718,7 @@
      "skipped_budget": 1
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -6774,8 +6774,8 @@
     "gemini/gemini-3.5-flash-lite"
    ],
    "design": {
-    "gemini/gemini-flash-lite-latest": 0.3,
-    "gemini/gemini-3.5-flash-lite": 0.999
+    "gemini/gemini-flash-lite-latest": 0.9,
+    "gemini/gemini-3.5-flash-lite": 0.8
    },
    "plan_max": 5.6174,
    "cli": false,
@@ -6786,11 +6786,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.104422 vs zoo log $0.104422"
+     "detail": "engine $0.085029 vs zoo log $0.085030"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.104422] of [7.30262]; stopped=None"
+     "detail": "spent [0.08503] of [7.30262]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -6798,7 +6798,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -6811,12 +6811,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gemini/gemini-flash-lite-latest true 0.314 -> FAIL; gemini/gemini-3.5-flash-lite true 0.999 -> PASS",
+     "detail": "gemini/gemini-flash-lite-latest true 0.902 -> INCONCLUSIVE; gemini/gemini-3.5-flash-lite true 0.804 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gemini/gemini-flash-lite-latest true 0.314 -> FAIL; gemini/gemini-3.5-flash-lite true 0.999 -> PASS",
+     "detail": "gemini/gemini-flash-lite-latest true 0.902 -> INCONCLUSIVE; gemini/gemini-3.5-flash-lite true 0.804 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -6824,55 +6824,55 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.4300 vs log 0.43"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving 2.793883863333333 vs 2.793883863333333"
+     "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.012656000000000021,
+   "exact_cost": 0.012433500000000002,
    "worst_call": 0.033842,
    "result": {
     "id": "google-gemini__cookbook-0",
     "task": "generation",
     "threshold": 0.9,
     "reference": "baseline model",
-    "recommended": "gemini/gemini-3.5-flash-lite",
-    "spent_usd": 0.104422,
-    "spent_this_run_usd": 0.104422,
+    "recommended": null,
+    "spent_usd": 0.085029,
+    "spent_this_run_usd": 0.08503,
     "stopped": null,
     "calls": {
-     "new_calls": 630,
-     "cached": 70,
+     "new_calls": 562,
+     "cached": 138,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gemini/gemini-flash-lite-latest",
-     "verdict": "FAIL",
-     "passed": 21,
+     "verdict": "INCONCLUSIVE",
+     "passed": 89,
      "scored": 100,
-     "lower_95": 0.1511,
-     "upper_95": 0.2842,
-     "savings_pct": 0.3525,
+     "lower_95": 0.8279,
+     "upper_95": 0.9315,
+     "savings_pct": 0.4121,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gemini/gemini-3.5-flash-lite",
-     "verdict": "PASS",
-     "passed": 96,
+     "verdict": "FAIL",
+     "passed": 78,
      "scored": 100,
-     "lower_95": 0.9138,
-     "upper_95": 0.9819,
-     "savings_pct": 0.43,
+     "lower_95": 0.705,
+     "upper_95": 0.8403,
+     "savings_pct": 0.4095,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -6893,10 +6893,10 @@
     "gemini/gemini-3.5-flash-lite"
    ],
    "design": {
-    "gemini/gemini-flash-lite-latest": 0.3,
-    "gemini/gemini-3.5-flash-lite": 0.999
+    "gemini/gemini-flash-lite-latest": 0.8,
+    "gemini/gemini-3.5-flash-lite": 0.3
    },
-   "plan_max": 5.3398,
+   "plan_max": 4.842,
    "cli": false,
    "checks": {
     "X01": {
@@ -6905,11 +6905,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.102566 vs zoo log $0.102566"
+     "detail": "engine $0.106198 vs zoo log $0.106198"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.102566] of [6.94174]; stopped=None"
+     "detail": "spent [0.106198] of [6.2946]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -6917,7 +6917,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -6930,12 +6930,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gemini/gemini-flash-lite-latest true 0.300 -> FAIL; gemini/gemini-3.5-flash-lite true 0.999 -> PASS",
+     "detail": "gemini/gemini-flash-lite-latest true 0.800 -> FAIL; gemini/gemini-3.5-flash-lite true 0.300 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gemini/gemini-flash-lite-latest true 0.300 -> FAIL; gemini/gemini-3.5-flash-lite true 0.999 -> PASS",
+     "detail": "gemini/gemini-flash-lite-latest true 0.800 -> FAIL; gemini/gemini-3.5-flash-lite true 0.300 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -6943,55 +6943,55 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.4318 vs log 0.4318"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving 2.8055791911333334 vs 2.8055791911333334"
+     "detail": "all failed; finding none (no R101)"
     }
    },
-   "exact_cost": 0.012764000000000017,
+   "exact_cost": 0.012924000000000015,
    "worst_call": 0.033842,
    "result": {
     "id": "google-gemini__cookbook-1",
     "task": "generation",
     "threshold": 0.9,
     "reference": "expected answers",
-    "recommended": "gemini/gemini-3.5-flash-lite",
-    "spent_usd": 0.102566,
-    "spent_this_run_usd": 0.102566,
+    "recommended": null,
+    "spent_usd": 0.106198,
+    "spent_this_run_usd": 0.106198,
     "stopped": null,
     "calls": {
-     "new_calls": 624,
-     "cached": 76,
+     "new_calls": 636,
+     "cached": 64,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gemini/gemini-flash-lite-latest",
      "verdict": "FAIL",
-     "passed": 19,
+     "passed": 74,
      "scored": 100,
-     "lower_95": 0.134,
-     "upper_95": 0.2624,
-     "savings_pct": 0.3551,
+     "lower_95": 0.6622,
+     "upper_95": 0.8052,
+     "savings_pct": 0.4019,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gemini/gemini-3.5-flash-lite",
-     "verdict": "PASS",
-     "passed": 95,
+     "verdict": "FAIL",
+     "passed": 28,
      "scored": 100,
-     "lower_95": 0.9008,
-     "upper_95": 0.9755,
-     "savings_pct": 0.4318,
+     "lower_95": 0.2127,
+     "upper_95": 0.3589,
+     "savings_pct": 0.3573,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
@@ -7012,8 +7012,8 @@
     "claude-haiku-4-5"
    ],
    "design": {
-    "claude-haiku-5-5": 0.9,
-    "claude-haiku-4-5": 0.8
+    "claude-haiku-5-5": 0.3,
+    "claude-haiku-4-5": 0.999
    },
    "plan_max": 0.6624,
    "cli": false,
@@ -7024,11 +7024,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.081794 vs zoo log $0.081794"
+     "detail": "engine $0.096216 vs zoo log $0.096216"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.010332, 0.071462] of [0.0149303, 0.86112]; stopped=None"
+     "detail": "spent [0.010332, 0.085884] of [0.0149635, 0.86112]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -7036,7 +7036,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -7049,12 +7049,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "claude-haiku-5-5 true 0.895 -> FAIL; claude-haiku-4-5 true 0.796 -> FAIL",
+     "detail": "claude-haiku-5-5 true 0.298 -> FAIL; claude-haiku-4-5 true 0.994 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "claude-haiku-5-5 true 0.895 -> FAIL; claude-haiku-4-5 true 0.796 -> FAIL",
+     "detail": "claude-haiku-5-5 true 0.298 -> FAIL; claude-haiku-4-5 true 0.994 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -7062,56 +7062,56 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.6972 vs log 0.6972"
     },
     "X03": {
      "status": "pass",
-     "detail": "all failed; finding none (no R101)"
+     "detail": "finding R110 tier validated saving None vs None"
     }
    },
-   "exact_cost": 0.09708649999999996,
+   "exact_cost": 0.0974185,
    "worst_call": 0.004973,
    "result": {
     "id": "griptape-ai__griptape-0",
     "task": "extraction",
     "threshold": 0.95,
     "reference": "baseline model",
-    "recommended": null,
-    "spent_usd": 0.081794,
-    "spent_this_run_usd": 0.071462,
+    "recommended": "claude-haiku-4-5",
+    "spent_usd": 0.096216,
+    "spent_this_run_usd": 0.085884,
     "stopped": null,
     "calls": {
-     "new_calls": 158,
+     "new_calls": 221,
      "cached": 14,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "claude-haiku-5-5",
      "verdict": "FAIL",
-     "passed": 32,
-     "scored": 37,
-     "lower_95": 0.7474,
-     "upper_95": 0.9326,
-     "savings_pct": 0.9709,
+     "passed": 12,
+     "scored": 35,
+     "lower_95": 0.2265,
+     "upper_95": 0.4818,
+     "savings_pct": 0.9741,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "claude-haiku-4-5",
-     "verdict": "FAIL",
-     "passed": 30,
-     "scored": 35,
-     "lower_95": 0.7343,
-     "upper_95": 0.9287,
-     "savings_pct": 0.7034,
-     "stopped_early": true,
+     "verdict": "PASS",
+     "passed": 100,
+     "scored": 100,
+     "lower_95": 0.9737,
+     "upper_95": 1.0,
+     "savings_pct": 0.6972,
+     "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     }
@@ -7130,7 +7130,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.98
+    "gpt-5-nano": 0.955
    },
    "plan_max": 0.6145,
    "cli": false,
@@ -7141,11 +7141,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.044045 vs zoo log $0.044046"
+     "detail": "engine $0.044653 vs zoo log $0.044654"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.044046] of [0.79885]; stopped=None"
+     "detail": "spent [0.044654] of [0.79885]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -7153,7 +7153,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -7166,12 +7166,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.980 -> PASS",
+     "detail": "gpt-5-nano true 0.956 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.980 -> PASS",
+     "detail": "gpt-5-nano true 0.956 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -7179,46 +7179,46 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.2323 vs log 0.2323"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving None vs None"
+     "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.0012335000000000002,
+   "exact_cost": 0.0012395000000000002,
    "worst_call": 0.018157,
    "result": {
     "id": "h2oai__h2ogpt-0",
     "task": "generation",
     "threshold": 0.9,
     "reference": "baseline model",
-    "recommended": "gpt-5-nano",
-    "spent_usd": 0.044045,
-    "spent_this_run_usd": 0.044046,
+    "recommended": null,
+    "spent_usd": 0.044653,
+    "spent_this_run_usd": 0.044654,
     "stopped": null,
     "calls": {
-     "new_calls": 354,
-     "cached": 46,
+     "new_calls": 356,
+     "cached": 44,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
-     "verdict": "PASS",
-     "passed": 99,
+     "verdict": "INCONCLUSIVE",
+     "passed": 93,
      "scored": 100,
-     "lower_95": 0.9564,
-     "upper_95": 0.9978,
-     "savings_pct": 0.2323,
+     "lower_95": 0.8757,
+     "upper_95": 0.9616,
+     "savings_pct": 0.2237,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 248
     }
    ]
   },
@@ -7235,7 +7235,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.955
+    "gpt-5-nano": 0.98
    },
    "plan_max": 0.2103,
    "cli": false,
@@ -7250,7 +7250,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.002288] of [0.00246166]; stopped=budget"
+     "detail": "spent [0.002288] of [0.00246182]; stopped=budget"
     },
     "X11": {
      "status": "pass",
@@ -7258,7 +7258,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -7271,12 +7271,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.975 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.975 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -7292,7 +7292,7 @@
      "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.0044566000000000015,
+   "exact_cost": 0.004458200000000002,
    "worst_call": 0.00192,
    "result": {
     "id": "henomis__lingoose-0",
@@ -7309,7 +7309,7 @@
      "skipped_budget": 2
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -7342,7 +7342,7 @@
    "design": {
     "gpt-5-nano": 0.9
    },
-   "plan_max": 0.5792,
+   "plan_max": 0.3303,
    "cli": false,
    "checks": {
     "X01": {
@@ -7355,7 +7355,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.046604] of [0.75296]; stopped=None"
+     "detail": "spent [0.046604] of [0.42939]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -7363,7 +7363,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -7398,7 +7398,7 @@
     }
    },
    "exact_cost": 0.0015642,
-   "worst_call": 0.00464,
+   "worst_call": 0.003608,
    "result": {
     "id": "huggingface__cookbook-0",
     "task": "generation",
@@ -7414,7 +7414,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -7468,7 +7468,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -7519,7 +7519,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -7558,7 +7558,7 @@
     "gemini/gemini-2.5-flash-lite": 0.98,
     "mistral/mistral-small-latest": 0.955
    },
-   "plan_max": 2.5795,
+   "plan_max": 1.5839,
    "cli": true,
    "checks": {
     "X01": {
@@ -7571,7 +7571,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.152125] of [3.35335]; stopped=None"
+     "detail": "spent [0.152125] of [2.05907]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -7579,7 +7579,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -7634,7 +7634,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -7712,11 +7712,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.003478 vs zoo log $0.003478"
+     "detail": "engine $0.003471 vs zoo log $0.003471"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.003478] of [0.51506]; stopped=None"
+     "detail": "spent [0.003471] of [0.51506]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -7724,7 +7724,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -7766,16 +7766,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.003478,
-    "spent_this_run_usd": 0.003478,
+    "spent_usd": 0.003471,
+    "spent_this_run_usd": 0.003471,
     "stopped": null,
     "calls": {
-     "new_calls": 142,
+     "new_calls": 141,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -7783,10 +7783,10 @@
      "model": "gpt-5-nano",
      "verdict": "FAIL",
      "passed": 33,
-     "scored": 42,
-     "lower_95": 0.666,
-     "upper_95": 0.8708,
-     "savings_pct": 0.4345,
+     "scored": 41,
+     "lower_95": 0.6856,
+     "upper_95": 0.8864,
+     "savings_pct": 0.426,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -7806,7 +7806,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.8
+    "gpt-5-nano": 0.999
    },
    "plan_max": 0.452,
    "cli": false,
@@ -7817,11 +7817,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.002562 vs zoo log $0.002562"
+     "detail": "engine $0.003525 vs zoo log $0.003525"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.002562] of [0.5876]; stopped=None"
+     "detail": "spent [0.003525] of [0.5876]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -7829,11 +7829,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "12 injected 429/500, 0 unrecovered"
+     "detail": "18 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -7842,12 +7842,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.796 -> FAIL",
+     "detail": "gpt-5-nano true 0.994 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.796 -> FAIL",
+     "detail": "gpt-5-nano true 0.994 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -7855,44 +7855,44 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.1334 vs log 0.1334"
     },
     "X03": {
      "status": "n/a",
      "detail": "no call site"
     }
    },
-   "exact_cost": 0.0034218500000000023,
+   "exact_cost": 0.0035254500000000038,
    "worst_call": 0.003609,
    "result": {
     "id": "langchain4j__langchain4j-spring-0",
     "task": "extraction",
     "threshold": 0.95,
     "reference": "baseline model",
-    "recommended": null,
-    "spent_usd": 0.002562,
-    "spent_this_run_usd": 0.002562,
+    "recommended": "gpt-5-nano",
+    "spent_usd": 0.003525,
+    "spent_this_run_usd": 0.003525,
     "stopped": null,
     "calls": {
-     "new_calls": 142,
+     "new_calls": 200,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
-     "verdict": "FAIL",
-     "passed": 34,
-     "scored": 42,
-     "lower_95": 0.6924,
-     "upper_95": 0.8892,
-     "savings_pct": 0.1443,
-     "stopped_early": true,
+     "verdict": "PASS",
+     "passed": 100,
+     "scored": 100,
+     "lower_95": 0.9737,
+     "upper_95": 1.0,
+     "savings_pct": 0.1334,
+     "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     }
@@ -7940,7 +7940,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -7995,7 +7995,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -8064,9 +8064,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-5-mini": 0.3,
-    "gpt-4.1-mini": 0.999,
-    "gpt-4o-mini": 0.98
+    "gpt-5-mini": 0.999,
+    "gpt-4.1-mini": 0.98,
+    "gpt-4o-mini": 0.955
    },
    "plan_max": 1.9339,
    "cli": false,
@@ -8077,11 +8077,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.012435 vs zoo log $0.012435"
+     "detail": "engine $0.018600 vs zoo log $0.018600"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.012435] of [2.51407]; stopped=None"
+     "detail": "spent [0.0186] of [2.51407]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -8089,11 +8089,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "10 injected 429/500, 0 unrecovered"
+     "detail": "11 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -8102,12 +8102,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-mini true 0.298 -> FAIL; gpt-4.1-mini true 0.994 -> PASS; gpt-4o-mini true 0.975 -> PASS",
+     "detail": "gpt-5-mini true 0.994 -> PASS; gpt-4.1-mini true 0.975 -> PASS; gpt-4o-mini true 0.950 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-mini true 0.298 -> FAIL; gpt-4.1-mini true 0.994 -> PASS; gpt-4o-mini true 0.975 -> PASS",
+     "detail": "gpt-5-mini true 0.994 -> PASS; gpt-4.1-mini true 0.975 -> PASS; gpt-4o-mini true 0.950 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -8116,43 +8116,43 @@
     },
     "X10": {
      "status": "pass",
-     "detail": "engine 0.9817 vs log 0.9817"
+     "detail": "engine 0.9511 vs log 0.9511"
     },
     "X03": {
      "status": "pass",
      "detail": "finding R110 tier validated saving None vs None"
     }
    },
-   "exact_cost": 0.0170936,
+   "exact_cost": 0.01859999999999998,
    "worst_call": 0.018047,
    "result": {
     "id": "lm-sys__FastChat-0",
     "task": "extraction",
     "threshold": 0.95,
     "reference": "production outputs",
-    "recommended": "gpt-4o-mini",
-    "spent_usd": 0.012435,
-    "spent_this_run_usd": 0.012435,
+    "recommended": "gpt-4.1-mini",
+    "spent_usd": 0.0186,
+    "spent_this_run_usd": 0.0186,
     "stopped": null,
     "calls": {
-     "new_calls": 233,
+     "new_calls": 300,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-mini",
-     "verdict": "FAIL",
-     "passed": 10,
-     "scored": 33,
-     "lower_95": 0.1906,
-     "upper_95": 0.4454,
-     "savings_pct": 0.9602,
-     "stopped_early": true,
+     "verdict": "PASS",
+     "passed": 99,
+     "scored": 100,
+     "lower_95": 0.9564,
+     "upper_95": 0.9978,
+     "savings_pct": 0.9469,
+     "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
@@ -8170,15 +8170,15 @@
     },
     {
      "model": "gpt-4o-mini",
-     "verdict": "PASS",
-     "passed": 99,
+     "verdict": "INCONCLUSIVE",
+     "passed": 98,
      "scored": 100,
-     "lower_95": 0.9564,
-     "upper_95": 0.9978,
-     "savings_pct": 0.9817,
+     "lower_95": 0.9413,
+     "upper_95": 0.9934,
+     "savings_pct": 0.9818,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 118
     }
    ]
   },
@@ -8195,7 +8195,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.955
+    "gpt-5-nano": 0.3
    },
    "plan_max": 0.2103,
    "cli": false,
@@ -8206,11 +8206,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.002298 vs zoo log $0.002298"
+     "detail": "engine $0.002267 vs zoo log $0.002267"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.002298] of [0.00246086]; stopped=budget"
+     "detail": "spent [0.002267] of [0.00244058]; stopped=budget"
     },
     "X11": {
      "status": "pass",
@@ -8218,7 +8218,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -8231,12 +8231,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.955 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.300 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.955 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.300 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -8252,7 +8252,7 @@
      "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.004448600000000003,
+   "exact_cost": 0.004245799999999998,
    "worst_call": 0.00192,
    "result": {
     "id": "lss233__kirara-ai-0",
@@ -8260,16 +8260,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.002298,
-    "spent_this_run_usd": 0.002298,
+    "spent_usd": 0.002267,
+    "spent_this_run_usd": 0.002267,
     "stopped": "budget",
     "calls": {
-     "new_calls": 81,
+     "new_calls": 80,
      "cached": 0,
      "skipped_budget": 2
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -8323,7 +8323,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -8374,7 +8374,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -8428,7 +8428,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -8479,7 +8479,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -8535,7 +8535,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -8590,7 +8590,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -8634,8 +8634,8 @@
     "claude-haiku-5-5"
    ],
    "design": {
-    "claude-haiku-4-5": 0.999,
-    "claude-haiku-5-5": 0.98
+    "claude-haiku-4-5": 0.98,
+    "claude-haiku-5-5": 0.955
    },
    "plan_max": 3.2288,
    "cli": true,
@@ -8658,7 +8658,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -8671,12 +8671,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.999 -> NEEDS-JUDGE; claude-haiku-5-5 true 0.980 -> NEEDS-JUDGE",
+     "detail": "claude-haiku-4-5 true 0.980 -> NEEDS-JUDGE; claude-haiku-5-5 true 0.956 -> NEEDS-JUDGE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.999 -> NEEDS-JUDGE; claude-haiku-5-5 true 0.980 -> NEEDS-JUDGE",
+     "detail": "claude-haiku-4-5 true 0.980 -> NEEDS-JUDGE; claude-haiku-5-5 true 0.956 -> NEEDS-JUDGE",
      "false_fail": []
     },
     "X09": {
@@ -8696,7 +8696,7 @@
      "detail": "ran (task generation, judge None, 100 samples)"
     }
    },
-   "exact_cost": 0.031808500000000066,
+   "exact_cost": 0.03181300000000007,
    "worst_call": 0.033993,
    "result": {
     "id": "maximhq__bifrost-1",
@@ -8713,7 +8713,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -8779,7 +8779,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -8830,7 +8830,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -8884,7 +8884,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -8935,7 +8935,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -8981,11 +8981,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.001565 vs zoo log $0.001565"
+     "detail": "engine $0.001615 vs zoo log $0.001616"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.000997, 0.000568] of [0.0105451, 1.33393]; stopped=None"
+     "detail": "spent [0.000997, 0.000619] of [0.0105451, 1.33393]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -8993,7 +8993,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9035,27 +9035,27 @@
     "threshold": 0.95,
     "reference": "production outputs",
     "recommended": null,
-    "spent_usd": 0.001565,
-    "spent_this_run_usd": 0.000568,
+    "spent_usd": 0.001615,
+    "spent_this_run_usd": 0.000619,
     "stopped": null,
     "calls": {
-     "new_calls": 37,
+     "new_calls": 39,
      "cached": 64,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-mini",
      "verdict": "FAIL",
-     "passed": 26,
-     "scored": 34,
-     "lower_95": 0.6284,
-     "upper_95": 0.862,
-     "savings_pct": 0.339,
+     "passed": 29,
+     "scored": 37,
+     "lower_95": 0.6552,
+     "upper_95": 0.8736,
+     "savings_pct": 0.3341,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -9076,10 +9076,10 @@
      "model": "gpt-4o-mini",
      "verdict": "FAIL",
      "passed": 7,
-     "scored": 34,
-     "lower_95": 0.1157,
-     "upper_95": 0.3395,
-     "savings_pct": 0.694,
+     "scored": 33,
+     "lower_95": 0.1193,
+     "upper_95": 0.3486,
+     "savings_pct": 0.6921,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -9099,7 +9099,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.955
+    "gpt-5-nano": 0.999
    },
    "plan_max": 0.4976,
    "cli": false,
@@ -9110,11 +9110,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.004473 vs zoo log $0.004473"
+     "detail": "engine $0.004478 vs zoo log $0.004478"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.004473] of [0.64688]; stopped=None"
+     "detail": "spent [0.004478] of [0.64688]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -9122,7 +9122,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9135,12 +9135,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.994 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.994 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -9148,24 +9148,24 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.4269 vs log 0.4269"
     },
     "X03": {
      "status": "n/a",
      "detail": "no call site"
     }
    },
-   "exact_cost": 0.004473200000000003,
+   "exact_cost": 0.004477600000000003,
    "worst_call": 0.003609,
    "result": {
     "id": "modelcontextprotocol__servers-0",
     "task": "extraction",
     "threshold": 0.95,
     "reference": "baseline model",
-    "recommended": null,
-    "spent_usd": 0.004473,
-    "spent_this_run_usd": 0.004473,
+    "recommended": "gpt-5-nano",
+    "spent_usd": 0.004478,
+    "spent_this_run_usd": 0.004478,
     "stopped": null,
     "calls": {
      "new_calls": 200,
@@ -9173,21 +9173,21 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
-     "verdict": "INCONCLUSIVE",
-     "passed": 96,
+     "verdict": "PASS",
+     "passed": 100,
      "scored": 100,
-     "lower_95": 0.9138,
-     "upper_95": 0.9819,
-     "savings_pct": 0.4285,
+     "lower_95": 0.9737,
+     "upper_95": 1.0,
+     "savings_pct": 0.4269,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": 1210
+     "samples_needed": null
     }
    ]
   },
@@ -9231,7 +9231,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9282,7 +9282,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -9360,7 +9360,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9411,7 +9411,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -9465,7 +9465,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9516,7 +9516,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -9558,7 +9558,7 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.000562 vs zoo log $0.000563"
+     "detail": "engine $0.000562 vs zoo log $0.000562"
     },
     "X12": {
      "status": "pass",
@@ -9570,7 +9570,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9625,7 +9625,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -9667,11 +9667,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.003206 vs zoo log $0.003206"
+     "detail": "engine $0.003222 vs zoo log $0.003222"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.003206] of [0.49972]; stopped=None"
+     "detail": "spent [0.003222] of [0.49972]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -9679,7 +9679,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9721,27 +9721,27 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.003206,
-    "spent_this_run_usd": 0.003206,
+    "spent_usd": 0.003222,
+    "spent_this_run_usd": 0.003222,
     "stopped": null,
     "calls": {
-     "new_calls": 181,
+     "new_calls": 182,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
      "verdict": "FAIL",
-     "passed": 73,
-     "scored": 81,
-     "lower_95": 0.8331,
-     "upper_95": 0.9435,
-     "savings_pct": 0.1618,
+     "passed": 74,
+     "scored": 82,
+     "lower_95": 0.835,
+     "upper_95": 0.9442,
+     "savings_pct": 0.1624,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -9772,11 +9772,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.000679 vs zoo log $0.000679"
+     "detail": "engine $0.000689 vs zoo log $0.000689"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.000679] of [0.41223]; stopped=None"
+     "detail": "spent [0.000689] of [0.41223]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -9784,7 +9784,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9826,27 +9826,27 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.000679,
-    "spent_this_run_usd": 0.000679,
+    "spent_usd": 0.000689,
+    "spent_this_run_usd": 0.000689,
     "stopped": null,
     "calls": {
-     "new_calls": 142,
+     "new_calls": 145,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
      "verdict": "FAIL",
-     "passed": 34,
-     "scored": 42,
-     "lower_95": 0.6924,
-     "upper_95": 0.8892,
-     "savings_pct": 0.3865,
+     "passed": 36,
+     "scored": 45,
+     "lower_95": 0.6862,
+     "upper_95": 0.8798,
+     "savings_pct": 0.3871,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -9893,7 +9893,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -9944,7 +9944,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -10001,9 +10001,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-4.1-mini": 0.955,
-    "gpt-5-mini": 0.9,
-    "gpt-4o-mini": 0.8
+    "gpt-4.1-mini": 0.3,
+    "gpt-5-mini": 0.999,
+    "gpt-4o-mini": 0.98
    },
    "plan_max": 8.1971,
    "cli": false,
@@ -10014,11 +10014,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.010981 vs zoo log $0.010981"
+     "detail": "engine $0.011463 vs zoo log $0.011463"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.010981] of [10.65623]; stopped=None"
+     "detail": "spent [0.011463] of [10.65623]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -10026,11 +10026,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "24 injected 429/500, 0 unrecovered"
+     "detail": "28 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -10039,12 +10039,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.955 -> FAIL; gpt-5-mini true 0.900 -> INCONCLUSIVE; gpt-4o-mini true 0.800 -> FAIL",
+     "detail": "gpt-4.1-mini true 0.300 -> FAIL; gpt-5-mini true 0.999 -> PASS; gpt-4o-mini true 0.980 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.955 -> FAIL; gpt-5-mini true 0.900 -> INCONCLUSIVE; gpt-4o-mini true 0.800 -> FAIL",
+     "detail": "gpt-4.1-mini true 0.300 -> FAIL; gpt-5-mini true 0.999 -> PASS; gpt-4o-mini true 0.980 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -10052,70 +10052,70 @@
      "detail": ""
     },
     "X10": {
-     "status": "n/a",
-     "detail": "no passing candidate"
+     "status": "pass",
+     "detail": "engine 0.8055 vs log 0.8055"
     },
     "X03": {
      "status": "pass",
-     "detail": "inconclusive: estimate kept"
+     "detail": "finding R110 tier validated saving 221.01437517525 vs 221.01437517525"
     }
    },
-   "exact_cost": 0.012916149999999989,
+   "exact_cost": 0.012908749999999988,
    "worst_call": 0.090221,
    "result": {
     "id": "openai__openai-dotnet-1",
     "task": "classification",
     "threshold": 0.95,
     "reference": "expected answers",
-    "recommended": null,
-    "spent_usd": 0.010981,
-    "spent_this_run_usd": 0.010981,
+    "recommended": "gpt-5-mini",
+    "spent_usd": 0.011463,
+    "spent_this_run_usd": 0.011463,
     "stopped": null,
     "calls": {
-     "new_calls": 270,
+     "new_calls": 333,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-4.1-mini",
      "verdict": "FAIL",
-     "passed": 32,
-     "scored": 36,
-     "lower_95": 0.7743,
-     "upper_95": 0.9491,
-     "savings_pct": 0.7455,
+     "passed": 10,
+     "scored": 33,
+     "lower_95": 0.1906,
+     "upper_95": 0.4454,
+     "savings_pct": 0.7471,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-5-mini",
-     "verdict": "INCONCLUSIVE",
-     "passed": 92,
+     "verdict": "PASS",
+     "passed": 100,
      "scored": 100,
-     "lower_95": 0.8635,
-     "upper_95": 0.9543,
-     "savings_pct": 0.8072,
+     "lower_95": 0.9737,
+     "upper_95": 1.0,
+     "savings_pct": 0.8055,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-4o-mini",
-     "verdict": "FAIL",
-     "passed": 27,
-     "scored": 34,
-     "lower_95": 0.6605,
-     "upper_95": 0.8843,
-     "savings_pct": 0.9039,
-     "stopped_early": true,
+     "verdict": "INCONCLUSIVE",
+     "passed": 98,
+     "scored": 100,
+     "lower_95": 0.9413,
+     "upper_95": 0.9934,
+     "savings_pct": 0.9029,
+     "stopped_early": false,
      "errors": 0,
-     "samples_needed": null
+     "samples_needed": 118
     }
    ]
   },
@@ -10147,11 +10147,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.177238 vs zoo log $0.177238"
+     "detail": "engine $0.177322 vs zoo log $0.177322"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.177238] of [4.86083]; stopped=None"
+     "detail": "spent [0.177322] of [4.86083]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -10159,7 +10159,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -10201,16 +10201,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.177238,
-    "spent_this_run_usd": 0.177238,
+    "spent_usd": 0.177322,
+    "spent_this_run_usd": 0.177322,
     "stopped": null,
     "calls": {
-     "new_calls": 268,
+     "new_calls": 269,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -10229,10 +10229,10 @@
     {
      "model": "gpt-5-mini",
      "verdict": "FAIL",
-     "passed": 29,
-     "scored": 34,
-     "lower_95": 0.7273,
-     "upper_95": 0.9265,
+     "passed": 30,
+     "scored": 35,
+     "lower_95": 0.7343,
+     "upper_95": 0.9287,
      "savings_pct": 0.9512,
      "stopped_early": true,
      "errors": 0,
@@ -10276,11 +10276,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.000912 vs zoo log $0.000912"
+     "detail": "engine $0.000933 vs zoo log $0.000933"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.000912] of [0.44213]; stopped=None"
+     "detail": "spent [0.000933] of [0.44213]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -10288,11 +10288,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "7 injected 429/500, 0 unrecovered"
+     "detail": "8 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -10330,27 +10330,27 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.000912,
-    "spent_this_run_usd": 0.000912,
+    "spent_usd": 0.000933,
+    "spent_this_run_usd": 0.000933,
     "stopped": null,
     "calls": {
-     "new_calls": 136,
+     "new_calls": 142,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
      "verdict": "FAIL",
-     "passed": 10,
-     "scored": 36,
-     "lower_95": 0.1739,
-     "upper_95": 0.4128,
-     "savings_pct": 0.5976,
+     "passed": 11,
+     "scored": 42,
+     "lower_95": 0.1672,
+     "upper_95": 0.3854,
+     "savings_pct": 0.5957,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -10378,7 +10378,7 @@
     "gemini/gemini-2.5-flash-lite": 0.955,
     "mistral/mistral-small-latest": 0.9
    },
-   "plan_max": 2.5795,
+   "plan_max": 1.5839,
    "cli": true,
    "checks": {
     "X01": {
@@ -10391,7 +10391,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.119144] of [3.35335]; stopped=None"
+     "detail": "spent [0.119144] of [2.05907]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -10399,7 +10399,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -10454,7 +10454,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -10544,7 +10544,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -10595,7 +10595,7 @@
      "skipped_budget": 2
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -10649,7 +10649,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -10700,7 +10700,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -10733,9 +10733,9 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-4.1-mini": 0.3,
-    "gpt-5-mini": 0.999,
-    "gpt-4o-mini": 0.98
+    "gpt-4.1-mini": 0.955,
+    "gpt-5-mini": 0.9,
+    "gpt-4o-mini": 0.8
    },
    "plan_max": 1.4227,
    "cli": true,
@@ -10746,11 +10746,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.003118 vs zoo log $0.003118"
+     "detail": "engine $0.002951 vs zoo log $0.002951"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.003118] of [1.84951]; stopped=None"
+     "detail": "spent [0.002951] of [1.84951]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -10758,11 +10758,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "20 injected 429/500, 0 unrecovered"
+     "detail": "7 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -10771,12 +10771,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.299 -> FAIL; gpt-5-mini true 0.994 -> PASS; gpt-4o-mini true 0.975 -> INCONCLUSIVE",
+     "detail": "gpt-4.1-mini true 0.950 -> INCONCLUSIVE; gpt-5-mini true 0.896 -> FAIL; gpt-4o-mini true 0.796 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.299 -> FAIL; gpt-5-mini true 0.994 -> PASS; gpt-4o-mini true 0.975 -> INCONCLUSIVE",
+     "detail": "gpt-4.1-mini true 0.950 -> INCONCLUSIVE; gpt-5-mini true 0.896 -> FAIL; gpt-4o-mini true 0.796 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -10784,74 +10784,74 @@
      "detail": ""
     },
     "X10": {
-     "status": "pass",
-     "detail": "engine 0.8803 vs log 0.8803"
+     "status": "n/a",
+     "detail": "no passing candidate"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving 622.3628471667 vs 622.3628471667"
+     "detail": "inconclusive: estimate kept"
     },
     "X13": {
      "status": "pass",
      "detail": "ran (task classification, judge None, 100 samples)"
     }
    },
-   "exact_cost": 0.004550999999999998,
+   "exact_cost": 0.004542799999999999,
    "worst_call": 0.018044,
    "result": {
     "id": "promptfoo__promptfoo-0",
     "task": "classification",
     "threshold": 0.95,
     "reference": "production outputs",
-    "recommended": "gpt-5-mini",
-    "spent_usd": 0.003118,
-    "spent_this_run_usd": 0.003118,
+    "recommended": null,
+    "spent_usd": 0.002951,
+    "spent_this_run_usd": 0.002951,
     "stopped": null,
     "calls": {
-     "new_calls": 233,
+     "new_calls": 168,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-4.1-mini",
+     "verdict": "INCONCLUSIVE",
+     "passed": 97,
+     "scored": 100,
+     "lower_95": 0.9273,
+     "upper_95": 0.9879,
+     "savings_pct": 0.842,
+     "stopped_early": false,
+     "errors": 0,
+     "samples_needed": 280
+    },
+    {
+     "model": "gpt-5-mini",
      "verdict": "FAIL",
-     "passed": 12,
-     "scored": 33,
-     "lower_95": 0.2411,
-     "upper_95": 0.5068,
-     "savings_pct": 0.8446,
+     "passed": 30,
+     "scored": 34,
+     "lower_95": 0.7623,
+     "upper_95": 0.9461,
+     "savings_pct": 0.8818,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     },
     {
-     "model": "gpt-5-mini",
-     "verdict": "PASS",
-     "passed": 100,
-     "scored": 100,
-     "lower_95": 0.9737,
-     "upper_95": 1.0,
-     "savings_pct": 0.8803,
-     "stopped_early": false,
+     "model": "gpt-4o-mini",
+     "verdict": "FAIL",
+     "passed": 27,
+     "scored": 34,
+     "lower_95": 0.6605,
+     "upper_95": 0.8843,
+     "savings_pct": 0.9404,
+     "stopped_early": true,
      "errors": 0,
      "samples_needed": null
-    },
-    {
-     "model": "gpt-4o-mini",
-     "verdict": "INCONCLUSIVE",
-     "passed": 98,
-     "scored": 100,
-     "lower_95": 0.9413,
-     "upper_95": 0.9934,
-     "savings_pct": 0.9403,
-     "stopped_early": false,
-     "errors": 0,
-     "samples_needed": 118
     }
    ]
   },
@@ -10870,11 +10870,11 @@
     "gpt-4o-mini"
    ],
    "design": {
-    "gpt-4.1-mini": 0.999,
-    "gpt-5-mini": 0.98,
-    "gpt-4o-mini": 0.955
+    "gpt-4.1-mini": 0.8,
+    "gpt-5-mini": 0.3,
+    "gpt-4o-mini": 0.999
    },
-   "plan_max": 2.8321,
+   "plan_max": 2.0793,
    "cli": true,
    "checks": {
     "X01": {
@@ -10883,11 +10883,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.103268 vs zoo log $0.103268"
+     "detail": "engine $0.140743 vs zoo log $0.140743"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.103268] of [3.68173]; stopped=None"
+     "detail": "spent [0.140743] of [2.70309]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -10895,7 +10895,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -10908,12 +10908,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.999 -> PASS; gpt-5-mini true 0.980 -> PASS; gpt-4o-mini true 0.955 -> INCONCLUSIVE",
+     "detail": "gpt-4.1-mini true 0.800 -> FAIL; gpt-5-mini true 0.300 -> FAIL; gpt-4o-mini true 0.999 -> PASS",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-4.1-mini true 0.999 -> PASS; gpt-5-mini true 0.980 -> PASS; gpt-4o-mini true 0.955 -> INCONCLUSIVE",
+     "detail": "gpt-4.1-mini true 0.800 -> FAIL; gpt-5-mini true 0.300 -> FAIL; gpt-4o-mini true 0.999 -> PASS",
      "false_fail": []
     },
     "X09": {
@@ -10922,73 +10922,73 @@
     },
     "X10": {
      "status": "pass",
-     "detail": "engine 0.8464 vs log 0.8464"
+     "detail": "engine 0.9401 vs log 0.9401"
     },
     "X03": {
      "status": "pass",
-     "detail": "finding R110 tier validated saving 598.3959034896001 vs 598.3959034896001"
+     "detail": "finding R110 tier validated saving 664.6408186089001 vs 664.6408186089001"
     },
     "X13": {
      "status": "pass",
      "detail": "ran (task generation, judge gpt-4.1, 100 samples)"
     }
    },
-   "exact_cost": 0.024682000000000006,
+   "exact_cost": 0.02509280000000002,
    "worst_call": 0.018041,
    "result": {
     "id": "promptfoo__promptfoo-1",
     "task": "generation",
     "threshold": 0.9,
     "reference": "expected answers",
-    "recommended": "gpt-5-mini",
-    "spent_usd": 0.103268,
-    "spent_this_run_usd": 0.103268,
+    "recommended": "gpt-4o-mini",
+    "spent_usd": 0.140743,
+    "spent_this_run_usd": 0.140743,
     "stopped": null,
     "calls": {
-     "new_calls": 678,
-     "cached": 322,
+     "new_calls": 807,
+     "cached": 193,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-4.1-mini",
-     "verdict": "PASS",
-     "passed": 98,
+     "verdict": "FAIL",
+     "passed": 77,
      "scored": 100,
-     "lower_95": 0.9413,
-     "upper_95": 0.9934,
-     "savings_pct": 0.8407,
+     "lower_95": 0.6942,
+     "upper_95": 0.8316,
+     "savings_pct": 0.8363,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-5-mini",
-     "verdict": "PASS",
-     "passed": 96,
+     "verdict": "FAIL",
+     "passed": 26,
      "scored": 100,
-     "lower_95": 0.9138,
-     "upper_95": 0.9819,
-     "savings_pct": 0.8464,
+     "lower_95": 0.1948,
+     "upper_95": 0.3378,
+     "savings_pct": 0.8276,
      "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     },
     {
      "model": "gpt-4o-mini",
-     "verdict": "INCONCLUSIVE",
-     "passed": 93,
+     "verdict": "PASS",
+     "passed": 97,
      "scored": 100,
-     "lower_95": 0.8757,
-     "upper_95": 0.9616,
-     "savings_pct": 0.9397,
+     "lower_95": 0.9273,
+     "upper_95": 0.9879,
+     "savings_pct": 0.9401,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": 248
+     "samples_needed": null
     }
    ]
   },
@@ -11008,10 +11008,10 @@
     "mistral/mistral-small-latest"
    ],
    "design": {
-    "claude-haiku-4-5": 0.9,
-    "azure/gpt-4o-mini": 0.8,
-    "gemini/gemini-2.5-flash-lite": 0.3,
-    "mistral/mistral-small-latest": 0.999
+    "claude-haiku-4-5": 0.999,
+    "azure/gpt-4o-mini": 0.98,
+    "gemini/gemini-2.5-flash-lite": 0.955,
+    "mistral/mistral-small-latest": 0.9
    },
    "plan_max": 1.5973,
    "cli": true,
@@ -11022,11 +11022,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.078271 vs zoo log $0.078271"
+     "detail": "engine $0.094729 vs zoo log $0.094729"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.078271] of [2.07649]; stopped=None"
+     "detail": "spent [0.094729] of [2.07649]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -11034,11 +11034,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "18 injected 429/500, 0 unrecovered"
+     "detail": "24 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -11047,12 +11047,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.900 -> FAIL; azure/gpt-4o-mini true 0.800 -> FAIL; gemini/gemini-2.5-flash-lite true 0.300 -> FAIL; mistral/mistral-small-latest true 0.999 -> PASS",
+     "detail": "claude-haiku-4-5 true 0.999 -> PASS; azure/gpt-4o-mini true 0.980 -> INCONCLUSIVE; gemini/gemini-2.5-flash-lite true 0.955 -> INCONCLUSIVE; mistral/mistral-small-latest true 0.900 -> FAIL",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "claude-haiku-4-5 true 0.900 -> FAIL; azure/gpt-4o-mini true 0.800 -> FAIL; gemini/gemini-2.5-flash-lite true 0.300 -> FAIL; mistral/mistral-small-latest true 0.999 -> PASS",
+     "detail": "claude-haiku-4-5 true 0.999 -> PASS; azure/gpt-4o-mini true 0.980 -> INCONCLUSIVE; gemini/gemini-2.5-flash-lite true 0.955 -> INCONCLUSIVE; mistral/mistral-small-latest true 0.900 -> FAIL",
      "false_fail": []
     },
     "X09": {
@@ -11061,7 +11061,7 @@
     },
     "X10": {
      "status": "pass",
-     "detail": "engine 0.9578 vs log 0.9578"
+     "detail": "engine 0.6725 vs log 0.6725"
     },
     "X03": {
      "status": "n/a",
@@ -11072,72 +11072,72 @@
      "detail": "ran (task extraction, judge None, 100 samples)"
     }
    },
-   "exact_cost": 0.09593320000000005,
+   "exact_cost": 0.09658760000000008,
    "worst_call": 0.008745,
    "result": {
     "id": "psf__requests-0",
     "task": "extraction",
     "threshold": 0.95,
     "reference": "expected answers",
-    "recommended": "mistral/mistral-small-latest",
-    "spent_usd": 0.078271,
-    "spent_this_run_usd": 0.078271,
+    "recommended": "claude-haiku-4-5",
+    "spent_usd": 0.094729,
+    "spent_this_run_usd": 0.094729,
     "stopped": null,
     "calls": {
-     "new_calls": 299,
+     "new_calls": 433,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "claude-haiku-4-5",
-     "verdict": "FAIL",
-     "passed": 27,
-     "scored": 32,
-     "lower_95": 0.7121,
-     "upper_95": 0.9218,
-     "savings_pct": 0.6799,
-     "stopped_early": true,
-     "errors": 0,
-     "samples_needed": null
-    },
-    {
-     "model": "azure/gpt-4o-mini",
-     "verdict": "FAIL",
-     "passed": 25,
-     "scored": 34,
-     "lower_95": 0.5969,
-     "upper_95": 0.839,
-     "savings_pct": 0.9599,
-     "stopped_early": true,
-     "errors": 0,
-     "samples_needed": null
-    },
-    {
-     "model": "gemini/gemini-2.5-flash-lite",
-     "verdict": "FAIL",
-     "passed": 13,
-     "scored": 33,
-     "lower_95": 0.2672,
-     "upper_95": 0.5367,
-     "savings_pct": 0.9738,
-     "stopped_early": true,
-     "errors": 0,
-     "samples_needed": null
-    },
-    {
-     "model": "mistral/mistral-small-latest",
      "verdict": "PASS",
      "passed": 100,
      "scored": 100,
      "lower_95": 0.9737,
      "upper_95": 1.0,
-     "savings_pct": 0.9578,
+     "savings_pct": 0.6725,
      "stopped_early": false,
+     "errors": 0,
+     "samples_needed": null
+    },
+    {
+     "model": "azure/gpt-4o-mini",
+     "verdict": "INCONCLUSIVE",
+     "passed": 98,
+     "scored": 100,
+     "lower_95": 0.9413,
+     "upper_95": 0.9934,
+     "savings_pct": 0.9585,
+     "stopped_early": false,
+     "errors": 0,
+     "samples_needed": 118
+    },
+    {
+     "model": "gemini/gemini-2.5-flash-lite",
+     "verdict": "INCONCLUSIVE",
+     "passed": 98,
+     "scored": 100,
+     "lower_95": 0.9413,
+     "upper_95": 0.9934,
+     "savings_pct": 0.9721,
+     "stopped_early": false,
+     "errors": 0,
+     "samples_needed": 118
+    },
+    {
+     "model": "mistral/mistral-small-latest",
+     "verdict": "FAIL",
+     "passed": 27,
+     "scored": 33,
+     "lower_95": 0.6852,
+     "upper_95": 0.903,
+     "savings_pct": 0.9587,
+     "stopped_early": true,
      "errors": 0,
      "samples_needed": null
     }
@@ -11181,7 +11181,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -11232,7 +11232,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -11302,7 +11302,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -11353,7 +11353,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -11435,7 +11435,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -11486,7 +11486,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -11568,7 +11568,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -11619,7 +11619,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -11685,11 +11685,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.003965 vs zoo log $0.003966"
+     "detail": "engine $0.003999 vs zoo log $0.003999"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.003966] of [0.64688]; stopped=None"
+     "detail": "spent [0.003999] of [0.64688]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -11697,7 +11697,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -11739,27 +11739,27 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.003965,
-    "spent_this_run_usd": 0.003966,
+    "spent_usd": 0.003999,
+    "spent_this_run_usd": 0.003999,
     "stopped": null,
     "calls": {
-     "new_calls": 172,
+     "new_calls": 174,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
      "verdict": "FAIL",
-     "passed": 63,
-     "scored": 72,
-     "lower_95": 0.797,
-     "upper_95": 0.9258,
-     "savings_pct": 0.4443,
+     "passed": 65,
+     "scored": 74,
+     "lower_95": 0.8022,
+     "upper_95": 0.9279,
+     "savings_pct": 0.4436,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -11802,7 +11802,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -11853,7 +11853,7 @@
      "skipped_budget": 2
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -11892,7 +11892,7 @@
     "gemini/gemini-2.5-flash-lite": 0.8,
     "mistral/mistral-small-latest": 0.3
    },
-   "plan_max": 2.5795,
+   "plan_max": 1.5839,
    "cli": true,
    "checks": {
     "X01": {
@@ -11905,7 +11905,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.159386] of [3.35335]; stopped=None"
+     "detail": "spent [0.159386] of [2.05907]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -11913,7 +11913,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -11968,7 +11968,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -12062,7 +12062,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -12117,7 +12117,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -12189,11 +12189,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.020536 vs zoo log $0.020536"
+     "detail": "engine $0.020528 vs zoo log $0.020528"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.020536] of [2.06869]; stopped=None"
+     "detail": "spent [0.020528] of [2.06869]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -12201,7 +12201,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -12247,16 +12247,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": "mistral/mistral-small-latest",
-    "spent_usd": 0.020536,
-    "spent_this_run_usd": 0.020536,
+    "spent_usd": 0.020528,
+    "spent_this_run_usd": 0.020528,
     "stopped": null,
     "calls": {
-     "new_calls": 304,
+     "new_calls": 303,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -12276,10 +12276,10 @@
      "model": "azure/gpt-4o-mini",
      "verdict": "FAIL",
      "passed": 22,
-     "scored": 32,
-     "lower_95": 0.5426,
-     "upper_95": 0.8031,
-     "savings_pct": 0.9524,
+     "scored": 31,
+     "lower_95": 0.5631,
+     "upper_95": 0.8226,
+     "savings_pct": 0.9525,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -12346,7 +12346,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -12397,7 +12397,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -12443,11 +12443,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.002733 vs zoo log $0.002733"
+     "detail": "engine $0.002758 vs zoo log $0.002758"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.000996, 0.001737] of [0.01054504, 1.33393]; stopped=None"
+     "detail": "spent [0.000996, 0.001762] of [0.01054504, 1.33393]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -12455,7 +12455,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -12497,8 +12497,8 @@
     "threshold": 0.95,
     "reference": "production outputs",
     "recommended": null,
-    "spent_usd": 0.002733,
-    "spent_this_run_usd": 0.001737,
+    "spent_usd": 0.002758,
+    "spent_this_run_usd": 0.001762,
     "stopped": null,
     "calls": {
      "new_calls": 107,
@@ -12506,7 +12506,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -12525,10 +12525,10 @@
     {
      "model": "gpt-4.1-mini",
      "verdict": "FAIL",
-     "passed": 30,
-     "scored": 34,
-     "lower_95": 0.7623,
-     "upper_95": 0.9461,
+     "passed": 32,
+     "scored": 36,
+     "lower_95": 0.7743,
+     "upper_95": 0.9491,
      "savings_pct": 0.9148,
      "stopped_early": true,
      "errors": 0,
@@ -12537,10 +12537,10 @@
     {
      "model": "gpt-4o-mini",
      "verdict": "FAIL",
-     "passed": 27,
-     "scored": 34,
-     "lower_95": 0.6605,
-     "upper_95": 0.8843,
+     "passed": 25,
+     "scored": 32,
+     "lower_95": 0.6418,
+     "upper_95": 0.8768,
      "savings_pct": 0.9687,
      "stopped_early": true,
      "errors": 0,
@@ -12590,7 +12590,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -12645,7 +12645,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -12735,7 +12735,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -12786,7 +12786,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -12840,7 +12840,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -12891,7 +12891,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -12930,7 +12930,7 @@
     "gemini/gemini-2.5-flash-lite": 0.98,
     "mistral/mistral-small-latest": 0.955
    },
-   "plan_max": 2.5795,
+   "plan_max": 1.5839,
    "cli": true,
    "checks": {
     "X01": {
@@ -12943,7 +12943,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.150574] of [3.35335]; stopped=None"
+     "detail": "spent [0.150574] of [2.05907]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -12951,7 +12951,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -13006,7 +13006,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -13075,7 +13075,7 @@
    "design": {
     "gpt-5-nano": 0.9
    },
-   "plan_max": 0.5699,
+   "plan_max": 0.321,
    "cli": true,
    "checks": {
     "X01": {
@@ -13088,7 +13088,7 @@
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.042006] of [0.74087]; stopped=None"
+     "detail": "spent [0.042006] of [0.4173]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -13096,7 +13096,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -13135,7 +13135,7 @@
     }
    },
    "exact_cost": 0.0012119000000000003,
-   "worst_call": 0.00464,
+   "worst_call": 0.003608,
    "result": {
     "id": "tryAGI__LangChain-0",
     "task": "generation",
@@ -13151,7 +13151,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -13199,11 +13199,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.020693 vs zoo log $0.020693"
+     "detail": "engine $0.020755 vs zoo log $0.020755"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.020693] of [2.06895]; stopped=None"
+     "detail": "spent [0.020755] of [2.06895]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -13211,7 +13211,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -13257,27 +13257,27 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": "gemini/gemini-2.5-flash-lite",
-    "spent_usd": 0.020693,
-    "spent_this_run_usd": 0.020693,
+    "spent_usd": 0.020755,
+    "spent_this_run_usd": 0.020755,
     "stopped": null,
     "calls": {
-     "new_calls": 365,
+     "new_calls": 366,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "claude-haiku-4-5",
      "verdict": "FAIL",
-     "passed": 24,
-     "scored": 31,
-     "lower_95": 0.6317,
-     "upper_95": 0.8727,
-     "savings_pct": 0.6657,
+     "passed": 25,
+     "scored": 32,
+     "lower_95": 0.6418,
+     "upper_95": 0.8768,
+     "savings_pct": 0.6639,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -13350,11 +13350,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.090367 vs zoo log $0.090367"
+     "detail": "engine $0.090398 vs zoo log $0.090398"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.090367] of [2.07649]; stopped=None"
+     "detail": "spent [0.090398] of [2.07649]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -13362,7 +13362,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -13408,16 +13408,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.090367,
-    "spent_this_run_usd": 0.090367,
+    "spent_usd": 0.090398,
+    "spent_this_run_usd": 0.090398,
     "stopped": null,
     "calls": {
-     "new_calls": 294,
+     "new_calls": 296,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -13449,10 +13449,10 @@
      "model": "gemini/gemini-2.5-flash-lite",
      "verdict": "FAIL",
      "passed": 22,
-     "scored": 31,
-     "lower_95": 0.5631,
-     "upper_95": 0.8226,
-     "savings_pct": 0.9742,
+     "scored": 32,
+     "lower_95": 0.5426,
+     "upper_95": 0.8031,
+     "savings_pct": 0.9741,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -13461,10 +13461,10 @@
      "model": "mistral/mistral-small-latest",
      "verdict": "FAIL",
      "passed": 10,
-     "scored": 31,
-     "lower_95": 0.2036,
-     "upper_95": 0.47,
-     "savings_pct": 0.9621,
+     "scored": 32,
+     "lower_95": 0.1969,
+     "upper_95": 0.4574,
+     "savings_pct": 0.9626,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -13501,11 +13501,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.094906 vs zoo log $0.094906"
+     "detail": "engine $0.094885 vs zoo log $0.094885"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.094906] of [2.07662]; stopped=None"
+     "detail": "spent [0.094885] of [2.07662]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -13513,7 +13513,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -13559,16 +13559,16 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": "claude-haiku-4-5",
-    "spent_usd": 0.094906,
-    "spent_this_run_usd": 0.094906,
+    "spent_usd": 0.094885,
+    "spent_this_run_usd": 0.094885,
     "stopped": null,
     "calls": {
-     "new_calls": 421,
+     "new_calls": 420,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -13599,11 +13599,11 @@
     {
      "model": "gemini/gemini-2.5-flash-lite",
      "verdict": "FAIL",
-     "passed": 37,
-     "scored": 42,
-     "lower_95": 0.7749,
-     "upper_95": 0.9408,
-     "savings_pct": 0.9717,
+     "passed": 36,
+     "scored": 41,
+     "lower_95": 0.7699,
+     "upper_95": 0.9394,
+     "savings_pct": 0.9718,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -13648,11 +13648,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.047345 vs zoo log $0.047345"
+     "detail": "engine $0.047242 vs zoo log $0.047242"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.047345] of [14.84964]; stopped=None"
+     "detail": "spent [0.047242] of [14.84964]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -13660,7 +13660,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -13702,27 +13702,27 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.047345,
-    "spent_this_run_usd": 0.047345,
+    "spent_usd": 0.047242,
+    "spent_this_run_usd": 0.047242,
     "stopped": null,
     "calls": {
-     "new_calls": 172,
+     "new_calls": 171,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gemini/gemini-flash-lite-latest",
      "verdict": "FAIL",
-     "passed": 30,
-     "scored": 37,
-     "lower_95": 0.6852,
-     "upper_95": 0.894,
-     "savings_pct": 0.7698,
+     "passed": 29,
+     "scored": 36,
+     "lower_95": 0.6774,
+     "upper_95": 0.891,
+     "savings_pct": 0.7697,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -13767,11 +13767,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.051484 vs zoo log $0.051484"
+     "detail": "engine $0.051582 vs zoo log $0.051582"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.051484] of [15.39876]; stopped=None"
+     "detail": "spent [0.051582] of [15.39876]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -13779,7 +13779,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -13821,27 +13821,27 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.051484,
-    "spent_this_run_usd": 0.051484,
+    "spent_usd": 0.051582,
+    "spent_this_run_usd": 0.051582,
     "stopped": null,
     "calls": {
-     "new_calls": 218,
+     "new_calls": 219,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gemini/gemini-flash-lite-latest",
      "verdict": "FAIL",
-     "passed": 71,
-     "scored": 82,
-     "lower_95": 0.7921,
-     "upper_95": 0.9162,
-     "savings_pct": 0.7575,
+     "passed": 72,
+     "scored": 83,
+     "lower_95": 0.7945,
+     "upper_95": 0.9172,
+     "savings_pct": 0.7577,
      "stopped_early": true,
      "errors": 0,
      "samples_needed": null
@@ -13896,7 +13896,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -13947,7 +13947,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -14001,7 +14001,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -14052,7 +14052,7 @@
      "skipped_budget": 2
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
@@ -14083,7 +14083,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.9
+    "gpt-5-nano": 0.955
    },
    "plan_max": 0.2895,
    "cli": false,
@@ -14094,11 +14094,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.001049 vs zoo log $0.001049"
+     "detail": "engine $0.001144 vs zoo log $0.001144"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.001049] of [0.37635]; stopped=None"
+     "detail": "spent [0.001144] of [0.37635]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -14106,11 +14106,11 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
-     "detail": "11 injected 429/500, 0 unrecovered"
+     "detail": "14 injected 429/500, 0 unrecovered"
     },
     "X06": {
      "status": "pass",
@@ -14119,12 +14119,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.900 -> FAIL",
+     "detail": "gpt-5-nano true 0.955 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.900 -> FAIL",
+     "detail": "gpt-5-nano true 0.955 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -14137,7 +14137,7 @@
     },
     "X03": {
      "status": "pass",
-     "detail": "all failed; finding none (no R101)"
+     "detail": "inconclusive: estimate kept"
     }
    },
    "exact_cost": 0.0011439999999999996,
@@ -14148,28 +14148,28 @@
     "threshold": 0.95,
     "reference": "expected answers",
     "recommended": null,
-    "spent_usd": 0.001049,
-    "spent_this_run_usd": 0.001049,
+    "spent_usd": 0.001144,
+    "spent_this_run_usd": 0.001144,
     "stopped": null,
     "calls": {
-     "new_calls": 171,
+     "new_calls": 200,
      "cached": 0,
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
-     "verdict": "FAIL",
-     "passed": 63,
-     "scored": 71,
-     "lower_95": 0.8109,
-     "upper_95": 0.9353,
+     "verdict": "INCONCLUSIVE",
+     "passed": 95,
+     "scored": 100,
+     "lower_95": 0.9008,
+     "upper_95": 0.9755,
      "savings_pct": 0.6014,
-     "stopped_early": true,
+     "stopped_early": false,
      "errors": 0,
      "samples_needed": null
     }
@@ -14188,7 +14188,7 @@
     "gpt-5-nano"
    ],
    "design": {
-    "gpt-5-nano": 0.955
+    "gpt-5-nano": 0.9
    },
    "plan_max": 0.452,
    "cli": false,
@@ -14199,11 +14199,11 @@
     },
     "X02": {
      "status": "pass",
-     "detail": "engine $0.003492 vs zoo log $0.003492"
+     "detail": "engine $0.003468 vs zoo log $0.003468"
     },
     "X12": {
      "status": "pass",
-     "detail": "spent [0.003492] of [0.5876]; stopped=None"
+     "detail": "spent [0.003468] of [0.5876]; stopped=None"
     },
     "X11": {
      "status": "pass",
@@ -14211,7 +14211,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -14224,12 +14224,12 @@
     },
     "X04": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.895 -> INCONCLUSIVE",
      "false_pass": []
     },
     "X05": {
      "status": "pass",
-     "detail": "gpt-5-nano true 0.950 -> INCONCLUSIVE",
+     "detail": "gpt-5-nano true 0.895 -> INCONCLUSIVE",
      "false_fail": []
     },
     "X09": {
@@ -14245,7 +14245,7 @@
      "detail": "inconclusive: estimate kept"
     }
    },
-   "exact_cost": 0.0034919500000000028,
+   "exact_cost": 0.0034683500000000024,
    "worst_call": 0.003609,
    "result": {
     "id": "zhayujie__chatgpt-on-wechat-0",
@@ -14253,8 +14253,8 @@
     "threshold": 0.95,
     "reference": "baseline model",
     "recommended": null,
-    "spent_usd": 0.003492,
-    "spent_this_run_usd": 0.003492,
+    "spent_usd": 0.003468,
+    "spent_this_run_usd": 0.003468,
     "stopped": null,
     "calls": {
      "new_calls": 200,
@@ -14262,21 +14262,21 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [
     {
      "model": "gpt-5-nano",
      "verdict": "INCONCLUSIVE",
-     "passed": 98,
+     "passed": 93,
      "scored": 100,
-     "lower_95": 0.9413,
-     "upper_95": 0.9934,
-     "savings_pct": 0.1529,
+     "lower_95": 0.8757,
+     "upper_95": 0.9616,
+     "savings_pct": 0.1654,
      "stopped_early": false,
      "errors": 0,
-     "samples_needed": 118
+     "samples_needed": null
     }
    ]
   },
@@ -14316,7 +14316,7 @@
     },
     "X07": {
      "status": "pass",
-     "detail": "hosts ['127.0.0.1:59205']; key leaks []; text in result False"
+     "detail": "hosts ['127.0.0.1:51413']; key leaks []; text in result False"
     },
     "X08": {
      "status": "pass",
@@ -14371,7 +14371,7 @@
      "skipped_budget": 0
     },
     "data_sent_to": [
-     "127.0.0.1:59205"
+     "127.0.0.1:51413"
     ]
    },
    "candidates_result": [

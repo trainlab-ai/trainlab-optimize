@@ -261,7 +261,23 @@ Reasoning models (o-series, gpt-5, Gemini 2.5+, DeepSeek R1 and others) spend hi
 their output limit, so they get 4,096 tokens on top of the limit production set: a `max_tokens=5`
 label call would otherwise come back empty. An empty answer counts as a failed call, never as a
 quality failure, and the output shows the first error. For extraction, the output lists which JSON
-fields disagreed, e.g. `urgency 6`: a judgment field that even the current model isn't "right" about.
+fields disagreed.
+
+**Structured answers: every field has a role**, set from the field names and the production
+answers, never from how candidates did:
+
+| Role | Which fields | Counts toward pass/fail |
+|---|---|---|
+| fact | everything else: ids, names, amounts, dates, booleans, categories | must match |
+| prose | `summary`, `reason`, `description`, `notes`... or strings averaging 15+ words | same wording or close (ROUGE-L ≥ 0.5) passes; otherwise the `--judge` model compares that field in both orders. Without `--judge` a reworded field counts as a miss (approximate) |
+| judgment | `urgency`, `priority`, `severity`, `sentiment`, `confidence`, `rating`... | no: agreement with the current model is measured and shown, because the current model's rating is an opinion, not the truth |
+| ignored | `--ignore-fields internal_note` | not compared |
+
+`--strict-fields urgency` makes any field a fact. The output and the report show agreement per
+field, for example `facts (must match): order_id 97/97, product 95/97 · prose (judged): summary
+94/97 · judgment, not scored: urgency 61/97`, and a validated finding says what it didn't score.
+To score a judgment field for real, give expected answers (`--expected-column`) and every model,
+the current one included, is measured against them.
 
 **Samples.** Real inputs, one call site at a time:
 - captured by `trainlab trace --capture` or `instrument()`, opt-in and local:
@@ -280,7 +296,7 @@ the dataset has one, otherwise the production output (or a fresh call to the cur
 | Task (detected, or `--task`) | A sample passes when |
 |---|---|
 | classification | same label (case, punctuation and "Label:" wrappers ignored) |
-| extraction | valid JSON with every field equal (numbers numerically, text case- and space-insensitive; prose fields such as `summary` or `reason` by ROUGE-L ≥ 0.5) |
+| extraction | valid JSON whose facts are equal (numbers numerically, text case- and space-insensitive) and whose prose fields say the same thing (see below) |
 | generation | an LLM judge (`--judge`) finds it not worse than the reference in both A/B orders |
 
 A candidate is **validated (PASS)** only when the one-sided 95% lower confidence bound of its pass

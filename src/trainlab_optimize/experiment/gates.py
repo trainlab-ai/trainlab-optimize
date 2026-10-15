@@ -122,49 +122,119 @@ def _same_value(a, b) -> bool:
     return norm_text(str(a)) == norm_text(str(b))
 
 
-# Prose fields inside structured output ("summary": "...") are never worded the same way twice,
-# not even by the same model. They are compared by overlap (ROUGE-L >= 0.5) instead of equality;
-# every other field must match exactly.
+# ------------------------------------------------------------------ extraction: fields by role
+# Every field of a structured answer gets a role, decided once per experiment from the reference
+# answers and the field names (never from how candidates did, so a role can't excuse a mistake):
+#   fact      must be equal (numbers numerically, text case- and space-insensitive)
+#   prose     free text ("summary", "reason", or long strings): equal enough by word overlap
+#             (ROUGE-L >= 0.5), otherwise an LLM judge decides; without a judge it fails (approximate)
+#   judgment  a rating the current model has no claim to be right about ("urgency", "priority",
+#             "sentiment"...): agreement is measured and shown, never part of pass/fail
+#   ignore    named with --ignore-fields: not compared at all
+# --strict-fields makes any field a fact.
 PROSE_KEY = re.compile(r"(^|[._\]])(summary|description|reason|rationale|explanation|justification|notes?|"
                        r"comments?|message|reply|answer|details)$")
+JUDGMENT_KEY = re.compile(r"(^|[._\]])(urgency|priority|severity|sentiment|mood|tone|emotion|confidence|"
+                          r"rating|score|importance|risk|risk_level|quality|difficulty)$")
+PROSE_MIN_WORDS = 15         # strings that average this many words in the references are prose
+                             # (an address or a name is a fact; a sentence is prose)
+PROSE_OVERLAP = 0.5
 
 
-def _is_prose(key: str, a, b) -> bool:
-    return bool(PROSE_KEY.search(key)) and isinstance(a, str) and isinstance(b, str) \
-        and max(len(a.split()), len(b.split())) >= 4
+def _leaf(key: str) -> str:
+    return re.sub(r"\[\d+\]", "", key).rsplit(".", 1)[-1]
 
 
-def json_diff_fields(ref, cand) -> list[str]:
-    """The fields (flattened keys) on which cand disagrees with ref; ["(invalid JSON)"] if unparsable."""
-    if cand is None or ref is None:
-        return ["(invalid JSON)"]
+def _matches(key: str, names) -> bool:
+    return any(key == n or _leaf(key) == n or key.startswith(n + ".") or key.startswith(n + "[")
+               for n in names)
+
+
+def field_roles(references: list, ignore=(), strict=()) -> dict[str, str]:
+    """Role of every flattened field seen in the parsed reference answers."""
+    words: dict[str, list[int]] = {}
+    for ref in references:
+        for k, v in _flatten(ref).items():
+            words.setdefault(k, []).append(len(v.split()) if isinstance(v, str) else 0)
+    roles = {}
+    for k, ws in words.items():
+        if _matches(k, ignore):
+            roles[k] = "ignore"
+        elif _matches(k, strict):
+            roles[k] = "fact"
+        elif JUDGMENT_KEY.search(k):
+            roles[k] = "judgment"
+        elif PROSE_KEY.search(k) or (ws and sum(ws) / len(ws) >= PROSE_MIN_WORDS):
+            roles[k] = "prose"
+        else:
+            roles[k] = "fact"
+    return roles
+
+
+def _role(key: str, roles: dict | None, a, b) -> str:
+    if roles and key in roles:
+        return roles[key]
+    if roles is not None:                 # a field the references never had: compare it strictly
+        return "fact"
+    if JUDGMENT_KEY.search(key):
+        return "judgment"
+    if isinstance(a, str) and isinstance(b, str) and (
+            PROSE_KEY.search(key) or max(len(a.split()), len(b.split())) >= PROSE_MIN_WORDS):
+        return "prose"
+    return "fact"
+
+
+def compare_fields(ref, cand, roles: dict | None = None) -> dict[str, tuple[str, bool | None]]:
+    """{field: (role, agrees)} for every field in either answer. For prose, agrees is None when the
+    wording differs too much to decide without a judge."""
     fr, fc = _flatten(ref), _flatten(cand)
-    out = []
+    out = {}
     for k in sorted(set(fr) | set(fc)):
+        a, b = fr.get(k), fc.get(k)
+        role = _role(k, roles, a, b)
         if k not in fr or k not in fc:
-            out.append(k)
-        elif _is_prose(k, fr[k], fc[k]):
-            if rouge_l(fr[k], fc[k]) < 0.5:
-                out.append(k)
-        elif not _same_value(fr[k], fc[k]):
-            out.append(k)
+            out[k] = (role, False)
+        elif role == "prose" and isinstance(a, str) and isinstance(b, str):
+            out[k] = (role, True if rouge_l(a, b) >= PROSE_OVERLAP or norm_text(a) == norm_text(b) else None)
+        else:
+            out[k] = (role, _same_value(a, b))
     return out
 
 
-def json_agreement(ref, cand) -> tuple[bool, float]:
-    fr, fc = _flatten(ref), _flatten(cand)
-    keys = set(fr) | set(fc)
-    if not keys:
-        return True, 1.0
-
-    def same(k):
-        if k not in fr or k not in fc:
+def extraction_verdict(fields: dict[str, tuple[str, bool | None]], judged: dict[str, bool | None] | None = None
+                       ) -> bool | None:
+    """Pass when every fact agrees and every prose field agrees (by overlap, or by the judge when it
+    was asked). Judgment and ignored fields don't count. None = waiting for the judge."""
+    judged = judged or {}
+    pending = False
+    for k, (role, ok) in fields.items():
+        if role == "fact" and not ok:
             return False
-        if _is_prose(k, fr[k], fc[k]):
-            return rouge_l(fr[k], fc[k]) >= 0.5
-        return _same_value(fr[k], fc[k])
-    n = sum(1 for k in keys if same(k))
-    return n == len(keys), n / len(keys)
+        if role == "prose":
+            if ok is None:
+                ok = judged.get(k, False) if k in judged else None
+            if ok is False:
+                return False
+            if ok is None:
+                pending = True
+    return None if pending else True
+
+
+def json_diff_fields(ref, cand, roles: dict | None = None) -> list[str]:
+    """The fields on which cand disagrees with ref (prose: by word overlap); ["(invalid JSON)"] if unparsable."""
+    if cand is None or ref is None:
+        return ["(invalid JSON)"]
+    return [k for k, (role, ok) in compare_fields(ref, cand, roles).items() if ok is not True and role != "ignore"]
+
+
+def json_agreement(ref, cand, roles: dict | None = None) -> tuple[bool, float]:
+    """(passes on facts and prose by overlap, share of all fields that agree)."""
+    f = compare_fields(ref, cand, roles)
+    if not f:
+        return True, 1.0
+    scored = {k: v for k, v in f.items() if v[0] != "ignore"}
+    same = sum(1 for _, ok in scored.values() if ok is True)
+    return extraction_verdict(f) is True, (same / len(scored)) if scored else 1.0
 
 
 def rouge_l(ref: str, cand: str) -> float:
@@ -205,8 +275,10 @@ def detect_task(refs: list[str], hints: list[str] | None = None, json_mode: bool
     return "generation"
 
 
-def score(task: str, reference: str | None, candidate: str | None) -> dict:
-    """{'pass': bool|None, ...details}. pass is None when it needs the judge (generation)."""
+def score(task: str, reference: str | None, candidate: str | None, roles: dict | None = None,
+          judged: dict | None = None) -> dict:
+    """{'pass': bool|None, ...details}. pass is None when it needs the judge (generation, or
+    extraction prose that differs in wording and hasn't been judged yet)."""
     if candidate is None:
         return {"pass": False, "reason": "error"}
     if not candidate.strip() or _REFUSAL.match(candidate.strip()):
@@ -221,8 +293,12 @@ def score(task: str, reference: str | None, candidate: str | None) -> dict:
         r = parse_json(reference)
         if r is None:
             return {"pass": False, "reason": "reference is not JSON", "field_score": 0.0}
-        exact, fs = json_agreement(r, c)
-        return {"pass": exact, "reason": None if exact else "fields differ", "field_score": round(fs, 4)}
+        fields = compare_fields(r, c, roles)
+        ok = extraction_verdict(fields, judged)
+        scored = {k: v for k, v in fields.items() if v[0] != "ignore"}
+        fs = sum(1 for _, a in scored.values() if a is True) / len(scored) if scored else 1.0
+        return {"pass": ok, "reason": None if ok else ("fields differ" if ok is False else "prose needs the judge"),
+                "field_score": round(fs, 4), "fields": {k: [role, a] for k, (role, a) in fields.items()}}
     return {"pass": None, "rouge_l": round(rouge_l(reference or "", candidate), 4)}
 
 
@@ -242,6 +318,33 @@ JUDGE_PROMPT = """You are grading two responses to the same request.
 
 Which response better fulfils the request (correctness first, then completeness and following the
 instructions)? Reply with exactly one word: A, B, or TIE (use TIE when they are equally good)."""
+
+
+FIELD_JUDGE_PROMPT = """You are grading one field of two structured answers to the same request.
+
+<request>
+{request}
+</request>
+
+The field is `{field}`.
+
+<field_a>
+{a}
+</field_a>
+
+<field_b>
+{b}
+</field_b>
+
+Judge only this field: which value better fulfils what the request asks for it (correct and
+faithful to the input first, then complete and following the instructions)? Wording differences
+alone don't matter. Reply with exactly one word: A, B, or TIE (use TIE when they are equally good)."""
+
+
+def field_judge_messages(request_messages: list[dict], field: str, a: str, b: str) -> list[dict]:
+    req = "\n\n".join(f"[{m['role']}] {m['content']}" for m in request_messages)
+    return [{"role": "user", "content": FIELD_JUDGE_PROMPT.format(request=req[:20000], field=field,
+                                                                  a=str(a)[:6000], b=str(b)[:6000])}]
 
 
 def judge_messages(request_messages: list[dict], a: str, b: str) -> list[dict]:

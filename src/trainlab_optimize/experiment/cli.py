@@ -28,6 +28,12 @@ def add_parser(sub, common) -> None:
         p.add_argument("--expected-column", help="CSV: column with the correct answer")
         p.add_argument("--system", help="system prompt to add to samples that have none")
         p.add_argument("--redact", action="store_true", help="redact emails/phones/keys in samples before sending")
+        p.add_argument("--ignore-fields", metavar="F1,F2",
+                       help="extraction: JSON fields not to compare at all, e.g. internal_note")
+        p.add_argument("--strict-fields", metavar="F1,F2",
+                       help="extraction: fields that must match exactly even if they look like prose or a judgment "
+                            "(by default 'summary'-like fields are compared by meaning and 'urgency'-like ratings are "
+                            "measured but not scored)")
 
     pl = xs.add_parser("plan", help="list call sites worth testing, or show what a run would cost")
     run_args(pl)
@@ -113,7 +119,13 @@ def _config(args, row):
                   rerun_baseline=getattr(args, "rerun_baseline", False), hints=(row or {}).get("task_hints", []),
                   name=getattr(args, "name", None), allow_unpriced=getattr(args, "allow_unpriced", False),
                   monthly_spend=(row or {}).get("monthly_spend_usd"),
-                  baseline_provider=args.provider or (row or {}).get("provider"))
+                  baseline_provider=args.provider or (row or {}).get("provider"),
+                  ignore_fields=_csv(getattr(args, "ignore_fields", None)),
+                  strict_fields=_csv(getattr(args, "strict_fields", None)))
+
+
+def _csv(v) -> list[str]:
+    return [x.strip() for x in (v or "").split(",") if x.strip()]
 
 
 def _money(v):
@@ -258,9 +270,24 @@ def _run_all(args, ws, catalog) -> int:
         return 2
     total = args.max_cost
     print(f"Testing {len(rows)} call site(s) with captured samples; budget ${total:.2f} in total.")
+    # Share the budget by what each site is expected to cost (a judged extraction costs far more
+    # than a one-word classification); what a site doesn't use rolls on to the next.
+    from .runner import plan as _plan
+    ests = []
+    for row in rows:
+        sub = copy.copy(args)
+        sub.site = row["site"]
+        try:
+            smp, _ = _samples(sub, ws, row)
+            p = _plan(_config(sub, row), smp, catalog) if smp else None
+            ests.append(0.0 if not p or p.get("blocking") else max(p["est_cost_usd"], 1e-6))
+        except Exception:      # noqa: BLE001 - the run itself reports the problem
+            ests.append(1e-6)
     remaining, ran, failed = total, 0, 0
     for i, row in enumerate(rows):
-        share = remaining / (len(rows) - i)
+        rest = sum(ests[i:])
+        share = remaining * (ests[i] / rest) if rest > 0 else remaining / (len(rows) - i)
+        share = min(remaining, max(share, 2 * ests[i]))          # estimates are rough: leave headroom
         print(f"\n[{i + 1}/{len(rows)}] {row['site']}  {row['model']} -> {', '.join(row['candidates'])}"
               f"  (budget ${share:.2f})")
         sub = copy.copy(args)
@@ -288,6 +315,26 @@ def cmd_run(args) -> int:
     return _write_report(args)
 
 
+ROLE_LABEL = {"fact": "facts (must match)", "prose": "prose", "judgment": "judgment, not scored",
+              "ignore": "ignored"}
+
+
+def _field_lines(fields: dict, prose_scoring: str | None) -> list[str]:
+    """Agreement per field, grouped by role: what decided the verdict and what was only measured."""
+    out = []
+    for role in ("fact", "prose", "judgment", "ignore"):
+        fs = [(k, v) for k, v in fields.items() if v["role"] == role]
+        if not fs:
+            continue
+        if role == "ignore":
+            out.append(f"{ROLE_LABEL[role]}: " + ", ".join(k for k, _ in fs))
+            continue
+        label = ROLE_LABEL[role] + (f" ({'judged' if prose_scoring == 'judge' else 'word overlap, approximate'})"
+                                    if role == "prose" else "")
+        out.append(f"{label}: " + ", ".join(f"{k} {v['agree']}/{v['n']}" for k, v in fs))
+    return out
+
+
 def _print_result(res: dict) -> None:
     print(f"\nExperiment {res['id']}: {res['samples']} samples, task {res['task']}, threshold {res['threshold']:.0%}, "
           f"reference: {res['reference']}")
@@ -307,9 +354,9 @@ def _print_result(res: dict) -> None:
               f"{_money(c.get('cost_per_call_usd')):>11} {sav:>7}{extra}")
         if c.get("errors") and c.get("first_error"):
             print(f"      {c['errors']} failed call(s), e.g. {c['first_error']}")
-        if c.get("field_mismatch") and c["verdict"] != "PASS":
-            fm = ", ".join(f"{k} {v}" for k, v in c["field_mismatch"].items())
-            print(f"      fields that differ (samples): {fm}")
+        if c.get("fields"):
+            for line in _field_lines(c["fields"], res.get("prose_scoring")):
+                print("      " + line)
     if res.get("recommended"):
         best = next(c for c in res["candidates"] if c["model"] == res["recommended"])
         ms = f", about ${best['monthly_savings_usd']:,.0f}/month" if best.get("monthly_savings_usd") else ""

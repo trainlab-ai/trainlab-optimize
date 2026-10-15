@@ -44,6 +44,23 @@ def _latest(sites, experiments: list[dict]) -> dict:
     return by_site
 
 
+def _field_note(c: dict, x: dict) -> str:
+    """What the pass covered for structured answers: judgment fields are only measured, prose may be
+    compared approximately, some fields may be ignored. Said in the finding so nobody reads a PASS as
+    'every field checked'."""
+    fields = c.get("fields") or {}
+    parts = []
+    jud = [(k, v) for k, v in fields.items() if v["role"] == "judgment" and v.get("rate") is not None]
+    if jud:
+        parts.append("Not scored, judgment calls: " + ", ".join(f"`{k}` agrees on {v['rate']:.0%}" for k, v in jud))
+    ign = [k for k, v in fields.items() if v["role"] == "ignore"]
+    if ign:
+        parts.append("Ignored: " + ", ".join(f"`{k}`" for k in ign))
+    if any(v["role"] == "prose" for v in fields.values()) and x.get("prose_scoring") != "judge":
+        parts.append("Prose fields compared by word overlap only (approximate); re-run with --judge")
+    return (" " + ". ".join(parts) + ".") if parts else ""
+
+
 def _summary(x: dict, c: dict | None) -> dict:
     ev = {"experiment": x["id"], "samples": x.get("samples"), "task": x.get("task"),
           "threshold": x.get("threshold"), "reference": x.get("reference"), "spent_usd": x.get("spent_usd")}
@@ -107,6 +124,7 @@ def _update(f: Finding, x: dict, att, site) -> None:
                      f"{best['passed']}/{best['scored']} ({(best['pass_rate'] or 0):.0%}; 95% lower bound "
                      f"{best['lower_95']:.0%} vs threshold {x['threshold']:.0%}) at "
                      f"{sav:.0%} lower cost per call.")
+        f.summary += _field_note(best, x)
         f.recommendation = (f"Switch this call to `{best['model']}`. Re-run the experiment when the prompt or "
                             "the input mix changes.")
         f.severity = "high" if spend and spend * sav >= 1000 else "medium"

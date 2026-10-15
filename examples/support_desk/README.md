@@ -48,7 +48,7 @@ both simple tasks.
 ## Prove the saving
 
 ```bash
-trainlab experiment run --max-cost 1 --open
+trainlab experiment run --max-cost 1 --judge gpt-4.1 --open
 ```
 
 This replays the captured tickets (redacted: emails and phone numbers are replaced) against
@@ -56,7 +56,11 @@ cheaper models with your key, scores every answer against what gpt-4o said, and 
 report. Costs a few cents. What to expect:
 
 - **Routing and extraction:** tested against gpt-4.1-mini, gpt-5-mini and gpt-4o-mini. A model
-  that matches on enough tickets becomes a *validated* saving.
+  that matches on enough tickets becomes a *validated* saving. In extraction, `order_id`,
+  `product` and `wants_refund` must match; `summary` is prose (with `--judge gpt-4.1` a
+  reworded summary is judged on meaning; the judge also lets the free-text reply drafts be
+  tested, so expect about $0.30 in total instead of a few cents); `urgency` is a judgment call, so its
+  agreement with gpt-4o is shown but doesn't decide the verdict.
 - **Reply drafts and the digest:** skipped, because they are free text and need a judge. Add
   `--judge gpt-4.1` to score them (costs more).
 - **The shipping agent:** not captured, because tool-calling turns can't be replayed from text

@@ -50,6 +50,8 @@ class Config:
     monthly_spend: float | None = None
     site_id: str | None = None
     baseline_provider: str | None = None      # where the call is served today (the site's provider)
+    ignore_fields: list[str] = field(default_factory=list)   # extraction: fields not compared at all
+    strict_fields: list[str] = field(default_factory=list)   # extraction: fields that must match exactly
 
     def route(self, model: str) -> Route:
         return resolve(model, self.baseline_provider if model == self.baseline else None)
@@ -196,22 +198,34 @@ def plan(cfg: Config, samples: list[Sample], catalog: PriceCatalog | None = None
                      "api": route.api, "endpoint": route.host,
                      "est_cost_usd": round(est, 4) if est is not None else None,
                      "max_cost_usd": round(up, 4) if up is not None else None})
-    if cfg.judge:
+    refs_now = [s.expected or s.reference or "" for s in samples]
+    known = sum(1 for r in refs_now if r) >= 0.9 * len(samples)
+    task = cfg.task or (gates.detect_task(refs_now, cfg.hints, json_mode=any(s.json_mode for s in samples))
+                        if known else None)
+    # The judge is used for free text, and for prose fields of structured answers whose wording
+    # differs (about half of them, estimated; all of them at most). Classification never needs it.
+    judge_share = 0.0
+    if cfg.judge and task in ("generation", None):
+        judge_share = 1.0
+    elif cfg.judge and task == "extraction":
+        judge_share = sum(1 for r in gates.field_roles([x for x in map(gates.parse_json, refs_now) if x is not None],
+                                                        cfg.ignore_fields, cfg.strict_fields).values() if r == "prose")
+    if cfg.judge and judge_share:
         route = resolve(cfg.judge)
         price = _price(catalog, cfg.judge, route)
-        calls = 2 * len(samples) * len(cfg.candidates)
+        calls = round(2 * len(samples) * len(cfg.candidates) * judge_share)
         if price:
-            est = sum(price.cost(math.ceil((s.prompt_chars() + 2 * len(s.reference or "x" * 400) + 600) / 4), 2)
-                      for s in samples) * 2 * len(cfg.candidates)
-            total += est
-            upper += est * 1.6
+            one = sum(price.cost(math.ceil((s.prompt_chars() + 2 * len(s.reference or "x" * 400) + 600) / 4), 2)
+                      for s in samples) * 2 * len(cfg.candidates) * judge_share
+            total += one * (0.5 if task == "extraction" else 1.0)
+            upper += one * 1.6
         else:
             problems.append(f"{cfg.judge}: no price in the catalog")
         dest.setdefault(route.host, set()).add(cfg.judge)
         rows.append({"model": cfg.judge, "role": "judge", "calls": calls, "api": route.api, "endpoint": route.host})
     worst = 0.0
     called = [m for i, m in enumerate(models) if i > 0 or have_ref < len(samples) or cfg.calibrate]
-    for m in called + ([cfg.judge] if cfg.judge else []):
+    for m in called + ([cfg.judge] if cfg.judge and judge_share else []):
         route = cfg.route(m)
         price = _price(catalog, m, route)
         if price:
@@ -220,9 +234,6 @@ def plan(cfg: Config, samples: list[Sample], catalog: PriceCatalog | None = None
         problems.append(f"the budget (${cfg.max_cost:g}) is below the worst case of a single call (${worst:.4f}); "
                         "raise --max-cost or set max_tokens in the samples")
     blocking = []
-    refs = [s.expected or s.reference or "" for s in samples]
-    task = cfg.task or (gates.detect_task(refs, cfg.hints, json_mode=any(s.json_mode for s in samples))
-                        if sum(1 for r in refs if r) >= 0.9 * len(samples) else None)
     if task == "generation" and not cfg.judge:
         blocking.append("the answers are free text: add --judge MODEL (e.g. gpt-4.1) to score them; "
                         "without a judge nothing can be validated")
@@ -365,11 +376,12 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
         for c in cfg.candidates:
             if c in stopped:
                 continue
-            ks = [gates.score(task_holder["task"], task_holder["refs"].get(s.id), results[(c, s.id)].get("text"))
+            ks = [gates.score(task_holder["task"], task_holder["refs"].get(s.id), results[(c, s.id)].get("text"),
+                              task_holder.get("roles"))
                   for s in samples if (c, s.id) in results and task_holder["refs"].get(s.id) is not None]
             n = len(ks)
             if n >= 30:
-                k = sum(1 for x in ks if x["pass"])
+                k = sum(1 for x in ks if x["pass"] is not False)     # prose awaiting the judge counts as a pass
                 if gates.wilson(k, n)[1] < task_holder["thr"]:
                     stopped.add(c)
 
@@ -386,7 +398,11 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
                                         json_mode=any(s.json_mode for s in samples))
     threshold = cfg.threshold if cfg.threshold is not None else gates.DEFAULT_THRESHOLD[task]
     refs = gold if use_gold else {k: v for k, v in ref_text.items() if v is not None}
-    task_holder.update(task=task, refs=refs, thr=threshold)
+    roles = None
+    if task == "extraction":
+        roles = gates.field_roles([r for r in (gates.parse_json(v) for v in refs.values()) if r is not None],
+                                  cfg.ignore_fields, cfg.strict_fields)
+    task_holder.update(task=task, refs=refs, thr=threshold, roles=roles)
     # Free text without a judge can't be validated: once the references show that, stop before
     # paying for any candidate call (the plan catches it earlier when production outputs exist).
     no_verdict = task == "generation" and not cfg.judge
@@ -418,6 +434,30 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
                              {"max_tokens": 5, "temperature": 0}, 5, None))
                 jobs.append((cfg.judge, f"judge:{c}:ba", s, gates.judge_messages(s.messages, e["text"], ref),
                              {"max_tokens": 5, "temperature": 0}, 5, None))
+        run_phase(jobs)
+
+    # ---- judge (extraction prose): only where the facts agree and the wording differs
+    prose_judged = task == "extraction" and bool(cfg.judge) and any(r == "prose" for r in (roles or {}).values())
+    if prose_judged:
+        jobs = []
+        for s in samples:
+            ref = refs.get(s.id)
+            for c in cfg.candidates:
+                e = results.get((c, s.id))
+                if ref is None or not e or e.get("error") or not e.get("text"):
+                    continue
+                sc = gates.score(task, ref, e["text"], roles)
+                if sc["pass"] is not None:
+                    continue
+                rj, cj = gates._flatten(gates.parse_json(ref)), gates._flatten(gates.parse_json(e["text"]))
+                for f, (role, ok) in sc["fields"].items():
+                    if role == "prose" and ok is None:
+                        jobs.append((cfg.judge, f"fjudge:{c}:{f}:ab", s,
+                                     gates.field_judge_messages(s.messages, f, rj[f], cj[f]),
+                                     {"max_tokens": 5, "temperature": 0}, 5, None))
+                        jobs.append((cfg.judge, f"fjudge:{c}:{f}:ba", s,
+                                     gates.field_judge_messages(s.messages, f, cj[f], rj[f]),
+                                     {"max_tokens": 5, "temperature": 0}, 5, None))
         run_phase(jobs)
 
     # ---- calibration: how often does the baseline agree with itself?
@@ -460,6 +500,7 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
         k = n = errors = 0
         first_error = None
         field_miss: dict[str, int] = {}
+        field_stats: dict[str, dict] = {}
         field_scores, lat, costs, base_for_same = [], [], [], []
         judge_tally = {"not_worse": 0, "worse": 0, "unclear": 0}
         for s in samples:
@@ -470,10 +511,29 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
             if e.get("error"):
                 errors += 1
                 first_error = first_error or str(e["error"])[:200]
-            sc = gates.score(task, ref, e.get("text"))
-            if task == "extraction" and sc.get("pass") is False and not e.get("error"):
-                for f in gates.json_diff_fields(gates.parse_json(ref), gates.parse_json(e.get("text"))):
-                    field_miss[f] = field_miss.get(f, 0) + 1
+            sc = gates.score(task, ref, e.get("text"), roles)
+            if task == "extraction" and "fields" in sc:
+                verdicts = {}
+                for f, (role, ok) in sc["fields"].items():
+                    if role == "prose" and ok is None:
+                        if prose_judged:
+                            ab = gates.judge_choice((results.get((f"fjudge:{c}:{f}:ab", s.id)) or {}).get("text"))
+                            ba = gates.judge_choice((results.get((f"fjudge:{c}:{f}:ba", s.id)) or {}).get("text"))
+                            ok = None if ab is None or ba is None else (ab in ("B", "TIE") and ba in ("A", "TIE"))
+                            judge_tally["unclear" if ok is None else "not_worse" if ok else "worse"] += 1
+                        else:
+                            ok = False                # no judge: wording too different counts as a miss
+                        verdicts[f] = ok
+                        sc["fields"][f] = [role, ok]
+                    fs = field_stats.setdefault(f, {"role": role, "agree": 0, "n": 0})
+                    if ok is not None:
+                        fs["n"] += 1
+                        fs["agree"] += 1 if ok else 0
+                    if ok is False and role in ("fact", "prose"):
+                        field_miss[f] = field_miss.get(f, 0) + 1
+                sc["pass"] = gates.extraction_verdict({f: tuple(v) for f, v in sc["fields"].items()}, verdicts)
+                if sc["pass"] is not None:
+                    sc["reason"] = None if sc["pass"] else "fields differ"
             if task == "generation":
                 if not judged or sc["pass"] is False:
                     passed = sc["pass"]
@@ -518,7 +578,10 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
             "field_mismatch": dict(sorted(field_miss.items(), key=lambda kv: -kv[1])[:8]) or None,
             "stopped_early": c in stopped,
             "field_agreement": round(sum(field_scores) / len(field_scores), 4) if field_scores else None,
-            "judge": judge_tally if task == "generation" and judged else None,
+            "judge": judge_tally if (task == "generation" and judged) or prose_judged else None,
+            "fields": {f: {"role": v["role"], "agree": v["agree"], "n": v["n"],
+                           "rate": round(v["agree"] / v["n"], 4) if v["n"] else None}
+                       for f, v in sorted(field_stats.items())} or None,
             "cost_per_call_usd": cpc, "baseline_cost_per_call_usd": bpc,
             "savings_pct": round(sav, 4) if sav is not None else None,
             "monthly_savings_usd": round(cfg.monthly_spend * sav, 2) if cfg.monthly_spend and sav is not None else None,
@@ -542,6 +605,9 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
     result = {
         "id": xid, "name": cfg.name, "created": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "site": cfg.site, "site_id": cfg.site_id, "baseline": cfg.baseline, "candidates": cands,
+        "field_roles": roles,
+        "prose_scoring": (("judge" if prose_judged else "word overlap (approximate; add --judge)")
+                          if any(r == "prose" for r in (roles or {}).values()) else None),
         "task": task, "threshold": round(threshold, 4), "reference": "expected answers" if use_gold else (
             "production outputs" if any(s.reference for s in samples) and not cfg.rerun_baseline else "baseline model"),
         "samples": len(samples), "baseline_accuracy": round(baseline_acc, 4) if baseline_acc is not None else None,

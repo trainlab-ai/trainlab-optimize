@@ -82,6 +82,21 @@ def extract(text: str, model: str = "gpt-4o") -> dict:
             "summary": (subject.group(1) if subject else text[:60]).strip()}
 
 
+def judge(prompt: str) -> str:
+    """Grade two answers: an empty one loses; otherwise the one sharing more words with the request
+    wins when the gap is large, and close calls are a tie."""
+    def part(tag):
+        m = re.search(rf"<{tag}>\s*(.*?)\s*</{tag}>", prompt, re.S)
+        return m.group(1) if m else ""
+    a, b = (part("field_a"), part("field_b")) if "<field_a>" in prompt else (part("response_a"), part("response_b"))
+    if not a.strip() or not b.strip():
+        return "B" if not a.strip() else "A"
+    req = set(re.findall(r"[a-z]{4,}", part("request").lower()))
+    sa = len(req & set(re.findall(r"[a-z]{4,}", a.lower())))
+    sb = len(req & set(re.findall(r"[a-z]{4,}", b.lower())))
+    return "A" if sa > sb + 3 else "B" if sb > sa + 3 else "TIE"
+
+
 def mood(text: str) -> str:
     low = text.lower()
     if any(w in low for w in ["locked out", "forever", "hundreds", "keeps failing", "nothing arrived"]):
@@ -169,6 +184,8 @@ class Handler(BaseHTTPRequestHandler):
             content = (f"Your order {result.get('order_id')} is {result.get('status', 'being checked')}"
                        + (f" with {result['carrier']}" if result.get("carrier") else "")
                        + ". We'll email you as soon as it moves.\n\nNorthwind Support")
+        elif "<field_a>" in user or "<response_a>" in user:
+            content = judge(user)
         elif "Categories:" in system:
             content = route_ticket(user, model)
         elif "return JSON" in system or (b.get("response_format") or {}).get("type") == "json_object":
