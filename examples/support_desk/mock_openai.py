@@ -35,6 +35,10 @@ ROUTING_ERROR = {"gpt-4o": 0, "gpt-4o-mini": 0, "gpt-4.1": 0, "gpt-4.1-mini": 3,
                  "gpt-5-mini": 22, "gpt-5-nano": 35}
 # Chance (percent) that a model judges a ticket's urgency differently from gpt-4o: a judgment
 # call, so smaller models disagree on it more often, as real ones do.
+# With the vague v1 extraction prompt ("product" undefined) every model sometimes answers a plan or
+# a feature as the product, each in its own way, as the real ones did.
+PRODUCT_GUESS_V1 = {"gpt-4o": 8, "gpt-4o-mini": 12, "gpt-4.1-mini": 10, "gpt-4.1-nano": 20, "gpt-5-mini": 10,
+                    "gpt-5-nano": 15}
 URGENCY_FLIP = {"gpt-4o-mini": 12, "gpt-4.1-mini": 6, "gpt-4.1-nano": 20, "gpt-5-mini": 8, "gpt-5-nano": 15}
 REASONING = re.compile(r"^(gpt-5|o\d)")
 _log_lock = threading.Lock()
@@ -67,15 +71,18 @@ def route_ticket(text: str, model: str) -> str:
     return best
 
 
-def extract(text: str, model: str = "gpt-4o") -> dict:
+def extract(text: str, model: str = "gpt-4o", defined: bool = True) -> dict:
     low = text.lower()
     order = re.search(r"NW-\d{5}", text)
     product = next((p for p in ["Northwind Sync for Teams", "Northwind Drive", "Northwind Backup",
                                 "Northwind Mobile", "Northwind Desk Hub"] if p.lower() in low), None)
     urgent = any(w in low for w in ["locked out", "crash", "declined", "by friday", "hundreds", "two days"])
     subject = re.search(r"Subject: (.+)", text)
+    if not defined and _h("product", model, text) % 100 < PRODUCT_GUESS_V1.get(model, 0):
+        guess = re.search(r"\b(Starter|Pro|Business|Enterprise|SSO|2FA|API)\b", text)
+        product = guess.group(1) if guess else product
     urgency = "high" if urgent else "normal"
-    if _h("urgency", model, text) % 100 < URGENCY_FLIP.get(model, 0):
+    if _h("urgency", model, text) % 100 < URGENCY_FLIP.get(model, 0) // (1 if not defined else 2):
         urgency = "normal" if urgent else "high"
     return {"product": product, "order_id": order.group(0) if order else None,
             "urgency": urgency, "wants_refund": "refund" in low,
@@ -189,7 +196,7 @@ class Handler(BaseHTTPRequestHandler):
         elif "Categories:" in system:
             content = route_ticket(user, model)
         elif "return JSON" in system or (b.get("response_format") or {}).get("type") == "json_object":
-            content = json.dumps(extract(user, model))
+            content = json.dumps(extract(user, model, defined="exactly one of" in system))
         elif "customer's mood" in system:
             content = mood(user)
         else:

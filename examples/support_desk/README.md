@@ -74,6 +74,30 @@ lower confidence bound: 97 out of 97 or 96 out of 97 passes, while two misses le
 *inconclusive*, and the output says how many more samples would settle it
 (`python run.py --tickets 300` captures more).
 
+## Read the examples before trusting a FAIL
+
+An experiment compares cheaper models with what the current model said, not with the truth. When
+the prompt leaves a field open to interpretation, they disagree because the question is vague,
+not because one model is worse. `trainlab experiment show <id> --examples` shows each
+disagreement: the ticket, gpt-4o's answer and the candidate's.
+
+The app keeps its first extraction prompt to show this: `python run.py --prompt v1`. It asks for
+a "product" without saying what one is. On the real API, gpt-4o answered "SSO", "Starter" and
+"2-port hub" as products; the cheaper models picked other words from the ticket, and every one of
+them failed. The default prompt (`v2`) defines each field: one of Northwind's five products,
+"refund" means asking for money back, rules for urgency, a summary that names the customer.
+
+```bash
+trainlab trace --capture --fresh -- python run.py --prompt v1
+trainlab experiment run --max-cost 1 --judge gpt-4.1
+trainlab experiment show <extraction experiment id> --examples      # product: "SSO" vs "Starter"...
+trainlab trace --capture --fresh -- python run.py                   # v2, the fields defined
+trainlab experiment run --max-cost 1 --judge gpt-4.1
+```
+
+Tightening the prompt is usually the first saving: the cheaper model can only match what the
+current one was asked clearly.
+
 ## Run the app on its own
 
 ```bash

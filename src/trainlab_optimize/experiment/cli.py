@@ -370,7 +370,9 @@ def _print_result(res: dict) -> None:
         print(f"  {c['model'][:40]:40} {c['verdict']:13} {pr:>9} {c['lower_95']:>8.1%} "
               f"{_money(c.get('cost_per_call_usd')):>11} {sav:>7}{extra}")
         if c.get("errors") and c.get("first_error"):
-            print(f"      {c['errors']} failed call(s), e.g. {c['first_error']}")
+            t = c.get("transient_errors") or 0
+            note = (f"; {t} provider/network failure(s) not scored, retried on the next run" if t else "")
+            print(f"      {c['errors']} failed call(s), e.g. {c['first_error']}{note}")
         if c.get("fields"):
             for line in _field_lines(c["fields"], res.get("prose_scoring")):
                 print("      " + line)

@@ -244,7 +244,8 @@ def parse_response(route: Route, d: dict) -> Result:
 
 
 # ------------------------------------------------------------------ calling
-RETRY_STATUS = {408, 409, 425, 429, 500, 502, 503, 504, 529}
+# 52x: Cloudflare in front of the provider (520 unknown error, 522/524 timeouts), seen on api.openai.com
+RETRY_STATUS = {408, 409, 425, 429, 500, 502, 503, 504, 520, 521, 522, 523, 524, 529, 530}
 
 
 def call(route: Route, messages: list[dict], params: dict, *, timeout: float = 120, max_attempts: int = 5,

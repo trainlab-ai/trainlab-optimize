@@ -325,3 +325,27 @@ def test_budget_share_covers_worst_case_reservations():
     assert budget_share(1.0, ests, floors, 1) > 0.5           # the judged site still gets the most
     assert budget_share(0.05, ests, floors, 0) == 0.05         # never more than what's left
     assert budget_share(1.0, [0, 0], [0, 0], 0) == 0.5         # no estimates: even split
+
+
+def test_provider_failures_are_not_scored_and_are_retried(tmp_path, monkeypatch):
+    """A 520 from Cloudflare in front of api.openai.com once counted as a quality miss, and the
+    failed call was reused from the cache on every later run."""
+    from trainlab_optimize.experiment.clients import Result
+    from trainlab_optimize.experiment.runner import is_transient, run
+    assert is_transient("HTTP 520") and is_transient("HTTP 503: overloaded") and is_transient("timed out")
+    assert not is_transient("HTTP 400: bad request") and not is_transient("empty answer (0 output tokens)")
+    monkeypatch.setenv("OPENAI_API_KEY", "x")
+    samples = _samples(40, lambda i: ["billing", "bug"][i % 2])
+    calls = {"n": 0}
+
+    def flaky(route, messages, params):
+        calls["n"] += 1
+        i = int(messages[-1]["content"].split()[-1])
+        if i == 3 and calls["n"] <= 40:
+            return Result(text=None, error="HTTP 520", status=520)
+        return Result(text=["billing", "bug"][i % 2], input_tokens=10, output_tokens=1, latency_ms=1.0)
+    cfg = Config(baseline="gpt-4o", candidates=["gpt-4o-mini"], max_cost=5)
+    c = run(cfg, samples, tmp_path, call_fn=flaky)["candidates"][0]
+    assert (c["passed"], c["scored"], c["errors"], c["transient_errors"]) == (39, 39, 1, 1)
+    c = run(cfg, samples, tmp_path, call_fn=flaky)["candidates"][0]          # same workdir: cache
+    assert (c["passed"], c["scored"], c["errors"]) == (40, 40, 0)             # the 520 was retried

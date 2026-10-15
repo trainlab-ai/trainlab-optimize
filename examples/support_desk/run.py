@@ -35,6 +35,8 @@ def main() -> int:
     ap.add_argument("--workers", type=int, default=8, help="threads for triage and extraction (default 8)")
     ap.add_argument("--seed", type=int, default=7, help="which tickets to generate (default 7)")
     ap.add_argument("--yes", action="store_true", help="skip the cost question for large real runs")
+    ap.add_argument("--prompt", choices=["v1", "v2"], default="v2",
+                    help="extraction prompt: v1 the vague first draft, v2 (default) with every field defined")
     a = ap.parse_args()
 
     if a.mock:
@@ -53,8 +55,10 @@ def main() -> int:
             if input("Continue? [y/N] ").strip().lower() not in ("y", "yes"):
                 return 1
 
+    from support_desk import extract
     from support_desk.data import tickets
     from support_desk.pipeline import process
+    extract.PROMPT_VERSION = a.prompt
 
     batch = tickets(a.tickets, seed=a.seed)
     t0 = time.perf_counter()

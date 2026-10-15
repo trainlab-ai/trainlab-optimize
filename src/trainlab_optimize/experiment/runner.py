@@ -132,6 +132,23 @@ class Budget:
             self.spent += actual
 
 
+_HTTP_STATUS = re.compile(r"^HTTP (\d{3})")
+
+
+def is_transient(error) -> bool:
+    """A failure that says nothing about the model's quality: rate limits, provider 5xx, network.
+    Such calls are retried on the next run and left out of the score."""
+    if not error:
+        return False
+    m = _HTTP_STATUS.match(str(error))
+    if m:
+        from .clients import RETRY_STATUS
+        code = int(m.group(1))
+        return code in RETRY_STATUS or code >= 500
+    low = str(error).lower()
+    return any(w in low for w in ("timed out", "timeout", "connection", "network", "temporarily", "reset by peer"))
+
+
 class CallCache:
     def __init__(self, path: Path):
         self.path = path
@@ -146,7 +163,8 @@ class CallCache:
                     continue
 
     def get(self, key):
-        return self.data.get(key)
+        e = self.data.get(key)
+        return None if e is not None and is_transient(e.get("error")) else e     # retried, not reused
 
     def put(self, entry: dict) -> None:
         with self.lock:
@@ -505,7 +523,7 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
     per_sample = []
     cands = []
     for c in cfg.candidates:
-        k = n = errors = 0
+        k = n = errors = transient = 0
         first_error = None
         field_miss: dict[str, int] = {}
         field_stats: dict[str, dict] = {}
@@ -527,6 +545,9 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
             if e.get("error"):
                 errors += 1
                 first_error = first_error or str(e["error"])[:200]
+                if is_transient(e["error"]):
+                    transient += 1
+                    continue                       # the provider failed, not the model: not scored
             sc = gates.score(task, ref, e.get("text"), roles)
             if task == "extraction" and "fields" in sc:
                 verdicts = {}
@@ -588,7 +609,7 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
         lo, hi = gates.wilson(k, n)
         if task == "generation" and not judged:
             v, need = "NEEDS-JUDGE", None
-        elif n and errors / max(1, n) > 0.2:
+        elif (n + transient) and errors / (n + transient) > 0.2:
             v, need = "ERROR", None
         else:
             v, need = gates.verdict(k, n, threshold)
@@ -599,7 +620,7 @@ def run(cfg: Config, samples: list[Sample], workdir: str | Path, catalog: PriceC
         cands.append({
             "model": c, "verdict": v, "pass_rate": round(k / n, 4) if n else None, "passed": k, "scored": n,
             "lower_95": round(lo, 4), "upper_95": round(hi, 4), "samples_needed": need, "errors": errors,
-            "first_error": first_error,
+            "first_error": first_error, "transient_errors": transient,
             "examples": examples or None,
             "field_mismatch": dict(sorted(field_miss.items(), key=lambda kv: -kv[1])[:8]) or None,
             "stopped_early": c in stopped,
