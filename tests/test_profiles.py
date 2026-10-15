@@ -349,3 +349,15 @@ def test_provider_failures_are_not_scored_and_are_retried(tmp_path, monkeypatch)
     assert (c["passed"], c["scored"], c["errors"], c["transient_errors"]) == (39, 39, 1, 1)
     c = run(cfg, samples, tmp_path, call_fn=flaky)["candidates"][0]          # same workdir: cache
     assert (c["passed"], c["scored"], c["errors"]) == (40, 40, 0)             # the 520 was retried
+
+
+def test_plan_warns_when_samples_mix_prompt_versions(monkeypatch):
+    monkeypatch.setenv("OPENAI_API_KEY", "x")
+    a = [make_sample([{"role": "system", "content": "v1"}, {"role": "user", "content": f"t{i}"}], reference="x",
+                     site="a.py:1") for i in range(15)]
+    b = [make_sample([{"role": "system", "content": "v2"}, {"role": "user", "content": f"t{i}"}], reference="x",
+                     site="a.py:1") for i in range(15)]
+    p = plan(Config(baseline="gpt-4o", candidates=["gpt-4o-mini"], max_cost=5), a + b)
+    assert any("2 different system prompts" in x for x in p["problems"])
+    assert not any("system prompts" in x for x in plan(Config(baseline="gpt-4o", candidates=["gpt-4o-mini"],
+                                                              max_cost=5), a + a)["problems"])

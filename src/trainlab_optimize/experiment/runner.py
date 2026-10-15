@@ -260,6 +260,10 @@ def plan(cfg: Config, samples: list[Sample], catalog: PriceCatalog | None = None
         problems.append(f"the budget (${cfg.max_cost:g}) is below the worst case of a single call (${worst:.4f}); "
                         "raise --max-cost or set max_tokens in the samples")
     blocking = []
+    prompts = {next((m["content"] for m in s.messages if m["role"] == "system"), "") for s in samples}
+    if len(prompts) > 1:
+        problems.append(f"the samples use {len(prompts)} different system prompts (did the prompt change?); the result "
+                        "mixes them. Re-capture with `trainlab trace --capture --fresh` to test only the current one")
     if task == "generation" and not cfg.judge:
         blocking.append("the answers are free text: add --judge MODEL (e.g. gpt-4.1) to score them; "
                         "without a judge nothing can be validated")

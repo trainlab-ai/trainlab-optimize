@@ -36,7 +36,7 @@ trainlab trace --capture -- python run.py --mock
 
 ```bash
 export OPENAI_API_KEY=sk-...            # Windows PowerShell:  $env:OPENAI_API_KEY="sk-..."
-trainlab trace --capture --fresh -- python run.py
+trainlab trace --capture --fresh -- python run.py         # --fresh also drops old samples
 ```
 
 `--fresh` drops traces from earlier runs, so mock and real calls don't mix.

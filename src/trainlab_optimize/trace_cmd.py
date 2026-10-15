@@ -152,7 +152,10 @@ def cmd_trace(args) -> int:
             print(f"Not a directory: {r}", file=sys.stderr)
             return 2
     if args.fresh:
+        # Start over: earlier traces and earlier captured samples both go. Samples left from an
+        # older prompt would otherwise be tested together with the new one.
         shutil.rmtree(ws.path / "traces", ignore_errors=True)
+        shutil.rmtree(ws.path / "samples", ignore_errors=True)
     capture = None
     if args.capture is not None:
         capture = {"sample_rate": args.capture_rate, "max_per_site": args.capture_max,
@@ -226,7 +229,7 @@ def add_parser(sub, common) -> None:
                         "No value = every call site; or list sites as path:line")
     t.add_argument("--capture-rate", type=float, default=1.0, help="fraction of calls to capture (default 1.0)")
     t.add_argument("--capture-max", type=int, default=200, help="most samples kept per call site (default 200)")
-    t.add_argument("--fresh", action="store_true", help="drop traces from earlier runs first")
+    t.add_argument("--fresh", action="store_true", help="drop traces and captured samples from earlier runs first")
     t.add_argument("--usage", action="append", metavar="FILE", help="also import a billing/usage file (repeatable)")
     t.add_argument("--include-tests", action="store_true")
     t.add_argument("--exclude", action="append", metavar="GLOB")
